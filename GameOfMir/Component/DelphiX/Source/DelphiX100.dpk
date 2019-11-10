@@ -1,0 +1,64 @@
+package DelphiX100;
+
+{$R *.res}
+{$R 'DelphiX.dcr'}
+{$R 'Colli3DX.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'DelphiX - DirectX components for Delphi'}
+{$IMPLICITBUILD ON}
+
+requires
+  vcl,
+  vclsmp,
+  designide,
+  rtl;
+
+contains
+  DIB in 'DIB.pas',
+  DXClass in 'DXClass.pas',
+  DXConsts in 'DXConsts.pas',
+  DXDraws in 'DXDraws.pas',
+  DXETable in 'DXETable.pas',
+  DXInput in 'DXInput.pas',
+  DXPlay in 'DXPlay.pas',
+  DXPlayFm in 'DXPlayFm.pas',
+  DXRender in 'DXRender.pas',
+  DXReg in 'DXReg.pas',
+  DXSounds in 'DXSounds.pas',
+  DXSprite in 'DXSprite.pas',
+  DXWave in 'DXWave.pas',
+  DXFFBEdit in 'DXFFBEdit.pas',
+  DXGUIDEdit in 'DXGUIDEdit.pas',
+  DXInptEdit in 'DXInptEdit.pas',
+  DXPictEdit in 'DXPictEdit.pas',
+  DXWaveEdit in 'DXWaveEdit.pas',
+  DirectX in 'DirectX.pas',
+  DShow in 'DShow.pas',
+  DAnim in 'DAnim.pas',
+  Colli3DX in 'Colli3DX.pas',
+  TurboPixels in 'TurboPixels.pas',
+  DXCommon in 'DXCommon.pas',
+  DXSpriteEdit in 'DXSpriteEdit.pas' {DelphiXSpriteEditForm},
+  DXMidiEdit in 'DXMidiEdit.pas' {DelphiXMidiEditForm};
+
+end.

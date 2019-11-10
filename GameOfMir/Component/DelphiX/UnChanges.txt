@@ -1,0 +1,114 @@
+UnDelphiX Change Log
+
+***** New files:
+
+   ADD these from JEDI Delphi DirectX Headers for DX7
+
+   undelphix\source\D3DX.pas
+   undelphix\source\Direct3D.pas
+   undelphix\source\Direct3DRM.pas
+   undelphix\source\DirectDraw.pas
+   undelphix\source\DirectInput.pas
+   undelphix\source\DirectMusic.pas
+   undelphix\source\DirectPlay.pas
+   undelphix\source\DirectSetup.pas
+   undelphix\source\DirectSound.pas
+   undelphix\source\DXCommon.pas
+
+***** Deleted files:
+
+   Header files not needed
+
+   delphix\source\DirectX.pas
+   delphix\source\DAnim.pas
+   delphix\source\DShow.pas
+
+***** undelphix\source\DXClass.pas
+
+* source change USES
+
+uses
+  Windows, Messages, SysUtils, Classes, Controls, Forms, MMSystem, // DirectX;
+  DirectDraw, DirectSound, DirectInput, Direct3D; //, Direct3DRM;
+
+***** undelphix\source\DXConsts.pas
+>>> Constant
+* SCannotLoadGraphic - change value
+* SDisplayModeCannotAcquired - change value
+* SDLLNotLoaded - change value
+* SDXPlayMessageIllegal - change value
+* SDXPlayNotConnectedNow - change value
+* SDXPlayPlayerNotFound - change value
+* SDXPlayProviderSpecifiedGUIDNotFound - change value
+* SInvalidDisplayBitCount - change value
+* SInvalidDXTFile - change value
+* SNecessaryDirectInputUseMouse - change value
+* SNotSupportGraphicFile - change value
+* SOverlay - change value
+* SSinceDirectX5 - change value
+* SSinceDirectX6 - change value
+* SSinceDirectX7 - change value
+* SStreamNotOpend - change value
+* SStreamOpend - change value
+
+***** undelphix\source\DXDraws.pas
+>>> Class/Interface
+* TDirect3DTexture2
+  *M SetColorKey - change implementation
+* TDirectDraw
+  *M CreateEx - change implementation
+* TDirectDrawOverlay
+  *M Initialize - change implementation
+  *M SetOverlayRect - change implementation
+  *M SetVisible - change implementation
+* TDirectDrawSurface
+  *M Blt - change implementation
+  *M BltFast - change implementation
+  *M CreateSurface - change definition
+  *M Restore - change implementation
+  *M SetColorKey - change implementation
+* TDXDrawDisplay
+  *M LoadDisplayModes - change implementation
+
+***** undelphix\source\DXETable.pas
+* source change USES
+
+***** undelphix\source\DXInput.pas
+>>> Class/Interface
+* TCustomInput
+  *M GetDeviceState - change implementation
+* TForceFeedbackEffect
+  *M CreateEffect - change implementation
+
+***** undelphix\source\DXPlay.pas
+>>> Class/Interface
+* TCustomDXPlay
+  *M CreateDPlayWithoutDialog - change implementation
+  *M OpenDPlayWithLobby - change implementation
+  *M Open_ - change implementation
+  *M ReceiveMessage - change implementation
+  *M SendMessage - change implementation
+  *M SendMessageEx - change implementation
+* TDXPlayModemSetting
+  *M GetModemNames - change implementation
+
+***** undelphix\source\DXPlayFm.pas
+>>> Class/Interface
+* TDelphiXDXPlayForm
+  *M JoinGameGetPlayerListTimerTimer - change implementation
+
+***** undelphix\source\DXRender.pas
+* source change USES
+
+***** undelphix\source\DXSounds.pas
+>>> Class/Interface
+* TDirectSoundBuffer
+  *M GetPosition - change implementation
+  *M SetFormat - change implementation
+  *M SetIDSBuffer - change implementation
+* TSoundCaptureStream
+  *M GetReadSize - change implementation
+
+***** undelphix\source\DXSprite.pas
+>>> Procedure/Function
+* ImageCollisionTest - change implementation removed pixel collision

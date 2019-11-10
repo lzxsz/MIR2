@@ -1,0 +1,35 @@
+#include "pool.rh"
+
+PAAMENU MENU 
+{
+ POPUP "&Game"
+ {
+  MENUITEM "&New Game...", CM_FILE_OPEN
+  MENUITEM "Exit", CM_FILE_EXIT
+ }
+
+ POPUP "&Options"
+ {
+  MENUITEM "&Number Of Balls...", CM_LEVEL
+ }
+
+POPUP "&Help"
+ {
+  MENUITEM "&About...", CM_HELP_ABOUT
+  MENUITEM "&How To Play", CM_HELP_HELP
+ }
+
+}
+
+
+DLG_ABOUT DIALOG 6, 15, 128, 68
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+{
+ 
+ DEFPUSHBUTTON "Ok", IDOK, 9, 49, 50, 14
+ PUSHBUTTON "Cancel", IDCANCEL, 69, 49, 50, 14
+ LTEXT "Biljardi GKO 2000  Panu Niva", -1, 34, 16, 60, 24
+}
+

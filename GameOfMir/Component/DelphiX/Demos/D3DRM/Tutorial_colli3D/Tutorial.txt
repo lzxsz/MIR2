@@ -1,0 +1,120 @@
+*****************************************************************************
+ 3D-gaming with Delphi 4, 5 and 6 and Microsoft DirectX 6 or higher  Version 1.4
+*****************************************************************************
+
+ This DELPHI 4, 5 and 6 program is CopyRight
+ Henrik Fabricius, August 1999, March 2000, June 2002
+ http://users.cybercity.dk/~bbl6194/delphi3dx.htm
+ E-mail: henrik_og_bodil@vip.cybercity.dk
+
+ You may use this program for free on the following conditions:
+ 1) You must give credit to the author of this program, Hori and Peter Kovach
+    if you use parts of this code for your own code and put it on the internet
+ 2) Any proposals for changes or improvements should be addressed directly to
+    the author of this program.
+ 3) The use of this program is on your own risk. The software is provided as
+    is without any garanties and warranty. The author is not responsible for
+    any damage or losses of any kind caused by the use of this software or the
+    software it is intended to be used with.
+
+ To use this program you must have
+ 1) DELPHI 4, 5 or 6
+ 2) MS-DirectX 6.0 or higher
+ 3) The latest DelphiX components from Hori in Japan
+ 4) The TCollisionTester3DX component ( obs! the colli3DX.pas file must be
+    placed in the same directory as DelphiX
+
+ Use a joy stick to control the observer and to shoot bullets
+ Alternatively use the arrow-buttons to move and the space button to shoot.
+
+ MS_DirectX is a trademark of the Microsoft Corporation
+ Delphi 4/5/6 is a trademark of the Inprise Corporation
+ The TCollisionTester3DX component is CopyRight Henrik Fabricius
+ You may always find the newest version at the Delphi3DX page
+
+ You may use this program to learn how to use the TCollisionTester3DX component
+ which checkes for collision between the observer and 3D-objects as well as
+ between bullets fired by the observer and the 3D-objects. Please consult the
+ first part of the source code for the TColllisionTester3DX component to learn
+ more about the capabilities of the component.
+ You may also use this program and the TcollisionTester3DX component to learn
+ work with dynamic arrays.
+
+ The main idea of the TCollisionTester3DX component is to surround each of the
+ 3D objects by one or more simple 3D-collision objects and to use these objects
+ for testing for collisions. The types of objects are box3D - sphere3D -
+ ellipsoid3D - cylinder3D and conus3D. Types of materials are solid3D - water3D
+ and air3D. Available functional properties are: pickable - shootable and
+ fixed3Dobject.
+ It is both possible to work with bullets which are fired at a limited speed
+ and at an unlimited speed.
+
+ The program shows how to display 3D-objects and how to work with shadows.
+
+ Press on ALT and Enter to acces and to return from Full screen mode.
+
+ Click on the screen to add new 3D-objects. An open dialog appears from which
+ you may choose from a list of objects.
+
+ The content of the landscape generating routines in the units terrain and
+ field_1 were derived from the C++ code in the book "The Awesome Power of
+ Direct3D/DirectX by Peter Kovach".
+ Thanks to Peter Kovach at directx.xoom.com for allowing me to include the
+ translated code with this program.
+
+ Links to any gaming examples using the DelphiX and TCollisionTester3DX components are
+ welcome on the Delphi3DX page.
+
+
+ History
+ --------
+ 15th of August 1999 : Appearing at the Delphi3DX page.
+ 16th of August 1999 : Initialisation error removed by introduction of the command                        CollisionTester3DX.ZeroSetIt. Zbuffering used to remove hidden surfaces.
+ 18th of August 1999 : Hanging during the playing of sounds avoided by changing                   dxwavelist1.items[*].play[true] to false. Removing the possibility to move
+         backwards through the 3D-objects. 
+ 11th of March 2000  : d03D option of DXDraw activated to obtain compability with
+ 	 the present version of the DelphiX library. Tested with Delphi 5
+ 22nd of June 2002 : Hardware counter used to introduce a minimum interval of 300 
+msecs between bullets. Tested with Delphi 6
+
+ Good Luck
+ Henrik Fabricius
+ June 2002
+
+ Look for further 3D-examples new components and updates on
+ http://users.cybercity.dk/~bbl6194/delphi3dx.htm
+
+
+
+******************************************************************************
+
+ THIS GAME GOES LIKE!
+
+ Use a joystick or the arrows to move around
+ Use button 1 on your joy stick or the SPACE button to fire at the objects
+
+ Use the LongShots checkbox to change between bullets which are fired at
+ unlimited speed and at limited speed (visible bullets)
+
+ Five 3D objects are seen from the beginning.
+ From time to time a new object appears.
+
+ Shoot all the objects to win the game.
+ The game is lost if the number of objects increases to 10.
+
+ Use the panel with the radiobuttons to change the number of shots required to
+ remove an object.
+
+ Try to move around and see how the program prevents you from moving through
+ the solid objects.
+
+ Try to shoot close to the egg shaped object and the sphere to se how well the
+ collisionobjects fits the real objects.
+
+ Notice how the sigle boxshaped coll-object surrounding the chair gives an
+ unrealistic impression of the shooting of a chair.
+
+ *****************************************************************************
+
+
+

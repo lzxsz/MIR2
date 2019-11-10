@@ -1,0 +1,9 @@
+del *.~dfm \y
+del *.~ddp \y
+del *.cfg \y
+del *.~pas \y
+del *.dcu \y
+del *.dof \y
+del *.bkm \y
+del *.ddp \y
+del *.~dpr \y

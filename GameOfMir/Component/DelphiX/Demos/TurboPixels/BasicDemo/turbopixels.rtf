@@ -1,0 +1,57 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff15\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f15\fswiss\fcharset0\fprq2{\*\panose 020b0604030504040204}Verdana;}
+{\f107\fswiss\fcharset238\fprq2 Verdana CE;}{\f108\fswiss\fcharset204\fprq2 Verdana Cyr;}{\f110\fswiss\fcharset161\fprq2 Verdana Greek;}{\f111\fswiss\fcharset162\fprq2 Verdana Tur;}{\f112\fswiss\fcharset186\fprq2 Verdana Baltic;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;
+\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\widctlpar\adjustright \f15\fs20\cgrid \snext0 Normal;}{\*\cs10 \additive Default Paragraph Font;}{\*\cs15 \additive \b 
+\sbasedon10 Strong;}}{\info{\title 2/27/2000}{\author Michael Wilson}{\operator Michael Wilson}{\creatim\yr2000\mo2\dy27\hr17\min6}{\revtim\yr2000\mo5\dy22\hr1\min56}{\version6}{\edmins24}{\nofpages1}{\nofwords0}{\nofchars0}{\*\company no.2 games}
+{\nofcharsws0}{\vern89}}\widowctrl\ftnbj\aenddoc\hyphcaps0\formshade\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot \fet0\sectd \linex0\endnhere\sectdefaultcl {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2
+\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6
+\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang
+{\pntxtb (}{\pntxta )}}\pard\plain \widctlpar\adjustright \f15\fs20\cgrid {5/22/2000
+\par turboPixels v1.1
+\par 
+\par 
+\par Various updates and speed improvements from my last project were wrapped up in this, the latest version of turboPixels.  Assembler routines from both Lifepower and JerK speed up the pixel plotting routines when passing a single color RGB value 
+to be plotted in 16 bit.  On my Celeron 300A with a Voodoo Banshee you can plot about 64,000 pixels in 16-bit mode and keep a steady 40FPS.
+\par 
+\par The biggest addtion to this version on the lib is tested 16/15 bit detection that should work on 100% of the video boards out there.  So now you should be able to plot those WuLines and any video card and keep them looking crisp.
+\par 
+\par Here\rquote s the info from the file:
+\par 
+\par }{// turboPixels 1.1
+\par // for use with DelphiX DirectX Headers and Components
+\par 
+\par // (c) 2000 Michael Wilson -- no.2 games
+\par // www.no2games.com & www.no2games.com/turbo
+\par // wilson@no2games.com
+\par 
+\par // 1.1 Features:
+\par // Incorporated ASM conversion by LifePower
+\par // Incorporated ASM putpixels by JerK
+\par // Added non-RGB versions of 8/16/24 PutPixels
+\par // Faster clipping and no surface passing
+\par // Auto 565 and 555 detection that works!!!
+\par // Re-oganized demo for more speed and FPS counter
+\par 
+\par // 1.0 Inital release
+\par 
+\par // [ Credits and thanks... ]
+\par // Based on FastPixels v0.2 for DelphiX -- but faster ;)
+\par // 24-bit put loosely based on Erik Englund's Setpixel.pas
+\par // Thanks to Tim Baumgarten for some bit shifting ideas
+\par // Thanks to John Hebert for teaching me AlphaBlending
+\par // Thanks to Hugo for introducing me to Wu
+\par // ASM conversion routines by LifePower (faster...)
+\par // ASM put routines by JerK (jdelauney@free.fr)
+\par // Font from a WinAmp skin
+\par // Windows SDK help for confusing me about RGB values
+\par 
+\par // [ Legal ]
+\par // THIS SOFTWARE AND THE ACCOMPANYING FILES
+\par // ARE WITHOUT WARRANTIES AS TO PERFORMANCE
+\par // OR MERCHANTABILITY OR ANY OTHER WARRANTIES
+\par // WHETHER EXPRESSED OR IMPLIED.
+\par // Because of the various hardware and software
+\par // environments into which turboPixels may be put,
+\par // NO WARRANTY OF FITNESS FOR A PARTICULAR
+\par // PURPOSE IS OFFERED.}{
+\par }}

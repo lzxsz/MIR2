@@ -1,0 +1,205 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1029\deflangfe1029{\fonttbl{\f0\fswiss\fprq2\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fmodern\fprq1\fcharset238{\*\fname Courier New;}Courier New CE;}{\f2\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red128\green0\blue0;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\nowidctlpar\b\f0\fs24 DELPHIX PACK EXTENDS HISTORY\par
+\b0\fs20\par
+\i  *  Copyright (c) 2004-2007 Jaro Benes\par
+ *  All Rights Reserved\par
+ *  Version 1.07e\par
+ *  D2D Hardware module\par
+ *  web site: {\field{\*\fldinst{HYPERLINK "http://www.micrel.cz/Dx" }}{\fldrslt{\cf1\ul www.micrel.cz/Dx}}}\cf0\ulnone\f0\fs20  \par
+ *  e-mail: {\field{\*\fldinst{HYPERLINK "mailto:delphix_d2d@micrel.cz" }}{\fldrslt{\cf1\ul delphix_d2d@micrel.cz}}}\cf0\ulnone\f0\fs20  \par
+\i0\par
+ * Enhanced by User137\par
+\par
+\cf1\b  * DISCLAIMER:\cf0\par
+\b0    This software is provided "as is" and is without warranty of any kind. The author of this software does not warrant, guarantee or make any representations regarding the use or results of use of this software in terms of reliability, accuracy or fitness for purpose. You assume the entire risk of direct or indirect, consequential or inconsequential results from the correct or incorrect usage of this software even if the author has been informed of the possibilities of such damage. Neither the author nor anybody connected to this software in any way can assume any responsibility.\par
+\par
+\par
+   Sorry for any future errors but I first saw DelphiX in 17-3-2004 and DirectX began learn some month later.\par
+   First work started at 13.9.2004. All units in this pack contain last changes and was added very interesting\par
+   units (for study or inspiration).\par
+   Tested in Delphi 3, 4, 5, 6, 7 and Delphi 2005, 2006 (fine works in Turbo too).\par
+\par
+\cf1\b  * FEATURES:\cf0\par
+\b0    a) Implement Hardware acceleration for critical function like DrawAlpha \{Blend\}, DrawSub and DrawAdd for both way DXIMAGELIST and DIRECTDRAWSURFACE with rotation too.\par
+   b) Automatic adjustement for texture size different 2^n.\par
+   c) Minimum current source code change, all accelerated code added into:\par
+\f1\fs18       DXDraw.BeginScene;\par
+      //code here\par
+      DXDraw.EndScene;\par
+\f0\fs20    d) DelphiX facade continues using still.\par
+\par
+\cf1\b  * HOW TO USE\cf0\par
+\b0    a) Design code like as DelphiX and drawing routine put into\par
+\f1       DXDraw.BeginScene;\par
+      //code here\par
+      DXDraw.EndScene;\par
+\f0    b) setup options in code or property for turn-on acceleration like:\par
+\f1\fs18       DXDraw.Finalize; \{done DXDraw\}\par
+      \b If\b0  HardwareSwitch \b Then\b0\par
+\i       \{hardware\}\par
+\i0       \b Begin\par
+\b0         \b if\b0  NOT (doDirectX7Mode \b in\b0  DXDraw.Options) \b then\b0\par
+          DXDraw.Options := DXDraw.Options + [doDirectX7Mode];\par
+        \b if\b0  NOT (doHardware \b in\b0  DXDraw.Options) \b then\b0\par
+          DXDraw.Options := DXDraw.Options + [doHardware];\par
+        \b if\b0  NOT (do3D \b in\b0  DXDraw.Options) \b then\b0\par
+          DXDraw.Options := DXDraw.Options + [do3D];\par
+        \b if\b0  doSystemMemory \b in\b0  DXDraw.Options \b then\b0\par
+          DXDraw.Options := DXDraw.Options - [doSystemMemory];\par
+      \b End\par
+\b0       \b Else\par
+\b0\i       \{software\}\par
+\i0       \b Begin\par
+\b0         \b if\b0  doDirectX7Mode \b in\b0  DXDraw.Options \b then\b0\par
+          DXDraw.Options := DXDraw.Options - [doDirectX7Mode];\par
+        \b if\b0  do3D \b in\b0  DXDraw.Options then\par
+          DXDraw.Options := DXDraw.Options - [do3D];\par
+        \b if\b0  doHardware \b in\b0  DXDraw.Options \b then\b0\par
+          DXDraw.Options := DXDraw.Options - [doHardware];\par
+        \b if\b0  NOT (doSystemMemory \b in\b0  DXDraw.Options) \b then\b0\par
+          DXDraw.Options := DXDraw.Options + [doSystemMemory];\par
+      \b End\b0 ;\par
+\i       \{to fullscreen\}\par
+\i0       \b if\b0  doFullScreen \b in\b0  DXDraw.Options \b then\b0\par
+      \b begin\par
+\b0         RestoreWindow;\par
+        DXDraw.Cursor := crDefault;\par
+        BorderStyle := bsSingle;\par
+        DXDraw.Options := DXDraw.Options - [doFullScreen];\par
+        DXDraw.Options := DXDraw.Options + [doFlip];\par
+      \b end\b0  \b else\b0\par
+      \b begin\par
+\b0         StoreWindow;\par
+        DXDraw.Cursor := crNone;\par
+        BorderStyle := bsNone;\par
+        DXDraw.Options := DXDraw.Options + [doFullScreen];\par
+        DXDraw.Options := DXDraw.Options - [doFlip];\par
+      \b end\b0 ;\par
+      DXDraw1.Initialize; \i\{up DXDraw now\}\i0\par
+\b\f0\fs20  * NOTE\b0  When full screen no works properly, please add [doSelectedDriver]  into DXDraws.Options\par
+\b  * NOTE\b0  Main form has to declare like: \f1\fs18 TForm1 = \b class\b0 (TDXForm)\par
+\f0\fs20\par
+\cf1\b  * KNOWN BUGS OR RESTRICTION:\cf0\par
+\b0    1/ Cannot be use DirectDrawSurface other from DXDraw.Surface in HW mode.\par
+   2/ New functions was not tested for two and more DXDraws on form. Sorry.\par
+\par
+\cf1\b  *INSTALATION\cf0\par
+\b0    Before installation new version please remove all files from Source directory and copy new files into.\par
+   Open \i DelphiXx0.dpk \i0 for your Delphi IDE\par
+\tab DelphiX30.dpk for Delphi 3\par
+\tab DelphiX40.dpk for Delphi 4\par
+\tab DelphiX50.dpk for Delphi 5\par
+\tab DelphiX60.dpk for Delphi 6\par
+\tab DelphiX70.dpk for Delphi 7\par
+\tab DelphiX90.dpk for Delphi 2005\par
+\tab DelphiX100.dpk for Delphi 2006\par
+   Open Project options and check "Assignable typed constant" option when isn't checked (typicaly for Delphi 6 up).\par
+\par
+\cf1\b  * HISTORY\cf0\par
+\b0    All released versions \par
+\b\i  \cf2 1.00\cf0  11.02.2005 JB.\par
+\b0\i0    *Initial release of hardware accelerated unDelphiX\par
+\b\i  \cf2 1.01\cf0  28.03.2005 JB.\par
+\b0\i0    *Fix bug in Restore image procedure, when is picture change under HW mode.\par
+\b\i  \cf2 1.02\cf0  29.05.2005 Takanori Kawasaki\par
+\b0\i0    *Fix bug in TD2D.D2DFreeTextures memory leak.\par
+\b\i  \cf2 1.03\cf0  03.06.2005 JB.\par
+\b0\i0    *Transparent color area was partially corrected when display on 16 bit screen.\par
+  +Added full support for Delphi3 (overrides removed, dynarray supplement).\par
+\b\i  \cf2 1.04\cf0  11.06.2005 JB.\par
+\b0\i0    *Fix bug in bitmap mapping (8, 16, 32 bit) to DIB 24 bit.\par
+   *Fix bug in test transparent color from changed DIB.\par
+  +Added D3D support for Draw() routine.\par
+\b\i  \cf2 1.05\cf0  19.06.2005 JB.\par
+\b0\i0   +Function for D3D Draw() conditional switch off/on added, because not work properly on some adapters (Draw() accelerated in DirectDrawSurface yet).\par
+   Can be turn on please uncomment \{$Define DrawHWAcc\} in DelphiXcfg.inc\par
+\b\i       23.11.2005 JB.\par
+\b0\i0    +DXSpriteEngine improvement\par
+   Isn't necessary derive classes sprite and BackgroundSprite can use DrawAdd, DrawAlpha and DrawSub also. New property editor can able edit of sprite in collection (like that in DXImageList or DXWaveList), and can be use simple Events for Collision, Move or Draw. (How to use please see \b\i readme_DXSPRITEENGINE.txt\b0\i0  file)\par
+\b\i  \cf2 1.06\cf0  13.01.2006 user137, JB., Takanori Kawasaki\par
+      16.01.2006 user137\par
+\b0\i0   +\{$Define DrawHWAcc\} is enabled by default on DelphiXcfg.inc\par
+  +D2D variable is moved to interface so it is public\par
+  +New variable RenderError that denies Flip if errors\par
+  +Some functions of D2D made public\par
+  +All rotate functions have angle as single type (thanks User137)\par
+  +New rotate function\par
+  +Fixed access violation and texture bug in TD2D.D2DTexturedOn\par
+  +Rewrote all D2D effects (using most old code but split differently)\par
+  +Added Quad and Triangle drawing for D2D\par
+\b\i       16.01.2006 JB.\par
+\b0\i0   -D2D variable moved back, better use DXDraw.D2D1 pointer to TD2D structure.\par
+  +Asm for fast sin/cos function as single in rotation.\par
+  *Code revised, low level routines encapsulated again.\par
+  +Better initializing for DXDraw.Display, there is some AV or initialization error for D3D interface; Is advice in fullscreen initialize disable all GDI function (no wincontrol or form visible).\par
+\b\i       24.01.2006 JB.\par
+\b0\i0   +Low level routines for bump-mapping added.\par
+  *Bug fix resize windows.\par
+\b\i       24.02.2005 JB.\par
+\b0\i0   *Bug fix for transparent color when background color is not black.\par
+  +New effect for DrawAddCol(), DrawAlphaCol() and DrawSubCol() etc.\par
+  +New effect for DrawRotateAddCol(),DrawRotateSubCol and DrawRotateAlphaCol()\par
+  +Move TexImag into DXDraw, move DXFusion effect into DIB file.\par
+  +Move DIBeffect into DIB file as part TDIB.\par
+  +Add new function into DXClass file (very thanks Mr. Takanori Kawasaki).\par
+\b\i       07.03.2006 JB.\par
+\b0\i0   +Split uses sections in units for better compatibility with DX8 or DX9 DirectX headers.\par
+\b\i       10.03.2006 JB.\par
+\b0\i0   *Enhanced DIB effect (FadeIn, FadeOut, Ink etc.).\par
+  +Add property BlendMode into TImageSpriteEx and change draw routine for this feature (+ property editor).\par
+  -Remove deprecated TD3D class from unDelphiX pack\par
+\b\i       15.03.2006 JB.\b0\i0\par
+  +Added fast routines for pixel drawing into TDirectDrawSurface, Surface must be locked like\par
+\f1\fs18       DXDraw.Surface.Lock;\par
+      DXDraw.Surface.Pixel[X, Y] := TheColor;\par
+      TheColor := DXDraw.Surface.Pixel[X+1, Y+1];\par
+      DXDraw.Surface.Unlock;\par
+\cf3\f0\fs20 NOTE DON'T FORGET: The \b Pixel \b0 property required lock surface, againist \b Pixels \b0 property of Canvas required Release canvas only!\cf0\par
+  +Aded routines for drawing Poke*() into TDirectDrawSurface, Surface has to locked. like PokeLine(), PokeLinePolar(), PokeBox(), PokeBlendPixel(), PokeWuLine(), Noise(), Blur(), PokeCircle(), PokeEllipse(), PokeFilledEllipse() and etc.\par
+  +Added special drawing routine DrawCol() into DXImageList with special SubPattern parameter (idea from User137)\par
+\b\i  \cf2 1.06a\cf0  19.03.2006 JB.\b0\i0\par
+  *Bug fix in assembler for fast ploting routine through DDS Pixel[].\par
+\b\i       28.03.2006 JB.\b0\i0\par
+  +Added routine LoadRGB(), SaveRGB depend by BitCount and repair procedure Blur().\par
+  +Added DDS fade routine like Fade2White(), Fade2Color() and Fade2Black() etc.\par
+\b\i       09.04.2006 JB.\b0\i0\par
+  +Added routine for grab and paste DDS like GrabImage(), PasteImage().\par
+\b\i       15.04.2006 JB.\b0\i0\par
+  +Added flip DDS routine by MKost like DrawFlipH(), DrawFlipHV() and DrawFlipV() - untested.\par
+  \cf2\b\i 1.06b\cf0  18.04.2006 JB., user137\par
+\b0\i0   +Added overload routine D2DRenderDrawDDSXYby user137.\par
+\b\i       21.04.2006 JB.\b0\i0\par
+  *Synchronize drawing function in Images and DDS\par
+  +Add drawing routine DrawWaveY* like DrawWaveX but horizontally\par
+  \cf2\b\i 1.06c\cf0  1.05.2006 JB.\par
+\b0\i0   +Add class for native working with DXT and native work with DIB32 (RGBA) with Alphachannel\par
+  \cf2\b\i 1.07\cf0  4.05.2006 JB., Speeder\par
+\b0\i0   *Restructuralize new code and get out renundant functions in TD2D\par
+  *Change routine into DDS like DrawAddCol(), DrawAlphaCol(), DrawSubCol(), DrawRotateAddCol(), DrawRotateSubCol(), DrawRotateAlphaCol() (thanks Speeder)\par
+  *Make better compatibility with Delphi 3\par
+  +Enhanced DIB unit for AlphaChannel compatibility\par
+  *Change routine DIB2DXT() for make DXT from DIB32 file in one line, primary use for load DIB 32 with Alphachannel.\par
+\b\i       10.05.2006 JB.\b0\i0\par
+  +New component TDXMusic for play midi file from resource like TDXWave + property editor for load midis.\par
+  *Better assembler for DDS Pixel property.\par
+\b\i       14.05.2006 JB.\par
+\b0\i0   *Fix bug in WaveX/WaveY function, remapping function for animated image from DXImageList.\par
+  *Accepted DIB32 for DDS\par
+  *Move D2DWhite, D2DAlphaVertex and D2DFade from procedure into function for better using.\par
+\b\i       18.05.2006 JB.\par
+\b0\i0   +Add ColoredLine() and AntialiasLine() into DIB units with demo project.\par
+  \cf2\b\i 1.07a\cf0  21.05.2006 JB.\par
+\b0\i0   *Correct mistake in DelphiXcfg.ini file (wrong version of file included into packs).\par
+\cf2\b\i   1.07b\cf0  21.09.2006 JB.\par
+\b0\i0   *Add missing correction from Speeeder and interface \f1 ClearStack\f0  for force clear textures.\par
+  *Correct DXInput unit by Paul van Dinther (twice initialization).\par
+\cf2\b\i   1.07c\cf0  21.12.2006 JB.\par
+\b0\i0   *Fix bug function \f1 AssignAlphaChannel()\f0  in DIB unit.\par
+\cf2\b\i   1.07d\cf0  22.02.2007 JB.\par
+\b0\i0   *Fix bug procedure ReAnimate() in DXSprite unit. Flickering correction, very thanks for demo by \lang1033\b\f2\fs24 seiferalmasy\lang1029\b0\f0\fs20 .\par
+\cf2\b\i   1.07e\cf0  1.03.2007 JB.\par
+\b0\i0   *Fix bug in texturing procedure in DXDraws unit. Correction of size texture.\par
+\par
+}
+ 

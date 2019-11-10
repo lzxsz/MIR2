@@ -1,0 +1,64 @@
+object FormIP: TFormIP
+  Left = 284
+  Top = 283
+  Width = 290
+  Height = 227
+  Caption = #22320#21306#26597#35810
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 167
+    Width = 180
+    Height = 12
+    Caption = #19979#36733#26368#26032'IP'#25968#25454#24211#25165#21487#20197#36827#34892#26597#35810
+    DragCursor = crHandPoint
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -12
+    Font.Name = #23435#20307
+    Font.Style = []
+    ParentFont = False
+    ShowAccelChar = False
+    OnClick = Label1Click
+    OnMouseMove = Label1MouseMove
+    OnMouseLeave = Label1MouseLeave
+  end
+  object Memo1: TMemo
+    Left = 8
+    Top = 8
+    Width = 260
+    Height = 129
+    TabOrder = 0
+  end
+  object Edit1: TEdit
+    Left = 8
+    Top = 144
+    Width = 180
+    Height = 20
+    Font.Charset = GB2312_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #23435#20307
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    Text = '127.0.0.1'
+  end
+  object Buttonip: TButton
+    Left = 199
+    Top = 141
+    Width = 69
+    Height = 25
+    Caption = #26597#35810
+    TabOrder = 2
+    OnClick = ButtonipClick
+  end
+end

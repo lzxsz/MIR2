@@ -1,0 +1,79 @@
+   TDXScroll unit presentation !!!
+
+
+   It''s unofficial DelphiX Plug-in
+
+
+    TDXScroll allow you to scroll
+    text and bitmaps.
+
+    Options
+
+    Alt+ENTER swich window/full screen mode
+    UP - Increase speed
+    DOWN - Decrease speed
+    SPACE - scroll start/stop
+    LEFT/RIGHT - change horizontal position 
+    F2 - make screenshoot
+    W - Warp effect on/off
+    A/Z   inc/dec wrap sensitivity
+    S/X - inc/dec wrap frequency
+    R - Rotate effect on/off
+    E/T   inc/dec rotate speed
+    F - alpha on/off
+    C - cursor on/off
+    L - Sulek Logo on/off
+    ESC - exit program
+
+
+    This presentation uses DXScreenShoot module.
+    
+
+    Code:  Sulek [r]
+
+    Release date:  29 12 2000
+
+    Version:  pre-alpha
+
+    Programming Enviroment: Delphi 5.0
+  
+    Source: included
+
+    Future plans: make fully-functional componet
+
+       Please send comments to
+
+            sulek@shnet.pl
+
+
+   Special thx to
+                  Author of DelphiX
+
+                  Magh, Shaq
+
+                  Nagoor
+
+                  GREG, NOgatez
+                  
+                  Michael Wilson
+
+                  all Members of Coders Group
+
+                  my all family
+
+                  SH NET admin: August
+
+                  Author of RAText Action Script: Kul
+
+                  all Inprise/Borland crew (for Delphi)
+
+   For more info visit following sites
+
+       Coders GrOup Home Page
+    http://coders.shnet.pl/klub/
+
+       DelphiX Tutorial
+   http://coders.shnet.pl/delphix/
+
+          DEMO ENDS HERE !!!!
+

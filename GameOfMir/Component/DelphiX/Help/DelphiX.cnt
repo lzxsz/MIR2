@@ -1,0 +1,119 @@
+:Base DelphiX.hlp>Main
+:Title DelphiX
+1 Contents=HT000181
+1 Unit of DelphiX
+2 DIB unit
+3 Components
+4 TDXDIB=HT000003
+4 TDXPaintBox=HT000498
+3 Objects
+4 TDIB=HT000002
+3 Types
+4 TDIBPixelFormat=HT000296
+4 TPaletteEntries=HT000205
+4 TRGBQuads=HT000005
+3 Routines
+4 GreyscaleColorTable=HT000708
+4 MakeDIBPixelFormat=HT000298
+4 MakeDIBPixelFormatMask=HT000466
+4 pfGetBValue=HT000509
+4 pfGetGValue=HT000508
+4 pfGetRGB=HT000468
+4 pfGetRValue=HT000469
+4 pfRGB=HT000467
+2 DXClass unit
+3 Components
+4 TDXForm=HT000028
+4 TDXTimer=HT000464
+3 Objects
+4 TDirectX=HT000039
+4 TDirectXDriver=HT000180
+4 TDirectXDrivers=HT000185
+3 Routines
+4 Cos256=HT000263
+4 Max=HT000286
+4 Min=HT000287
+4 OverlapRect=HT000052
+4 PointInRect=HT000051
+4 RectInRect=HT000285
+4 Sin256=HT000264
+2 DXDraws unit
+3 Components
+4 TDX3D=HT000300
+4 TDXDraw=HT000035
+4 TDXImageList=HT000294
+3 Objects
+4 TDirect3DRMUserVisual=HT000786
+4 TDirect3DTexture=HT000516
+4 TDirectDraw=HT000059
+4 TDirectDrawClipper=HT000061
+4 TDirectDrawDisplay=HT000082
+4 TDirectDrawDisplayMode=HT000083
+4 TDirectDrawPalette=HT000060
+4 TDirectDrawSurface=HT000062
+4 TDirectDrawSurfaceCanvas=HT000078
+4 TPictureCollection=HT000543
+4 TPictureCollectionItem=HT000544
+2 DXInput unit
+3 Components
+4 TDXInput=HT000428
+3 Objects
+4 TCustomInput=HT000184
+4 TJoystick=HT000433
+4 TKeyboard=HT000432
+4 TForceFeedbackEffect=HT000757
+4 TForceFeedbackEffects=HT000758
+2 DXPlay unit
+3 Components
+4 TDXPlay=HT000038
+3 Objects
+4 TDXPlayPlayer=HT000066
+4 TDXPlayPlayers=HT000067
+2 DXSounds unit
+3 Components
+4 TDXSound=HT000198
+4 TDXWaveList=HT000580
+3 Objects
+4 TAudioFileStream=HT000374
+4 TAudioStream=HT000349
+4 TDirectSound=HT000200
+4 TDirectSoundBuffer=HT000201
+4 TSoundCaptureFormat=HT000731
+4 TSoundCaptureFormats=HT000732
+4 TSoundCaptureStream=HT000730
+4 TWaveCollection=HT000270
+4 TWaveCollectionItem=HT000569
+2 DXSprite unit
+3 Components
+4 TDXSpriteEngine=HT000597
+3 Objects
+4 TBackgroundSprite=HT000328
+4 TImageSprite=HT000614
+4 TSprite=HT000613
+4 TSpriteEngine=HT000615
+2 Wave unit
+3 Components
+4 TDXWave=HT000195
+3 Objects
+4 TCustomWaveStream=HT000359
+4 TCustomWaveStream2=HT000691
+4 TWave=HT000249
+4 TWaveFileStream=HT000361
+4 TWaveObjectStream=HT000372
+4 TWaveStream=HT000360
+3 Routines
+4 MakePCMWaveFormatEx=HT000725
+1 Programming Tips & FAQ
+2 Form is transformed to TDXForm.=HT000238
+2 Screen mode of TDXDraw is switched.=HT000216
+2 Palette animation is done with TDXDraw.=HT000225
+2 Image is displayed with TDXImageList.=HT000241
+2 OffScreenSurface is controlled for myself. =HT000256
+2 The reproduction quality of TDXSound is set.=HT000209
+1 Reference information
+2 Installation=HT000552
+2 Offered file=HT000561
+2 When you distribute the DelphiX use application program=HT000589
+2 Address of thanks=HT000592
+2 Copyright=HT000599
+2 Historys=HT000182

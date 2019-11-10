@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="DelphiX90.bpl"/>
+    <OBJFILES value="DelphiX90.obj DIB.obj DXClass.obj DXConsts.obj DXDraws.obj DXETable.obj DXInput.obj DXPlay.obj DXPlayFm.obj DXRender.obj DXReg.obj DXSounds.obj DXSprite.obj DXWave.obj DXFFBEdit.obj DXGUIDEdit.obj DXInptEdit.obj DXPictEdit.obj DXWaveEdit.obj DirectX.obj DShow.obj DAnim.obj Colli3DX.obj TurboPixels.obj DXCommon.obj DXSpriteEdit.obj DXMidiEdit.obj"/>
+    <RESFILES value="DelphiX90.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value="rtl.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclsmp.bpi designide.bpi rtl.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value=""/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="DelphiX90.cpp"/>
+    <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\Projects\Lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -boa"/>
+    <CFLAG1 value="-O2 -H=d:\dev\bcb6\lib\vcl60.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;DPK2BPK Converter (C)Andrew Simanov&quot; -aa -Tpp -Gpd -x -Gn -Gl -Gi"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0pkg32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+    <FILE FILENAME="DelphiX90.cpp" FORMNAME="" UNITNAME="DelphiX90" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DelphiX90.res" FORMNAME="" UNITNAME="DelphiX90.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DIB.pas" FORMNAME="" UNITNAME="DIB" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXClass.pas" FORMNAME="" UNITNAME="DXClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXConsts.pas" FORMNAME="" UNITNAME="DXConsts" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXDraws.pas" FORMNAME="" UNITNAME="DXDraws" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXETable.pas" FORMNAME="" UNITNAME="DXETable" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXInput.pas" FORMNAME="" UNITNAME="DXInput" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXPlay.pas" FORMNAME="" UNITNAME="DXPlay" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXPlayFm.pas" FORMNAME="" UNITNAME="DXPlayFm" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXRender.pas" FORMNAME="" UNITNAME="DXRender" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXReg.pas" FORMNAME="" UNITNAME="DXReg" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXSounds.pas" FORMNAME="" UNITNAME="DXSounds" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXSprite.pas" FORMNAME="" UNITNAME="DXSprite" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXWave.pas" FORMNAME="" UNITNAME="DXWave" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXFFBEdit.pas" FORMNAME="" UNITNAME="DXFFBEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXGUIDEdit.pas" FORMNAME="" UNITNAME="DXGUIDEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXInptEdit.pas" FORMNAME="" UNITNAME="DXInptEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXPictEdit.pas" FORMNAME="" UNITNAME="DXPictEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXWaveEdit.pas" FORMNAME="" UNITNAME="DXWaveEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DirectX.pas" FORMNAME="" UNITNAME="DirectX" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DShow.pas" FORMNAME="" UNITNAME="DShow" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DAnim.pas" FORMNAME="" UNITNAME="DAnim" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="Colli3DX.pas" FORMNAME="" UNITNAME="Colli3DX" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="TurboPixels.pas" FORMNAME="" UNITNAME="TurboPixels" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXCommon.pas" FORMNAME="" UNITNAME="DXCommon" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXSpriteEdit.pas" FORMNAME="" UNITNAME="DXSpriteEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DXMidiEdit.pas" FORMNAME="" UNITNAME="DXMidiEdit" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="DelphiX.dcr" FORMNAME="" UNITNAME="" CONTAINERID="DcrTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="Colli3DX.dcr" FORMNAME="" UNITNAME="" CONTAINERID="DcrTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="rtl.bpi" FORMNAME="" UNITNAME="rtl" CONTAINERID="BpiTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="vcl.bpi" FORMNAME="" UNITNAME="vcl" CONTAINERID="BpiTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="vclsmp.bpi" FORMNAME="" UNITNAME="vclsmp" CONTAINERID="BpiTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="designide.bpi" FORMNAME="" UNITNAME="designide" CONTAINERID="BpiTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+<FILE FILENAME="rtl.bpi" FORMNAME="" UNITNAME="rtl" CONTAINERID="BpiTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1049
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=1
+Item0=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=0
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+
+[Linker]
+LibPrefix=
+LibSuffix=
+LibVersion=
+  </IDEOPTIONS>
+</PROJECT>

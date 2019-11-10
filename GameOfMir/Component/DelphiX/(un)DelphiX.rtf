@@ -1,0 +1,139 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1029\deflangfe1029{\fonttbl{\f0\fswiss\fprq2\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fmodern\fprq1\fcharset0 Courier;}{\f2\froman\fprq2\fcharset2 Symbol;}{\f3\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+\viewkind4\uc1\pard\nowidctlpar\lang1033\f0\fs20\par
+\b  * EXTEND UNIT DXDRAWS FROM DELPHIX PACK\b0\par
+\par
+ *  Copyright (c) 2004-2005 Jaro Benes\par
+ *  All Rights Reserved\par
+ *  Version 1.0\par
+ *  D2D Hardware module\par
+ *  Web site: www.micrel.cz/Dx\par
+ \lang1031 *  E-Mail: \cf1 delphix_d2d@micrel.cz\cf0\par
+\par
+\b  \lang1033 * DISCLAIMER:\b0\par
+\pard\nowidctlpar\fi-284\li284    This software is provided "as is" and is without warranty of any kind. The author of this software does not warrant, guarantee or make any representations regarding the use or results of use of this software in terms of reliability, accuracy or fitness for purpose. You assume the entire risk of direct or indirect, consequential or inconsequential results from the correct or incorrect usage of this software even if the author has been informed of the possibilities of such damage. Neither the author nor anybody connected to this software in any way can assume any responsibility.\par
+\pard\nowidctlpar\par
+\par
+   Sorry for any future errors but I first saw DelphiX in 17-3-2004 and DirectX began learn some month later.\par
+   First work started at 13.9.2004.\par
+   All units in this pack contain last changes and was added very interesting units (for study or inspiration).\par
+   Tested in Delphi 5, 6, 7 and Delphi 2005.\par
+\par
+\b  * FEATURES:\b0\par
+   a) Implement Hardware acceleration for critical function like DrawAlpha \{Blend\}, DrawSub and DrawAdd for both way DXIMAGELIST and DIRECTDRAWSURFACE with rotation too.\par
+   b) Automatic adjustment for texture size different 2^n.\par
+   c) Minimum current source code change all accelerated code added into:\par
+\cf1\b\f1       DXDraw.BeginScene;\par
+      //code here\par
+      DXDraw.EndScene;\par
+\cf0\b0\f0    d) DelphiX facade continues using still.\par
+\par
+\b  * HOW TO USE\b0\par
+   a) Design code like as DelphiX and drawing routine put into\par
+\cf1\b\f1       DXDraw.BeginScene;\par
+\i       //code here\par
+\i0       DXDraw.EndScene;\par
+\cf0\b0\f0    b) Setup options in code or property for turn-on acceleration like:\par
+\cf1\b\f1       DXDraw.Finalize; \{done DXDraw\}\par
+      If HardwareSwitch Then\par
+\i       \{hardware\}\par
+\i0       Begin\par
+        if NOT (doDirectX7Mode in DXDraw.Options) then\par
+          DXDraw.Options := DXDraw.Options + [doDirectX7Mode];\par
+        if NOT (doHardware in DXDraw.Options) then\par
+          DXDraw.Options := DXDraw.Options + [doHardware];\par
+        if NOT (do3D in DXDraw.Options) then\par
+          DXDraw.Options := DXDraw.Options + [do3D];\par
+        if doSystemMemory in DXDraw.Options then\par
+          DXDraw.Options := DXDraw.Options - [doSystemMemory];\par
+      End\par
+      Else\par
+\i       \{software\}\par
+\i0       Begin\par
+        if doDirectX7Mode in DXDraw.Options then\par
+          DXDraw.Options := DXDraw.Options - [doDirectX7Mode];\par
+        if do3D in DXDraw.Options then\par
+          DXDraw.Options := DXDraw.Options - [do3D];\par
+        if doHardware in DXDraw.Options then\par
+          DXDraw.Options := DXDraw.Options - [doHardware];\par
+        if NOT (doSystemMemory in DXDraw.Options) then\par
+          DXDraw.Options := DXDraw.Options + [doSystemMemory];\par
+      End;\par
+\i       \{to fullscreen\}\par
+\i0       if doFullScreen in DXDraw.Options then\par
+      begin\par
+        RestoreWindow;\par
+        DXDraw.Cursor := crDefault;\par
+        BorderStyle := bsSingle;\par
+        DXDraw.Options := DXDraw.Options - [doFullScreen];\par
+        DXDraw.Options := DXDraw.Options + [doFlip];\par
+      end else\par
+      begin\par
+        StoreWindow;\par
+        DXDraw.Cursor := crNone;\par
+        BorderStyle := bsNone;\par
+        DXDraw.Options := DXDraw.Options + [doFullScreen];\par
+        DXDraw.Options := DXDraw.Options - [doFlip];\par
+      end;\par
+      DXDraw.Initialize; \{up DXDraw now\}\par
+\cf0\b0\f0     c) Set up DXDraw.Options to [do3D, doDirectX7Mode, doHardware] manually in design mode .\par
+\par
+\b  * NOTE \par
+\b0     Main form has to declare like:\par
+\cf1\b\f1       TForm1 = class(TDXForm)\par
+\cf0\b0\f0\par
+\b  * KNOWN BUGS:\b0\par
+   1/ On some adapters no good shows transparent area when DIRECTDRAWSURFACE is called in 16-bit color depth and windowed mode.\par
+   2/ New functions were not tested for two and more DXDraws on form. Sorry.\par
+\par
+\pard\nowidctlpar\li60\b  * FILES CHANGED\par
+\b0    1/ Main change DXDraws.pas unit, all changes support HW acceleration are here.\par
+   2/ Changes all \ldblquote uses\rdblquote  declaration of units in unDelphiX back to DirectX unit.\par
+   3/ DirectX unit recompiled with official JEDI (Eric Unger\rquote s) headers.\par
+   4/ Rename some units (Wave.pas to DXWave.pas etc.).\par
+   5/ Added new units (no special order):\par
+\pard\nowidctlpar\fi-360\li840\f2\'b7\tab\f0 FXGrafix.pas\par
+\f2\'b7\tab\f0 GrafixDX.pas\par
+\f2\'b7\tab\f0 newPixelsDX.pas (like PowerDraw 1.0)\par
+\f2\'b7\tab\f0 PixelCore.pas\par
+\f2\'b7\tab\f0 PixelsDX.pas\par
+\f2\'b7\tab\f0 TurboPixels.pas (fast pixels from Turbo WEB)\par
+\f2\'b7\tab\f0 DXFusion.pas (port Confusion library into DelphiX)\par
+\f2\'b7\tab\f0 DXFonts.pas (font management from Turbo WEB)\par
+\f2\'b7\tab\f0 DXPowerFont.pas (extend of DXFonts.pas)\par
+\f2\'b7\tab\f0 DXDIBEffect.pas (new effect for DIB)\par
+\f2\'b7\tab\f0 DXCommon.pas (simple utility)\par
+\f2\'b7\tab\f0 DirectX.inc (new for DirectX.pas conditional compilation)\par
+\f2\'b7\tab\f0 D3Dutils.pas (changed)\par
+\f2\'b7\tab\f0 new version of package units (*.dpk).\par
+\f2\'b7\tab\f0 Colli3DX.pas ()\par
+\pard\nowidctlpar\li480 All rights keep authors or owners of units or documents.\par
+\pard\nowidctlpar\li60    6/ Some units changed (bug fixed etc.):\par
+\pard\nowidctlpar\fi-360\li840\tx840\f2\'b7\tab\f0 DIB.pas (new function and bug fixed).\par
+\pard\nowidctlpar\fi-360\li840\f2\'b7\tab\f0 DXRender.pas (new features of TridenT added, Delphi 6 up compatibility).\par
+\f2\'b7\tab\f0 DXSprite.pas (PixelCheck turn on now and corrected).\par
+\f2\'b7\tab\f0 DXTexImg.pas (add version with Zlib support).\par
+\f2\'b7\tab\f0 DShow.pas and DAnim.pas (unDelphiX and Delphi 7 up compatibility added)\par
+\f2\'b7\tab\f0 Include file corrected for Delphi 6, 7 and Delphi 2005.\par
+\pard\nowidctlpar\li120    7/ Original demo samples changed for better compatibility and added new samples for study or using new features of DelphiX.\par
+\par
+\b  *  NOTE: \i For Delphi 3 users\par
+\b0\i0    Sorry, version 3 is not supported  now (override, open array). You can rename DXDraws.pas.orig and use standard and limited functions of (un)DelphiX in standard mode.\par
+\par
+\b  * NEW FILES ADDED\par
+\b0\i This compilation is build on last standard Hori's release with unDelphiX extensions and I add some units into. Its not replacement my of all-in-one pack.\b\i0\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-130\li840\b0  Directory \b Samples\\3D \b0 contain step-by-step building 3D application.\par
+{\pntext\f3\'B7\tab} Directory \b Samples\\Framework \b0 contain simple framework as base for your application (untested, not my work).\par
+{\pntext\f3\'B7\tab} Original Hori's textures demo is in \b Samples\\Textures\b0 , basic works but see TO-DO (You have to compile all .dpr and run start.cmd).\par
+{\pntext\f3\'B7\tab} Special DIB effect demo contain directory \b Samples\\Other\\DxEffects\b0 .\par
+{\pntext\f3\'B7\tab} Features of font management demonstrate demo in \b Samples\\Other\\DxFont\b0  directory.\par
+{\pntext\f3\'B7\tab} Directory \b Samples\\Other\\DxFusion \b0 contain a few demos for DelphiX converted confusion unit as DXFusion (another show to problem). \par
+{\pntext\f3\'B7\tab} Three good demos how right use turbopixels.pas you can find in \b Samples\\Other\\TurboPixels\b0  directory.\par
+{\pntext\f3\'B7\tab} Directory \b Samples\\Prototype \b0 contain simple base application with switch demonstration.\par
+\pard\nowidctlpar\fi-568\li710\par
+\b  * UPDATES\b0\par
+ **no updates**\par
+\par
+Feb 11, 2005\par
+}
+ 
