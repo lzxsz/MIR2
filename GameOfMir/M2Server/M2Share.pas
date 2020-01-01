@@ -96,14 +96,14 @@ const
   BODYLUCKUNIT = 5000; //10?
 
 
-
-  HAM_ALL = 0;
-  HAM_PEACE = 1;
-  HAM_DEAR = 2;
-  HAM_MASTER = 3;
-  HAM_GROUP = 4;
-  HAM_GUILD = 5;
-  HAM_PKATTACK = 6;
+  //¹¥»÷Ä£Ê½
+  HAM_ALL = 0;        //È«Ìå¹¥»÷
+  HAM_PEACE = 1;      //ºÍÆ½¹¦»÷
+  HAM_DEAR = 2;       //·òÆÞ¹¥»÷
+  HAM_MASTER = 3;     //Ê¦Í½¹¥»÷
+  HAM_GROUP = 4;      //±à×é¹¥»÷
+  HAM_GUILD = 5;      //ÐÐ»á¹¥»÷
+  HAM_PKATTACK = 6;   //ºìÃû¹¥»÷£¨ÉÆ¶ñ¹¥»÷°Ü£©
 
   DEFHIT = 5;
   DEFSPEED = 15;

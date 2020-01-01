@@ -934,7 +934,7 @@ try
 //    tSaveList.Add(';设置10倍杀怪经验');    
 //    tSaveList.Add(';CANGETEXP 1 10');
     SaveList.Add('#say');
-    SaveList.Add('⒌Liang游戏登录脚本运行成功，欢迎进入本游戏！！！\ \');
+    SaveList.Add('游戏登录脚本运行成功，欢迎进入本游戏！！！\ \');
     SaveList.Add('<关闭/@exit> \ \');
     SaveList.Add('登录脚本文件位于: \');
     SaveList.Add(sShowFile + '\');

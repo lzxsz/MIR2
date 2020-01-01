@@ -48,34 +48,34 @@ const
   HALFX         = 24;
   HALFY         = 16;
 
-  MAXBAGITEM    = 52;
+  MAXBAGITEM    = 46; //52;    //服务端允许角色包裹存放物品的最大数量(40+6),包含快捷栏上的6个物品。
   HOWMANYMAGICS = 20;
   USERITEMMAX   = 46;         //用户最大的物品
   MaxSkillLevel = 3;
   MAX_STATUS_ATTRIBUTE = 12;
 
   ITEM_WEAPON           = 0;
-  ITEM_ARMOR				    = 1;
-  ITEM_ACCESSORY		    = 2;
-  ITEM_ETC					    = 3;
-  ITEM_GOLD				      = 10;
+  ITEM_ARMOR		= 1;
+  ITEM_ACCESSORY	= 2;
+  ITEM_ETC		= 3;
+  ITEM_GOLD		= 10;
 
   POISON_DECHEALTH      = 0;  //中毒类型 - 绿毒
   POISON_DAMAGEARMOR    = 1;  //中毒类型 - 红毒
-  POISON_LOCKSPELL			= 2;
-  POISON_DONTMOVE				= 4;
-  POISON_STONE				  = 5;
+  POISON_LOCKSPELL	= 2;
+  POISON_DONTMOVE	= 4;
+  POISON_STONE		= 5;
   POISON_68             = 68;
   
 
 
-  STATE_TRANSPARENT			= 8;
-  STATE_DEFENCEUP				= 9;
-  STATE_MAGDEFENCEUP		= 10;
+  STATE_TRANSPARENT	= 8;
+  STATE_DEFENCEUP	= 9;
+  STATE_MAGDEFENCEUP	= 10;
   STATE_BUBBLEDEFENCEUP	= 11;
 
-  STATE_STONE_MODE			= $00000001;
-  STATE_OPENHEATH				= $00000002;  //眉仿 傍俺惑怕
+  STATE_STONE_MODE	= $00000001;
+  STATE_OPENHEATH	= $00000002;  //眉仿 傍俺惑怕
 
   ET_DIGOUTZOMBI    = 1;   //粱厚啊 顶颇绊 唱柯 如利
   ET_MINE           = 2;   //堡籍捞 概厘登绢 乐澜
@@ -180,22 +180,22 @@ const
   SM_41                 = 4;
   SM_THROW              = 5;
   SM_RUSH               = 6;
-  SM_RUSHKUNG           = 7;//
+  SM_RUSHKUNG           = 7;    //
   SM_FIREHIT            = 8;    //烈火
-  SM_BACKSTEP           = 9;   //走路不成功????
+  SM_BACKSTEP           = 9;    //走路不成功????
   SM_TURN               = 10;   //转动方向
   SM_WALK               = 11;   //走
   SM_SITDOWN            = 12;   //挖
-  SM_RUN                = 13;    //跑
+  SM_RUN                = 13;   //跑
   SM_HIT                = 14;   //砍
-  SM_HEAVYHIT           = 15;//
-  SM_BIGHIT             = 16;//
+  SM_HEAVYHIT           = 15;   //
+  SM_BIGHIT             = 16;   //
   SM_SPELL              = 17;   //使用魔法
   SM_POWERHIT           = 18;   //攻杀
   SM_LONGHIT            = 19;   //刺杀
   SM_DIGUP              = 20;   //挖取
   SM_DIGDOWN            = 21;   //挖下?????????
-  SM_FLYAXE             = 22;    //???????????????
+  SM_FLYAXE             = 22;   //???????????????
   SM_LIGHTING           = 23;   //天亮?????????????
   SM_WIDEHIT            = 24;   //半月
   SM_CRSHIT             = 25;
@@ -254,9 +254,9 @@ const
   SM_NEWCHR_FAIL        = 522;     //创建人物失败
   SM_DELCHR_SUCCESS     = 523;     //删除人物成功
   SM_DELCHR_FAIL        = 524;     //删除人物失败
-  SM_STARTPLAY          = 525;      //开始游戏
-  SM_STARTFAIL          = 526;       //进入游戏失败
-  SM_QUERYCHR_FAIL      = 527;       //查询人物失败
+  SM_STARTPLAY          = 525;     //开始游戏
+  SM_STARTFAIL          = 526;     //进入游戏失败
+  SM_QUERYCHR_FAIL      = 527;     //查询人物失败
   SM_OUTOFCONNECTION    = 528;      //连接已断开
   SM_PASSOK_SELECTSERVER= 529;      //用户名/密码 验证通过
   SM_SELECTSERVER_OK    = 530;      //服务器选择成功

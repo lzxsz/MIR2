@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 457
-  Top = 205
+  Left = 415
+  Top = 204
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #28216#25103#25511#21046#22120
@@ -574,9 +574,9 @@ object frmMain: TfrmMain
     Top = 8
     Width = 520
     Height = 360
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     HotTrack = True
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #26381#21153#31471#25511#21046

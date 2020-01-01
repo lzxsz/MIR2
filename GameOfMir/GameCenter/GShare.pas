@@ -28,7 +28,7 @@ var
   g_SessionList:TStringList;
 
   g_sGameFile:String = '.\GameList.txt';
-  g_sNoticeUrl:String = 'www.mir2.com.cn';
+  g_sNoticeUrl:String = '';   //'www.mir2.com.cn';
   g_nClientForm:Integer = -1;
 
   g_IniConf        :TIniFile;

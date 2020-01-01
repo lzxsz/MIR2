@@ -99,7 +99,7 @@ var
   n4ADBB8            :Integer;
   bo4ADB1C           :Boolean;
 
-  sServerName        :String = '¢µLÍøÂç';
+  sServerName        :String = 'MIR2';  //'¢µLÍøÂç';
   sConfFileName      :String = '.\Dbsrc.ini';
   sGateConfFileName  :String = '.\!ServerInfo.txt';
   sServerIPConfFileNmae:String = '.\!AddrTable.txt';

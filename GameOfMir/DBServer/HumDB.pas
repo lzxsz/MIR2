@@ -4,8 +4,11 @@ interface
 uses
   Windows,Classes,SysUtils,Forms,MudUtil,Grobal2;
 ResourceString
-  sDBHeaderDesc     = '⒌L游戏数据库文件 2008/02/10';
-  sDBIdxHeaderDesc  = '⒌L游戏数据库索引文件 2008/02/10';
+  sDBHeaderDesc     = '网络游戏数据库文件 2005/04/20';
+  sDBIdxHeaderDesc  = '网络游戏数据库索引文件 2005/04/20';
+
+  //sDBHeaderDesc     = '⒌L游戏数据库文件 2008/02/10';
+  //sDBIdxHeaderDesc  = '⒌L游戏数据库索引文件 2008/02/10';
 
 type
   TDBHeader = record

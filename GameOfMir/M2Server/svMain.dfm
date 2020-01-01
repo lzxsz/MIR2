@@ -79,9 +79,9 @@ object FrmMain: TFrmMain
     object LbUserCount: TLabel
       Left = 370
       Top = 40
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
       Font.Height = -12
@@ -92,9 +92,9 @@ object FrmMain: TFrmMain
     object LbTimeCount: TLabel
       Left = 370
       Top = 56
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clMaroon
       Font.Height = -12
@@ -105,9 +105,9 @@ object FrmMain: TFrmMain
     object LbRunTime: TLabel
       Left = 370
       Top = 24
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
       Font.Height = -12
@@ -118,9 +118,9 @@ object FrmMain: TFrmMain
     object Label20: TLabel
       Left = 4
       Top = 56
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
       Font.Height = -12
@@ -131,9 +131,9 @@ object FrmMain: TFrmMain
     object Label2: TLabel
       Left = 4
       Top = 40
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
       Font.Height = -12
@@ -144,9 +144,9 @@ object FrmMain: TFrmMain
     object Label1: TLabel
       Left = 4
       Top = 24
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Color = clBtnFace
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
@@ -157,12 +157,12 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object MemStatus: TLabel
-      Left = 447
+      Left = 453
       Top = 8
-      Width = 24
+      Width = 18
       Height = 12
       Alignment = taRightJustify
-      Caption = '****'
+      Caption = '...'
       Font.Charset = GB2312_CHARSET
       Font.Color = clHighlight
       Font.Height = -12
@@ -174,9 +174,9 @@ object FrmMain: TFrmMain
     object Label5: TLabel
       Left = 4
       Top = 8
-      Width = 24
+      Width = 18
       Height = 12
-      Caption = '****'
+      Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
       Font.Height = -12

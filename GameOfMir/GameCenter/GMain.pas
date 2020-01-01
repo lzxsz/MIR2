@@ -2185,13 +2185,6 @@ begin
     end;
   end;
 
-
-
-
-
-
-
-
   TimerStopGame.Enabled:=False;
   ButtonStartGame.Caption:=g_sButtonStartGame;
   m_nStartStatus:=0;

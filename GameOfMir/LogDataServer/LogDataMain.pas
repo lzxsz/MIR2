@@ -129,16 +129,19 @@ begin
   end;
   sLogFile:=sLogDir + '\Log-' + IntToString(Hour) + 'h' + IntToString((Min div 10) * 2) + 'm.txt';
 
-   Memo1.Text := sLogFile;  //重设文件名
-  try
+   try
     AssignFile(F,sLogFile);
     if not FileExists(sLogFile) then Rewrite(F)
     else Append(F);
+    
     for i:= 0 to LogMsgList.Count - 1 do begin
       Writeln(F,LogMsgList.Strings[i] + #9 + FormatDateTime('yyyy-mm-dd hh:mm:ss',Now));
       Flush(f)
     end;
+
     LogMsgList.Clear;
+    
+    Memo1.Text := sLogFile;  //重设文件名
   finally
     CloseFile(F);
   end;
