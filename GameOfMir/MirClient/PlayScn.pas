@@ -871,7 +871,7 @@ var
 begin
    drawingbottomline:=0;//jacky
    if (g_MySelf = nil) then begin
-      msgstr := '正在返回人物选择,请等待...';
+      msgstr := '正在返回人物选择,请等待';
       with MSurface.Canvas do begin
          SetBkMode (Handle, TRANSPARENT);
          BoldTextOut (MSurface, (SCREENWIDTH-TextWidth(msgstr)) div 2, (SCREENHEIGHT - 600) +200,

@@ -748,8 +748,8 @@ begin
             if BufCount < BUF_SIZE-1 then begin
                Buf[BufCount] := Ch;
                Inc (BufCount);
-            end;// else
-               //ShowMessage ('BUF_SIZE overflow !');
+            end; //else
+             // ShowMessage ('BUF_SIZE overflow !'); 
          end;
          Inc (Count);
       end;

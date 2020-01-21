@@ -372,6 +372,8 @@ var
   nIdent, nRecog: Integer;
   sHumanRcdStr: string;
   sDBMsg, sDBCharName: string;
+
+  strTmp : string ;
 begin
   Result := False;
   nQueryID := GetQueryID(@g_Config);
@@ -398,11 +400,23 @@ begin
       if nRecog = 1 then
       begin
         sHumanRcdStr := GetValidStr3(sHumanRcdStr, sDBMsg, ['/']);
-//        MainOutMessage(s24);
+       //  MainOutMessage(s24);
         sDBCharName := DeCodeString(sDBMsg);
 
         if sDBCharName = sCharName then
         begin
+
+           //----------------------------------------------------------------------------------------------
+           //lzx2020 - for debug bag item count by davy 2020-1-17
+           
+           //背包物品数量修改调试点 - For引擎程序修改背包物品数量后，客户端登录出错。
+           strTmp:=format('%3.0d - %d',[GetCodeMsgSize(SizeOf(THumDataInfo) * 4 / 3),Length(sHumanRcdStr)]);     //4880(46个物品) ， 4784（43个物品）
+           //MainOutMessage(strTmp);  //在引擎程序信息窗口中输出调试信息
+
+           //注意：如果返回 4880 - 4784 说明，引擎程序与数据库服服务程序的数据格式长度一致。需要重新编译数据库服务程序。
+           //----------------------------------------------------------------------------------------------
+
+          //lzx2020 - for debug bag item count by davy 2020-1-17
           if GetCodeMsgSize(SizeOf(THumDataInfo) * 4 / 3) = Length(sHumanRcdStr) then
           begin
             DecodeBuffer(sHumanRcdStr, @HumanRcd, SizeOf(THumDataInfo));

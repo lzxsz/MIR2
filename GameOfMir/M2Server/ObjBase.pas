@@ -6524,7 +6524,7 @@ begin
 
       if m_boKickFlag then
       begin
-        SendDefMessage(SM_OUTOFCONNECTION, 0, 0, 0, 0, '');
+        SendDefMessage(SM_OUTOFCONNECTION, 0, 0, 0, 0, ''); 
       end;
 
       if not m_boReconnection and m_boSoftClose then

@@ -23,9 +23,9 @@ object frmFunctionConfig: TfrmFunctionConfig
     Top = 8
     Width = 457
     Height = 345
-    ActivePage = TabSheetGeneral
+    ActivePage = TabSheet1
     MultiLine = True
-    TabIndex = 0
+    TabIndex = 7
     TabOrder = 0
     OnChanging = FunctionConfigControlChanging
     object TabSheetGeneral: TTabSheet
@@ -1616,9 +1616,9 @@ object frmFunctionConfig: TfrmFunctionConfig
         Top = 0
         Width = 449
         Height = 273
-        ActivePage = TabSheet43
+        ActivePage = TabSheet18
         MultiLine = True
-        TabIndex = 33
+        TabIndex = 11
         TabOrder = 0
         TabPosition = tpBottom
         object TabSheet36: TTabSheet
@@ -1766,9 +1766,8 @@ object frmFunctionConfig: TfrmFunctionConfig
               Left = 44
               Top = 15
               Width = 61
-              Height = 24
+              Height = 21
               Hint = #25351#23450#31561#32423#20197#19979#30340#24618#29289#25165#20250#34987#35825#24785','#25351#23450#31561#32423#20197#19978#30340#24618#29289#35825#24785#26080#25928'.'
-              EditorEnabled = False
               MaxValue = 65535
               MinValue = 1
               TabOrder = 0
@@ -1779,7 +1778,7 @@ object frmFunctionConfig: TfrmFunctionConfig
           object GroupBox39: TGroupBox
             Left = 8
             Top = 56
-            Width = 113
+            Width = 129
             Height = 73
             TabOrder = 1
             object Label99: TLabel
@@ -1799,10 +1798,9 @@ object frmFunctionConfig: TfrmFunctionConfig
             object EditMagTammingTargetLevel: TSpinEdit
               Left = 64
               Top = 15
-              Width = 41
-              Height = 24
+              Width = 57
+              Height = 21
               Hint = #24618#29289#31561#32423#27604#29575','#27492#25968#23383#36234#23567#26426#29575#36234#22823'.'
-              EditorEnabled = False
               MaxValue = 65535
               MinValue = 1
               TabOrder = 0
@@ -1812,10 +1810,9 @@ object frmFunctionConfig: TfrmFunctionConfig
             object EditMagTammingHPRate: TSpinEdit
               Left = 64
               Top = 39
-              Width = 41
-              Height = 24
+              Width = 57
+              Height = 21
               Hint = #24618#29289#34880#37327#27604#29575','#27492#25968#23383#36234#22823','#26426#29575#36234#22823'.'
-              EditorEnabled = False
               MaxValue = 65535
               MinValue = 1
               TabOrder = 1
@@ -1841,9 +1838,8 @@ object frmFunctionConfig: TfrmFunctionConfig
               Left = 44
               Top = 15
               Width = 61
-              Height = 24
+              Height = 21
               Hint = #21487#35825#24785#24618#29289#25968#37327'.'
-              EditorEnabled = False
               MaxValue = 65535
               MinValue = 1
               TabOrder = 0

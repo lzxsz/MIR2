@@ -537,11 +537,15 @@ begin
   StartService();
 
   try
-    if SizeOf(THumDataInfo)<> SIZEOFTHUMAN then begin
+  
+     //lzx2020 - for debug bag item count by davy 2020-1-17
+     //核查数人物数据结构的大小，防止修人物数据结构意外被修改，导致与数据库结构不同，而发生客户端无法登录的错误。
+     if SizeOf(THumDataInfo)<> SIZEOFTHUMAN then begin
       ShowMessage('SizeOf(THuman) ' + IntToStr(sizeof(THumDataInfo)) + ' <> SIZEOFTHUMAN ' + IntToStr(SIZEOFTHUMAN));
       Close;
       exit;
-    end;
+     end;
+
     if not LoadClientFile then begin
       Close;
       exit;

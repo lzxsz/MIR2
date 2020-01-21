@@ -91,10 +91,7 @@ const
   MAXUPLEVEL = High(Word) {65535};
   MAXHUMPOWER = High(Word) {65535};
 
-
-
   BODYLUCKUNIT = 5000; //10?
-
 
   //攻击模式
   HAM_ALL = 0;        //全体攻击
@@ -111,8 +108,9 @@ const
   jWizard = 1;
   jTaos = 2;
 
-
-  SIZEOFTHUMAN = 3588;
+  //lzx2020 - for debug bag item count by davy 2020-1-17
+  //注意：该数值只有在数据库构发生改变后才需要调整(如背包最大物品数量)，否则不要改变该数值。
+  SIZEOFTHUMAN = 3660; //3588;  //人物数据结构的字节大小。如果只改了背包物品数量，其他结构没变，则3660 对应 46个物品, 3588 对应 43个物品。
 
   MONSTER_SANDMOB = 3;
   MONSTER_ROCKMAN = 4;
@@ -147,10 +145,6 @@ const
   MONSTER_ARCHERGUARD = 112;
   MONSTER_ELFMONSTER = 113;
   MONSTER_ELFWARRIOR = 114;
-
-
-
-
 
   sMAN = 'MAN';
   sSUNRAISE = 'SUNRAISE';
@@ -325,10 +319,6 @@ const
   nSC_ONERROR = 108;
   sSC_CHECKARMOR = 'CHECKARMOR';
   nSC_CHECKARMOR = 109;
-
-
-
-
 
   sCHECKACCOUNTLIST = 'CHECKACCOUNTLIST';
   nCHECKACCOUNTLIST = 135;
@@ -1526,10 +1516,10 @@ var
     nConfigSize: SizeOf(TM2Config);
     sServerName             :'热血传奇';
     sServerIPaddr           :'127.0.0.1';
-    sWebSite                :'http://www.35m2.com';
-    sBbsSite                :'http://bbs.www.35m2.com';
-    sClientDownload         :'http://www.www.35m2.com';
-    sQQ                     :'5520666';
+    sWebSite                :'http://www.***.com';
+    sBbsSite                :'http://bbs.www.***.com';
+    sClientDownload         :'http://www.www.***.com';
+    sQQ                     :'123456789';
     sPhone                  :'123456789';
     sBankAccount0           :'工商银行';
     sBankAccount1           :'农业银行';

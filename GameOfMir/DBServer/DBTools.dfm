@@ -22,6 +22,7 @@ object frmDBTool: TfrmDBTool
     Width = 577
     Height = 273
     ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #25968#25454#24211#20449#24687

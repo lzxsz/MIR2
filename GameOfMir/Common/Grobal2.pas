@@ -48,9 +48,11 @@ const
   HALFX         = 24;
   HALFY         = 16;
 
-  MAXBAGITEM    = 46; //52;    //服务端允许角色包裹存放物品的最大数量(40+6),包含快捷栏上的6个物品。
+  //lzx2020 - for debug bag item count by davy 2020-1-17
+  MAXBAGITEM    = 46;  //52;    //允许角色包裹存放物品的最大数量46个(包含快捷栏上的6个物品)。
+  
   HOWMANYMAGICS = 20;
-  USERITEMMAX   = 46;         //用户最大的物品
+  USERITEMMAX   = 46;
   MaxSkillLevel = 3;
   MAX_STATUS_ATTRIBUTE = 12;
 
@@ -108,12 +110,12 @@ const
 
   CM_DROPITEM           = 1000;  //丢掉物品
   CM_PICKUP             = 1001;  //拣东西
-  CM_TAKEONITEM		      = 1003;  //穿上/戴上/拿上 物品
-  CM_TAKEOFFITEM        = 1004;   //脱下物品
+  CM_TAKEONITEM	        = 1003;  //穿上/戴上/拿上 物品
+  CM_TAKEOFFITEM        = 1004;  //脱下物品
   CM_1005               = 1005;
   CM_EAT                = 1006;  //吃物品
   CM_BUTCH              = 1007;
-  CM_MAGICKEYCHANGE	= 1008;     //改变魔法按键
+  CM_MAGICKEYCHANGE	= 1008;  //改变魔法按键
 
   CM_CLICKNPC           = 1010;   //点击NPC???
   CM_MERCHANTDLGSELECT  = 1011;   // NPC Tag Click 选择商人功能窗口
@@ -139,7 +141,7 @@ const
   CM_USERSTORAGEITEM    = 1031;     //用户存储物品
   CM_USERTAKEBACKSTORAGEITEM = 1032;  //从仓库取回物品
   CM_WANTMINIMAP        = 1033;
-  CM_USERMAKEDRUGITEM   = 1034;   //制作毒药物品
+  CM_USERMAKEDRUGITEM   = 1034;    //制作毒药物品
   CM_OPENGUILDDLG       = 1035;    //打开行会窗口
   CM_GUILDHOME          = 1036;    //行会主页
   CM_GUILDMEMBERLIST    = 1037;    //行会成员列表
@@ -400,8 +402,6 @@ const
   SM_MONSTERSAY         = 1501;   //怪物说话
 
 
-
-
   SM_EXCHGTAKEON_OK=65023;
   SM_EXCHGTAKEON_FAIL=65024;
 
@@ -551,7 +551,7 @@ type
      SC                 :DWord;         //4 道术
      Need               :DWord;         //4  其他要求 0：等级 1：攻击力 2：魔法力 3：精神力
      NeedLevel          :DWord;         //4  Need要求数值
-     Price              :UINT;       //4  价格
+     Price              :UINT;          //4  价格
   end;
 
   PTClientItem =^TClientItem;
@@ -626,15 +626,15 @@ type
   PTDropItem = ^TDropItem;
 
   pTMagic=^TMagic;
-  TMagic =record        //魔法
+  TMagic =record       //魔法
     wMagicID:Word;     //编号
     sMagicName:String[12];   //名称 12
     btEffectType:Byte;
     btEffect:Byte;     //效果
-    wSpell:Word;     //魔法
+    wSpell:Word;       //魔法
     wPower:Word;
     TrainLevel:Array[0..3] of Byte;    //升级需要的等级
-    MaxTrain:Array[0..3] of Integer;     //锻炼
+    MaxTrain:Array[0..3] of Integer;   //锻炼
     btTrainLv:Byte;
     btJob:Byte;
     dwDelayTime:Integer;
@@ -743,10 +743,10 @@ type
      MaxExp             :DWord;   //35 38 最大经验
      Weight             :Word;    //39 40 背包重
      MaxWeight          :Word;    //41 42 背包最大重量
-     WearWeight         :Word;    //43 44   当前负重
-     MaxWearWeight      :Word;    //45 46   最大负重
-     HandWeight         :Word;    //47 48    腕力
-     MaxHandWeight      :Word;    //49 50   最大腕力
+     WearWeight         :Word;    //43 44 当前负重
+     MaxWearWeight      :Word;    //45 46 最大负重
+     HandWeight         :Word;    //47 48 腕力
+     MaxHandWeight      :Word;    //49 50 最大腕力
   end;
 
   //---------------------------------------------
@@ -788,10 +788,18 @@ type
   end;
 
   THumanUseItems=array[0..12] of TUserItem;
-  THumItems=array[0..12] of TUserItem;
+  THumItems=array[0..12] of TUserItem;     //人物装备物品数量(13个)，1.5版是9个（包含：武器、头盔、衣服、戒指、手镯等）
+
   pTHumItems=^THumItems;
   pTBagItems=^TBagItems;
-  TBagItems=array[0..54-12] of  TUserItem;
+
+  //lzx2020 - for debug bag item count by davy 2020-1-17
+  //TBagItems=array[0..54-12] of  TUserItem;   //0..42 (43个物品)   4784
+
+  TBagItems=array[0..45] of  TUserItem;        //0..45 (46个物品)   4880
+  
+  //注意：引擎程序(M2Server.exe)修改背包物品数量时会改变数据库的结构，需要重新编译数据库服务程序(DBServer.exe)。 否则客户端会登录出错。
+
   pTStorageItems=^TStorageItems;
   TStorageItems=array[0..49] of TUserItem;
 
@@ -1187,7 +1195,7 @@ Const
   RM_GROUPMESSAGE      = 11005;  //组队说话
   RM_SYSMESSAGE2       = 11006;  //系统信息2
   RM_GUILDMESSAGE      = 11007;  //行会说话
-  RM_SYSMESSAGE3       = 11008;   //系统信息3
+  RM_SYSMESSAGE3       = 11008;  //系统信息3
   RM_MERCHANTSAY       = 11009;  //怪物还能说话？？？？？？？？
 
 
@@ -1248,48 +1256,48 @@ Const
 
 
   //技能编号（正确）
-  SKILL_FIREBALL       = 1;       //火球术
+  SKILL_FIREBALL       = 1;        //火球术
   SKILL_HEALLING       = 2;        //什么魔法
   SKILL_ONESWORD       = 3;        //内功心法
-  SKILL_ILKWANG        = 4;       //基本剑法
-  SKILL_FIREBALL2      = 5;         //大火球
+  SKILL_ILKWANG        = 4;        //基本剑法
+  SKILL_FIREBALL2      = 5;        //大火球
   SKILL_AMYOUNSUL      = 6;        //施毒术
   SKILL_YEDO           = 7;        //攻杀剑法
-  SKILL_FIREWIND       = 8;       //抗拒火环
-  SKILL_FIRE           = 9;       ////地狱火
-  SKILL_SHOOTLIGHTEN   = 10;      //疾光电影
+  SKILL_FIREWIND       = 8;        //抗拒火环
+  SKILL_FIRE           = 9;        //地狱火
+  SKILL_SHOOTLIGHTEN   = 10;       //疾光电影
   SKILL_LIGHTENING     = 11;       //雷电术
   SKILL_ERGUM          = 12;       //刺杀剑法
-  SKILL_FIRECHARM      = 13;       //灵魂火符
+  SKILL_FIRECHARM      = 13;      //灵魂火符
   SKILL_HANGMAJINBUB   = 14;      //幽灵盾
   SKILL_DEJIWONHO      = 15;      //神圣战甲术
-  SKILL_HOLYSHIELD     = 16;     //捆魔咒
-  SKILL_SKELLETON      = 17;    //召唤骷髅
-  SKILL_CLOAK          = 18;     //隐身术
-  SKILL_BIGCLOAK       = 19;    //集体隐身术
-  SKILL_TAMMING        = 20;    //诱惑之光
-  SKILL_SPACEMOVE      = 21;    //瞬息移动
-  SKILL_EARTHFIRE      = 22;    //火墙
+  SKILL_HOLYSHIELD     = 16;      //捆魔咒
+  SKILL_SKELLETON      = 17;      //召唤骷髅
+  SKILL_CLOAK          = 18;      //隐身术
+  SKILL_BIGCLOAK       = 19;     //集体隐身术
+  SKILL_TAMMING        = 20;     //诱惑之光
+  SKILL_SPACEMOVE      = 21;     //瞬息移动
+  SKILL_EARTHFIRE      = 22;     //火墙
   SKILL_FIREBOOM       = 23;     //爆裂火焰
-  SKILL_LIGHTFLOWER    = 24;    //地狱雷光
-  SKILL_BANWOL         = 25;    //半月弯刀
+  SKILL_LIGHTFLOWER    = 24;     //地狱雷光
+  SKILL_BANWOL         = 25;     //半月弯刀
   SKILL_FIRESWORD      = 26;    //烈火剑法
   SKILL_MOOTEBO        = 27;    //野蛮冲撞
   SKILL_SHOWHP         = 28;    //心灵启示
-  SKILL_BIGHEALLING    = 29;   //群体治疗术
-  SKILL_SINSU          = 30;  //什么魔法
-  SKILL_SHIELD         = 31;   //魔法盾
-  SKILL_KILLUNDEAD     = 32;  //圣言术
-  SKILL_SNOWWIND       = 33;  //冰咆哮
-  SKILL_CROSSMOON      = 34; //双龙斩
-  SKILL_WINDTEBO       = 35;  //什么魔法
-  SKILL_UENHANCER      = 36; //无极真气
-  SKILL_ENERGYREPULSOR = 37;   //气功波
-  SKILL_TWINBLADE      = 38;  //狂风斩
-  SKILL_GROUPDEDING    = 39; //地钉
-  SKILL_UNAMYOUNSUL    = 40; //解毒术
-  SKILL_ANGEL          = 41; //什么魔法
-  SKILL_GROUPLIGHTENING= 42; //群体雷电术
+  SKILL_BIGHEALLING    = 29;    //群体治疗术
+  SKILL_SINSU          = 30;    //什么魔法
+  SKILL_SHIELD         = 31;    //魔法盾
+  SKILL_KILLUNDEAD     = 32;    //圣言术
+  SKILL_SNOWWIND       = 33;    //冰咆哮
+  SKILL_CROSSMOON      = 34;    //双龙斩
+  SKILL_WINDTEBO       = 35;    //什么魔法
+  SKILL_UENHANCER      = 36;    //无极真气
+  SKILL_ENERGYREPULSOR = 37;    //气功波
+  SKILL_TWINBLADE      = 38;   //狂风斩
+  SKILL_GROUPDEDING    = 39;   //地钉
+  SKILL_UNAMYOUNSUL    = 40;   //解毒术
+  SKILL_ANGEL          = 41;   //什么魔法
+  SKILL_GROUPLIGHTENING= 42;   //群体雷电术
   SKILL_43             = 43;
   SKILL_44             = 44; //FrostCrunch
   SKILL_45             = 45; //FlameDisruptor

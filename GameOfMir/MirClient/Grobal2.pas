@@ -23,7 +23,7 @@ const
   DR_LEFT       =6;
   DR_UPLEFT     =7;
 
-  U_DRESS       = 0;   //衣服
+  U_DRESS       = 0;    //衣服
   U_WEAPON      = 1;    //武器
   U_RIGHTHAND   = 2;    //右手
   U_NECKLACE    = 3;    //项链
@@ -48,9 +48,9 @@ const
   HALFX         = 24;
   HALFY         = 16;
 
-  MAXBAGITEM    = 46; //52; //允许包裹放物品的最大数量，这个数量要与服务端设置的数量相同
+  MAXBAGITEM    = 46;  //52; //允许包裹放物品的最大数量，这个数量要与服务端设置的数量相同
   HOWMANYMAGICS = 20;
-  USERITEMMAX   = 46;       //用户最大的物品
+  USERITEMMAX   = 46;
   MaxSkillLevel = 3;
   MAX_STATUS_ATTRIBUTE = 12;
 
@@ -788,10 +788,13 @@ type
   end;
 
   THumanUseItems=array[0..12] of TUserItem;
-  THumItems=array[0..12] of TUserItem;
+  THumItems=array[0..12] of TUserItem;    //人物装备物品数量(13个)，1.5版是9个（包含：武器、头盔、衣服、戒指、手镯等）
+
   pTHumItems=^THumItems;
   pTBagItems=^TBagItems;
-  TBagItems=array[0..54-12] of  TUserItem;
+  //TBagItems=array[0..54-12] of  TUserItem;  //0..42 (43个)
+  TBagItems=array[0..45] of  TUserItem;       //0..45 (46个)
+
   pTStorageItems=^TStorageItems;
   TStorageItems=array[0..49] of TUserItem;
 

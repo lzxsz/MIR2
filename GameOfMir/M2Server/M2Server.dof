@@ -85,6 +85,8 @@ OriginalFilename=EngineServer.exe
 ProductName=Engine Server
 ProductVersion=1.5.0 (20020522)
 Comments=
+[Excluded Packages]
+D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -100,17 +102,18 @@ Item2=C:\mirserver\Mir200\units
 Item3=F:\Mir2\m2server\Units\
 Item4=.\Build\M2Server\
 [HistoryLists\hlOutputDirectorry]
-Count=13
+Count=14
 Item0=..\MirServer
-Item1=..\..\Release\M2server\
-Item2=C:\mirserver\Mir200
-Item3=F:\Mir2\m2server\
-Item4=..\..\Release\Mir200\
-Item5=F:\GameOfMir\Release\M2Server
-Item6=D:\GameOfmir\Mir200
-Item7=..\Release\M2Server\
-Item8=..\Release\M2Server
-Item9=C:\GameOfMir\Mir200
-Item10=F:\mir2
-Item11=C:\mir2\Data
-Item12=J:\mir\Data
+Item1=D:\Mirserver\Mir200
+Item2=..\..\Release\M2server\
+Item3=C:\mirserver\Mir200
+Item4=F:\Mir2\m2server\
+Item5=..\..\Release\Mir200\
+Item6=F:\GameOfMir\Release\M2Server
+Item7=D:\GameOfmir\Mir200
+Item8=..\Release\M2Server\
+Item9=..\Release\M2Server
+Item10=C:\GameOfMir\Mir200
+Item11=F:\mir2
+Item12=C:\mir2\Data
+Item13=J:\mir\Data

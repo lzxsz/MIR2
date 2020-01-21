@@ -1612,7 +1612,7 @@ Ctrl + H 选择自己喜欢的攻击模式
                begin
                   AppLogOut;
                end else
-                  DScreen.AddChatBoardString ('正在战斗，不能退出..', clYellow, clRed);
+                  DScreen.AddChatBoardString ('正在战斗，不能退出', clYellow, clRed);
             end;
          end;
       word('Q'):
@@ -1631,7 +1631,7 @@ Ctrl + H 选择自己喜欢的攻击模式
                begin
                   AppExit;
                end else
-                  DScreen.AddChatBoardString ('正在战斗，不能退出..', clYellow, clRed);
+                  DScreen.AddChatBoardString ('正在战斗，不能退出', clYellow, clRed);
             end;
          end;
       word('M'): begin       //地图
@@ -1909,7 +1909,7 @@ begin
          //Inc (SpellCount);
       end;
    end else
-      Dscreen.AddSysMsg ('魔法点数不够，无法使用...');
+      Dscreen.AddSysMsg ('魔法点数不够，无法使用');
       //Dscreen.AddSysMsg ('魔法值不够！！！' + IntToStr(pcm.Def.wSpell) + '+' + IntToStr(pcm.Def.btDefSpell) + '/' +IntToStr(g_MySelf.m_Abil.MP));
 end;
 
@@ -2789,7 +2789,7 @@ procedure TfrmMain.CSocketDisconnect(Sender: TObject;
 begin
    g_boServerConnected := FALSE;
    if (g_ConnectionStep = cnsLogin) and not g_boSendLogin then begin
-     FrmDlg.DMessageDlg ('网络连接异常,程序将退出...', [mbOk]);
+     FrmDlg.DMessageDlg ('网络连接异常,程序将退出', [mbOk]);
      Close;
    end;
    if g_SoftClosed then begin
@@ -3707,22 +3707,27 @@ begin
       case msg.Ident of
          SM_NEWID_SUCCESS:
             begin
-               FrmDlg.DMessageDlg ('你的帐号已经建立了.\' +
-                                   '请妥善保护好你的帐户和密码.\' +
-                                   '请不要因任何原因把帐号和密码告诉其他人.\' +
-                                   '我们的官方地址：,\' +
-                                   '(http://www.******.net)', [mbOk]);
+           //    FrmDlg.DMessageDlg ('你的帐号已经建立了.\' +
+           //                        '请妥善保护好你的帐户和密码.\' +
+           //                        '请不要因任何原因把帐号和密码告诉其他人.\' +
+           //                        '我们的官方地址：,\' +
+           //                        '(http://www.******.net)', [mbOk]);
+
+               FrmDlg.DMessageDlg ('你的帐号已经建立了。\' +
+                                   '请妥善保护好你的帐户和密码，\' +
+                                   '并且不要因任何原因把帐号和密码告诉给其他人。' , [mbOk]);
+
             end;
          SM_NEWID_FAIL:
             begin
                case msg.Recog of
                   0: begin
-                        FrmDlg.DMessageDlg ('"' + MakeNewId + '"这个帐号已经被其他玩家使用了.\'  +
-                                            ' 请使用一个不同的名字.',
-                                           [mbOk]);
+                        FrmDlg.DMessageDlg ('"' + MakeNewId + '"这个帐号已经被其他玩家使用了。\'  +
+                                            ' 请使用一个不同的名字。', [mbOk]);
+                                           
                         LoginScene.NewIdRetry (FALSE);  //促矫 矫档
                      end;
-                  -2: FrmDlg.DMessageDlg ('建立帐号失败，系统正忙.\有关信息请访问: http://www.******.com', [mbOk]);
+                   -2: FrmDlg.DMessageDlg ('建立帐号失败，系统正忙。', [mbOk]);
                   else FrmDlg.DMessageDlg ('帐号创建失败，请确认帐号是否包括空格、及非法字符！Code: ' + IntToStr(msg.Recog), [mbOk]);
                end;
             end;
@@ -3744,10 +3749,15 @@ begin
             end;
          SM_UPDATEID_SUCCESS:
             begin
-               FrmDlg.DMessageDlg ('您的帐号信息更新成功。\' +
-                                   '请妥善保管您的帐号和密码。\' +
-                                   '并且不要因任何原因把帐号和密码告诉任何其他人。\\' +
-                                   '如果您忘记您的密码，您能通过我们的主页找回它.\(http://www.******.net)', [mbOk]);
+            //   FrmDlg.DMessageDlg ('您的帐号信息更新成功。\' +
+            //                       '请妥善保管您的帐号和密码。\' +
+            //                       '并且不要因任何原因把帐号和密码告诉任何其他人。\\' +
+            //                       '如果您忘记您的密码，您能通过我们的主页找回它.\(http://www.******.net)', [mbOk]);
+
+                FrmDlg.DMessageDlg ('您的帐号信息更新成功。\' +
+                                    '请妥善保管您的帐号和密码，\'+ 
+                                    '并且不要因任何原因把帐号和密码告诉给其他人。', [mbOk]);
+
                ClientGetSelectServer;
             end;
          SM_UPDATEID_FAIL:
@@ -3805,18 +3815,21 @@ begin
          end;
          SM_STARTFAIL: begin
            FrmDlg.DMessageDlg ('此服务器满员！', [mbOk]);
-//               FrmMain.Close;
-//               frmSelMain.Close;
+        //        FrmMain.Close;
+        //        frmSelMain.Close;
            ClientGetSelectServer();
            exit;
          end;
          SM_VERSION_FAIL: begin
-           FrmDlg.DMessageDlg ('游戏版本和服务器版本不一致，请及时更新，\详情请访问官方网站. (http://www.legendofmir.net)', [mbOk]);
-//               FrmMain.Close;
-//               frmSelMain.Close;
+         FrmDlg.DMessageDlg ('游戏版本和服务器版本不一致，请及时更新。', [mbOk]);
+         
+        //    FrmDlg.DMessageDlg ('游戏版本和服务器版本不一致，请及时更新，\详情请访问官方网站. (http://www.legendofmir.net)', [mbOk]);
+        //        FrmMain.Close;
+        //        frmSelMain.Close;
            exit;
          end;
-         SM_OUTOFCONNECTION,
+         
+         SM_OUTOFCONNECTION,  //服务器连接被强行中断
          SM_NEWMAP,
          SM_LOGON,
          SM_RECONNECT,
@@ -3825,6 +3838,7 @@ begin
             exit;
       end;
    end;
+   
    if g_boMapMoving then begin
       if msg.Ident = SM_CHANGEMAP then begin
          WaitingMsg := msg;
@@ -3843,14 +3857,16 @@ begin
       if (msg.Recog <> g_nThisCRC) and
          (i <> g_nThisCRC) and
          (j <> g_nThisCRC) then begin
+
          //下面3行是登陆锁定
         //FrmDlg.DMessageDlg ('错误版本。 请下载最新的版本 .', [mbOk]);
         //DScreen.AddChatBoardString ('错误版本。 请下载最新的版本 .', clYellow, clRed);
         //CSocket.Close;
 
-//        FrmMain.Close;
-//        frmSelMain.Close;
+        //   FrmMain.Close;
+        //  frmSelMain.Close;
         exit;
+        
         {FrmDlg.DMessageDlg ('Wrong version. Please download latest version. (http://www.legendofmir.net)', [mbOk]);
         Close;
         exit;}
@@ -4188,8 +4204,12 @@ begin
             g_boDoFastFadeOut := FALSE;
             g_boDoFadeIn := FALSE;
             g_boDoFadeOut := FALSE;
-            FrmDlg.DMessageDlg ('超出服务器连接最大限制.\' +
-                                '你不得不退出游戏，抱歉.', [mbOk]);
+            //FrmDlg.DMessageDlg ('超出服务器连接最大限制.\' +
+            //                    '你不得不退出游戏，抱歉.', [mbOk]);
+            
+            FrmDlg.DMessageDlg ('服务器连接被强行中断。\' +
+                                '连接时间可能超过限制，\' +
+                                '或者用户请求重新连接。', [mbOk]);
             Close;
          end;
 
@@ -4249,7 +4269,7 @@ begin
          begin
             g_MySelf.m_Abil.Exp := msg.Recog; //坷弗 版氰摹
 //            DScreen.AddSysMsg ('已获得 ' + IntToStr(LongWord(MakeLong(msg.Param,msg.Tag))) + ' 点经验值。');
-            DScreen.AddChatBoardString ('已获得 ' + IntToStr(LongWord(MakeLong(msg.Param,msg.Tag))) + ' 点经验值..',clWhite, clRed);
+            DScreen.AddChatBoardString ('已获得 ' + IntToStr(LongWord(MakeLong(msg.Param,msg.Tag))) + ' 点经验值',clWhite, clRed);
          end;
 
       SM_LEVELUP:
@@ -4632,7 +4652,7 @@ begin
             FrmDlg.LastestClickTime := GetTickCount;
             if msg.Ident <> SM_STORAGE_OK then begin
                if msg.Ident = SM_STORAGE_FULL then
-                  FrmDlg.DMessageDlg ('仓库已满。请取出在放...', [mbOk])
+                  FrmDlg.DMessageDlg ('仓库已满。请取出在放', [mbOk])
                else
                   FrmDlg.DMessageDlg ('保管失败。', [mbOk]);
                AddItemBag (g_SellDlgItemSellWait);
@@ -4668,15 +4688,15 @@ begin
             FrmDlg.LastestClickTime := GetTickCount;
             case msg.Recog of
                1: FrmDlg.DMessageDlg ('金钱不足，购买失败。', [mbOk]);
-               2: FrmDlg.DMessageDlg ('你不能携带更多的东西..', [mbOk]);
-               3: FrmDlg.DMessageDlg ('你的出价太低了..', [mbOk]);
+               2: FrmDlg.DMessageDlg ('你不能携带更多的东西', [mbOk]);
+               3: FrmDlg.DMessageDlg ('你的出价太低了', [mbOk]);
             end;
          end;
       SM_MAKEDRUG_SUCCESS:
          begin
             FrmDlg.LastestClickTime := GetTickCount;
             g_MySelf.m_nGold := msg.Recog;
-            FrmDlg.DMessageDlg ('药品研制成功..', [mbOk]);
+            FrmDlg.DMessageDlg ('药品研制成功', [mbOk]);
          end;
       SM_MAKEDRUG_FAIL: begin
         FrmDlg.LastestClickTime := GetTickCount;
@@ -4718,10 +4738,10 @@ begin
          begin
             g_dwChangeGroupModeTick := GetTickCount;
             case msg.Recog of
-               -1: FrmDlg.DMessageDlg ('创建队伍失败，人数以到最大...', [mbOk]);
-               -2: FrmDlg.DMessageDlg ('无法创建队伍，请重新创建......', [mbOk]);
-               -3: FrmDlg.DMessageDlg ('队伍名称重复...', [mbOk]);
-               -4: FrmDlg.DMessageDlg ('对方不允许组队或拒绝组队。', [mbOk]);
+               -1: FrmDlg.DMessageDlg ('创建队伍失败，人数以到最大', [mbOk]);
+               -2: FrmDlg.DMessageDlg ('无法创建队伍，请重新创建', [mbOk]);
+               -3: FrmDlg.DMessageDlg ('队伍名称重复', [mbOk]);
+               -4: FrmDlg.DMessageDlg ('对方不允许组队或拒绝组队', [mbOk]);
             end;
          end;
       SM_GROUPADDMEM_OK:
@@ -4733,11 +4753,11 @@ begin
          begin
             g_dwChangeGroupModeTick := GetTickCount;
             case msg.Recog of
-               -1: FrmDlg.DMessageDlg ('加入队伍失败，人数以到最大。', [mbOk]);
-               -2: FrmDlg.DMessageDlg ('添加队伍成员失败，对方不同意加入。', [mbOk]);
-               -3: FrmDlg.DMessageDlg ('添加队伍成员失败，可以由于转生引起，请改用手动招收成员再试！', [mbOk]);
+               -1: FrmDlg.DMessageDlg ('加入队伍失败，人数以到最大', [mbOk]);
+               -2: FrmDlg.DMessageDlg ('添加队伍成员失败，对方不同意加入', [mbOk]);
+               -3: FrmDlg.DMessageDlg ('添加队伍成员失败，可以由于转生引起，请改用手动招收成员再试', [mbOk]);
                -4: FrmDlg.DMessageDlg ('对方不允许组队。', [mbOk]);
-               -5: FrmDlg.DMessageDlg ('添加队伍成员失败，请重新添加.......', [mbOk]);
+               -5: FrmDlg.DMessageDlg ('添加队伍成员失败，请重新添加', [mbOk]);
             end;
          end;
       SM_GROUPDELMEM_OK:
@@ -4927,7 +4947,7 @@ begin
       end;
       SM_BUILDGUILD_OK: begin
         FrmDlg.LastestClickTime := GetTickCount;
-        FrmDlg.DMessageDlg ('创建行会成功...', [mbOk]);
+        FrmDlg.DMessageDlg ('创建行会成功', [mbOk]);
       end;
       SM_BUILDGUILD_FAIL: begin
         FrmDlg.LastestClickTime := GetTickCount;

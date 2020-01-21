@@ -2319,34 +2319,37 @@ try
         tStr:=g_ServerList.Strings[5];
         nStatus:=Integer(g_ServerList.Objects[5]);
       end;
-      Color:=clYellow;
-      
+
+      //Color:=clYellow;
+      Color:=TColor($80FFFF); //浅黄色
+
+     {--
       case nStatus of
         0: begin
-          tStr:=tStr + '(维护)';
-          Color:=clDkGray;
+          tStr:=tStr + ' (维护)';
+          Color:=clDkGray;          
         end;
         1: begin
-          tStr:=tStr + '(空闲)';
+          tStr:=tStr + ' (空闲)';
           Color:=clLime;
         end;
         2: begin
-          tStr:=tStr + '(良好)';
+          tStr:=tStr + ' (良好)';
           Color:=clGreen;
         end;
         3: begin
-          tStr:=tStr + '(繁忙)';
+          tStr:=tStr + ' (繁忙)';
           Color:=clMaroon;
         end;
         4: begin
-          tStr:=tStr + '(满员)';
+          tStr:=tStr + ' (满员)';
           Color:=clRed;
         end;
-
       end;
+      --}
 
           SetBkMode (dsurface.Canvas.Handle, TRANSPARENT);
-          dsurface.Canvas.Font.Size :=11;
+          dsurface.Canvas.Font.Size :=12; //11;
           dsurface.Canvas.Font.Style:=[fsBold];
           if TDButton(Sender).Downed then begin
             BoldTextOut (dsurface, SurfaceX(Left + (d.Width - dsurface.Canvas.TextWidth(tStr)) div 2) + 2, SurfaceY(Top + (d.Height -dsurface.Canvas.TextHeight(tStr)) div 2) + 2, Color{clYellow}, clBlack, tStr);
@@ -5705,7 +5708,7 @@ begin
       (g_MySelf.m_boDeath) then begin
       FrmMain.AppLogOut;
    end else
-      DScreen.AddChatBoardString ('战斗中不能退出游戏..', clYellow, clRed);
+      DScreen.AddChatBoardString ('战斗中不能退出游戏', clYellow, clRed);
 end;
 
 procedure TFrmDlg.DBotExitClick(Sender: TObject; X, Y: Integer);
@@ -5721,7 +5724,7 @@ begin
       (g_MySelf.m_boDeath) then begin
       FrmMain.AppExit;
    end else
-      DScreen.AddChatBoardString ('战斗中不能退出游戏..', clYellow, clRed);
+      DScreen.AddChatBoardString ('战斗中不能退出游戏', clYellow, clRed);
 end;
 
 procedure TFrmDlg.DBotPlusAbilClick(Sender: TObject; X, Y: Integer);
@@ -6466,7 +6469,7 @@ begin
          end;
          if Length(data) > 5000 then begin
             data := Copy (data, 1, 5000);
-            DMessageDlg ('内容过多..', [mbOk]);
+            DMessageDlg ('内容过多', [mbOk]);
          end;
          FrmMain.SendGuildUpdateGrade (data);
       end;
@@ -6699,9 +6702,9 @@ begin
       l := DAdjustAbility.SurfaceX(DAdjustAbility.Left) + 36;
       m := DAdjustAbility.SurfaceY(DAdjustAbility.Top) + 22;
 
-      TextOut (l, m,      '恭喜你已经到了下一个等级...!');
-      TextOut (l, m+14,   '选择你想提高的能力...');
-      TextOut (l, m+14*2, '这样的选择你只可以做一次,最好能很小心地选择。');
+      TextOut (l, m,      '恭喜你已经到了下一个等级');
+      TextOut (l, m+14,   '选择你想提高的能力');
+      TextOut (l, m+14*2, '这样的选择你只可以做一次,最好能很小心地选择');
       TextOut (l, m+14*3, '.');
 
       Font.Color := clWhite;

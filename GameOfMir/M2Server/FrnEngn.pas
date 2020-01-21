@@ -260,6 +260,8 @@ begin
     boReTry:=True; //反回TRUE,则重新加入队列
     exit;
   end;
+  
+  //lzx2020 - for debug bag item count by davy 2020-1-17
   if not LoadHumRcdFromDB(LoadUser.sAccount,LoadUser.sCharName,LoadUser.sIPaddr,HumanRcd,LoadUser.nSessionID) then begin
     RunSocket.SendOutConnectMsg(LoadUser.nGateIdx,LoadUser.nSocket,LoadUser.nGSocketIdx);
   end else begin

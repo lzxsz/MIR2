@@ -141,11 +141,11 @@ var
 begin
    if not (csDesigning in ComponentState) then begin
       if FFileName = '' then begin
-         raise Exception.Create ('FileName not assigned..');
+         raise Exception.Create ('FileName not assigned');
          exit;
       end;
       if (LibType <> ltLoadBmp) and (FDDraw = nil) then begin
-         raise Exception.Create ('DDraw not assigned..');
+         raise Exception.Create ('DDraw not assigned');
          exit;
       end;
       if FileExists (FFileName) then begin

@@ -38,9 +38,9 @@ begin
   Application.Initialize;
   //Application.Title := 'legend of mir';
   Application.Title := '';
-  Application.CreateForm(TfrmMain, frmMain);   //主窗口
-  Application.CreateForm(TFrmDlg, FrmDlg);     //对话框
-  Application.CreateForm(TfrmDlgConfig, frmDlgConfig);   //
+  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TFrmDlg, FrmDlg);
+  Application.CreateForm(TfrmDlgConfig, frmDlgConfig);
   InitObj();
 
   g_nThisCRC := CalcFileCRC(Application.ExeName);
