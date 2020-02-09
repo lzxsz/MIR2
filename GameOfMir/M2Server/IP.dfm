@@ -1,6 +1,6 @@
 object FormIP: TFormIP
-  Left = 284
-  Top = 283
+  Left = 511
+  Top = 350
   Width = 290
   Height = 227
   Caption = #22320#21306#26597#35810
@@ -15,10 +15,10 @@ object FormIP: TFormIP
   TextHeight = 13
   object Label1: TLabel
     Left = 8
-    Top = 167
-    Width = 180
+    Top = 169
+    Width = 156
     Height = 12
-    Caption = #19979#36733#26368#26032'IP'#25968#25454#24211#25165#21487#20197#36827#34892#26597#35810
+    Caption = #35831#19979#36733#26368#26032'IP'#25968#25454#24211#36827#34892#26597#35810
     DragCursor = crHandPoint
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlue

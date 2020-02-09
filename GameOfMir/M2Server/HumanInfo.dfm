@@ -30,62 +30,62 @@ object frmHumanInfo: TfrmHumanInfo
       object GroupBox1: TGroupBox
         Left = 8
         Top = 13
-        Width = 201
+        Width = 207
         Height = 193
         Caption = #26597#30475#20449#24687
         TabOrder = 0
         object Label1: TLabel
-          Left = 8
-          Top = 19
+          Left = 10
+          Top = 22
           Width = 54
           Height = 12
           Caption = #20154#29289#21517#31216':'
         end
         object Label2: TLabel
-          Left = 8
-          Top = 43
+          Left = 10
+          Top = 46
           Width = 54
           Height = 12
           Caption = #25152#22312#22320#22270':'
         end
         object Label3: TLabel
-          Left = 8
-          Top = 67
+          Left = 10
+          Top = 70
           Width = 54
           Height = 12
           Caption = #25152#22312#24231#26631':'
         end
         object Label4: TLabel
-          Left = 8
-          Top = 91
+          Left = 10
+          Top = 94
           Width = 54
           Height = 12
           Caption = #30331#24405#24080#21495':'
         end
         object Label5: TLabel
-          Left = 8
-          Top = 115
+          Left = 10
+          Top = 118
           Width = 42
           Height = 12
           Caption = #30331#24405'IP:'
         end
         object Label6: TLabel
-          Left = 8
-          Top = 139
+          Left = 10
+          Top = 142
           Width = 54
           Height = 12
           Caption = #30331#24405#26102#38388':'
         end
         object Label7: TLabel
-          Left = 8
-          Top = 163
+          Left = 10
+          Top = 166
           Width = 54
           Height = 12
           Caption = #22312#32447#26102#38271':'
         end
         object EditName: TEdit
-          Left = 64
-          Top = 16
+          Left = 66
+          Top = 19
           Width = 129
           Height = 20
           ReadOnly = True
@@ -93,8 +93,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'EditName'
         end
         object EditMap: TEdit
-          Left = 64
-          Top = 40
+          Left = 66
+          Top = 43
           Width = 129
           Height = 20
           ReadOnly = True
@@ -102,8 +102,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'Edit1'
         end
         object EditXY: TEdit
-          Left = 64
-          Top = 64
+          Left = 66
+          Top = 67
           Width = 129
           Height = 20
           ReadOnly = True
@@ -111,8 +111,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'Edit1'
         end
         object EditAccount: TEdit
-          Left = 64
-          Top = 88
+          Left = 66
+          Top = 91
           Width = 129
           Height = 20
           ReadOnly = True
@@ -120,8 +120,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'Edit1'
         end
         object EditIPaddr: TEdit
-          Left = 64
-          Top = 112
+          Left = 66
+          Top = 115
           Width = 129
           Height = 20
           ReadOnly = True
@@ -129,8 +129,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'Edit1'
         end
         object EditLogonTime: TEdit
-          Left = 64
-          Top = 136
+          Left = 66
+          Top = 139
           Width = 129
           Height = 20
           ReadOnly = True
@@ -138,8 +138,8 @@ object frmHumanInfo: TfrmHumanInfo
           Text = 'Edit1'
         end
         object EditLogonLong: TEdit
-          Left = 64
-          Top = 160
+          Left = 66
+          Top = 163
           Width = 129
           Height = 20
           ReadOnly = True
@@ -154,42 +154,42 @@ object frmHumanInfo: TfrmHumanInfo
       object GroupBox2: TGroupBox
         Left = 8
         Top = 8
-        Width = 153
+        Width = 180
         Height = 121
         Caption = #21487#35843#23646#24615
         TabOrder = 0
         object Label12: TLabel
           Left = 8
-          Top = 18
+          Top = 20
           Width = 30
           Height = 12
           Caption = #31561#32423':'
         end
         object Label8: TLabel
           Left = 8
-          Top = 42
+          Top = 44
           Width = 42
           Height = 12
           Caption = #37329#24065#25968':'
         end
         object Label9: TLabel
           Left = 8
-          Top = 66
+          Top = 68
           Width = 42
           Height = 12
           Caption = 'PK'#28857#25968':'
         end
         object Label10: TLabel
           Left = 8
-          Top = 90
+          Top = 92
           Width = 54
           Height = 12
           Caption = #24403#21069#32463#39564':'
         end
         object EditLevel: TSpinEdit
           Left = 68
-          Top = 15
-          Width = 69
+          Top = 17
+          Width = 100
           Height = 21
           MaxValue = 20000
           MinValue = 0
@@ -198,8 +198,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditGold: TSpinEdit
           Left = 68
-          Top = 39
-          Width = 69
+          Top = 41
+          Width = 100
           Height = 21
           Increment = 1000
           MaxValue = 200000000
@@ -209,8 +209,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditPKPoint: TSpinEdit
           Left = 68
-          Top = 63
-          Width = 69
+          Top = 65
+          Width = 100
           Height = 21
           Increment = 50
           MaxValue = 20000
@@ -220,8 +220,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditExp: TSpinEdit
           Left = 68
-          Top = 87
-          Width = 69
+          Top = 89
+          Width = 100
           Height = 21
           EditorEnabled = False
           Enabled = False
@@ -234,7 +234,7 @@ object frmHumanInfo: TfrmHumanInfo
       object GroupBox6: TGroupBox
         Left = 8
         Top = 136
-        Width = 153
+        Width = 182
         Height = 73
         Caption = #20154#29289#29366#24577
         TabOrder = 1
@@ -264,43 +264,43 @@ object frmHumanInfo: TfrmHumanInfo
         end
       end
       object GroupBox9: TGroupBox
-        Left = 168
+        Left = 200
         Top = 8
-        Width = 153
+        Width = 180
         Height = 201
         Caption = #21487#35843#23646#24615
         TabOrder = 2
         object Label26: TLabel
           Left = 8
-          Top = 18
+          Top = 22
           Width = 42
           Height = 12
           Caption = #28216#25103#24065':'
         end
         object Label27: TLabel
           Left = 8
-          Top = 42
+          Top = 46
           Width = 42
           Height = 12
           Caption = #28216#25103#28857':'
         end
         object Label28: TLabel
           Left = 8
-          Top = 66
+          Top = 70
           Width = 42
           Height = 12
           Caption = #22768#26395#28857':'
         end
         object Label29: TLabel
           Left = 8
-          Top = 90
+          Top = 94
           Width = 54
           Height = 12
           Caption = #23646#24615#28857#19968':'
         end
         object Label19: TLabel
           Left = 8
-          Top = 114
+          Top = 118
           Width = 54
           Height = 12
           Hint = #24050#20998#37197#23646#24615#28857#25968'.'
@@ -308,8 +308,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditGameGold: TSpinEdit
           Left = 68
-          Top = 15
-          Width = 69
+          Top = 19
+          Width = 100
           Height = 21
           MaxValue = 20000000
           MinValue = 0
@@ -318,8 +318,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditGamePoint: TSpinEdit
           Left = 68
-          Top = 39
-          Width = 69
+          Top = 43
+          Width = 100
           Height = 21
           MaxValue = 200000000
           MinValue = 0
@@ -328,8 +328,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditCreditPoint: TSpinEdit
           Left = 68
-          Top = 63
-          Width = 69
+          Top = 67
+          Width = 100
           Height = 21
           MaxValue = 255
           MinValue = 0
@@ -338,8 +338,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditBonusPoint: TSpinEdit
           Left = 68
-          Top = 87
-          Width = 69
+          Top = 91
+          Width = 100
           Height = 21
           Hint = #26410#20998#37197#23646#24615#28857
           MaxValue = 2000000
@@ -349,8 +349,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditEditBonusPointUsed: TSpinEdit
           Left = 68
-          Top = 111
-          Width = 69
+          Top = 115
+          Width = 100
           Height = 21
           Hint = #26410#20998#37197#23646#24615#28857
           EditorEnabled = False
@@ -368,63 +368,63 @@ object frmHumanInfo: TfrmHumanInfo
       object GroupBox3: TGroupBox
         Left = 8
         Top = 8
-        Width = 153
+        Width = 171
         Height = 193
         Caption = #20154#29289#23646#24615
         TabOrder = 0
         object Label11: TLabel
           Left = 8
-          Top = 19
+          Top = 22
           Width = 30
           Height = 12
           Caption = #38450#24481':'
         end
         object Label13: TLabel
           Left = 8
-          Top = 43
+          Top = 46
           Width = 30
           Height = 12
           Caption = #39764#38450':'
         end
         object Label14: TLabel
           Left = 8
-          Top = 67
+          Top = 70
           Width = 42
           Height = 12
           Caption = #25915#20987#21147':'
         end
         object Label15: TLabel
           Left = 8
-          Top = 91
+          Top = 94
           Width = 30
           Height = 12
           Caption = #39764#27861':'
         end
         object Label16: TLabel
           Left = 8
-          Top = 115
+          Top = 118
           Width = 30
           Height = 12
           Caption = #36947#26415':'
         end
         object Label17: TLabel
           Left = 8
-          Top = 139
+          Top = 142
           Width = 42
           Height = 12
           Caption = #29983#21629#20540':'
         end
         object Label18: TLabel
           Left = 8
-          Top = 163
+          Top = 166
           Width = 42
           Height = 12
           Caption = #39764#27861#20540':'
         end
         object EditAC: TEdit
           Left = 56
-          Top = 16
-          Width = 81
+          Top = 19
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 0
@@ -432,8 +432,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditMAC: TEdit
           Left = 56
-          Top = 40
-          Width = 81
+          Top = 43
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 1
@@ -441,8 +441,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditDC: TEdit
           Left = 56
-          Top = 64
-          Width = 81
+          Top = 67
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 2
@@ -450,8 +450,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditMC: TEdit
           Left = 56
-          Top = 88
-          Width = 81
+          Top = 91
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 3
@@ -459,8 +459,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditSC: TEdit
           Left = 56
-          Top = 112
-          Width = 81
+          Top = 115
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 4
@@ -468,8 +468,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditHP: TEdit
           Left = 56
-          Top = 136
-          Width = 81
+          Top = 139
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 5
@@ -477,8 +477,8 @@ object frmHumanInfo: TfrmHumanInfo
         end
         object EditMP: TEdit
           Left = 56
-          Top = 160
-          Width = 81
+          Top = 163
+          Width = 100
           Height = 20
           ReadOnly = True
           TabOrder = 6
@@ -490,16 +490,16 @@ object frmHumanInfo: TfrmHumanInfo
       Caption = #36523#19978#35013#22791
       ImageIndex = 3
       object GroupBox7: TGroupBox
-        Left = 8
+        Left = 5
         Top = 8
-        Width = 609
+        Width = 617
         Height = 201
         Caption = #35013#22791#21015#34920
         TabOrder = 0
         object GridUserItem: TStringGrid
           Left = 8
           Top = 16
-          Width = 593
+          Width = 600
           Height = 177
           ColCount = 10
           DefaultColWidth = 55
@@ -510,14 +510,14 @@ object frmHumanInfo: TfrmHumanInfo
           ColWidths = (
             55
             67
-            63
+            67
             68
             45
             45
             44
             43
             46
-            87)
+            88)
         end
       end
     end
@@ -525,16 +525,16 @@ object frmHumanInfo: TfrmHumanInfo
       Caption = #32972#21253#29289#21697
       ImageIndex = 4
       object GroupBox8: TGroupBox
-        Left = 8
+        Left = 5
         Top = 8
-        Width = 609
+        Width = 617
         Height = 201
         Caption = #35013#22791#21015#34920
         TabOrder = 0
         object GridBagItem: TStringGrid
           Left = 8
           Top = 16
-          Width = 593
+          Width = 600
           Height = 177
           ColCount = 10
           DefaultColWidth = 55
@@ -545,7 +545,7 @@ object frmHumanInfo: TfrmHumanInfo
           ColWidths = (
             55
             67
-            63
+            67
             68
             45
             45
@@ -560,16 +560,16 @@ object frmHumanInfo: TfrmHumanInfo
       Caption = #20179#24211#29289#21697
       ImageIndex = 5
       object GroupBox10: TGroupBox
-        Left = 8
+        Left = 5
         Top = 8
-        Width = 609
+        Width = 617
         Height = 201
         Caption = #35013#22791#21015#34920
         TabOrder = 0
         object GridStorageItem: TStringGrid
           Left = 8
           Top = 16
-          Width = 593
+          Width = 600
           Height = 177
           ColCount = 10
           DefaultColWidth = 55
@@ -581,7 +581,7 @@ object frmHumanInfo: TfrmHumanInfo
           ColWidths = (
             55
             67
-            63
+            67
             67
             45
             45
@@ -596,12 +596,12 @@ object frmHumanInfo: TfrmHumanInfo
   object GroupBox4: TGroupBox
     Left = 8
     Top = 256
-    Width = 145
+    Width = 140
     Height = 73
     Caption = #25511#21046
     TabOrder = 1
     object CheckBoxMonitor: TCheckBox
-      Left = 8
+      Left = 13
       Top = 16
       Width = 89
       Height = 17
@@ -610,9 +610,9 @@ object frmHumanInfo: TfrmHumanInfo
       OnClick = CheckBoxMonitorClick
     end
     object ButtonKick: TButton
-      Left = 8
-      Top = 40
-      Width = 65
+      Left = 13
+      Top = 39
+      Width = 80
       Height = 25
       Caption = #36386#19979#32447
       TabOrder = 1
@@ -620,14 +620,14 @@ object frmHumanInfo: TfrmHumanInfo
     end
   end
   object GroupBox5: TGroupBox
-    Left = 160
+    Left = 164
     Top = 256
-    Width = 121
+    Width = 140
     Height = 73
     Caption = #24403#21069#29366#24577
     TabOrder = 2
     object EditHumanStatus: TEdit
-      Left = 8
+      Left = 14
       Top = 24
       Width = 105
       Height = 20
@@ -636,10 +636,10 @@ object frmHumanInfo: TfrmHumanInfo
     end
   end
   object ButtonSave: TButton
-    Left = 336
-    Top = 296
-    Width = 65
-    Height = 25
+    Left = 407
+    Top = 284
+    Width = 80
+    Height = 30
     Caption = #20462#25913#25968#25454
     TabOrder = 3
     OnClick = ButtonSaveClick
@@ -647,7 +647,7 @@ object frmHumanInfo: TfrmHumanInfo
   object Timer: TTimer
     Enabled = False
     OnTimer = TimerTimer
-    Left = 144
-    Top = 264
+    Left = 320
+    Top = 260
   end
 end

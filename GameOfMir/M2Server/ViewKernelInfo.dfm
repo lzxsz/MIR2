@@ -50,17 +50,17 @@ object frmViewKernelInfo: TfrmViewKernelInfo
           Caption = #20869#23384#22359#25968#37327':'
         end
         object EditAllocMemCount: TEdit
-          Left = 88
+          Left = 79
           Top = 40
-          Width = 73
+          Width = 98
           Height = 20
           ReadOnly = True
           TabOrder = 0
         end
         object EditAllocMemSize: TEdit
-          Left = 88
+          Left = 79
           Top = 16
-          Width = 73
+          Width = 98
           Height = 20
           ReadOnly = True
           TabOrder = 1
@@ -72,7 +72,7 @@ object frmViewKernelInfo: TfrmViewKernelInfo
       object GroupBox1: TGroupBox
         Left = 8
         Top = 4
-        Width = 153
+        Width = 179
         Height = 121
         Caption = #28216#25103#25968#25454#24211
         TabOrder = 0
@@ -107,7 +107,7 @@ object frmViewKernelInfo: TfrmViewKernelInfo
         object EditLoadHumanDBCount: TEdit
           Left = 88
           Top = 16
-          Width = 57
+          Width = 80
           Height = 20
           ReadOnly = True
           TabOrder = 0
@@ -115,7 +115,7 @@ object frmViewKernelInfo: TfrmViewKernelInfo
         object EditLoadHumanDBErrorCoun: TEdit
           Left = 88
           Top = 40
-          Width = 57
+          Width = 80
           Height = 20
           ReadOnly = True
           TabOrder = 1
@@ -123,7 +123,7 @@ object frmViewKernelInfo: TfrmViewKernelInfo
         object EditSaveHumanDBCount: TEdit
           Left = 88
           Top = 64
-          Width = 57
+          Width = 80
           Height = 20
           ReadOnly = True
           TabOrder = 2
@@ -131,14 +131,14 @@ object frmViewKernelInfo: TfrmViewKernelInfo
         object EditHumanDBQueryID: TEdit
           Left = 88
           Top = 88
-          Width = 57
+          Width = 80
           Height = 20
           ReadOnly = True
           TabOrder = 3
         end
       end
       object GroupBox4: TGroupBox
-        Left = 168
+        Left = 194
         Top = 4
         Width = 177
         Height = 69
@@ -173,146 +173,6 @@ object frmViewKernelInfo: TfrmViewKernelInfo
           Height = 20
           ReadOnly = True
           TabOrder = 1
-        end
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = #24425#31080#25968#25454
-      ImageIndex = 1
-      object GroupBox2: TGroupBox
-        Left = 8
-        Top = 4
-        Width = 153
-        Height = 77
-        Caption = #20013#22870#25968#37327
-        TabOrder = 0
-        object Label5: TLabel
-          Left = 8
-          Top = 20
-          Width = 54
-          Height = 12
-          Caption = #20013#22870#24635#25968':'
-        end
-        object Label6: TLabel
-          Left = 8
-          Top = 44
-          Width = 54
-          Height = 12
-          Caption = #26410#20013#22870#25968':'
-        end
-        object EditWinLotteryCount: TEdit
-          Left = 88
-          Top = 16
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 0
-        end
-        object EditNoWinLotteryCount: TEdit
-          Left = 88
-          Top = 40
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 1
-        end
-      end
-      object GroupBox3: TGroupBox
-        Left = 168
-        Top = 4
-        Width = 129
-        Height = 165
-        Caption = #20013#22870#27604#20363
-        TabOrder = 1
-        object Label9: TLabel
-          Left = 8
-          Top = 20
-          Width = 42
-          Height = 12
-          Caption = #19968#31561#22870':'
-        end
-        object Label10: TLabel
-          Left = 8
-          Top = 44
-          Width = 42
-          Height = 12
-          Caption = #20108#31561#22870':'
-        end
-        object Label11: TLabel
-          Left = 8
-          Top = 68
-          Width = 42
-          Height = 12
-          Caption = #19977#31561#22870':'
-        end
-        object Label12: TLabel
-          Left = 8
-          Top = 92
-          Width = 42
-          Height = 12
-          Caption = #22235#31561#22870':'
-        end
-        object Label13: TLabel
-          Left = 8
-          Top = 116
-          Width = 42
-          Height = 12
-          Caption = #20116#31561#22870':'
-        end
-        object Label14: TLabel
-          Left = 8
-          Top = 140
-          Width = 42
-          Height = 12
-          Caption = #20845#31561#22870':'
-        end
-        object EditWinLotteryLevel1: TEdit
-          Left = 56
-          Top = 16
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 0
-        end
-        object EditWinLotteryLevel2: TEdit
-          Left = 56
-          Top = 40
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 1
-        end
-        object EditWinLotteryLevel3: TEdit
-          Left = 56
-          Top = 64
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 2
-        end
-        object EditWinLotteryLevel4: TEdit
-          Left = 56
-          Top = 88
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 3
-        end
-        object EditWinLotteryLevel5: TEdit
-          Left = 56
-          Top = 112
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 4
-        end
-        object EditWinLotteryLevel6: TEdit
-          Left = 56
-          Top = 136
-          Width = 57
-          Height = 20
-          ReadOnly = True
-          TabOrder = 5
         end
       end
     end

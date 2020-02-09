@@ -25,15 +25,15 @@ object frmViewLevel: TfrmViewLevel
     TabOrder = 0
     object Label4: TLabel
       Left = 8
-      Top = 20
+      Top = 23
       Width = 30
       Height = 12
       Caption = #31561#32423':'
     end
     object EditHumanLevel: TSpinEdit
       Left = 44
-      Top = 15
-      Width = 45
+      Top = 18
+      Width = 51
       Height = 21
       EditorEnabled = False
       MaxValue = 0
@@ -45,21 +45,21 @@ object frmViewLevel: TfrmViewLevel
   end
   object GroupBox1: TGroupBox
     Left = 8
-    Top = 64
+    Top = 69
     Width = 121
-    Height = 49
+    Height = 53
     Caption = #20154#29289#32844#19994
     TabOrder = 1
     object Label1: TLabel
       Left = 8
-      Top = 20
+      Top = 23
       Width = 30
       Height = 12
       Caption = #32844#19994':'
     end
     object ComboBoxJob: TComboBox
       Left = 40
-      Top = 16
+      Top = 21
       Width = 73
       Height = 20
       Style = csDropDownList
@@ -104,7 +104,7 @@ object frmViewLevel: TfrmViewLevel
   end
   object ButtonClose: TButton
     Left = 32
-    Top = 152
+    Top = 222
     Width = 65
     Height = 25
     Caption = #20851#38381'(&C)'

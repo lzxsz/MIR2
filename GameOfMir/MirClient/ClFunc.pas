@@ -1,5 +1,6 @@
 unit ClFunc;
 //辅助函数库
+
 interface
 
 uses
@@ -615,21 +616,23 @@ begin
    end;
 end;
 
+//获取位置上所放装备的种类
 function  GetTakeOnPosition (smode: integer): integer;
 begin
    Result := -1;
-   case smode of //StdMode
-      5, 6     :Result := U_WEAPON;//武器
-      10, 11   :Result := U_DRESS; //衣服
-      15,16    :Result := U_HELMET; //头盔
-      19,20,21 :Result := U_NECKLACE; //项链
-      22,23    :Result := U_RINGL; //戒指
-      24,26    :Result := U_ARMRINGR; //手镯
-      30,28,29 :Result := U_RIGHTHAND;
-      25,51    :Result := U_BUJUK; //符
-      52,62    :Result := U_BOOTS; //鞋
-      53,63    :Result := U_CHARM; //宝石
-      54,64    :Result := U_BELT;  //腰带
+   case smode of //StdMode  物品种类（看数据库字段StdMode）
+      5, 6     :Result := U_WEAPON;    //武器
+      10, 11   :Result := U_DRESS;     //衣服
+      15,16    :Result := U_HELMET;    //头盔
+      19,20,21 :Result := U_NECKLACE;  //项链
+      22,23    :Result := U_RINGL;     //戒指
+      24,26    :Result := U_ARMRINGR;  //手镯
+      30,28,29 :Result := U_RIGHTHAND; //右手   (30荣誉勋章,蜡烛,火把); 28,29 在1.50版未定义
+      25,51    :Result := U_BUJUK;     //护身符 (25护身符和毒), 51在1.50版未定义
+
+//      52,62    :Result := U_BOOTS; //鞋
+//      53,63    :Result := U_CHARM; //宝石
+//      54,64    :Result := U_BELT;  //腰带
    end;
 end;
 

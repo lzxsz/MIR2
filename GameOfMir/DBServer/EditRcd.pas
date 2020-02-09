@@ -110,9 +110,10 @@ begin
   EditChrName.Text    :=m_ChrRcd.Data.sChrName;
   EditAccount.Text    :=m_ChrRcd.Data.sAccount;
   EditPassword.Text   :=m_ChrRcd.Data.sStoragePwd;
-  EditDearName.Text   :=m_ChrRcd.Data.sDearName;
-  EditMasterName.Text :=m_ChrRcd.Data.sMasterName;
-  CheckBoxIsMaster.Checked:=m_ChrRcd.Data.boMaster;
+
+//  EditDearName.Text   :=m_ChrRcd.Data.sDearName;
+//  EditMasterName.Text :=m_ChrRcd.Data.sMasterName;
+//  CheckBoxIsMaster.Checked:=m_ChrRcd.Data.boMaster;
 
   EditCurMap.Text     :=m_ChrRcd.Data.sCurMap;
   EditCurX.Value      :=m_ChrRcd.Data.wCurX;
@@ -355,15 +356,18 @@ begin
   if Sender = EditPassword then begin
     m_ChrRcd.Data.sStoragePwd:=Trim(EditPassword.Text);
   end else
-  if Sender = EditDearName then begin
-    m_ChrRcd.Data.sDearName:=Trim(EditDearName.Text);
-  end else
-  if Sender = EditMasterName then begin
-    m_ChrRcd.Data.sMasterName:=Trim(EditMasterName.Text);
-  end else
-  if Sender = CheckBoxIsMaster then begin
-    m_ChrRcd.Data.boMaster:=CheckBoxIsMaster.Checked;
-  end else
+
+//取消结婚 与 师徒系统的相关功能
+//  if Sender = EditDearName then begin
+//    m_ChrRcd.Data.sDearName:=Trim(EditDearName.Text);
+//  end else
+//  if Sender = EditMasterName then begin
+//   m_ChrRcd.Data.sMasterName:=Trim(EditMasterName.Text);
+//  end else
+//  if Sender = CheckBoxIsMaster then begin
+//    m_ChrRcd.Data.boMaster:=CheckBoxIsMaster.Checked;
+//  end else
+
   if Sender = EditCurMap then begin
     m_ChrRcd.Data.sCurMap:=Trim(EditCurMap.Text);
   end else

@@ -1,5 +1,7 @@
 unit FState;
-//本单元提供系统中的所有对话框显示
+//本单元提供系统中的所有对话框显示, 如f11,,f9等快捷键调出的子窗口等
+//结合DWinCtl.pas和delphix中的绘图函数绘制各个子窗口在DDraw下真实效果的模块
+
 interface
 
 uses
@@ -8,12 +10,15 @@ uses
   MapUnit, SoundUtil;
 
 const
-   BOTTOMBOARD800 = 1;//主操作介面图形号
-   BOTTOMBOARD1024 = 2;//主操作介面图形号
-   VIEWCHATLINE = 9;
+   BOTTOMBOARD800  = 1;  //主操作介面图形号
+   BOTTOMBOARD1024 = 2;  //主操作介面图形号
+
+   VIEWCHATLINE = 8; //9;   //聊天信息框最大显示行数 (用于聊天文本显示)
+
    MAXSTATEPAGE = 4;
-   LISTLINEHEIGHT = 13;
-   MAXMENU = 10;
+
+   LISTLINEHEIGHT = 13;  //销售列表框字行高度
+   MAXMENU = 10;        //销售列表框每页最大物品数量
 
    AdjustAbilHints : array[0..8] of string = (
       '物理攻击力',
@@ -102,6 +107,7 @@ type
     DSWWeapon: TDButton;
     DSWDress: TDButton;
     DSWHelmet: TDButton;
+    
     DSWBujuk: TDButton;
     DSWBelt: TDButton;
     DSWBoots: TDButton;
@@ -481,15 +487,12 @@ type
     procedure DGDBreakAllyClick(Sender: TObject; X, Y: Integer);
     procedure DSelServerDlgDirectPaint(Sender: TObject;
       dsurface: TDirectDrawSurface);
-    procedure DBotMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure DFrdFriendDirectPaint(Sender: TObject;
-      dsurface: TDirectDrawSurface);
+    procedure DBotMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure DFrdFriendDirectPaint(Sender: TObject; dsurface: TDirectDrawSurface);
     procedure DBotFriendClick(Sender: TObject; X, Y: Integer);
     procedure DFrdCloseClick(Sender: TObject; X, Y: Integer);
     procedure DChgGamePwdCloseClick(Sender: TObject; X, Y: Integer);
-    procedure DChgGamePwdDirectPaint(Sender: TObject;
-      dsurface: TDirectDrawSurface);
+    procedure DChgGamePwdDirectPaint(Sender: TObject; dsurface: TDirectDrawSurface);
 
   private
     DlgTemp: TList;
@@ -1059,7 +1062,16 @@ begin
       DSWDress.Width := 53;
       DSWDress.Height := 112;
 
-//      DSWBujuk.Left := 25;         //毒
+
+//取消 1.70版增的4个装备的位置
+//      //护身符 或 毒药 修改的坐标，这个坐标将护身符或毒药放到颈链上面
+//      DSWBujuk.Left := 38 + 131;;   //护身符、毒药 (1.70版增的位置)
+//      DSWBujuk.Top  := 52+2;
+//      DSWBujuk.Width := 34;
+//      DSWBujuk.Height := 30;
+
+//      护身符或毒药 原来的坐标
+//      DSWBujuk.Left := 25;         //护身符、毒 (1.70版增的位置)
 //      DSWBujuk.Top  := 232;
 //      DSWBujuk.Width := 34;
 //      DSWBujuk.Height := 30;
@@ -1079,8 +1091,11 @@ begin
 //      DSWCharm.Width := 34;
 //      DSWCharm.Height := 30;
 
+//注意：这里只是设置装备的显示坐标，绘画装备和选取在以下这三个函数：
+// TFrmDlg.DStateWinDirectPaint() 画衣服、武器等
+// TFrmDlg.DSWLightDirectPaint()  画手镯、戒指等
+// TFrmDlg.DSWWeaponClick()       点击选取装备
 
- 
       //下面是魔法技能 按钮
       DStMag1.Left := 46;
       DStMag1.Top  := 59;
@@ -1192,7 +1207,8 @@ begin
       DDressUS1.Width := 53;
       DDressUS1.Height := 112;
 
-//      DBujukUS1.Left := 42;        //毒
+//传奇1.70版增加的4个装备方格     
+//      DBujukUS1.Left := 42;        //毒药或护身符
 //      DBujukUS1.Top  := 254;
 //      DBujukUS1.Width := 34;
 //      DBujukUS1.Height := 30;
@@ -1838,8 +1854,6 @@ end;
 
 {------------------------------------------------------------------------}
 
-
-
 //声音 窗口
 procedure TFrmDlg.OpenSoundOption;
 begin
@@ -2003,7 +2017,6 @@ end;
 {------------------------------------------------------------------------}
 
 ////显示通用对话框
-
 
 function  TFrmDlg.DMessageDlg (msgstr: string; DlgButtons: TMsgDlgButtons): TModalResult;
 const
@@ -2321,7 +2334,8 @@ try
       end;
 
       //Color:=clYellow;
-      Color:=TColor($80FFFF); //浅黄色
+     // Color:=TColor($33CCFF);
+      Color:=TColor($80FFFF);   //浅黄色
 
      {--
       case nStatus of
@@ -2855,16 +2869,13 @@ begin
 end;
 
 
-
-
-
 {------------------------------------------------------------------------}
 
 //人物相关...
 
 {------------------------------------------------------------------------}
 
-//人物窗口（装备、魔状态、技能）
+//画人物窗口，装备（发型，服装、武器，头盔）、魔状态、技能
 procedure TFrmDlg.DStateWinDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -3141,15 +3152,16 @@ begin
    end;
 end;
 
-procedure TFrmDlg.DSWLightDirectPaint(Sender: TObject;
-  dsurface: TDirectDrawSurface);
+
+//绘方格上的装备：颈链、火把、手镯、戒指、右手、毒药或护身符
+procedure TFrmDlg.DSWLightDirectPaint(Sender: TObject; dsurface: TDirectDrawSurface);
 var
    idx: integer;
    d: TDirectDrawSurface;
    tidx:integer;
 begin
    if StatePage = 0 then begin
-      if Sender = DSWNecklace then begin
+      if Sender = DSWNecklace then begin     //颈链
          if g_UseItems[U_NECKLACE].S.Name <> '' then begin
             idx := g_UseItems[U_NECKLACE].S.Looks;
             if idx >= 0 then begin
@@ -3162,7 +3174,7 @@ begin
             end;
          end;
       end;
-      if Sender = DSWLight then begin
+      if Sender = DSWLight then begin        //火把
          if g_UseItems[U_RIGHTHAND].S.Name <> '' then begin
             idx := g_UseItems[U_RIGHTHAND].S.Looks;
             if idx >= 0 then begin
@@ -3175,7 +3187,7 @@ begin
             end;
          end;
       end;
-      if Sender = DSWArmRingR then begin
+      if Sender = DSWArmRingR then begin    //右手镯
          if g_UseItems[U_ARMRINGR].S.Name <> '' then begin
             idx := g_UseItems[U_ARMRINGR].S.Looks;
             if idx >= 0 then begin
@@ -3188,7 +3200,7 @@ begin
             end;
          end;
       end;
-      if Sender = DSWArmRingL then begin
+      if Sender = DSWArmRingL then begin      //左手镯
          if g_UseItems[U_ARMRINGL].S.Name <> '' then begin
             idx := g_UseItems[U_ARMRINGL].S.Looks;
             if idx >= 0 then begin
@@ -3201,7 +3213,7 @@ begin
             end;
          end;
       end;
-      if Sender = DSWRingR then begin
+      if Sender = DSWRingR then begin    //右戒指
          if g_UseItems[U_RINGR].S.Name <> '' then begin
             idx := g_UseItems[U_RINGR].S.Looks;
             if idx >= 0 then begin
@@ -3214,7 +3226,7 @@ begin
             end;
          end;
       end;
-      if Sender = DSWRingL then begin
+      if Sender = DSWRingL then begin     //左戒指
          if g_UseItems[U_RINGL].S.Name <> '' then begin
             idx := g_UseItems[U_RINGL].S.Looks;
             if idx >= 0 then begin
@@ -3228,7 +3240,10 @@ begin
          end;
       end;
 
-      if Sender = DSWBujuk then begin
+
+//取消 传奇1.70版增加的4个装备方格 的图标绘制
+{
+      if Sender = DSWBujuk then begin      //右手 (可放毒药或护身符)  //1.70版增加的专用于放置护身符和毒药的位置
          if g_UseItems[U_BUJUK].S.Name <> '' then begin
             idx := g_UseItems[U_BUJUK].S.Looks;
             if idx >= 0 then begin
@@ -3283,9 +3298,175 @@ begin
             end;
          end;
       end;
+}
 
    end;
 end;
+
+
+//点击选取人物身上的装备：武器、衣服、头盔、手镯、戒指、护身符(或毒药)
+procedure TFrmDlg.DSWWeaponClick(Sender: TObject; X, Y: Integer);
+var
+   where, n, sel: integer;
+   flag, movcancel: Boolean;
+begin
+   if g_MySelf = nil then exit;
+   if StatePage <> 0 then exit;
+   if g_boItemMoving then begin
+      flag := FALSE;
+      movcancel := FALSE;
+      if (g_MovingItem.Index = -97) or (g_MovingItem.Index = -98) then exit;
+      if (g_MovingItem.Item.S.Name = '') or (g_WaitingUseItem.Item.S.Name <> '') then exit;
+      where := GetTakeOnPosition (g_MovingItem.Item.S.StdMode);
+      if g_MovingItem.Index >= 0 then begin
+         case where of
+            U_DRESS: begin  //衣服
+               if Sender = DSWDress then begin   
+                  if g_MySelf.m_btSex = 0 then //男的
+                     if g_MovingItem.Item.S.StdMode <> 10 then
+                        exit;
+                  if g_MySelf.m_btSex = 1 then //女的
+                     if g_MovingItem.Item.S.StdMode <> 11 then
+                        exit;
+                  flag := TRUE;
+               end;
+            end;
+            U_WEAPON: begin     //武器
+               if Sender = DSWWEAPON then begin
+                  flag := TRUE;
+               end;
+            end;
+            U_NECKLACE: begin    //项链
+               if Sender = DSWNecklace then
+                  flag := TRUE;
+            end;
+            U_RIGHTHAND: begin  //右手
+               if Sender = DSWLight then
+                  flag := TRUE;
+            end;
+            U_HELMET: begin     //头盔
+               if Sender = DSWHelmet then
+                  flag := TRUE;
+            end;
+            U_RINGR, U_RINGL: begin 
+               if Sender = DSWRingL then begin    //左戒指
+                  where := U_RINGL;
+                  flag := TRUE;
+               end;
+               if Sender = DSWRingR then begin   //右戒指
+                  where := U_RINGR;
+                  flag := TRUE;
+               end;
+            end;
+            U_ARMRINGR: begin  //手镯 （右）
+               if Sender = DSWArmRingL then begin   //左手镯
+                  where := U_ARMRINGL;
+                  flag := TRUE;
+               end;
+               if Sender = DSWArmRingR then begin   //右手镯
+                  where := U_ARMRINGR;
+                  flag := TRUE;
+               end;
+            end;
+            U_ARMRINGL: begin  //左手镯
+               if Sender = DSWArmRingL then begin
+                  where := U_ARMRINGL;
+                  flag := TRUE;
+               end;
+            end;
+
+//注意：U_BUJUK 是护身符的标签，是在1.5版就有的这个不能取消，但可取消1.70增加的存放护身符和毒药的特定位置的选取
+           U_BUJUK: begin    //护身符
+
+              // 取消 传奇1.70版增加 护身符或毒 特定位置 的选取
+              {
+               if Sender = DSWBujuk then begin     //护身符或毒 （1.70增加的存放护身符和毒药的特定位置）
+                  where := U_BUJUK;
+                  flag := TRUE;
+               end;
+               }
+
+               if Sender = DSWArmRingL then begin   //左手镯
+                  where := U_ARMRINGL;
+                  flag := TRUE;
+               end;
+            end;
+
+//取消 传奇1.70版增加的3个装备的选取，同时上面的语句也取消了护身符或毒 特定位置的选取
+{
+            U_BELT: begin
+               if Sender = DSWBelt then begin
+                  where := U_BELT;
+                  flag := TRUE;
+               end;
+            end;
+            U_BOOTS: begin
+               if Sender = DSWBoots then begin
+                  where := U_BOOTS;
+                  flag := TRUE;
+               end;
+            end;
+            U_CHARM: begin
+               if Sender = DSWCharm then begin
+                  where := U_CHARM;
+                  flag := TRUE;
+               end;
+            end;
+ }
+
+        end;
+
+      end else begin
+         n := -(g_MovingItem.Index+1);
+         if n in [0..12] then begin
+            ItemClickSound (g_MovingItem.Item.S);
+            g_UseItems[n] := g_MovingItem.Item;
+            g_MovingItem.Item.S.Name := '';
+            g_boItemMoving := FALSE;
+         end;
+      end;
+
+      if flag then begin
+         ItemClickSound (g_MovingItem.Item.S);
+         g_WaitingUseItem := g_MovingItem;
+         g_WaitingUseItem.Index := where;
+
+         FrmMain.SendTakeOnItem (where, g_MovingItem.Item.MakeIndex, g_MovingItem.Item.S.Name);
+         g_MovingItem.Item.S.Name := '';
+         g_boItemMoving := FALSE;
+      end;
+   end else begin
+      flag := FALSE;
+      if (g_MovingItem.Item.S.Name <> '') or (g_WaitingUseItem.Item.S.Name <> '') then exit;
+      sel := -1;
+      if Sender = DSWDress then sel := U_DRESS;
+      if Sender = DSWWeapon then sel := U_WEAPON;
+      if Sender = DSWHelmet then sel := U_HELMET;
+      if Sender = DSWNecklace then sel := U_NECKLACE;
+      if Sender = DSWLight then sel := U_RIGHTHAND;
+      if Sender = DSWRingL then sel := U_RINGL;
+      if Sender = DSWRingR then sel := U_RINGR;
+      if Sender = DSWArmRingL then sel := U_ARMRINGL;
+      if Sender = DSWArmRingR then sel := U_ARMRINGR;
+
+//取消 传奇1.70版增加的4个装备的赋值
+//      if Sender = DSWBujuk then sel := U_BUJUK;
+//      if Sender = DSWBelt then sel := U_BELT; 
+//      if Sender = DSWBoots then sel := U_BOOTS;
+//      if Sender = DSWCharm then sel := U_CHARM;
+
+      if sel >= 0 then begin
+         if g_UseItems[sel].S.Name <> '' then begin
+            ItemClickSound (g_UseItems[sel].S);
+            g_MovingItem.Index := -(sel+1);
+            g_MovingItem.Item := g_UseItems[sel];
+            g_UseItems[sel].S.Name := '';
+            g_boItemMoving := TRUE;
+         end;
+      end;
+   end;
+end;
+
 
 procedure TFrmDlg.DStateWinClick(Sender: TObject; X, Y: Integer);
 begin
@@ -3360,153 +3541,6 @@ begin
    PageChanged;
 end;
 
-//点击武器、衣服等装备
-procedure TFrmDlg.DSWWeaponClick(Sender: TObject; X, Y: Integer);
-var
-   where, n, sel: integer;
-   flag, movcancel: Boolean;
-begin
-   if g_MySelf = nil then exit;
-   if StatePage <> 0 then exit;
-   if g_boItemMoving then begin
-      flag := FALSE;
-      movcancel := FALSE;
-      if (g_MovingItem.Index = -97) or (g_MovingItem.Index = -98) then exit;
-      if (g_MovingItem.Item.S.Name = '') or (g_WaitingUseItem.Item.S.Name <> '') then exit;
-      where := GetTakeOnPosition (g_MovingItem.Item.S.StdMode);
-      if g_MovingItem.Index >= 0 then begin
-         case where of
-            U_DRESS: begin  //衣服
-               if Sender = DSWDress then begin   
-                  if g_MySelf.m_btSex = 0 then //男的
-                     if g_MovingItem.Item.S.StdMode <> 10 then
-                        exit;
-                  if g_MySelf.m_btSex = 1 then //女的
-                     if g_MovingItem.Item.S.StdMode <> 11 then
-                        exit;
-                  flag := TRUE;
-               end;
-            end;
-            U_WEAPON: begin
-               if Sender = DSWWEAPON then begin
-                  flag := TRUE;
-               end;
-            end;
-            U_NECKLACE: begin
-               if Sender = DSWNecklace then
-                  flag := TRUE;
-            end;
-            U_RIGHTHAND: begin
-               if Sender = DSWLight then
-                  flag := TRUE;
-            end;
-            U_HELMET: begin
-               if Sender = DSWHelmet then
-                  flag := TRUE;
-            end;
-            U_RINGR, U_RINGL: begin
-               if Sender = DSWRingL then begin
-                  where := U_RINGL;
-                  flag := TRUE;
-               end;
-               if Sender = DSWRingR then begin
-                  where := U_RINGR;
-                  flag := TRUE;
-               end;
-            end;
-            U_ARMRINGR: begin  //迫骂
-               if Sender = DSWArmRingL then begin
-                  where := U_ARMRINGL;
-                  flag := TRUE;
-               end;
-               if Sender = DSWArmRingR then begin
-                  where := U_ARMRINGR;
-                  flag := TRUE;
-               end;
-            end;
-            U_ARMRINGL: begin  //25,  刀啊风,迫骂
-               if Sender = DSWArmRingL then begin
-                  where := U_ARMRINGL;
-                  flag := TRUE;
-               end;
-            end;
-            U_BUJUK: begin
-               if Sender = DSWBujuk then begin
-                  where := U_BUJUK;
-                  flag := TRUE;
-               end;
-               if Sender = DSWArmRingL then begin
-                  where := U_ARMRINGL;
-                  flag := TRUE;
-               end;               
-            end;
-            U_BELT: begin
-               if Sender = DSWBelt then begin
-                  where := U_BELT;
-                  flag := TRUE;
-               end;
-            end;
-            U_BOOTS: begin
-               if Sender = DSWBoots then begin
-                  where := U_BOOTS;
-                  flag := TRUE;
-               end;
-            end;
-            U_CHARM: begin
-               if Sender = DSWCharm then begin
-                  where := U_CHARM;
-                  flag := TRUE;
-               end;
-            end;
-         end;
-      end else begin
-         n := -(g_MovingItem.Index+1);
-         if n in [0..12] then begin
-            ItemClickSound (g_MovingItem.Item.S);
-            g_UseItems[n] := g_MovingItem.Item;
-            g_MovingItem.Item.S.Name := '';
-            g_boItemMoving := FALSE;
-         end;
-      end;
-      if flag then begin
-         ItemClickSound (g_MovingItem.Item.S);
-         g_WaitingUseItem := g_MovingItem;
-         g_WaitingUseItem.Index := where;
-
-         FrmMain.SendTakeOnItem (where, g_MovingItem.Item.MakeIndex, g_MovingItem.Item.S.Name);
-         g_MovingItem.Item.S.Name := '';
-         g_boItemMoving := FALSE;
-      end;
-   end else begin
-      flag := FALSE;
-      if (g_MovingItem.Item.S.Name <> '') or (g_WaitingUseItem.Item.S.Name <> '') then exit;
-      sel := -1;
-      if Sender = DSWDress then sel := U_DRESS;
-      if Sender = DSWWeapon then sel := U_WEAPON;
-      if Sender = DSWHelmet then sel := U_HELMET;
-      if Sender = DSWNecklace then sel := U_NECKLACE;
-      if Sender = DSWLight then sel := U_RIGHTHAND;
-      if Sender = DSWRingL then sel := U_RINGL;
-      if Sender = DSWRingR then sel := U_RINGR;
-      if Sender = DSWArmRingL then sel := U_ARMRINGL;
-      if Sender = DSWArmRingR then sel := U_ARMRINGR;
-
-      if Sender = DSWBujuk then sel := U_BUJUK;
-      if Sender = DSWBelt then sel := U_BELT;  //
-      if Sender = DSWBoots then sel := U_BOOTS;
-      if Sender = DSWCharm then sel := U_CHARM;
-
-      if sel >= 0 then begin
-         if g_UseItems[sel].S.Name <> '' then begin
-            ItemClickSound (g_UseItems[sel].S);
-            g_MovingItem.Index := -(sel+1);
-            g_MovingItem.Item := g_UseItems[sel];
-            g_UseItems[sel].S.Name := '';
-            g_boItemMoving := TRUE;
-         end;
-      end;
-   end;
-end;
 
 //光标提示本人装备信息 （该功能取消）
 procedure TFrmDlg.DSWWeaponMouseMove(Sender: TObject; Shift: TShiftState;
@@ -3534,17 +3568,12 @@ begin
    if Sender = DSWRingR then sel := U_RINGR;
    if Sender = DSWArmRingL then sel := U_ARMRINGL;
    if Sender = DSWArmRingR then sel := U_ARMRINGR;
-
-   //if Sender = DSWBujuk then sel := U_RINGL;
-   //if Sender = DSWBelt then sel := U_RINGR;
-   //if Sender = DSWBoots then sel := U_ARMRINGL;
-   //if Sender = DSWCharm then sel := U_ARMRINGR;
-
    if Sender = DSWBujuk then sel := U_BUJUK;
-   if Sender = DSWBelt then sel := U_BELT;
-   if Sender = DSWBoots then sel := U_BOOTS;
-   if Sender = DSWCharm then sel := U_CHARM;
    
+//   if Sender = DSWBelt then sel := U_BELT;
+//   if Sender = DSWBoots then sel := U_BOOTS;
+//   if Sender = DSWCharm then sel := U_CHARM;
+
    if sel >= 0 then begin
       g_MouseStateItem := g_UseItems[sel];
       //原为注释掉 显示人物身上带的物品信息
@@ -3669,7 +3698,6 @@ end;
 
 {------------------------------------------------------------------------}
 
-
 procedure TFrmDlg.DBottomDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -3678,6 +3706,8 @@ var
   btop, sx, sy, i, fcolor, bcolor: integer;
   r: Real;
   str: string;
+
+  chatInfoRect:TRect;  //聊天信息显示区域 （调试用）
 begin
 
 {$IF SWH = SWH800}
@@ -3802,19 +3832,28 @@ begin
    end;
 
    //显示聊天框文字
-   sx := 208;
-   sy := SCREENHEIGHT - 130;
+   sx := 209 ;
+   sy := SCREENHEIGHT - 128;
+
+   // chatInfoRect.Left   :=sx;
+   // chatInfoRect.Top    := sy;
+   // chatInfoRect.Right  := sx+384;
+   // chatInfoRect.Bottom := sy+ 105;
+
    with DScreen do begin
-      SetBkMode (dsurface.Canvas.Handle, OPAQUE);
+       SetBkMode (dsurface.Canvas.Handle, OPAQUE); //背景色不透明
       for i := ChatBoardTop to ChatBoardTop + VIEWCHATLINE-1 do begin
          if i > ChatStrs.Count-1 then break;
          fcolor := integer(ChatStrs.Objects[i]);
          bcolor := integer(ChatBks[i]);
          dsurface.Canvas.Font.Color := fcolor;
          dsurface.Canvas.Brush.Color := bcolor;
-         dsurface.Canvas.TextOut (sx, sy+(i-ChatBoardTop)*12, ChatStrs.Strings[i]);
+         
+         //dsurface.Canvas.FrameRect(chatInfoRect);  //For Debug test
+         dsurface.Canvas.TextOut (sx, sy+(i-ChatBoardTop)*13, ChatStrs.Strings[i]); //13用于调整行间距
       end;
    end;
+
    dsurface.Canvas.Release;
 
 end;
@@ -3831,6 +3870,7 @@ procedure TFrmDlg.DBottomInRealArea(Sender: TObject; X, Y: Integer;
 var
    d: TDirectDrawSurface;
 begin
+
 {$IF SWH = SWH800}
    d := g_WMainImages.Images[BOTTOMBOARD800];
 {$ELSEIF SWH = SWH1024}
@@ -3931,11 +3971,6 @@ begin
     DScreen.AddChatBoardString ('[音乐关闭]',clWhite, clBlack);
   end;
 end;
-
-
-
-
-
 
 
 {------------------------------------------------------------------------}
@@ -5034,7 +5069,7 @@ begin
 
          TextOut (SX(27),  SY(11), '物品列表');
          TextOut (SX(165), SY(11), '价格');
-         TextOut (SX(245), SY(11), '持久力');
+         TextOut (SX(249), SY(11), '持久');  //持久力
          lh := LISTLINEHEIGHT;
          menuline := _MIN(MAXMENU, MenuList.Count-MenuTop);
          //
@@ -5065,7 +5100,7 @@ begin
          //找回时的物品列表
 
          TextOut (SX(27),  SY(11), '保管物品');
-         TextOut (SX(170), SY(11), '持久力');
+         TextOut (SX(170), SY(11), '持久');   //持久力
          TextOut (SX(262), SY(11), '');
          lh := LISTLINEHEIGHT;
          menuline := _MIN(MAXMENU, MenuList.Count-MenuTop);
@@ -5236,6 +5271,7 @@ begin
    DMenuDlg.Visible := FALSE;
 end;
 
+//商人点击对话框
 procedure TFrmDlg.DMerchantDlgClick(Sender: TObject; X, Y: Integer);
 var
    i, L, T: integer;
@@ -6158,11 +6194,11 @@ begin
    if Sender = DRingRUS1 then sel := U_RINGR;
    if Sender = DArmRingLUS1 then sel := U_ARMRINGL;
    if Sender = DArmRingRUS1 then sel := U_ARMRINGR;
-
    if Sender = DBujukUS1 then sel := U_BUJUK;
-   if Sender = DBeltUS1 then sel := U_BELT;
-   if Sender = DBootsUS1 then sel := U_BOOTS;
-   if Sender = DCharmUS1 then sel := U_CHARM;
+
+//   if Sender = DBeltUS1 then sel := U_BELT;
+//   if Sender = DBootsUS1 then sel := U_BOOTS;
+//   if Sender = DCharmUS1 then sel := U_CHARM;
 
    if sel >= 0 then begin
       g_MouseUserStateItem := UserState1.UseItems[sel];
@@ -6201,6 +6237,8 @@ begin
    DUserState1.Visible := FALSE;
 end;
 
+
+//
 procedure TFrmDlg.DNecklaceUS1DirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -6286,7 +6324,6 @@ begin
       end;
    end;
 
-
    if Sender = DBujukUS1 then begin
       if UserState1.UseItems[U_BUJUK].S.Name <> '' then begin
          idx := UserState1.UseItems[U_BUJUK].S.Looks;
@@ -6300,7 +6337,10 @@ begin
          end;
       end;
    end;
-
+   
+ {
+//取消失1.70版增加的3个装备   
+   
    if Sender = DBeltUS1 then begin
       if UserState1.UseItems[U_BELT].S.Name <> '' then begin
          idx := UserState1.UseItems[U_BELT].S.Looks;
@@ -6342,6 +6382,8 @@ begin
          end;
       end;
    end;
+ }
+
 end;
 
 
@@ -6998,5 +7040,6 @@ begin
     dsurface.Canvas.Release;
   end;
 end;
+
 
 end.

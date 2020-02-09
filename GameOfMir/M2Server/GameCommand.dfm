@@ -18,7 +18,7 @@ object frmGameCmd: TfrmGameCmd
   PixelsPerInch = 96
   TextHeight = 12
   object PageControl: TPageControl
-    Left = 8
+    Left = 7
     Top = 8
     Width = 569
     Height = 297
@@ -29,10 +29,10 @@ object frmGameCmd: TfrmGameCmd
     object TabSheet1: TTabSheet
       Caption = #26222#36890#21629#20196
       object StringGridGameCmd: TStringGrid
-        Left = 2
-        Top = 8
+        Left = 5
+        Top = 6
         Width = 551
-        Height = 161
+        Height = 175
         ColCount = 4
         DefaultRowHeight = 18
         FixedCols = 0
@@ -43,13 +43,13 @@ object frmGameCmd: TfrmGameCmd
           88
           71
           129
-          248)
+          234)
       end
       object GroupBox1: TGroupBox
-        Left = 2
-        Top = 176
+        Left = 5
+        Top = 185
         Width = 551
-        Height = 89
+        Height = 80
         Caption = #21629#20196#35774#32622
         TabOrder = 1
         object Label1: TLabel
@@ -68,7 +68,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelUserCmdFunc: TLabel
           Left = 64
-          Top = 44
+          Top = 41
           Width = 401
           Height = 12
           AutoSize = False
@@ -81,7 +81,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelUserCmdParam: TLabel
           Left = 64
-          Top = 68
+          Top = 60
           Width = 401
           Height = 12
           AutoSize = False
@@ -94,14 +94,14 @@ object frmGameCmd: TfrmGameCmd
         end
         object Label2: TLabel
           Left = 8
-          Top = 44
+          Top = 41
           Width = 54
           Height = 12
           Caption = #21629#20196#21151#33021':'
         end
         object Label3: TLabel
           Left = 8
-          Top = 68
+          Top = 60
           Width = 54
           Height = 12
           Caption = #21629#20196#26684#24335':'
@@ -127,7 +127,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditUserCmdOK: TButton
           Left = 472
-          Top = 16
+          Top = 13
           Width = 65
           Height = 25
           Caption = #30830#23450'(&O)'
@@ -136,7 +136,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditUserCmdSave: TButton
           Left = 472
-          Top = 56
+          Top = 46
           Width = 65
           Height = 25
           Caption = #20445#23384'(&S)'
@@ -149,10 +149,10 @@ object frmGameCmd: TfrmGameCmd
       Caption = #31649#29702#21629#20196
       ImageIndex = 1
       object StringGridGameMasterCmd: TStringGrid
-        Left = 2
-        Top = 8
+        Left = 5
+        Top = 6
         Width = 551
-        Height = 161
+        Height = 175
         ColCount = 4
         DefaultRowHeight = 18
         FixedCols = 0
@@ -163,13 +163,13 @@ object frmGameCmd: TfrmGameCmd
           88
           71
           129
-          248)
+          234)
       end
       object GroupBox2: TGroupBox
-        Left = 2
-        Top = 176
+        Left = 5
+        Top = 185
         Width = 551
-        Height = 89
+        Height = 80
         Caption = #21629#20196#35774#32622
         TabOrder = 1
         object Label4: TLabel
@@ -188,7 +188,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelGameMasterCmdFunc: TLabel
           Left = 64
-          Top = 44
+          Top = 41
           Width = 401
           Height = 12
           AutoSize = False
@@ -201,7 +201,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelGameMasterCmdParam: TLabel
           Left = 64
-          Top = 68
+          Top = 60
           Width = 401
           Height = 12
           AutoSize = False
@@ -214,14 +214,14 @@ object frmGameCmd: TfrmGameCmd
         end
         object Label7: TLabel
           Left = 8
-          Top = 44
+          Top = 41
           Width = 54
           Height = 12
           Caption = #21629#20196#21151#33021':'
         end
         object Label8: TLabel
           Left = 8
-          Top = 68
+          Top = 60
           Width = 54
           Height = 12
           Caption = #21629#20196#26684#24335':'
@@ -247,7 +247,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditGameMasterCmdOK: TButton
           Left = 472
-          Top = 16
+          Top = 13
           Width = 65
           Height = 25
           Caption = #30830#23450'(&O)'
@@ -256,7 +256,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditGameMasterCmdSave: TButton
           Left = 472
-          Top = 56
+          Top = 46
           Width = 65
           Height = 25
           Caption = #20445#23384'(&S)'
@@ -269,10 +269,10 @@ object frmGameCmd: TfrmGameCmd
       Caption = #35843#35797#21629#20196
       ImageIndex = 2
       object StringGridGameDebugCmd: TStringGrid
-        Left = 2
-        Top = 8
+        Left = 5
+        Top = 6
         Width = 551
-        Height = 161
+        Height = 175
         ColCount = 4
         DefaultRowHeight = 18
         FixedCols = 0
@@ -283,13 +283,13 @@ object frmGameCmd: TfrmGameCmd
           88
           71
           129
-          248)
+          234)
       end
       object GroupBox3: TGroupBox
-        Left = 2
-        Top = 176
+        Left = 5
+        Top = 185
         Width = 551
-        Height = 89
+        Height = 80
         Caption = #21629#20196#35774#32622
         TabOrder = 1
         object Label9: TLabel
@@ -308,7 +308,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelGameDebugCmdFunc: TLabel
           Left = 64
-          Top = 44
+          Top = 41
           Width = 401
           Height = 12
           AutoSize = False
@@ -321,7 +321,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object LabelGameDebugCmdParam: TLabel
           Left = 64
-          Top = 68
+          Top = 60
           Width = 401
           Height = 12
           AutoSize = False
@@ -334,14 +334,14 @@ object frmGameCmd: TfrmGameCmd
         end
         object Label11: TLabel
           Left = 8
-          Top = 44
+          Top = 41
           Width = 54
           Height = 12
           Caption = #21629#20196#21151#33021':'
         end
         object Label12: TLabel
           Left = 8
-          Top = 68
+          Top = 60
           Width = 54
           Height = 12
           Caption = #21629#20196#26684#24335':'
@@ -367,7 +367,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditGameDebugCmdOK: TButton
           Left = 472
-          Top = 16
+          Top = 13
           Width = 65
           Height = 25
           Caption = #30830#23450'(&O)'
@@ -376,7 +376,7 @@ object frmGameCmd: TfrmGameCmd
         end
         object EditGameDebugCmdSave: TButton
           Left = 472
-          Top = 56
+          Top = 46
           Width = 65
           Height = 25
           Caption = #20445#23384'(&S)'

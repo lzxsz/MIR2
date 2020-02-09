@@ -1,6 +1,6 @@
 object FrmMain: TFrmMain
-  Left = 554
-  Top = 138
+  Left = 606
+  Top = 151
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 372
@@ -370,6 +370,7 @@ object FrmMain: TFrmMain
       end
       object MENU_TOOLS_GAMESHOP: TMenuItem
         Caption = #21830#22478#31649#29702
+        Visible = False
         OnClick = MENU_TOOLS_GAMESHOPClick
       end
       object MENU_MANAGE_CASTLE: TMenuItem
@@ -385,6 +386,7 @@ object FrmMain: TFrmMain
       end
       object MENU_TOOLS_NPC: TMenuItem
         Caption = #31649#29702'NPC'#37197#32622
+        Visible = False
       end
       object MENU_TOOLS_MONGEN: TMenuItem
         Caption = #21047#24618#37197#32622

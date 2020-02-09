@@ -1,4 +1,6 @@
 unit ClMain;
+//客户端主界面窗体,ClMain在implementation中use了Fstate.
+//处理了程序启动时的网络连接,载入的wil客户端文件,等一系列操作
 
 interface
 
@@ -12,7 +14,7 @@ uses
 
 const
    BO_FOR_TEST = FALSE;
-   EnglishVersion = TRUE; //TRUE;
+   EnglishVersion = TRUE; //TRUE为英言版，也可用作中文版
    BoNeedPatch = TRUE;
 
    NEARESTPALETTEINDEXFILE = 'Data\npal.idx';
@@ -32,8 +34,6 @@ type
   end;
 
   TOneClickMode = (toNone, toKornetWorld);
-
-
 
   TfrmMain = class(TDxForm)
     CSocket: TClientSocket;
@@ -80,26 +80,20 @@ type
  *}   
 
 
-
     procedure DXDrawInitialize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure DXDrawMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure DXDrawMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DXDrawMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure DXDrawMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure DXDrawFinalize(Sender: TObject);
     procedure CSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
     procedure CSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
-    procedure CSocketError(Sender: TObject; Socket: TCustomWinSocket;
-      ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+    procedure CSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
     procedure CSocketRead(Sender: TObject; Socket: TCustomWinSocket);
     procedure Timer1Timer(Sender: TObject);
-    procedure DXDrawMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure DXDrawMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MouseTimerTimer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure DXDrawDblClick(Sender: TObject);
@@ -200,8 +194,7 @@ type
     procedure ClientGetRegInfo(Msg:pTDefaultMessage;Body:String);
 
     procedure SetInputStatus();
-    procedure CmdShowHumanMsg(sParam1, sParam2, sParam3, sParam4,
-      sParam5: String);
+    procedure CmdShowHumanMsg(sParam1, sParam2, sParam3, sParam4, sParam5: String);
     procedure ShowHumanMsg(Msg: pTDefaultMessage);
     procedure SendPowerBlock;
 
@@ -209,7 +202,9 @@ type
     LoginId, LoginPasswd, CharName: string;
     Certification: integer;
     ActionLock: Boolean;
+
     //MainSurface: TDirectDrawSurface;
+
     NpcImageList:TList;
     ItemImageList:TList;
     WeaponImageList:TList;
@@ -298,8 +293,10 @@ type
     function  GetWHumImg(Dress,m_btSex,nFrame:Integer;var ax,ay:integer): TDirectDrawSurface;
     procedure ProcessCommand(sData:String);
   end;
-  function IsDebug():Boolean;
-  function IsDebugA():Boolean;
+  
+//  function IsDebug():Boolean;
+//  function IsDebugA():Boolean;
+
   function  CheckMirProgram: Boolean;
   procedure PomiTextOut (dsurface: TDirectDrawSurface; x, y: integer; str: string);
   procedure WaitAndPass (msec: longword);
@@ -342,7 +339,6 @@ uses
 {$R *.DFM}
 var
   ShowMsgActor:TActor;
-
 
 function  CheckMirProgram: Boolean;
 var
@@ -687,6 +683,7 @@ begin
    CSocket.Active:=True;
 
    //MainSurface := nil;
+   
    //保存调试信息
    DebugOutStr ('----------------------- started ------------------------');
    //异常时调用的函数
@@ -732,6 +729,7 @@ begin
    MinTimer.Enabled := FALSE;
 
    UnLoadWMImagesLib();
+
 //   WTiles.Finalize;
    {
    WObjects1.Finalize;
@@ -785,10 +783,9 @@ begin
 //   WMon27Img.Finalize;
 //   WMon28Img.Finalize;
 
-
-      
 //   WNpcImg.Finalize;
    WEffectImg.Finalize;
+   
 //   WChrSel.Finalize;
 //   WMMap.Finalize;
 //   WBagItem.Finalize;
@@ -883,6 +880,8 @@ begin
       //MainSurface.SetSize (SCREENWIDTH, SCREENHEIGHT);
 
       InitWMImagesLib(DxDraw);
+
+      //设置每个图库的DDraw
       
 //      WTiles.DDraw := DxDraw.DDraw;
       {
@@ -913,6 +912,7 @@ begin
 //      WMagic2.DDraw := DxDraw.DDraw;
 //      WMagIcon.DDraw := DxDraw.DDraw;
 
+
       WMonImg.DDraw := DxDraw.DDraw;
       WMon2Img.DDraw := DxDraw.DDraw;
       WMon3Img.DDraw := DxDraw.DDraw;
@@ -942,7 +942,6 @@ begin
 //      WMon26Img.DDraw := DxDraw.DDraw;
 //      WMon27Img.DDraw := DxDraw.DDraw;
 //      WMon28Img.DDraw := DxDraw.DDraw;
-
 
 //      WNpcImg.DDraw := DxDraw.DDraw;
       WEffectImg.DDraw := DxDraw.DDraw;
@@ -1022,8 +1021,6 @@ begin
       DScreen.Initialize;
       PlayScene.Initialize;
       FrmDlg.Initialize;
-
-
 
       if doFullScreen in DxDraw.Options then begin
          //Screen.Cursor := crNone;
@@ -1392,7 +1389,6 @@ begin
                if g_boCanStartRun or (g_nRunReadyCount >= 1) then begin
                   crun := g_MySelf.CanRun;
 
-
 //骑马开始
                   //骑马跑 , MIR2 没有骑马这功能
                   if (g_MySelf.m_btHorse <> 0)
@@ -1537,7 +1533,7 @@ Ctrl + H 选择自己喜欢的攻击模式
 编组攻击模式：处于同一小组的玩家攻击无效
 全体攻击模式：对所有的玩家和暴民都具有攻击效果。
 善恶攻击模式：PK红名专用攻击模式。
- }
+}
     word('H'): begin
       if ssCtrl in Shift then begin
         SendSay ('@AttackMode');
@@ -1913,6 +1909,7 @@ begin
       //Dscreen.AddSysMsg ('魔法值不够！！！' + IntToStr(pcm.Def.wSpell) + '+' + IntToStr(pcm.Def.btDefSpell) + '/' +IntToStr(g_MySelf.m_Abil.MP));
 end;
 
+//使用魔法咒语
 procedure TfrmMain.UseMagicSpell (who, effnum, targetx, targety, magic_id: integer);
 var
    actor: TActor;
@@ -1933,6 +1930,7 @@ begin
       Inc (g_nSpellFailCount);
 end;
 
+//魔法火
 procedure TfrmMain.UseMagicFire (who, efftype, effnum, targetx, targety, target: integer);
 var
    actor: TActor;
@@ -3120,11 +3118,15 @@ var
    msg: TDefaultMessage;
    param: string;
 begin
-   if Length(rstr) >= 2 then begin  //颇扼皋鸥啊 鞘夸茄 版快啊 乐澜.
+   if Length(rstr) >= 2 then begin  
       if (rstr[1] = '@') and (rstr[2] = '@') then begin
          if rstr = '@@buildguildnow' then
-            FrmDlg.DMessageDlg ('创建行会，请输入行会名称.', [mbOk, mbAbort])
-         else FrmDlg.DMessageDlg ('行会名称.', [mbOk, mbAbort]);
+             FrmDlg.DMessageDlg ('创建行会，请输入行会名称。', [mbOk, mbAbort])
+
+         else  begin
+             FrmDlg.DMessageDlg ('请输入。', [mbOk, mbAbort]);
+          end;
+          
          param := Trim (FrmDlg.DlgEditText);
          rstr := rstr + #13 + param;
       end;
@@ -3627,6 +3629,7 @@ begin
    end;
 end;
 
+//解码信息包
 procedure TfrmMain.DecodeMessagePacket (datablock: string);
 var
    head, body, body2, tagstr, data, rdstr, str: String;
@@ -4149,7 +4152,7 @@ begin
                end;
             end;
          end;
-      SM_FLYAXE:
+      SM_FLYAXE:   //掷斧头
          begin
             DecodeBuffer (body, @mbw, sizeof(TMessageBodyW));
             actor := PlayScene.FindActor (msg.Recog);
@@ -4184,10 +4187,11 @@ begin
             end;
          end;
 
-      SM_SPELL: begin
-        UseMagicSpell (msg.Recog{who}, msg.Series{effectnum}, msg.Param{tx}, msg.Tag{y}, Str_ToInt(body,0));
+      SM_SPELL: begin  //魔法咒语
+        UseMagicSpell (msg.Recog{who}, msg.Series{effectnum}, msg.Param{tx}, msg.Tag{ty}, Str_ToInt(body,0){magic_id});
       end;
-      SM_MAGICFIRE: begin
+
+      SM_MAGICFIRE: begin  //魔法火
         DecodeBuffer (body, @param, sizeof(integer));
         UseMagicFire (msg.Recog{who}, Lobyte(msg.Series){efftype}, Hibyte(msg.Series){effnum}, msg.Param{tx}, msg.Tag{y}, param);
         //Lobyte(msg.Series) = EffectType
@@ -4197,7 +4201,6 @@ begin
          begin
             UseMagicFireFail (msg.Recog{who});
          end;
-
 
       SM_OUTOFCONNECTION:
          begin
@@ -4267,16 +4270,19 @@ begin
 
       SM_WINEXP:
          begin
-            g_MySelf.m_Abil.Exp := msg.Recog; //坷弗 版氰摹
+            g_MySelf.m_Abil.Exp := msg.Recog; //
 //            DScreen.AddSysMsg ('已获得 ' + IntToStr(LongWord(MakeLong(msg.Param,msg.Tag))) + ' 点经验值。');
             DScreen.AddChatBoardString ('已获得 ' + IntToStr(LongWord(MakeLong(msg.Param,msg.Tag))) + ' 点经验值',clWhite, clRed);
          end;
 
-      SM_LEVELUP:
+      SM_LEVELUP:   //等级升级了
          begin
             g_MySelf.m_Abil.Level:=msg.Param;
             DScreen.AddSysMsg ('恭喜！你升级了!');
             DScreen.AddChatBoardString ('祝贺! 您的水平上升。 您的生命值， 魔法值全部增加。',clWhite, clPurple);
+
+            //人物升级特效（身上发出一道光和声音）
+            DrawEffectHum(8, g_MySelf.m_nCurrX, g_MySelf.m_nCurrY);  //升级特效,这个特效使用【人物选择场景】中选择角色时的光特效
          end;
 
       SM_HEALTHSPELLCHANGED: begin
@@ -4286,7 +4292,7 @@ begin
           Actor.m_Abil.MP    := msg.Tag;
           Actor.m_Abil.MaxHP := msg.Series;
         end;
-      end;
+       end;
 
       SM_STRUCK:
          begin
@@ -4366,15 +4372,17 @@ begin
          end;
 
       SM_CRY,
-      SM_GROUPMESSAGE,//   弊缝 皋技瘤
+      SM_GROUPMESSAGE,//   组队消息
       SM_GUILDMESSAGE,
       SM_WHISPER,
       SM_SYSMESSAGE:  //系统消息
          begin
             str := DecodeString (body);
             DScreen.AddChatBoardString (str, GetRGB(Lobyte(msg.Param)), GetRGB(Hibyte(msg.Param)));
-            if msg.Ident = SM_GUILDMESSAGE then
+
+            if msg.Ident = SM_GUILDMESSAGE then  //行会消息
                FrmDlg.AddGuildChat (str);
+
          end;
 
       SM_HEAR:
@@ -4708,7 +4716,7 @@ begin
         end;
       end;
       SM_716: begin
-        DrawEffectHum(Msg.Series{type},Msg.Param{x},Msg.Tag{y});
+        DrawEffectHum(Msg.Series{type},Msg.Param{x},Msg.Tag{y});  //绘制特定的魔法特效
       end;
       SM_SENDDETAILGOODSLIST: begin
         ClientGetSendDetailGoodsList (msg.Recog, msg.Param, msg.Tag, body);
@@ -6125,17 +6133,19 @@ begin
 end;
 
 
-
+//绘制特定的特效，有的来源于怪物的攻击效果
 procedure TfrmMain.DrawEffectHum(nType, nX, nY: Integer);
 var
   Effect :TNormalDrawEffect;
   n14    :TNormalDrawEffect;
   bo15   :Boolean;
+  scx, scy, sctx, scty, effnum: integer;
 begin
   Effect:=nil;
   n14:=nil;
   case nType of
     0: begin
+       Effect:=TNormalDrawEffect.Create(nX,nY,WMon14Img,410,6,120,False);  //地刺
     end;
     1: Effect:=TNormalDrawEffect.Create(nX,nY,WMon14Img,410,6,120,False);
     2: Effect:=TNormalDrawEffect.Create(nX,nY,g_WMagic2Images,670,10,150,False);
@@ -6160,6 +6170,13 @@ begin
       PlayScene.NewMagic (nil,74,74,nX,nY,nX,nY,0,mtThunder,False,30,bo15);
       PlaySound(8226);
     end;
+
+    //人特升级特效，人物升级时身上出现发光的特效 （特效来源于人物选择场景解冻石化的特效）
+    8: begin
+       PlayScene.NewMagic (g_MySelf,-1,999, g_MySelf.m_nCurrX, g_MySelf.m_nCurrY, g_MySelf.m_nCurrX, g_MySelf.m_nCurrY,0,mtExplosion,False,80,bo15); 
+       PlaySound (s_meltstone);
+    end;
+
   end;
   if Effect <> nil then begin
     Effect.MagOwner:=g_MySelf;
@@ -6170,6 +6187,8 @@ begin
     PlayScene.m_EffectList.Add(Effect);
   end;
 end;
+
+{
 function IsDebugA():Boolean;
 var
   isDebuggerPresent: function:Boolean;
@@ -6189,6 +6208,7 @@ begin
   isDebuggerPresent := GetProcAddress(DllModule, PChar(DecodeString('NSI@UREqUrYaXa=nUSIaWcL')));    //'IsDebuggerPresent'
   Result:=isDebuggerPresent;
 end;
+}
 
 //2004/05/17
 procedure TfrmMain.SelectChr(sChrName: String);

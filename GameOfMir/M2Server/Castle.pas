@@ -24,7 +24,7 @@ type
     nX: Integer; //0x0
     nY: Integer; //0x4
     sName: string; //0x8
-//    nStatus     :Integer;   //0x0C
+    //  nStatus     :Integer;   //0x0C
     nStatus: Boolean; //0x0C
     nHP: Integer; //0x10
     BaseObject: TBaseObject; //0x14
@@ -37,50 +37,50 @@ type
   end;
   pTAttackerInfo = ^TAttackerInfo;
   TUserCastle = class
-    m_MapCastle: TEnvirnoment; //0x4    城堡所在地图
-    m_MapPalace: TEnvirnoment; //0x8    皇宫所在地图
-    m_MapSecret: TEnvirnoment; //0xC    密道所在地图
-    m_DoorStatus: pTDoorStatus; //0x10    皇宫门状态
-    m_sMapName: string; //0x14     城堡所在地图名
-    m_sName: string; //0x18     城堡名称
-    m_sOwnGuild: string; //0x1C     所属行会名称
-    m_MasterGuild: TGUild; //0x20     所属行会
-    m_sHomeMap: string; //0x24     行会回城点地图
-    m_nHomeX: Integer; //0x28     行会回城点X
-    m_nHomeY: Integer; //0x2C     行会回城点Y
-    m_ChangeDate: TDateTime; //0x30
-    m_WarDate: TDateTime; //0x38
-    m_boStartWar: Boolean; //0x40     是否开始攻城
-    m_boUnderWar: Boolean; //0x41     是否正在攻城
-    m_boShowOverMsg: Boolean; //0x42     是否已显示攻城结束信息
+    m_MapCastle: TEnvirnoment;   //0x4    城堡所在地图
+    m_MapPalace: TEnvirnoment;   //0x8    皇宫所在地图
+    m_MapSecret: TEnvirnoment;   //0xC    密道所在地图
+    m_DoorStatus: pTDoorStatus;  //0x10   皇宫门状态
+    m_sMapName: string;          //0x14   城堡所在地图名
+    m_sName: string;             //0x18   城堡名称
+    m_sOwnGuild: string;         //0x1C   所属行会名称
+    m_MasterGuild: TGUild;       //0x20   所属行会
+    m_sHomeMap: string;          //0x24   行会回城点地图
+    m_nHomeX: Integer;           //0x28   行会回城点X
+    m_nHomeY: Integer;           //0x2C   行会回城点Y
+    m_ChangeDate: TDateTime;     //0x30
+    m_WarDate: TDateTime;        //0x38
+    m_boStartWar: Boolean;       //0x40   是否开始攻城
+    m_boUnderWar: Boolean;       //0x41   是否正在攻城
+    m_boShowOverMsg: Boolean;    //0x42   是否已显示攻城结束信息
     m_dwStartCastleWarTick: LongWord; //0x44
-    m_dwSaveTick: LongWord; //0x48
-    m_AttackWarList: TList; //0x4C
-    m_AttackGuildList: TList; //0x50
-    m_MainDoor: TObjUnit; //0x54
-    m_LeftWall: TObjUnit; //0x6C
-    m_CenterWall: TObjUnit; //0x84
-    m_RightWall: TObjUnit; //0x9C
+    m_dwSaveTick: LongWord;      //0x48
+    m_AttackWarList: TList;      //0x4C
+    m_AttackGuildList: TList;    //0x50
+    m_MainDoor: TObjUnit;        //0x54
+    m_LeftWall: TObjUnit;        //0x6C
+    m_CenterWall: TObjUnit;      //0x84
+    m_RightWall: TObjUnit;       //0x9C
     m_Guard: array[0..MAXCALSTEGUARD - 1] of TObjUnit; //0xB4
     m_Archer: array[0..MAXCASTLEARCHER - 1] of TObjUnit; //0x114 0x264
-    m_IncomeToday: TDateTime; //0x238
-    m_nTotalGold: Integer; //0x240
-    m_nTodayIncome: Integer; //0x244
-    m_nWarRangeX: Integer; //攻城区域范围X
-    m_nWarRangeY: Integer; //攻城区域范围Y
+    m_IncomeToday: TDateTime;  //0x238
+    m_nTotalGold: Integer;     //0x240    资金总数
+    m_nTodayIncome: Integer;   //0x244    当天收入
+    m_nWarRangeX: Integer;     //攻城区域范围X
+    m_nWarRangeY: Integer;     //攻城区域范围Y
     m_boStatus: Boolean;
-    m_sPalaceMap: string; //皇宫所在地图
-    m_sSecretMap: string; //密道所在地图
-    m_nPalaceDoorX: Integer; //皇宫座标X
-    m_nPalaceDoorY: Integer; //皇宫座标Y
+    m_sPalaceMap: string;      //皇宫所在地图
+    m_sSecretMap: string;      //密道所在地图
+    m_nPalaceDoorX: Integer;   //皇宫座标X
+    m_nPalaceDoorY: Integer;   //皇宫座标Y
     m_sConfigDir: string;
     m_EnvirList: TStringList;
 
-    m_nTechLevel: Integer; //科技等级
-    m_nPower: Integer; //电力量
+    m_nTechLevel: Integer;      //技术等级
+    m_nPower: Integer;          //能源
   private
     procedure LoadAttackSabukWall();
-    procedure SaveConfigFile();
+    //procedure SaveConfigFile();
     procedure LoadConfig();
     procedure SaveAttackSabukWall();
     function InAttackerList(Guild: TGUild): Boolean;
@@ -92,6 +92,8 @@ type
     destructor Destroy; override;
     procedure Initialize();
     procedure Run();
+
+    procedure SaveConfigFile();
     procedure Save();
     function InCastleWarArea(Envir: TEnvirnoment; nX, nY: Integer): Boolean;
     function IsMember(Cert: TBaseObject): Boolean;
@@ -314,6 +316,8 @@ begin
     //CODE:0048E935
   end;
 end;
+
+//加载配置文件
 procedure TUserCastle.LoadConfig(); //0048F5BC
 var
   sFileName, sConfigFile: string;
@@ -331,13 +335,15 @@ begin
   CastleConf := TIniFile.Create(sFileName);
   if CastleConf <> nil then
   begin
-    m_sName := CastleConf.ReadString('Setup', 'CastleName', m_sName);
-    m_sOwnGuild := CastleConf.ReadString('Setup', 'OwnGuild', '');
+    m_sName := CastleConf.ReadString('Setup', 'CastleName', m_sName);      //城堡名
+    m_sOwnGuild := CastleConf.ReadString('Setup', 'OwnGuild', '');         //所属行会
     m_ChangeDate := CastleConf.ReadDateTime('Setup', 'ChangeDate', Now);
     m_WarDate := CastleConf.ReadDateTime('Setup', 'WarDate', Now);
     m_IncomeToday := CastleConf.ReadDateTime('Setup', 'IncomeToday', Now);
     m_nTotalGold := CastleConf.ReadInteger('Setup', 'TotalGold', 0);
     m_nTodayIncome := CastleConf.ReadInteger('Setup', 'TodayIncome', 0);
+    m_nTechLevel := CastleConf.ReadInteger('Setup', 'TechLevel', 0);
+    m_nPower := CastleConf.ReadInteger('Setup', 'Power', 0);
 
     sMapList := CastleConf.ReadString('Defense', 'CastleMapList', '');
     if sMapList <> '' then
@@ -354,13 +360,13 @@ begin
       m_EnvirList.Objects[i] := g_MapManager.FindMap(m_EnvirList.Strings[i]);
     end;
 
-    m_sMapName := CastleConf.ReadString('Defense', 'CastleMap', '3');
-    m_sHomeMap := CastleConf.ReadString('Defense', 'CastleHomeMap', m_sHomeMap);
+    m_sMapName := CastleConf.ReadString('Defense', 'CastleMap', '3');              //城堡所在地图名
+    m_sHomeMap := CastleConf.ReadString('Defense', 'CastleHomeMap', m_sHomeMap);  //行会回城点地图
     m_nHomeX := CastleConf.ReadInteger('Defense', 'CastleHomeX', m_nHomeX);
     m_nHomeY := CastleConf.ReadInteger('Defense', 'CastleHomeY', m_nHomeY);
     m_nWarRangeX := CastleConf.ReadInteger('Defense', 'CastleWarRangeX', m_nWarRangeX);
     m_nWarRangeY := CastleConf.ReadInteger('Defense', 'CastleWarRangeY', m_nWarRangeY);
-    m_sPalaceMap := CastleConf.ReadString('Defense', 'CastlePlaceMap', m_sPalaceMap);
+    m_sPalaceMap := CastleConf.ReadString('Defense', 'CastlePlaceMap', m_sPalaceMap);     //皇宫所在地图
     m_sSecretMap := CastleConf.ReadString('Defense', 'CastleSecretMap', m_sSecretMap);
     m_nPalaceDoorX := CastleConf.ReadInteger('Defense', 'CastlePalaceDoorX', 631);
     m_nPalaceDoorY := CastleConf.ReadInteger('Defense', 'CastlePalaceDoorY', 274);
@@ -413,6 +419,8 @@ begin
   end;
   m_MasterGuild := g_GuildManager.FindGuild(m_sOwnGuild);
 end;
+
+//保存配置文件
 procedure TUserCastle.SaveConfigFile(); //0048EFCC
 var
   CastleConf: TIniFile;
@@ -431,13 +439,17 @@ begin
   CastleConf := TIniFile.Create(sFileName);
   if CastleConf <> nil then
   begin
-    if m_sName <> '' then CastleConf.WriteString('Setup', 'CastleName', m_sName);
-    if m_sOwnGuild <> '' then CastleConf.WriteString('Setup', 'OwnGuild', m_sOwnGuild);
+    if m_sName <> '' then CastleConf.WriteString('Setup', 'CastleName', m_sName);              //城堡名
+    if m_sOwnGuild <> '' then CastleConf.WriteString('Setup', 'OwnGuild', m_sOwnGuild);        //所属行会
+
     CastleConf.WriteDateTime('Setup', 'ChangeDate', m_ChangeDate);
     CastleConf.WriteDateTime('Setup', 'WarDate', m_WarDate);
     CastleConf.WriteDateTime('Setup', 'IncomeToday', m_IncomeToday);
-    if m_nTotalGold <> 0 then CastleConf.WriteInteger('Setup', 'TotalGold', m_nTotalGold);
-    if m_nTodayIncome <> 0 then CastleConf.WriteInteger('Setup', 'TodayIncome', m_nTodayIncome);
+    
+    if m_nTotalGold <> 0 then CastleConf.WriteInteger('Setup', 'TotalGold', m_nTotalGold);        //总资金
+    if m_nTodayIncome <> 0 then CastleConf.WriteInteger('Setup', 'TodayIncome', m_nTodayIncome);  //当天收入
+    if m_nTechLevel <> 0 then CastleConf.WriteInteger('Setup', 'TechLevel', m_nTechLevel);        //等级
+    if m_nPower <> 0 then CastleConf.WriteInteger('Setup', 'Power', m_nPower);                    //资源
 
     for i := 0 to m_EnvirList.Count - 1 do
     begin
@@ -1051,9 +1063,9 @@ begin
         '0');
   end;
 
-
 end;
 
+//收回现金
 function TUserCastle.WithDrawalGolds(PlayObject: TPlayObject; nGold: Integer): Integer; //0049066C
 begin
   Result := -1;
@@ -1081,7 +1093,7 @@ begin
             IntToStr(nGold) + #9 +
             '1' + #9 +
             '0');
-        PlayObject.GoldChanged;
+        PlayObject.GoldChanged; //金币兑换
         Result := 1;
       end else Result := -3;
     end else Result := -2;
@@ -1252,8 +1264,6 @@ begin
 end;
 
 { TCastleManager }
-
-
 
 constructor TCastleManager.Create;
 begin
@@ -1538,9 +1548,6 @@ begin
     UnLock;
   end;
 end;
-
-
-
 
 procedure TCastleManager.Lock;
 begin

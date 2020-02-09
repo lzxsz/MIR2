@@ -183,11 +183,14 @@ begin
           SrcHumanRCD.Data.wHomeX:=330;
           SrcHumanRCD.Data.wHomeY:=330;
           SrcHumanRCD.Data.btReLevel:=0;
-          SrcHumanRCD.Data.sDearName:='';
-          SrcHumanRCD.Data.boMaster:=False;
-          SrcHumanRCD.Data.sDearName:='';
+
+//取消失 结婚与师徒系统的的相关数据
+//          SrcHumanRCD.Data.sDearName:='';
+//          SrcHumanRCD.Data.boMaster:=False;
+//          SrcHumanRCD.Data.sDearName:='';
+//          SrcHumanRCD.Data.btMarryCount:=0;
+
           SrcHumanRCD.Data.btCreditPoint:=0;
-          SrcHumanRCD.Data.btMarryCount:=0;
           SrcHumanRCD.Data.sStoragePwd:='';
           SrcHumanRCD.Data.nGameGold:=0;
           SrcHumanRCD.Data.nPKPoint:=0;

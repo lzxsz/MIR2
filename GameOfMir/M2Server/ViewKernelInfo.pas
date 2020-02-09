@@ -20,25 +20,6 @@ type
     EditLoadHumanDBErrorCoun: TEdit;
     EditSaveHumanDBCount: TEdit;
     EditHumanDBQueryID: TEdit;
-    TabSheet2: TTabSheet;
-    GroupBox2: TGroupBox;
-    Label5: TLabel;
-    Label6: TLabel;
-    EditWinLotteryCount: TEdit;
-    EditNoWinLotteryCount: TEdit;
-    GroupBox3: TGroupBox;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    EditWinLotteryLevel1: TEdit;
-    EditWinLotteryLevel2: TEdit;
-    EditWinLotteryLevel3: TEdit;
-    EditWinLotteryLevel4: TEdit;
-    Label13: TLabel;
-    EditWinLotteryLevel5: TEdit;
-    Label14: TLabel;
-    EditWinLotteryLevel6: TEdit;
     GroupBox4: TGroupBox;
     Label7: TLabel;
     Label8: TLabel;
@@ -132,14 +113,15 @@ begin
   EditItemNumber.Text := IntToStr(g_Config.nItemNumber);
   EditItemNumberEx.Text := IntToStr(g_Config.nItemNumberEx);
 
-  EditWinLotteryCount.Text := IntToStr(g_Config.nWinLotteryCount);
-  EditNoWinLotteryCount.Text := IntToStr(g_Config.nNoWinLotteryCount);
-  EditWinLotteryLevel1.Text := IntToStr(g_Config.nWinLotteryLevel1);
-  EditWinLotteryLevel2.Text := IntToStr(g_Config.nWinLotteryLevel2);
-  EditWinLotteryLevel3.Text := IntToStr(g_Config.nWinLotteryLevel3);
-  EditWinLotteryLevel4.Text := IntToStr(g_Config.nWinLotteryLevel4);
-  EditWinLotteryLevel5.Text := IntToStr(g_Config.nWinLotteryLevel5);
-  EditWinLotteryLevel6.Text := IntToStr(g_Config.nWinLotteryLevel6);
+//取消彩票功能
+//  EditWinLotteryCount.Text := IntToStr(g_Config.nWinLotteryCount);
+//  EditNoWinLotteryCount.Text := IntToStr(g_Config.nNoWinLotteryCount);
+//  EditWinLotteryLevel1.Text := IntToStr(g_Config.nWinLotteryLevel1);
+//  EditWinLotteryLevel2.Text := IntToStr(g_Config.nWinLotteryLevel2);
+//  EditWinLotteryLevel3.Text := IntToStr(g_Config.nWinLotteryLevel3);
+//  EditWinLotteryLevel4.Text := IntToStr(g_Config.nWinLotteryLevel4);
+//  EditWinLotteryLevel5.Text := IntToStr(g_Config.nWinLotteryLevel5);
+//  EditWinLotteryLevel6.Text := IntToStr(g_Config.nWinLotteryLevel6);
 
   EditGlobalVal1.Text := IntToStr(g_Config.GlobalVal[0]);
   EditGlobalVal2.Text := IntToStr(g_Config.GlobalVal[1]);

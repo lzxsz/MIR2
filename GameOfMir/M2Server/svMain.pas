@@ -292,14 +292,16 @@ try
   for I := Low(g_Config.GlobalVal) to High(g_Config.GlobalVal) do begin
     Config.WriteInteger('Setup','GlobalVal' + IntToStr(I),g_Config.GlobalVal[I])
   end;
-  Config.WriteInteger('Setup','WinLotteryCount',g_Config.nWinLotteryCount);
-  Config.WriteInteger('Setup','NoWinLotteryCount',g_Config.nNoWinLotteryCount);
-  Config.WriteInteger('Setup','WinLotteryLevel1',g_Config.nWinLotteryLevel1);
-  Config.WriteInteger('Setup','WinLotteryLevel2',g_Config.nWinLotteryLevel2);
-  Config.WriteInteger('Setup','WinLotteryLevel3',g_Config.nWinLotteryLevel3);
-  Config.WriteInteger('Setup','WinLotteryLevel4',g_Config.nWinLotteryLevel4);
-  Config.WriteInteger('Setup','WinLotteryLevel5',g_Config.nWinLotteryLevel5);
-  Config.WriteInteger('Setup','WinLotteryLevel6',g_Config.nWinLotteryLevel6);
+
+//取消彩票功能
+//  Config.WriteInteger('Setup','WinLotteryCount',g_Config.nWinLotteryCount);
+//  Config.WriteInteger('Setup','NoWinLotteryCount',g_Config.nNoWinLotteryCount);
+//  Config.WriteInteger('Setup','WinLotteryLevel1',g_Config.nWinLotteryLevel1);
+//  Config.WriteInteger('Setup','WinLotteryLevel2',g_Config.nWinLotteryLevel2);
+//  Config.WriteInteger('Setup','WinLotteryLevel3',g_Config.nWinLotteryLevel3);
+//  Config.WriteInteger('Setup','WinLotteryLevel4',g_Config.nWinLotteryLevel4);
+//  Config.WriteInteger('Setup','WinLotteryLevel5',g_Config.nWinLotteryLevel5);
+//  Config.WriteInteger('Setup','WinLotteryLevel6',g_Config.nWinLotteryLevel6);
 
 except
 
@@ -625,8 +627,10 @@ begin
     LoadItemBindIPaddr();
     LoadItemBindAccount();
     LoadItemBindCharName();
-    LoadUnMasterList();
-    LoadUnForceMasterList();
+
+//    LoadUnMasterList();
+//    LoadUnForceMasterList();
+
     MemoLog.Lines.Add('正在加载捆绑装备信息...');
     nCode:= FrmDB.LoadUnbindList;
     if nCode < 0 then begin
@@ -1162,14 +1166,17 @@ begin
   boStartReady               := False;
   g_boExitServer             := False;
   boFilterWord               := True;
-  Config.nWinLotteryCount  := 0;
-  Config.nNoWinLotteryCount:= 0;
-  Config.nWinLotteryLevel1 := 0;
-  Config.nWinLotteryLevel2 := 0;
-  Config.nWinLotteryLevel3 := 0;
-  Config.nWinLotteryLevel4 := 0;
-  Config.nWinLotteryLevel5 := 0;
-  Config.nWinLotteryLevel6 := 0;
+
+//取消彩票功能  
+//  Config.nWinLotteryCount  := 0;
+//  Config.nNoWinLotteryCount:= 0;
+//  Config.nWinLotteryLevel1 := 0;
+//  Config.nWinLotteryLevel2 := 0;
+//  Config.nWinLotteryLevel3 := 0;
+//  Config.nWinLotteryLevel4 := 0;
+//  Config.nWinLotteryLevel5 := 0;
+//  Config.nWinLotteryLevel6 := 0;
+
   FillChar(g_Config.GlobalVal, SizeOf(g_Config.GlobalVal), #0);
   FillChar(g_Config.GlobaDyMval, SizeOf(g_Config.GlobaDyMval), #0);
 {$IF USECODE = USEREMOTECODE}
@@ -1224,8 +1231,10 @@ begin
   g_DisableSendMsgList  := TGStringList.Create;
   g_MonDropLimitLIst    := TGStringList.Create;
   g_DisableTakeOffList  := TGStringList.Create;
-  g_UnMasterList        := TGStringList.Create;
-  g_UnForceMasterList   := TGStringList.Create;
+
+//  g_UnMasterList        := TGStringList.Create;
+//  g_UnForceMasterList   := TGStringList.Create;
+
   g_GameLogItemNameList := TGStringList.Create;
   g_DenyIPAddrList      := TGStringList.Create;
   g_DenyChrNameList     := TGStringList.Create;
@@ -1364,8 +1373,10 @@ begin
   g_DisableSendMsgList.Free;
   g_MonDropLimitLIst.Free;
   g_DisableTakeOffList.Free;
-  g_UnMasterList.Free;
-  g_UnForceMasterList.Free;
+
+//  g_UnMasterList.Free;
+//  g_UnForceMasterList.Free;
+
   g_GameLogItemNameList.Free;
   g_DenyIPAddrList.Free;
   g_DenyChrNameList.Free;
@@ -1510,8 +1521,10 @@ begin
   LoadItemBindIPaddr();
   LoadItemBindAccount();
   LoadItemBindCharName();
-  LoadUnMasterList();
-  LoadUnForceMasterList();
+
+//  LoadUnMasterList();
+//  LoadUnForceMasterList();
+
   LoadDenyIPAddrList();
   LoadDenyAccountList();
   LoadDenyChrNameList();

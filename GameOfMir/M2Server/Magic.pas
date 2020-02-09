@@ -3,7 +3,7 @@ unit Magic;
 interface
 
 uses
-  Windows,Classes,Grobal2,ObjBase,SDK;
+  Windows,Classes,Grobal2,ObjBase,SDK,Math;
 type
   TMagicManager = class
   private
@@ -76,6 +76,7 @@ begin
     Result:=Random(HiWord(wInt) - LoWord(wInt) + 1) + LoWord(wInt);
   end else Result:=LoWord(wInt);
 end;
+
 //nType 为指定类型 1 为护身符 2 为毒药
 function CheckAmulet(PlayObject:TPlayObject;nCount:Integer;nType:Integer;var Idx:Integer):Boolean;
 var
@@ -108,7 +109,7 @@ begin
   if PlayObject.m_UseItems[U_BUJUK].wIndex > 0 then begin
     AmuletStdItem:=UserEngine.GetStdItem(PlayObject.m_UseItems[U_BUJUK].wIndex);
     if (AmuletStdItem <> nil) and (AmuletStdItem.StdMode = 25) then begin
-      case nType of    //
+      case nType of 
         1: begin
           if (AmuletStdItem.Shape = 5) and (ROUND(PlayObject.m_UseItems[U_BUJUK].Dura / 100) >= nCount) then begin
             Idx:=U_BUJUK;
@@ -126,7 +127,9 @@ begin
       end;
     end;
   end;
+
 end;
+
 //nType 为指定类型 1 为护身符 2 为毒药
 procedure UseAmulet(PlayObject:TPlayObject;nCount:Integer;nType:Integer;var Idx:Integer);
 begin
@@ -139,6 +142,7 @@ begin
     PlayObject.m_UseItems[Idx].wIndex:=0;
   end;
 end;
+
 function  TMagicManager.MagPushArround (PlayObject:TBaseObject;nPushLevel: integer): integer; //00492204
 var
    i, nDir, levelgap, push: integer;
@@ -200,6 +204,7 @@ begin
   inherited;
 end;
 
+//是否为战士技能
 function TMagicManager.IsWarrSkill(wMagIdx: Integer): Boolean; //492190
 begin
   Result:=False;
@@ -207,6 +212,7 @@ begin
     Result:=True;
 end;
 
+//执行魔法技能
 function TMagicManager.DoSpell(PlayObject: TPlayObject;
   UserMagic: pTUserMagic; nTargetX, nTargetY: Integer;
   TargeTBaseObject: TBaseObject):Boolean; //0049350C
@@ -292,7 +298,7 @@ begin //0049350C
       end else
         TargeTBaseObject := nil;
     end;
-    SKILL_HEALLING{2}: begin
+    SKILL_HEALLING{2}: begin  //治愈术
       if TargeTBaseObject = nil then begin
         TargeTBaseObject:=PlayObject;
         nTargetX:=PlayObject.m_nCurrX;
@@ -523,22 +529,23 @@ begin //0049350C
         end;
       end;        
     end;
-    SKILL_BIGHEALLING{29}: begin //群体治疗术 00493E42
+    SKILL_BIGHEALLING{29}: begin //群体治愈术 00493E42
       nPower:= PlayObject.GetAttackPower (GetPower(MPow(UserMagic)) + LoWord(PlayObject.m_WAbil.SC) * 2,
                                     SmallInt(HiWord(PlayObject.m_WAbil.SC)-LoWord(PlayObject.m_WAbil.SC)) * 2 + 1);
       if MagBigHealing(PlayObject,nPower,nTargetX,nTargetY) then boTrain:=True;
     end;
-    SKILL_SINSU{30}: begin //00494476
+    SKILL_SINSU{30}: begin //召唤神兽 00494476
       boSpellFail:=True;
-      if CheckAmulet(PlayObject,5,1,nAmuletIdx) then begin
-        UseAmulet(PlayObject,5,1,nAmuletIdx);
+      //
+      if CheckAmulet(PlayObject,5,1,nAmuletIdx) then begin   //检查人物身上的护身符数量是否大于或等于5个
+        UseAmulet(PlayObject,5,1,nAmuletIdx);   //使用护身符，5表消耗护身符数量, 1表护身符
         {
         if BaseObject.m_UseItems[U_ARMRINGL].Dura >= 500 then Dec(BaseObject.m_UseItems[U_ARMRINGL].Dura,500)
         else BaseObject.m_UseItems[U_ARMRINGL].Dura:=0;
         BaseObject.SendMsg(BaseObject,RM_DURACHANGE,5,BaseObject.m_UseItems[U_ARMRINGL].Dura,BaseObject.m_UseItems[U_ARMRINGL].DuraMax,0,'');
         }
 //        if (UserMagic.MagicInfo.wMagicId = 30) and not PlayObject.sub_4DD704 then begin
-          if MagMakeSinSuSlave(PlayObject,UserMagic) then begin
+          if MagMakeSinSuSlave(PlayObject,UserMagic) then begin  //神兽成功，并加入道士宠物列表中
             boTrain:=True;
           end;
 //          if PlayObject.MakeSlave(g_Config.sDogz,UserMagic.btLevel,1,10 * 24 * 60 * 60) <> nil then
@@ -632,6 +639,7 @@ begin //0049350C
       begin //破空剑
 
       end;
+      
     //法师
     SKILL_44: begin  //结冰掌
       if MagHbFireBall(PlayObject,UserMagic,nTargetX, nTargetY,TargeTBaseObject) then boTrain:=True;
@@ -662,6 +670,7 @@ begin //0049350C
                          g_Config.nFireBoomRage{1}) then
         boTrain:=True;
     end;
+
     //道士
     SKILL_ENERGYREPULSOR: begin  //气功波
       if MagPushArround(PlayObject,UserMagic.btLevel) > 0 then boTrain:=True;
@@ -751,71 +760,117 @@ begin
   Result:=True;
 end;
 
+
+//
+//魔法：诱惑之光
+//
+//诱惑之光技能修改：
+// 1.增加诱惑怪物的成功率。
+// 2.增加怪物判变时间 （角色24级 => 3个多小时，角色30级 => 4个多小时，角色40级 => 5个多小时）。
+// 3.已经有主人的宠物，他人不能再诱惑该宠物，除非宠物叛变。
+// 修改时间: 2020,2,4
+// 修改人: Davy (LZX)
 function TMagicManager.MagTamming(BaseObject, TargeTBaseObject: TBaseObject;
   nTargetX, nTargetY, nMagicLevel: Integer): Boolean; //00492368
 var
   n14:Integer;
+  nSpiritMutinyTime:Integer; //法师宠物判变时间，单位：分钟
 begin
   Result:=False;
-  if (TargeTBaseObject.m_btRaceServer <> RC_PLAYOBJECT) and ((Random(4 - nMagicLevel) = 0)) then begin
-    TargeTBaseObject.m_TargetCret:=nil;
-    if TargeTBaseObject.m_Master = BaseObject then begin
-      TargeTBaseObject.OpenHolySeizeMode((nMagicLevel * 5 + 10) * 1000);
-      Result:=True;
-    end else begin
-      if Random(2) = 0 then begin
-        if TargeTBaseObject.m_Abil.Level <= BaseObject.m_Abil.Level + 2 then begin
-          if Random(3) = 0 then begin
-            if Random((BaseObject.m_Abil.Level + 20) + (nMagicLevel * 5)) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
-              if not(TargeTBaseObject.m_boNoTame) and
-                 (TargeTBaseObject.m_btLifeAttrib <> LA_UNDEAD) and
+  
+   if (TargeTBaseObject.m_btRaceServer <> RC_PLAYOBJECT) and (Random(4 - nMagicLevel) = 0)  then begin   //只有怪物没有主人时，才允许诱惑（防止抢有主人的宠物）
+
+      // ((TargeTBaseObject.m_Master = nil) or (TargeTBaseObject.m_Master = BaseObject)) 
+      TargeTBaseObject.m_TargetCret:=nil;
+
+      //原来的这段代码让怪物很容易被定住，感觉不太好 ，所以取消失
+      //  if TargeTBaseObject.m_Master = BaseObject then begin    //if 1
+      //     TargeTBaseObject.OpenHolySeizeMode((nMagicLevel * 5 + 10) * 1000);    //定住怪物
+      //     Result:=True;
+      //  end else begin    //if-else1
+
+       if Random(2) = 0 then begin
+         if TargeTBaseObject.m_Abil.Level <= BaseObject.m_Abil.Level + 2 then begin   //人物的等级需要大于怪物等级2级
+
+          // if Random(3) = 0 then begin
+          if Random(1) = 0 then begin
+
+            // if Random((BaseObject.m_Abil.Level + 20) + (nMagicLevel * 5)) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
+            if RandomRange(BaseObject.m_Abil.Level, (BaseObject.m_Abil.Level + 20)) + (nMagicLevel * 5) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
+
+              if not(TargeTBaseObject.m_boNoTame) and   //目标宠物是否已被训化，如果已经有主人的宠物，说明是被已被训化的（m_boNoTame为TRUE）
+                 (TargeTBaseObject.m_btLifeAttrib <> LA_UNDEAD) and                                                             
                  (TargeTBaseObject.m_Abil.Level < g_Config.nMagTammingLevel{50}) and
                  (BaseObject.m_SlaveList.Count < g_Config.nMagTammingCount{(nMagicLevel + 2)}) then begin
-                n14:=TargeTBaseObject.m_WAbil.MaxHP div g_Config.nMagTammingHPRate{100};
-                if n14 <= 2 then n14:=2
-                else Inc(n14,n14);
+
+                 n14:= TargeTBaseObject.m_WAbil.MaxHP div g_Config.nMagTammingHPRate{100};  //求目标怪物血量是规定血量的倍数
+
+                 if n14 <= 2 then n14:=2  //当怪物血量越大，越难招
+                 else Inc(n14,n14);       //n14 + n14 --> n14  怪物血量大于规定血量时，增加诱惑难度
+
                 if (TargeTBaseObject.m_Master <> BaseObject) and (Random(n14) = 0) then begin
+                //if (TargeTBaseObject.m_Master <> BaseObject)  then begin
+                
                   TargeTBaseObject.BreakCrazyMode();
                   if TargeTBaseObject.m_Master <> nil then begin
                     TargeTBaseObject.m_WAbil.HP:=TargeTBaseObject.m_WAbil.HP div 10;
                   end;
                   TargeTBaseObject.m_Master:=BaseObject;
-                  TargeTBaseObject.m_dwMasterRoyaltyTick:=LongWord((Random(BaseObject.m_Abil.Level * 2) + (nMagicLevel shl 2) * 5 + 20) * 60 * 1000) + GetTickCount;
+                  //计算法师宝宝的判变时间。 法师宝宝判变时间与法师等级和其诱惑之光的魔法等级有关。
+                  //TargeTBaseObject.m_dwMasterRoyaltyTick:=LongWord((Random(BaseObject.m_Abil.Level * 2) + (nMagicLevel shl 2) * 5 + 20) * 60 * 1000) + GetTickCount;   //原计时算法
+
+                  //新的计时算法
+                  //60*1000(毫秒) = 1 分钟 ,(nMagicLevel shl 2)表示魔法等级左移两位，每移一位乘2。时间单位：分钟
+                  //诱惑之光：角色13级开始练魔法1，18级开始练魔法2 ，24级开始练魔法3
+                  //角色13级 => 1小时38分 + 0至13随机数; 角色24级 => 3小时24分 + 0至24随机数; 角色30级 => 4小时 + 0至30随机数; 角色40级 => 5小时 + 0至30随机数，
+                  nSpiritMutinyTime := LongWord( RandomRange( 0, BaseObject.m_Abil.Level ) + 60 * (BaseObject.m_Abil.Level div 10) + (nMagicLevel shl 2) * 5 );  //分钟数
+                  TargeTBaseObject.m_dwMasterRoyaltyTick := LongWord( nSpiritMutinyTime * 60 * 1000 ) + GetTickCount;  //60 * 1000(毫秒) = 1分秒 ，宠物判变时间
+
                   TargeTBaseObject.m_btSlaveMakeLevel:=nMagicLevel;
                   if TargeTBaseObject.m_dwMasterTick = 0 then TargeTBaseObject.m_dwMasterTick:=GetTickCount();
                   TargeTBaseObject.BreakHolySeizeMode();
+                  
                   if LongWord(1500 - nMagicLevel * 200) < LongWord(TargeTBaseObject.m_nWalkSpeed) then begin
                     TargeTBaseObject.m_nWalkSpeed:=1500 - nMagicLevel * 200;
                   end;
+
                   if LongWord(2000 - nMagicLevel * 200) < LongWord(TargeTBaseObject.m_nNextHitTime) then begin
                     TargeTBaseObject.m_nNextHitTime:=2000 - nMagicLevel * 200;
                   end;
+
                   TargeTBaseObject.RefShowName();
-                  BaseObject.m_SlaveList.Add(TargeTBaseObject);
+
+                  TargeTBaseObject.m_boNoTame := True;
+                  BaseObject.m_SlaveList.Add(TargeTBaseObject);   //诱惑怪物成功
+                  
                 end else begin //004925F2
-                  if Random(14) = 0 then TargeTBaseObject.m_WAbil.HP:=0;
+                  if Random(20) = 0 then TargeTBaseObject.m_WAbil.HP:=0;     //怪物被招死    14
                 end;                  
               end else begin //00492615
-                if (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then
-                  TargeTBaseObject.m_WAbil.HP:=0;
+                if (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then   //所招怪物为不死系 （如稻草人）
+                  TargeTBaseObject.m_WAbil.HP:=0;        //怪物被招死
               end;
             end else begin //00492641
-              if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then
-                TargeTBaseObject.OpenCrazyMode(Random(20) + 10);
+              if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then //所招怪物为非不死系 （如钉耙猫）
+                TargeTBaseObject.OpenCrazyMode(Random(20) + 10);  //怪物狂怒，名字变红色
             end;
           end else begin //00492674
-            if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) then
-              TargeTBaseObject.OpenCrazyMode(Random(20) + 10); //变红
+            if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) then    //所招怪物为非不死系
+              TargeTBaseObject.OpenCrazyMode(Random(20) + 10);  //怪物狂怒，名字变红色
           end;
-        end; //004926B0          
+        end; //004926B0
+
       end else begin //00492699
-        TargeTBaseObject.OpenHolySeizeMode((nMagicLevel * 5 + 10) * 1000);
+         //TargeTBaseObject.OpenHolySeizeMode((nMagicLevel * 5 + 10) * 1000);    
+         TargeTBaseObject.OpenHolySeizeMode(Random(nMagicLevel * 5 + 10) * 1000);   //怪物被定住，名字变褐色
       end;
       Result:=True;
-    end;
-  end else begin
-    if Random(2) = 0 then Result:=True;      
-  end;
+      
+   // end;      //if-else1  end.
+
+   end else begin
+     if Random(2) = 0 then Result:=True;   //返回
+   end;
     
 end;
 
@@ -1270,6 +1325,7 @@ begin
   end;
 end;
 
+//将神兽加入道士宠物列表中
 function TMagicManager.MagMakeSinSuSlave(PlayObject: TPlayObject;
   UserMagic: pTUserMagic): Boolean;
 var

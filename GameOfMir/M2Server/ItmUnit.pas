@@ -22,7 +22,7 @@ type
   TItem = class
   public
     ItemType: Byte;
-      Name: string[20];
+    Name: string[20];
     StdMode: Byte;
     Shape: Byte;
     Weight: Byte;

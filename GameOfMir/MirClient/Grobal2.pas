@@ -33,9 +33,9 @@ const
   U_RINGL       = 7;    //左戒指
   U_RINGR       = 8;    //右戒指
   U_BUJUK       = 9;    //放护身符位置
-  U_BELT        = 10;    //腰带
-  U_BOOTS       = 11;    //鞋子
-  U_CHARM       = 12;    //宝石
+  U_BELT        = 10;   //腰带
+  U_BOOTS       = 11;   //鞋子
+  U_CHARM       = 12;   //宝石
 
   DEFBLOCKSIZE  = 16;
   BUFFERSIZE    = 10000;
@@ -788,7 +788,7 @@ type
   end;
 
   THumanUseItems=array[0..12] of TUserItem;
-  THumItems=array[0..12] of TUserItem;    //人物装备物品数量(13个)，1.5版是9个（包含：武器、头盔、衣服、戒指、手镯等）
+  THumItems=array[0..12] of TUserItem;    //人物装备物品数量(13个)
 
   pTHumItems=^THumItems;
   pTBagItems=^TBagItems;
@@ -898,7 +898,7 @@ type
     wHomeY          :Word;
     BonusAbil       :TNakedAbility;     //+20
     nBonusPoint     :Integer;
-    btCreditPoint   :Byte;
+    btCreditPoint   :Byte;            //声望
     btReLevel       :Byte;
 
     sMasterName     :String[ActorNameLen];

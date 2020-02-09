@@ -454,6 +454,7 @@ type
     ButtonActionSpeedConfig: TButton;
     CheckBoxRunGuard: TCheckBox;
     CheckBoxSZRunAll: TCheckBox;
+    Label14: TLabel;
     procedure EditHitIntervalTimeChange(Sender: TObject);
     procedure EditMagicHitIntervalTimeChange(Sender: TObject);
     procedure EditRunIntervalTimeChange(Sender: TObject);
@@ -649,6 +650,7 @@ type
     procedure ButtonActionSpeedConfigClick(Sender: TObject);
     procedure CheckBoxRunGuardClick(Sender: TObject);
     procedure CheckBoxSZRunAllClick(Sender: TObject);
+
   private
     boOpened:Boolean;
     boModValued:Boolean;
@@ -3160,5 +3162,6 @@ begin
   g_Config.boSafeZoneRunAll := CheckBoxSZRunAll.Checked;
   ModValue();
 end;
+
 
 end.

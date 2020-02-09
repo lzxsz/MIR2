@@ -1,4 +1,5 @@
 unit grobal2;
+//客户端和服务端通用的文件,定义了一些消息标识,数据结构,消息操作函数
 
 interface
 uses
@@ -14,6 +15,7 @@ const
   MapNameLen    = 16;
   ActorNameLen  = 14;
 
+
   DR_UP         =0;
   DR_UPRIGHT    =1;
   DR_RIGHT      =2;
@@ -23,19 +25,35 @@ const
   DR_LEFT       =6;
   DR_UPLEFT     =7;
 
-  U_DRESS       = 0;   //衣服
+//传奇1.50版的装备,共10个
+  U_DRESS       = 0;    //衣服
   U_WEAPON      = 1;    //武器
   U_RIGHTHAND   = 2;    //右手
   U_NECKLACE    = 3;    //项链
   U_HELMET      = 4;    //头盔
-  U_ARMRINGL    = 5;    //左手戒指
-  U_ARMRINGR    = 6;    //右手戒指
+  U_ARMRINGL    = 5;    //左手镯
+  U_ARMRINGR    = 6;    //右手镯
   U_RINGL       = 7;    //左戒指
   U_RINGR       = 8;    //右戒指
-  U_BUJUK       = 9;    //放护身符位置
-  U_BELT        = 10;    //腰带
-  U_BOOTS       = 11;    //鞋子
-  U_CHARM       = 12;    //宝石
+  U_BUJUK       = 9;    //护身符
+
+  
+  //传奇1.70版的装备,共13个
+{
+  U_DRESS       = 0;    //衣服
+  U_WEAPON      = 1;    //武器
+  U_RIGHTHAND   = 2;    //右手
+  U_NECKLACE    = 3;    //项链
+  U_HELMET      = 4;    //头盔
+  U_ARMRINGL    = 5;    //左手镯
+  U_ARMRINGR    = 6;    //右手镯
+  U_RINGL       = 7;    //左戒指
+  U_RINGR       = 8;    //右戒指
+  U_BUJUK       = 9;    //护身符
+  U_BELT        = 10;   //腰带     (1.70版增加)
+  U_BOOTS       = 11;   //鞋子     (1.70版增加)
+  U_CHARM       = 12;   //宝石     (1.70版增加)
+}
 
   DEFBLOCKSIZE  = 16;
   BUFFERSIZE    = 10000;
@@ -68,8 +86,6 @@ const
   POISON_DONTMOVE	= 4;
   POISON_STONE		= 5;
   POISON_68             = 68;
-  
-
 
   STATE_TRANSPARENT	= 8;
   STATE_DEFENCEUP	= 9;
@@ -90,11 +106,7 @@ const
   RCC_GUARD        = 12;
   RCC_USERHUMAN    = 0;
 
-
-
   CM_QUERYUSERSTATE     = 82;
-
-
 
   CM_QUERYUSERNAME      = 80;  //查询用户姓名
   CM_QUERYBAGITEMS      = 81;  //查询包裹内容
@@ -153,7 +165,7 @@ const
   CM_ADJUST_BONUS       = 1043;
   CM_GUILDALLY          = 1044;    //行会结盟
   CM_GUILDBREAKALLY     = 1045;    //行会解盟
-  CM_SPEEDHACKUSER      = 10430; //??
+  CM_SPEEDHACKUSER      = 10430;   //??
 
   CM_PROTOCOL           = 2000;
   CM_IDPASSWORD         = 2001;    //发送用户名/密码
@@ -178,7 +190,6 @@ const
 
   CM_SAY                = 3030;  //说话
 
-
   SM_41                 = 4;
   SM_THROW              = 5;
   SM_RUSH               = 6;
@@ -191,20 +202,18 @@ const
   SM_RUN                = 13;   //跑
   SM_HIT                = 14;   //砍
   SM_HEAVYHIT           = 15;   //
-  SM_BIGHIT             = 16;   //
+  SM_BIGHIT             = 16;   //挖掘打击
   SM_SPELL              = 17;   //使用魔法
   SM_POWERHIT           = 18;   //攻杀
   SM_LONGHIT            = 19;   //刺杀
-  SM_DIGUP              = 20;   //挖取
-  SM_DIGDOWN            = 21;   //挖下?????????
-  SM_FLYAXE             = 22;   //???????????????
-  SM_LIGHTING           = 23;   //天亮?????????????
-  SM_WIDEHIT            = 24;   //半月
+  SM_DIGUP              = 20;   //挖掘（向上）
+  SM_DIGDOWN            = 21;   //挖掘（向下）
+  SM_FLYAXE             = 22;   //掷斧头
+  SM_LIGHTING           = 23;   //天亮
+  SM_WIDEHIT            = 24;   //半月弯刀（魔法）
   SM_CRSHIT             = 25;
   SM_TWINHIT            = 26;
   
-  
-
   SM_ALIVE              = 27;//
   SM_MOVEFAIL           = 28;//
   SM_HIDE               = 29;//
@@ -266,8 +275,6 @@ const
   SM_UPDATEID_SUCCESS   = 532;      //更新ID成功?????
   SM_UPDATEID_FAIL      = 533;      //更新ID失败???????
 
-
-
   SM_DROPITEM_SUCCESS   = 600;    //丢弃物品成功
   SM_DROPITEM_FAIL      = 601;    //丢弃物品失败
 
@@ -278,7 +285,7 @@ const
   SM_OPENDOOR_LOCK      = 613;
   SM_CLOSEDOOR          = 614;
 
-  SM_TAKEON_OK          = 615;    //穿上戴上成功
+  SM_TAKEON_OK          = 615;     //穿上戴上成功
   SM_TAKEON_FAIL        = 616;     //穿失败
   SM_TAKEOFF_OK         = 619;     //脱下成功
   SM_TAKEOFF_FAIL       = 620;     //脱下失败
@@ -356,27 +363,25 @@ const
 
   SM_716                = 716;
 
-  
-
   SM_CHANGEGUILDNAME    = 750;     //改变行会名称
   SM_SENDUSERSTATE      = 751;
   SM_SUBABILITY         = 752;
-  SM_OPENGUILDDLG       = 753;     //打开行会窗口
-  SM_OPENGUILDDLG_FAIL  = 754;    //打开行会窗口失败
-  SM_SENDGUILDMEMBERLIST= 756;    //行会成员列表
-  SM_GUILDADDMEMBER_OK  = 757;     //行会添加成员成功
-  SM_GUILDADDMEMBER_FAIL= 758;     //行会添加成员失败
-  SM_GUILDDELMEMBER_OK  = 759;    //行会删除成员成功
-  SM_GUILDDELMEMBER_FAIL= 760;     //行会删除成员失败
-  SM_GUILDRANKUPDATE_FAIL= 761;    //行会等级/排列更新失败
-  SM_BUILDGUILD_OK      = 762;     //创建行会成功
+  SM_OPENGUILDDLG       = 753;      //打开行会窗口
+  SM_OPENGUILDDLG_FAIL  = 754;      //打开行会窗口失败
+  SM_SENDGUILDMEMBERLIST= 756;      //行会成员列表
+  SM_GUILDADDMEMBER_OK  = 757;      //行会添加成员成功
+  SM_GUILDADDMEMBER_FAIL= 758;      //行会添加成员失败
+  SM_GUILDDELMEMBER_OK  = 759;      //行会删除成员成功
+  SM_GUILDDELMEMBER_FAIL= 760;      //行会删除成员失败
+  SM_GUILDRANKUPDATE_FAIL= 761;     //行会等级/排列更新失败
+  SM_BUILDGUILD_OK      = 762;      //创建行会成功
   SM_BUILDGUILD_FAIL    = 763;      //创建行会失败
   SM_DONATE_OK          = 764;
   SM_DONATE_FAIL        = 765;
 
   SM_MENU_OK            = 767;//?
-  SM_GUILDMAKEALLY_OK   = 768;    //创建行会同盟成功
-  SM_GUILDMAKEALLY_FAIL = 769;    //创建行会同盟失败
+  SM_GUILDMAKEALLY_OK   = 768;     //创建行会同盟成功
+  SM_GUILDMAKEALLY_FAIL = 769;     //创建行会同盟失败
   SM_GUILDBREAKALLY_OK  = 770;     //删除行会同盟成功
   SM_GUILDBREAKALLY_FAIL= 771;     //删除行会同盟失败
   SM_DLGMSG             = 772;     //窗口消息????弹出窗口???????
@@ -384,8 +389,8 @@ const
   SM_SPACEMOVE_SHOW     = 801;
   SM_RECONNECT          = 802;//
   SM_GHOST              = 803;
-  SM_SHOWEVENT          = 804;    //显示事件????????
-  SM_HIDEEVENT          = 805;    //隐藏事件?????????
+  SM_SHOWEVENT          = 804;     //显示事件????????
+  SM_HIDEEVENT          = 805;     //隐藏事件?????????
   SM_SPACEMOVE_HIDE2    = 806;
   SM_SPACEMOVE_SHOW2    = 807;
   SM_TIMECHECK_MSG      = 810;
@@ -688,7 +693,7 @@ type
     HandWeight    :Byte;  //0x1BE
     MaxHandWeight :Byte;  //0x1BF
   end;
-        //for db
+    //for db
 
     //end
 
@@ -724,21 +729,19 @@ type
   end;
   pTClientGoods=^TClientGoods;
 
-  
-
   //支持4格的人物能力值
   pTAbility=^TAbility;
   TAbility= packed record         //50Bytes
      Level              :Word;    //1  2  等级
-     AC                 :DWord;   //3  6
-     MAC                :DWord;   //7  10
-     DC                 :DWord;   //11 14
-     MC                 :DWord;   //15 18
-     SC                 :DWord;   //19 22
+     AC                 :DWord;   //3  6  防御
+     MAC                :DWord;   //7  10 魔御
+     DC                 :DWord;   //11 14 攻击力下限
+     MC                 :DWord;   //15 18 魔法攻击力
+     SC                 :DWord;   //19 22 道术攻击力
      HP                 :Word;    //23 24 生命值
      MP                 :Word;    //25 26 魔法值
-     MaxHP              :Word;    //27 28
-     MaxMP              :Word;    //29 30
+     MaxHP              :Word;    //27 28 最大生命值
+     MaxMP              :Word;    //29 30 最大魔法值
      Exp                :DWord;   //31 34 当前经验
      MaxExp             :DWord;   //35 38 最大经验
      Weight             :Word;    //39 40 背包重
@@ -781,17 +784,17 @@ type
   TUserItem=record                         //=24
     MakeIndex       :Integer;              //+4
     wIndex          :Word;                 //+2
-    Dura            :word;                 //+2
-    DuraMax         :Word;                 //+2
+    Dura            :word;                 //+2    //持久
+    DuraMax         :Word;                 //+2    //最大持久
     btValue         :Array[0..13] of byte; //+14
     //sPrefix     :String[10];
   end;
 
-  THumanUseItems=array[0..12] of TUserItem;
-  THumItems=array[0..12] of TUserItem;     //人物装备物品数量(13个)，1.5版是9个（包含：武器、头盔、衣服、戒指、手镯等）
+   THumanUseItems=array[0..12] of TUserItem;
+   THumItems=array[0..12] of TUserItem;     //人物装备物品数量: 1.70版13个，1.50版10个(9+1道符)。这个数组的大小不必改动
 
-  pTHumItems=^THumItems;
-  pTBagItems=^TBagItems;
+   pTHumItems=^THumItems;
+   pTBagItems=^TBagItems;
 
   //lzx2020 - for debug bag item count by davy 2020-1-17
   //TBagItems=array[0..54-12] of  TUserItem;   //0..42 (43个物品)   4784
@@ -823,7 +826,6 @@ type
   TQuestUnit=array[0..127] of Byte;
 
   TQuestFlag=array[0..127] of Byte;
-
 
   //Correct structure..
   {
@@ -860,12 +862,9 @@ type
     UpExp:   longword; // 升级所需经验值
     unknown3: array[0..31] of byte; // 不清楚
 
-
-
     ReTurnMap: string[17];
     ReTurnX: word;
     ReTurnY: word;
-
 
     Neck:    string[85]; // 项链
     PK:      word;
@@ -882,8 +881,8 @@ type
     szTakeItem: array[0..54] of TUSERITEM;
     Magic12: array[0..19] of TMagic;
     KeepGoods: array[0..49] of TUSERITEM;
-
     }
+
   pTHumData=^THumData;
   THumData = packed record       //3164
     sChrName        :String[ActorNameLen];
@@ -903,17 +902,20 @@ type
     wHomeY          :Word;
     BonusAbil       :TNakedAbility;     //+20
     nBonusPoint     :Integer;
-    btCreditPoint   :Byte;
+    btCreditPoint   :Byte;             //声望
     btReLevel       :Byte;
 
-    sMasterName     :String[ActorNameLen];
-    boMaster        :Boolean;
-    sDearName       :String[ActorNameLen];
-    sStoragePwd     :String[10];
+    // 取消结婚 和师徒系统的相关数据
+    // 传奇1.50没有结婚和师徒系统， 1.70版出现结婚和师徒系统
+    // sMasterName     :String[ActorNameLen];
+    // boMaster        :Boolean;
+    // sDearName       :String[ActorNameLen];
+    // btMarryCount    :Byte; // 结婚次数
 
-    nGameGold       :Integer;
-    nGamePoint      :Integer;
-    nPayMentPoint   :Integer;
+    sStoragePwd     :String[10];
+    nGameGold       :Integer;       //游戏币(元宝)
+    nGamePoint      :Integer;       //游戏点（能量点）
+    nPayMentPoint   :Integer;       //充值点（秒卡点） 
     nPKPoint        :Integer;
 
     btAllowGroup    :Byte;
@@ -925,7 +927,6 @@ type
     btFightZoneDieCount:Byte;
     btEE            :Byte;
     btEF            :Byte;
-
 
     sAccount        :String[16];
     boLockLogon     :Boolean;
@@ -939,9 +940,6 @@ type
     QuestUnitOpen   :TQuestUnit;
     QuestUnit       :TQuestUnit;
     QuestFlag       :TQuestFlag;
-
-    btMarryCount    :Byte;
-
 
     HumItems        :THumItems;
     BagItems        :TBagItems;
@@ -1067,13 +1065,15 @@ Const
   RUNGATEMAX          = 8;
 
   //MAX_STATUS_ATTRIBUTE = 13;
-  MAXMAGIC             = 54;
+  MAXMAGIC             = 54;   //最大魔法
 
   PN_GETRGB            = 'GetRGB';
   PN_GAMEDATALOG       = 'GameDataLog';
   PN_SENDBROADCASTMSG  = 'SendBroadcastMsg';
 
-  sSTRING_GOLDNAME     = 'Gold';
+  //sSTRING_GOLDNAME     = 'Gold';
+  sSTRING_GOLDNAME       = '金币';
+
   MAXLEVEL             = 500;
   SLAVEMAXLEVEL        = 50;
 
@@ -1192,11 +1192,11 @@ Const
   RM_WHISPER           = 11002;   //私聊
   RM_CRY               = 11003;   //喊话
   RM_SYSMESSAGE        = 11004;   //系统信息
-  RM_GROUPMESSAGE      = 11005;  //组队说话
-  RM_SYSMESSAGE2       = 11006;  //系统信息2
-  RM_GUILDMESSAGE      = 11007;  //行会说话
-  RM_SYSMESSAGE3       = 11008;  //系统信息3
-  RM_MERCHANTSAY       = 11009;  //怪物还能说话？？？？？？？？
+  RM_GROUPMESSAGE      = 11005;   //组队说话
+  RM_SYSMESSAGE2       = 11006;   //系统信息2
+  RM_GUILDMESSAGE      = 11007;   //行会说话
+  RM_SYSMESSAGE3       = 11008;   //系统信息3
+  RM_MERCHANTSAY       = 11009;   //怪物还能说话？？？？？？？？
 
 
   RM_ZEN_BEE           = 8020;
@@ -1223,7 +1223,7 @@ Const
   RM_ITEMSHOW          = 8082;
   RM_GAMEGOLDCHANGED   = 8084;
   RM_ITEMHIDE          = 8085;
-  RM_LEVELUP           = 8086;      //升级
+  RM_LEVELUP           = 8086;    //升级
 
   RM_CHANGENAMECOLOR   = 8090;
   RM_PUSH              = 8092;
@@ -1255,71 +1255,73 @@ Const
   OS_ROON              = 7;
 
 
-  //技能编号（正确）
-  SKILL_FIREBALL       = 1;        //火球术
-  SKILL_HEALLING       = 2;        //什么魔法
-  SKILL_ONESWORD       = 3;        //内功心法
-  SKILL_ILKWANG        = 4;        //基本剑法
-  SKILL_FIREBALL2      = 5;        //大火球
-  SKILL_AMYOUNSUL      = 6;        //施毒术
-  SKILL_YEDO           = 7;        //攻杀剑法
-  SKILL_FIREWIND       = 8;        //抗拒火环
-  SKILL_FIRE           = 9;        //地狱火
-  SKILL_SHOOTLIGHTEN   = 10;       //疾光电影
-  SKILL_LIGHTENING     = 11;       //雷电术
-  SKILL_ERGUM          = 12;       //刺杀剑法
-  SKILL_FIRECHARM      = 13;      //灵魂火符
-  SKILL_HANGMAJINBUB   = 14;      //幽灵盾
-  SKILL_DEJIWONHO      = 15;      //神圣战甲术
-  SKILL_HOLYSHIELD     = 16;      //捆魔咒
-  SKILL_SKELLETON      = 17;      //召唤骷髅
-  SKILL_CLOAK          = 18;      //隐身术
-  SKILL_BIGCLOAK       = 19;     //集体隐身术
-  SKILL_TAMMING        = 20;     //诱惑之光
-  SKILL_SPACEMOVE      = 21;     //瞬息移动
-  SKILL_EARTHFIRE      = 22;     //火墙
-  SKILL_FIREBOOM       = 23;     //爆裂火焰
-  SKILL_LIGHTFLOWER    = 24;     //地狱雷光
-  SKILL_BANWOL         = 25;     //半月弯刀
+  //技能编号（正确） ，与魔法数据库的编号(MagID)相同
+  //1.50~1.76版技能
+  SKILL_FIREBALL       = 1;     //火球术
+  SKILL_HEALLING       = 2;     //治愈术
+  SKILL_ONESWORD       = 3;     //基本剑术
+  SKILL_ILKWANG        = 4;     //精神力战法
+  SKILL_FIREBALL2      = 5;     //大火球
+  SKILL_AMYOUNSUL      = 6;     //施毒术
+  SKILL_YEDO           = 7;     //攻杀剑术
+  SKILL_FIREWIND       = 8;     //抗拒火环
+  SKILL_FIRE           = 9;     //地狱火
+  SKILL_SHOOTLIGHTEN   = 10;    //疾光电影
+  SKILL_LIGHTENING     = 11;    //雷电术
+  SKILL_ERGUM          = 12;    //刺杀剑术
+  SKILL_FIRECHARM      = 13;    //灵魂火符
+  SKILL_HANGMAJINBUB   = 14;    //幽灵盾
+  SKILL_DEJIWONHO      = 15;    //神圣战甲术
+  SKILL_HOLYSHIELD     = 16;    //困魔咒
+  SKILL_SKELLETON      = 17;    //召唤骷髅
+  SKILL_CLOAK          = 18;    //隐身术
+  SKILL_BIGCLOAK       = 19;    //集体隐身术
+  SKILL_TAMMING        = 20;    //诱惑之光
+  SKILL_SPACEMOVE      = 21;    //瞬息移动
+  SKILL_EARTHFIRE      = 22;    //火墙
+  SKILL_FIREBOOM       = 23;    //爆裂火焰
+  SKILL_LIGHTFLOWER    = 24;    //地狱雷光
+  SKILL_BANWOL         = 25;    //半月弯刀
   SKILL_FIRESWORD      = 26;    //烈火剑法
   SKILL_MOOTEBO        = 27;    //野蛮冲撞
   SKILL_SHOWHP         = 28;    //心灵启示
-  SKILL_BIGHEALLING    = 29;    //群体治疗术
-  SKILL_SINSU          = 30;    //什么魔法
+  SKILL_BIGHEALLING    = 29;    //群体治愈术
+  SKILL_SINSU          = 30;    //召唤神兽
   SKILL_SHIELD         = 31;    //魔法盾
   SKILL_KILLUNDEAD     = 32;    //圣言术
   SKILL_SNOWWIND       = 33;    //冰咆哮
+
+  //以下1.8版以后技能
   SKILL_CROSSMOON      = 34;    //双龙斩
   SKILL_WINDTEBO       = 35;    //什么魔法
   SKILL_UENHANCER      = 36;    //无极真气
   SKILL_ENERGYREPULSOR = 37;    //气功波
-  SKILL_TWINBLADE      = 38;   //狂风斩
-  SKILL_GROUPDEDING    = 39;   //地钉
-  SKILL_UNAMYOUNSUL    = 40;   //解毒术
-  SKILL_ANGEL          = 41;   //什么魔法
-  SKILL_GROUPLIGHTENING= 42;   //群体雷电术
-  SKILL_43             = 43;
-  SKILL_44             = 44; //FrostCrunch
-  SKILL_45             = 45; //FlameDisruptor
-  SKILL_46             = 46; //Mirroring
+  SKILL_TWINBLADE      = 38;    //狂风斩
+  SKILL_GROUPDEDING    = 39;    //地钉
+  SKILL_UNAMYOUNSUL    = 40;    //解毒术
+  SKILL_ANGEL          = 41;    //什么魔法
+  SKILL_GROUPLIGHTENING= 42;    //群体雷电术
+  SKILL_43             = 43;    //破空剑
+  SKILL_44             = 44;    //FrostCrunch
+  SKILL_45             = 45;    //FlameDisruptor
+  SKILL_46             = 46;    //Mirroring
   SKILL_47             = 47;
-  SKILL_GROUPAMYOUNSUL = 48;   //群体施毒术
+  SKILL_GROUPAMYOUNSUL = 48;    //群体施毒术
   SKILL_49             = 49;
-  SKILL_MABE           = 50;   //冰焰
+  SKILL_MABE           = 50;    //冰焰
   SKILL_51             = 51;
   SKILL_52             = 52;
   SKILL_53             = 53;
   SKILL_54             = 54;
   SKILL_55             = 55;
-  SKILL_REDBANWOL      = 56;     //什么刀法
+  SKILL_REDBANWOL      = 56;    //什么刀法
   SKILL_57             = 57;
   SKILL_58             = 58;
   SKILL_59             = 59;
 
+  LA_UNDEAD            = 1;   //是否为不死系，0不是，1是
 
-  LA_UNDEAD            = 1;
-
-  sENCYPTSCRIPTFLAG= '不知道是什么字符串';
+  sENCYPTSCRIPTFLAG= '不知道是什么字符串';                  
   sSTATUS_FAIL     = '+FAIL/';
   sSTATUS_GOOD     = '+GOOD/';
 
@@ -1401,8 +1403,11 @@ type
      boNEEDHOLE:boolean;
      boNORECALL:boolean;
      boNOGUILDRECALL:boolean;
-     boNODEARRECALL:boolean;
-     boNOMASTERRECALL:boolean;
+
+//取消 结婚 与 师徒 的相关内容       
+//     boNODEARRECALL:boolean;
+//     boNOMASTERRECALL:boolean;
+
      boNORANDOMMOVE:boolean;
      boNODRUG:boolean;
      boMINE:boolean;
@@ -2103,33 +2108,36 @@ type
     nStoneGeneralDuraRate               :integer;
     nStoneAddDuraRate                   :integer;
     nStoneAddDuraMax                    :integer;
-    nWinLottery6Min                     :integer;
-    nWinLottery6Max                     :integer;
-    nWinLottery5Min                     :integer;
-    nWinLottery5Max                     :integer;
-    nWinLottery4Min                     :integer;
-    nWinLottery4Max                     :integer;
-    nWinLottery3Min                     :integer;
-    nWinLottery3Max                     :integer;
-    nWinLottery2Min                     :integer;
-    nWinLottery2Max                     :integer;
-    nWinLottery1Min                     :integer;
-    nWinLottery1Max                     :integer;//16180 + 1820;
-    nWinLottery1Gold                    :integer;
-    nWinLottery2Gold                    :integer;
-    nWinLottery3Gold                    :integer;
-    nWinLottery4Gold                    :integer;
-    nWinLottery5Gold                    :integer;
-    nWinLottery6Gold                    :integer;
-    nWinLotteryRate                     :integer;
-    nWinLotteryCount                    :integer;
-    nNoWinLotteryCount                  :integer;
-    nWinLotteryLevel1                   :integer;
-    nWinLotteryLevel2                   :integer;
-    nWinLotteryLevel3                   :integer;
-    nWinLotteryLevel4                   :integer;
-    nWinLotteryLevel5                   :integer;
-    nWinLotteryLevel6                   :integer;
+
+//取消彩票功能    
+//    nWinLottery6Min                     :integer;
+//    nWinLottery6Max                     :integer;
+//    nWinLottery5Min                     :integer;
+//    nWinLottery5Max                     :integer;
+//    nWinLottery4Min                     :integer;
+//    nWinLottery4Max                     :integer;
+//    nWinLottery3Min                     :integer;
+//    nWinLottery3Max                     :integer;
+//    nWinLottery2Min                     :integer;
+//    nWinLottery2Max                     :integer;
+//    nWinLottery1Min                     :integer;
+//    nWinLottery1Max                     :integer;//16180 + 1820;
+//    nWinLottery1Gold                    :integer;
+//    nWinLottery2Gold                    :integer;
+//    nWinLottery3Gold                    :integer;
+//    nWinLottery4Gold                    :integer;
+//    nWinLottery5Gold                    :integer;
+//    nWinLottery6Gold                    :integer;
+//    nWinLotteryRate                     :integer;
+//    nWinLotteryCount                    :integer;
+//    nNoWinLotteryCount                  :integer;
+//    nWinLotteryLevel1                   :integer;
+//    nWinLotteryLevel2                   :integer;
+//    nWinLotteryLevel3                   :integer;
+//    nWinLotteryLevel4                   :integer;
+//    nWinLotteryLevel5                   :integer;
+//    nWinLotteryLevel6                   :integer;
+
     GlobalVal                           :Array[0..19] of integer;
     nItemNumber                         :integer;
     nItemNumberEx                       :integer;
@@ -2327,7 +2335,7 @@ type
     nDBReceiveMaxTime                   :integer;
     nDBSocketWSAErrCode                 :integer;
     nDBSocketErrorCount                 :integer;
-    nServerFile_CRCB                    :integer;
+    nServerFile_CRCB                     :integer;
     nClientFile1_CRC                    :integer;
     nClientFile2_CRC                    :integer;
     nClientFile3_CRC                    :integer;
@@ -2376,12 +2384,15 @@ type
     UNPASSWORD,
     MEMBERFUNCTION,
     MEMBERFUNCTIONEX,
-    DEAR,
-    ALLOWDEARRCALL,
-    DEARRECALL,
-    MASTER,
-    ALLOWMASTERRECALL,
-    MASTERECALL,
+
+//取消 结婚 与 师徒 的相关内容   
+//    DEAR,
+//    ALLOWDEARRCALL,
+//    DEARRECALL,
+//    MASTER,
+//    ALLOWMASTERRECALL,
+//    MASTERECALL,
+
     ATTACKMODE,
     REST,
     TAKEONHORSE,
@@ -2418,7 +2429,10 @@ type
     NPCSCRIPT,
     RECALLMOB,
     LUCKYPOINT,
-    LOTTERYTICKET,
+
+//取消彩票功能
+//    LOTTERYTICKET,
+
     RELOADGUILD,
     RELOADLINENOTICE,
     RELOADABUSE,
@@ -2511,8 +2525,11 @@ type
     TESTGA,
     MAPINFO,
     SBKDOOR,
-    CHANGEDEARNAME,
-    CHANGEMASTERNAME,
+
+//取消 结婚 与 师徒 的相关内容
+//    CHANGEDEARNAME,
+//    CHANGEMASTERNAME,
+
     STARTQUEST,
     SETPERMISSION,
     CLEARMON,

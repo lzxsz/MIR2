@@ -1,4 +1,5 @@
 unit IntroScn;
+//游戏的引导场景实现,比如登录选人等
 
 interface
 
@@ -23,12 +24,12 @@ type
       Valid: Boolean;
       UserChr: TUserCharacterInfo;
       Selected: Boolean;
-      FreezeState: Boolean; //TRUE:倔篮惑怕 FALSE:踌篮惑怕
-      Unfreezing: Boolean; //踌绊 乐绰 惑怕牢啊?
-      Freezing: Boolean;  //倔绊 乐绰 惑怕?
-      AniIndex: integer;  //踌绰(绢绰) 局聪皋捞记
+      FreezeState: Boolean; //TRUE:石化 FALSE:非石化
+      Unfreezing: Boolean;  //正在解石化
+      Freezing: Boolean;    //正在石化
+      AniIndex: integer;    //
       DarkLevel: integer;
-      EffIndex: integer;  //瓤苞 局聪皋捞记
+      EffIndex: integer;    //特效索引
       StartTime: longword;
       moretime: longword;
       startefftime: longword;
@@ -86,7 +87,7 @@ type
      m_EdChgRepeat    :TEdit;
      m_nCurFrame      :Integer;
      m_nMaxFrame      :Integer;
-     m_dwStartTime    :LongWord;  //茄 橇贰烙寸 矫埃
+     m_dwStartTime    :LongWord;  
      m_boNowOpening   :Boolean;
      m_boOpenFirst    :Boolean;
      m_NewIdRetryUE   :TUserEntry;
@@ -674,6 +675,7 @@ begin
    end;
 end;
 
+//车回按键处理
 procedure TLoginScene.EdNewIdKeyPress (Sender: TObject; var Key: Char);
 var
    str, t1, t2, t3, syear, smon, sday: string;
@@ -704,6 +706,7 @@ begin
             exit;
          end;
       end;
+
       if (Sender = m_EdYourName) or (Sender = m_EdQuiz1) or (Sender = m_EdAnswer1) or
          (Sender = m_EdQuiz2) or (Sender = m_EdAnswer2) or (Sender = m_EdPhone) or
          (Sender = m_EdMobPhone) or (Sender = m_EdEMail)
@@ -715,20 +718,31 @@ begin
             exit;
          end;
       end;
-      if (Sender = m_EdSSNo) and (not EnglishVersion) then begin  //
+
+      if (Sender = m_EdSSNo) and (not EnglishVersion) then begin 
          if not NewIdCheckSSno then
             exit;
       end;
+
       if Sender = m_EdBirthDay then begin
          if not NewIdCheckBirthDay then
             exit;
       end;
+
       if TEdit(Sender).Text <> '' then begin
+         //帐号注册按键焦点处理
          if Sender = m_EdNewId then m_EdNewPasswd.SetFocus;
          if Sender = m_EdNewPasswd then m_EdConfirm.SetFocus;
          if Sender = m_EdConfirm then m_EdYourName.SetFocus;
-         if Sender = m_EdYourName then m_EdSSNo.SetFocus;
-         if Sender = m_EdSSNo then m_EdBirthDay.SetFocus;
+
+         //如果是英文版本，则跳过身份证号
+         if not EnglishVersion  then begin
+            if Sender = m_EdYourName  then  m_EdSSNo.SetFocus;
+            if Sender = m_EdSSNo then m_EdBirthDay.SetFocus;
+          end else begin
+              if (Sender = m_EdYourName ) then  m_EdBirthDay.SetFocus;
+          end;
+         
          if Sender = m_EdBirthDay then m_EdQuiz1.SetFocus;
          if Sender = m_EdQuiz1 then m_EdAnswer1.SetFocus;
          if Sender = m_EdAnswer1 then m_EdQuiz2.SetFocus;
@@ -741,6 +755,7 @@ begin
             else if m_EdNewPasswd.Enabled then m_EdNewPasswd.SetFocus;
          end;
 
+         //修改密码按键焦点处理
          if Sender = m_EdChgId then m_EdChgCurrentpw.SetFocus;
          if Sender = m_EdChgCurrentpw then m_EdChgNewPw.SetFocus;
          if Sender = m_EdChgNewPw then m_EdChgRepeat.SetFocus;
@@ -760,7 +775,7 @@ begin
    if Sender = m_EdNewId then begin
       FrmDlg.NAHelps.Add ('登录ID可以是以下内容组合：');
       FrmDlg.NAHelps.Add ('字母或数字。');
-      FrmDlg.NAHelps.Add ('长度至少是4位。');
+      FrmDlg.NAHelps.Add ('长度至少是3位。');
       FrmDlg.NAHelps.Add ('不能和其他玩家的登录ID重复。');
       FrmDlg.NAHelps.Add ('请仔细选择你的ID。');
       FrmDlg.NAHelps.Add ('你的ID可以用与我们的所有服务器。');
@@ -899,6 +914,7 @@ begin
    end; 
 end;
 
+//改变注册状态
 procedure TLoginScene.ChangeLoginState (state: TLoginState);
 var
    i, focus: integer;
@@ -926,7 +942,9 @@ begin
             end;
          end;
       end;
-      if EnglishVersion then  //康巩滚傈篮 林刮殿废锅龋 涝仿阑 救茄促.
+
+      //如果是英文版身份证号不可用
+      if EnglishVersion then  
          m_EdSSNo.Visible := FALSE;
 
       case state of
@@ -1026,8 +1044,8 @@ begin
    m_EdYourName.Text := Trim(m_EdYourName.Text);
    if not NewIdCheckNewId then exit;
 
-   if not EnglishVersion then begin //康巩 滚傈俊辑绰 眉农救窃
-      if not NewIdCheckSSNo then
+   if not EnglishVersion then begin 
+      if not NewIdCheckSSNo then 
          exit;
    end;
 
@@ -1064,7 +1082,7 @@ begin
       m_EdYourName.SetFocus;
       exit;
    end;
-   if not EnglishVersion then begin //康巩 滚傈俊辑绰 眉农救窃
+   if not EnglishVersion then begin //
       if Length(m_EdSSNo.Text) < 1 then begin
          m_EdSSNo.SetFocus;
          exit;
@@ -1434,6 +1452,7 @@ begin
       MSurface.Draw ((SCREENWIDTH - d.Width) div 2,(SCREENHEIGHT - d.Height) div 2, d.ClientRect, d, FALSE);
 
    end;
+
    for n:=0 to 1 do begin
       if ChrArr[n].Valid then begin
          ex := (SCREENWIDTH - 800) div 2 + 90{90};
@@ -1487,27 +1506,32 @@ begin
             fx := fx + 340;
             fy := fy + 2;    //2人物位置不石化
          end;
-         if ChrArr[n].Unfreezing then begin //人物相关
+         if ChrArr[n].Unfreezing then begin //人物相关 ，非石化时
             img := 140 - 80 + ChrArr[n].UserChr.Job * 40 + ChrArr[n].UserChr.Sex * 120;
             d := g_WChrSelImages.Images[img + ChrArr[n].aniIndex];
             e := g_WChrSelImages.Images[4 + ChrArr[n].effIndex]; //图片张数
-            if d <> nil then MSurface.Draw (bx, by, d.ClientRect, d, TRUE);
-            if e <> nil then DrawBlend (MSurface, ex, ey, e, 1);
+            if d <> nil then MSurface.Draw (bx, by, d.ClientRect, d, TRUE); //绘人物 （解石化）
+            if e <> nil then DrawBlend (MSurface, ex, ey, e, 1);            //绘效果光
+
             if GetTickCount - ChrArr[n].StartTime > 50{120} then begin
                ChrArr[n].StartTime := GetTickCount;
                ChrArr[n].aniIndex := ChrArr[n].aniIndex + 1;
             end;
+            
             if GetTickCount - ChrArr[n].startefftime >50{ 110} then begin
                ChrArr[n].startefftime := GetTickCount;
                ChrArr[n].effIndex := ChrArr[n].effIndex + 1;
+               
                //if ChrArr[n].effIndex > EFFECTFRAME-1 then
                //   ChrArr[n].effIndex := EFFECTFRAME-1;
             end;
+            
             if ChrArr[n].aniIndex > FREEZEFRAME-1 then begin
-               ChrArr[n].Unfreezing := FALSE; //
-               ChrArr[n].FreezeState := FALSE; //
+               ChrArr[n].Unfreezing := FALSE;
+               ChrArr[n].FreezeState := FALSE;
                ChrArr[n].aniIndex := 0;
             end;
+
          end else
             if not ChrArr[n].Selected and (not ChrArr[n].FreezeState and not ChrArr[n].Freezing) then begin //
                ChrArr[n].Freezing := TRUE;

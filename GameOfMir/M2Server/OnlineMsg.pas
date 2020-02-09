@@ -15,6 +15,7 @@ type
     ButtonAdd: TButton;
     ButtonDelete: TButton;
     ButtonSend: TButton;
+    ButtonEdit: TButton;
     procedure ComboBoxMsgKeyPress(Sender: TObject; var Key: Char);
     procedure ComboBoxMsgChange(Sender: TObject);
     procedure StringGridClick(Sender: TObject);
@@ -24,6 +25,7 @@ type
     procedure ButtonDeleteClick(Sender: TObject);
     procedure MemoMsgChange(Sender: TObject);
     procedure ButtonSendClick(Sender: TObject);
+    procedure ButtonEditClick(Sender: TObject);
   private
     StrList:TStringList;
     StrListFile:string;
@@ -73,9 +75,13 @@ try
   if ComboBoxMsg.Items.Count > 20 then
     ComboBoxMsg.Items.Delete(19);
   if trim(ComboBoxMsg.Text) <> '' then
-    ButtonAdd.Enabled:=True
-  else
-    ButtonAdd.Enabled:=False;
+    begin
+      ButtonAdd.Enabled:=True;
+      ButtonEdit.Enabled:=True;
+    end else begin
+      ButtonAdd.Enabled:=False;
+      ButtonEdit.Enabled:=False;
+    end;
 finally
 
 end;
@@ -104,6 +110,7 @@ begin
   MemoMsg.Clear;
 end;
 
+//增加
 procedure TfrmOnlineMsg.ButtonAddClick(Sender: TObject);
 var
   Msg:string;
@@ -122,15 +129,26 @@ finally
 end;
 end;
 
-procedure TfrmOnlineMsg.StringGridDblClick(Sender: TObject);
+//修改
+procedure TfrmOnlineMsg.ButtonEditClick(Sender: TObject);
+ var
+  Msg:string;
 begin
 try
-  ComboBoxMsg.Text:=StrList.Strings[StringGrid.Row];
-  ComboBoxMsg.SetFocus;
+  Msg:=Trim(ComboBoxMsg.Text);
+  if Msg <> '' then  begin
+    StrList.Strings[StringGrid.Row] := Msg;    //修改当前选择行
+    StringGrid.RowCount:=StrList.Count;
+    StringGrid.Cols[0]:=StrList;
+    StrList.SaveToFile(StrListFile);
+  end;
+  ComboBoxMsg.ItemIndex:=0;
+  ComboBoxMsg.Text:='';
 finally
 end;
 end;
 
+//删除
 procedure TfrmOnlineMsg.ButtonDeleteClick(Sender: TObject);
 begin
 try
@@ -147,6 +165,15 @@ finally
 end;
 end;
 
+procedure TfrmOnlineMsg.StringGridDblClick(Sender: TObject);
+begin
+try
+  ComboBoxMsg.Text:=StrList.Strings[StringGrid.Row];
+  ComboBoxMsg.SetFocus;
+finally
+end;
+end;
+
 procedure TfrmOnlineMsg.MemoMsgChange(Sender: TObject);
 begin
 try
@@ -158,6 +185,7 @@ finally
 end;
 end;
 
+//发送
 procedure TfrmOnlineMsg.ButtonSendClick(Sender: TObject);
 var
   Msg:string;
@@ -177,5 +205,6 @@ procedure TfrmOnlineMsg.Open;
 begin
   ShowModal;
 end;
+
 
 end.

@@ -4,8 +4,8 @@ object frmOnlineMsg: TfrmOnlineMsg
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #22312#32447#21457#36865#28040#24687
-  ClientHeight = 332
-  ClientWidth = 440
+  ClientHeight = 412
+  ClientWidth = 454
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,19 +18,25 @@ object frmOnlineMsg: TfrmOnlineMsg
   PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
-    Left = 4
-    Top = 169
+    Left = 11
+    Top = 162
     Width = 54
     Height = 12
     Caption = #22312#32447#20449#24687':'
   end
   object ComboBoxMsg: TComboBox
-    Left = 63
-    Top = 165
+    Left = 70
+    Top = 158
     Width = 374
     Height = 20
     Style = csSimple
-    ItemHeight = 12
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -14
+    Font.Name = #23435#20307
+    Font.Style = []
+    ItemHeight = 14
+    ParentFont = False
     TabOrder = 0
     OnChange = ComboBoxMsgChange
     OnKeyPress = ComboBoxMsgKeyPress
@@ -38,17 +44,23 @@ object frmOnlineMsg: TfrmOnlineMsg
   object MemoMsg: TMemo
     Left = 0
     Top = 0
-    Width = 440
-    Height = 153
+    Width = 454
+    Height = 152
     Align = alTop
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = #23435#20307
+    Font.Style = []
+    ParentFont = False
     TabOrder = 1
     OnChange = MemoMsgChange
   end
   object StringGrid: TStringGrid
     Left = 0
-    Top = 226
-    Width = 440
-    Height = 106
+    Top = 217
+    Width = 454
+    Height = 195
     Align = alBottom
     ColCount = 1
     DefaultColWidth = 430
@@ -62,32 +74,42 @@ object frmOnlineMsg: TfrmOnlineMsg
     OnDblClick = StringGridDblClick
   end
   object ButtonAdd: TButton
-    Left = 367
-    Top = 191
-    Width = 67
-    Height = 23
+    Left = 291
+    Top = 186
+    Width = 70
+    Height = 25
     Caption = #22686#21152'(&A)'
     Enabled = False
     TabOrder = 3
     OnClick = ButtonAddClick
   end
   object ButtonDelete: TButton
-    Left = 293
-    Top = 191
-    Width = 67
-    Height = 23
+    Left = 209
+    Top = 186
+    Width = 70
+    Height = 25
     Caption = #21024#38500'(&D)'
     Enabled = False
     TabOrder = 4
     OnClick = ButtonDeleteClick
   end
   object ButtonSend: TButton
-    Left = 148
-    Top = 190
-    Width = 67
-    Height = 23
+    Left = 71
+    Top = 186
+    Width = 70
+    Height = 25
     Caption = #21457#36865'(&S)'
     TabOrder = 5
     OnClick = ButtonSendClick
+  end
+  object ButtonEdit: TButton
+    Left = 373
+    Top = 186
+    Width = 70
+    Height = 25
+    Caption = #20462#25913'(&E)'
+    Enabled = False
+    TabOrder = 6
+    OnClick = ButtonEditClick
   end
 end

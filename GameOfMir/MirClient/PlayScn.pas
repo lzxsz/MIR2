@@ -1,5 +1,6 @@
 unit PlayScn;
-//游戏主场景
+//游戏主场景,相对于引导场景,这里是游戏主场景画面实现
+
 interface
 
 uses
@@ -21,8 +22,6 @@ const
    SOFFY = 0;
    LMX = 30;
    LMY = 26;
-
-
 
    MAXLIGHT = 5;
    LightFiles : array[0..MAXLIGHT] of string = (
@@ -185,13 +184,13 @@ type
       EdChgRePwd: TEdit;
       }
             
-     m_ActorList        :TList;
-     m_TempList         :TList;
-     m_GroundEffectList :TList;  //官蹿俊 彬府绰 付过 府胶飘
-     m_EffectList       :TList; //付过瓤苞 府胶飘
-     m_FlyList          :TList;  //朝酒促聪绰 巴 (带柳档尝, 芒, 拳混)
-     m_dwBlinkTime      :LongWord;
-     m_boViewBlink      :Boolean;
+      m_ActorList        :TList;    //动作列表
+      m_TempList         :TList;    //临时列表
+      m_GroundEffectList :TList;    //地面特效列表
+      m_EffectList       :TList;    //特效列表
+      m_FlyList          :TList;    //飞行列表
+      m_dwBlinkTime      :LongWord;
+      m_boViewBlink      :Boolean;
       constructor Create;
       destructor Destroy; override;
       procedure Initialize; override;
@@ -208,19 +207,21 @@ type
       function  FindActorXY (x, y: integer): TActor;
       function  IsValidActor (actor: TActor): Boolean;
       function  NewActor (chrid: integer; cx, cy, cdir: word; cfeature, cstate: integer): TActor;
-      procedure ActorDied (actor: TObject); //磷篮 actor绰 盖 困肺
+      procedure ActorDied (actor: TObject); 
       procedure SetActorDrawLevel (actor: TObject; level: integer);
       procedure ClearActors;
       function  DeleteActor (id: integer): TActor;
       procedure DelActor (actor: TObject);
       procedure SendMsg (ident, chrid, x, y, cdir, feature, state: integer; str: string);
 
+      //创建魔术
       procedure NewMagic (aowner: TActor;
                           magid, magnumb, cx, cy, tx, ty, targetcode: integer;
                           mtype: TMagicType;
                           Recusion: Boolean;
                           anitime: integer;
                           var bofly: Boolean);
+                          
       procedure DelMagic (magid: integer);
       function  NewFlyObject (aowner: TActor; cx, cy, tx, ty, targetcode: integer;  mtype: TMagicType): TMagicEff;
       //function  NewStaticMagic (aowner: TActor; tx, ty, targetcode, effnum: integer);
@@ -236,7 +237,7 @@ type
       function  CanRun (sx, sy, ex, ey: integer): Boolean;
       function  CanWalk (mx, my: integer): Boolean;
       function  CanWalkEx (mx, my: integer): Boolean;
-      function  CrashMan (mx, my: integer): Boolean; //荤恩尝府 般摹绰啊?
+      function  CrashMan (mx, my: integer): Boolean; 
       function  CanFly (mx, my: integer): Boolean;
       procedure RefreshScene;
       procedure CleanObjects;
@@ -279,19 +280,20 @@ begin
       Color := clSilver;
    end;
 
-   //聊天信息记录框
+
    MemoLog:=TMemo.Create(FrmMain.Owner);
    with MemoLog do begin
       Parent := FrmMain;
       BorderStyle := bsNone;
       Visible := False;
-     // Visible := True;
+      //Visible := True;
       Ctl3D := True;
     Left := 0;
     Top := 250;
     Width := 300;
     Height := 150;
    end;
+   
    //2004/05/17
    EdAccountt := TEdit.Create (FrmMain.Owner);
    with EdAccountt do begin
@@ -846,7 +848,7 @@ end;
 
 {-----------------------------------------------------------------------}
 
-
+//游戏场景
 procedure TPlayScene.PlayScene (MSurface: TDirectDrawSurface);
    function  CheckOverlappedObject (myrc, obrc: TRect): Boolean;
    begin
@@ -868,6 +870,7 @@ var
    msgstr: string;
   ShowItem:pTShowItem;
   nFColor,nBColor:Integer;
+
 begin
    drawingbottomline:=0;//jacky
    if (g_MySelf = nil) then begin
@@ -1318,7 +1321,6 @@ begin
    end;
    
    try
-   //**** 付过 瓤苞
 
    for k:=0 to m_ActorList.Count-1 do begin
       actor := m_ActorList[k];
@@ -1423,8 +1425,8 @@ begin
 end;
 
 {-------------------------------------------------------}
-
-//cx, cy, tx, ty : 甘狼 谅钎
+//在攻击目标上绘魔法特效 ,当人物使出魔法时，在目标上爆炸时出现的特效。（不是人发出魔法时自己身体上出现的特效）
+//cx, cy, tx, ty : 
 procedure TPlayScene.NewMagic (aowner: TActor;
                                magid, magnumb{Effect}, cx, cy, tx, ty, targetcode: integer;
                                mtype: TMagicType; //EffectType
@@ -1450,32 +1452,49 @@ begin
 
    meff := nil;
    case mtype of  //EffectType
-      mtReady, mtFly, mtFlyAxe: begin
-        meff := TMagicEff.Create (magid{替为magnumb，击中后的效果改变了}, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
-        meff.TargetActor := target;
-        if magnumb = 39 then begin
-          meff.frame := 4;
-          if wimg <> nil then
-            meff.ImgLib:=wimg;
+
+      mtReady, mtFly, mtFlyAxe: begin    //准备，飞行，扔斧头
+         meff := TMagicEff.Create (magid{替为magnumb，击中后的效果改变了}, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
+          meff.TargetActor := target;
+          if magnumb = 39 then begin
+            meff.frame := 4;
+            if wimg <> nil then
+              meff.ImgLib:=wimg;
+          end;
+          bofly := TRUE;
         end;
-        bofly := TRUE;
-      end;
+        
+      //爆裂类型的魔法
       mtExplosion:
-        case magnumb of
+       case magnumb of
+
+          //人物升级时的特效 (使用[人物选择场景]中解除石化的光特效), Add by davy 2020/2/22
+          999: begin  //人物升级
+              meff := TMagicEff.Create (magid, effnum, scx, scy, g_MySelf.m_nTargetX +260 , g_MySelf.m_nTargetY - 55, mtype, Recusion, anitime); //292,350 magid
+              meff.ImgLib := g_WChrSelImages; //
+              meff.MagExplosionBase:=4;
+              meff.TargetActor := nil; //target;
+              meff.NextFrameTime := 80;
+              meff.ExplosionFrame := 14;
+            end;
+
           18: begin //诱惑之光
-            meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
-            meff.MagExplosionBase := 1570;
+            meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);  //创建魔法
+            meff.MagExplosionBase := 1564; //1570;  //1560~1569帧是人物使用该魔法时自己身体上出现的特效果，1570~1579是目标上出现的特效
             meff.TargetActor := target;
             meff.NextFrameTime := 80;
+            meff.ExplosionFrame := 16;         //爆炸帧的数量
           end;
-          21: begin //爆裂火焰
+    
+          21: begin //爆裂火焰         赎
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
-            meff.MagExplosionBase := 1660;
+            meff.MagExplosionBase := 1660;     //爆炸起始帧的地址
             meff.TargetActor := nil; //target;
             meff.NextFrameTime := 80;
-            meff.ExplosionFrame := 20;
+            meff.ExplosionFrame := 20;         //爆炸帧的数量
             meff.Light := 3;
           end;
+
           26: begin //心灵启示
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 3990;
@@ -1484,7 +1503,8 @@ begin
             meff.ExplosionFrame := 10;
             meff.Light := 2;
           end;
-          27: begin //群体治疗术
+
+          27: begin //群体治愈术
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 1800;
             meff.TargetActor := nil; //target;
@@ -1492,6 +1512,7 @@ begin
             meff.ExplosionFrame := 10;
             meff.Light := 3;
           end;
+
           30: begin //圣言术
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 3930;
@@ -1500,6 +1521,7 @@ begin
             meff.ExplosionFrame := 16;
             meff.Light := 3;
           end;
+
           31: begin //冰咆哮
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 3850;
@@ -1508,9 +1530,12 @@ begin
             meff.ExplosionFrame := 20;
             meff.Light := 3;
           end;
-          34: begin //灭天火
+
+
+//1.85版Magic2库中增加的特效         
+          34: begin //灭天火  （在1.85版的Magic2库中有这个特效）
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
-            meff.MagExplosionBase := 140;
+            meff.MagExplosionBase := 140;    //1.85版的Magic2中
             meff.TargetActor := target; //target;
             meff.NextFrameTime := 80;
             meff.ExplosionFrame := 20;
@@ -1518,9 +1543,10 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
-          40: begin // 净化术
+
+          40: begin // 净化术 （在1.85版的Magic2库中有这个特效） 即：解毒术
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
-            meff.MagExplosionBase := 620;
+            meff.MagExplosionBase := 620;       //1.85版的Magic2中
             meff.TargetActor := nil; //target;
             meff.NextFrameTime := 100;
             meff.ExplosionFrame := 20;
@@ -1528,7 +1554,8 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
-          45: begin //火龙气焰
+
+          45: begin //火龙气焰  （在1.85版的Magic2库中有这个特效）
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 920;
             meff.TargetActor := nil; //target;
@@ -1538,7 +1565,8 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
-          47: begin //飓风破
+
+          47: begin //飓风破     （在1.85版的Magic2库中有这个特效）
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 1010;
             meff.TargetActor := nil; //target;
@@ -1548,7 +1576,8 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
-          48: begin //血咒
+
+          48: begin //血咒      （在1.85版的Magic2库中有这个特效）
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 1060;
             meff.TargetActor := nil; //target;
@@ -1558,7 +1587,8 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
-          49: begin //骷髅咒
+          
+          49: begin //骷髅咒   （在1.85版的Magic2库中有这个特效）
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 1110;
             meff.TargetActor := nil; //target;
@@ -1568,25 +1598,31 @@ begin
             if wimg <> nil then
               meff.ImgLib:=wimg;
           end;
+
           else begin //默认
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.TargetActor := target;
             meff.NextFrameTime := 80;
          end;
+
       end;
+
+
+//其他类型的魔法特效
       mtFireWind:
-         meff := nil;  //瓤苞 绝澜
-      mtFireGun: //拳堪规荤
+         meff := nil;
+      mtFireGun:
          meff := TFireGunEffect.Create (930, scx, scy, sctx, scty);
-      mtThunder: begin
+       mtThunder: begin
         //meff := TThuderEffect.Create (950, sctx, scty, nil); //target);
         meff := TThuderEffect.Create (10, sctx, scty, nil); //target);
         meff.ExplosionFrame := 6;
         meff.ImgLib := g_WMagic2Images;
       end;
+
       mtLightingThunder:
          meff := TLightingThunder.Create (970, scx, scy, sctx, scty, target);
-      mtExploBujauk: begin
+       mtExploBujauk: begin
         case magnumb of
           10: begin  //
             meff := TExploBujaukEffect.Create (1160, scx, scy, sctx, scty, target);
@@ -1599,22 +1635,25 @@ begin
         end;
         bofly := TRUE;
       end;
+
       mtBujaukGroundEffect: begin
         meff := TBujaukGroundEffect.Create (1160, magnumb, scx, scy, sctx, scty);
         case magnumb of
-          11: meff.ExplosionFrame := 16; //
-          12: meff.ExplosionFrame := 16; //
+          11: meff.ExplosionFrame := 16;
+          12: meff.ExplosionFrame := 16;
           46: meff.ExplosionFrame := 24;
         end;
         bofly := TRUE;
       end;
+
       mtKyulKai: begin
         meff := nil; //TKyulKai.Create (1380, scx, scy, sctx, scty);
       end;
       mt12: begin
-
       end;
 
+
+//1.80版怪物图库中怪物使用的魔法特效，1.5版中没这些图库    
   {*
       mt13: begin
         meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
@@ -1639,6 +1678,7 @@ begin
       end;
  *}
 
+//其他类型的魔法特效
       mt14: begin
         meff := TThuderEffect.Create (140, sctx, scty, nil); //target);
         meff.ExplosionFrame := 10;
@@ -1650,11 +1690,11 @@ begin
         bofly:=True;
       end;
       mt16: begin
-
       end;
-   end;
-   if (meff = nil) then exit;
 
+   end;
+
+   if (meff = nil) then exit;
 
    meff.TargetRx := tx;
    meff.TargetRy := ty;
@@ -1662,6 +1702,7 @@ begin
       meff.TargetRx := TActor(meff.TargetActor).m_nCurrX;
       meff.TargetRy := TActor(meff.TargetActor).m_nCurrY;
    end;
+   
    meff.MagOwner := aowner;
    m_EffectList.Add (meff);
 end;
@@ -1734,6 +1775,7 @@ begin
    sy := -UNITY*3 - Myself.ShiftY + (cy - Map.ClientRect.Top) * UNITY + UNITY div 2;
 end; }
 
+//地图座标 cx, cy转换成sx, sy 屏幕座标
 procedure TPlayScene.ScreenXYfromMCXY (cx, cy: integer; var sx, sy: integer);
 begin
    if g_MySelf = nil then exit;
@@ -2006,7 +2048,7 @@ begin
   end;
 end;
 
-function  TPlayScene.FindActorXY (x, y: integer): TActor;  //甘 谅钎肺 actor 掘澜
+function  TPlayScene.FindActorXY (x, y: integer): TActor;  //
 var
    i: integer;
 begin
@@ -2047,7 +2089,7 @@ begin
    for i:=0 to m_ActorList.Count-1 do
       if TActor(m_ActorList[i]).m_nRecogId = chrid then begin
          Result := TActor(m_ActorList[i]);
-         exit; //捞固 乐澜
+         exit; //
       end;
    if IsChangingFace (chrid) then exit;  //函脚吝...      
 
@@ -2069,7 +2111,7 @@ begin
       22: actor := TDualAxeOma.Create;            //黑暗战士
       23: actor := TWhiteSkeleton.Create;         //变异骷髅
       24: actor := TSuperiorGuard.Create;         //带刀卫士
-      30: actor := TCatMon.Create; //朝俺窿
+      30: actor := TCatMon.Create;                //
       31: actor := TCatMon.Create;                //角蝇
       32: actor := TScorpionMon.Create;           //蝎子
 
@@ -2077,7 +2119,7 @@ begin
       34: actor := TBigHeartMon.Create;           //赤月恶魔
       35: actor := TSpiderHouseMon.Create;        //幻影蜘蛛
       36: actor := TExplosionSpider.Create;       //月魔蜘蛛
-      37: actor := TFlyingSpider.Create;       //
+      37: actor := TFlyingSpider.Create;          //
 
       40: actor := TZombiLighting.Create;         //僵尸1
       41: actor := TZombiDigOut.Create;           //僵尸2
@@ -2095,7 +2137,7 @@ begin
       52: actor := TGasKuDeGi.Create;             //楔蛾
       53: actor := TGasKuDeGi.Create;             //粪虫
       54: actor := TSmallElfMonster.Create;       //神兽
-      55: actor := TWarriorElfMonster.Create;     //神兽1
+      55: actor := TWarriorElfMonster.Create;     //神兽1 (战斗形象)
 
       60: actor := TElectronicScolpionMon.Create;
       61: actor := TBossPigMon.Create;

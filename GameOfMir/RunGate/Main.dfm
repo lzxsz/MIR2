@@ -1,9 +1,10 @@
 object FrmMain: TFrmMain
-  Left = 436
-  Top = 235
+  Left = 433
+  Top = 275
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  ClientHeight = 192
+  Caption = #28216#25103#32593#20851
+  ClientHeight = 182
   ClientWidth = 284
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -570,7 +571,7 @@ object FrmMain: TFrmMain
   TextHeight = 12
   object StatusBar: TStatusBar
     Left = 0
-    Top = 172
+    Top = 162
     Width = 284
     Height = 20
     Panels = <
@@ -600,9 +601,11 @@ object FrmMain: TFrmMain
     Left = 0
     Top = 0
     Width = 284
-    Height = 172
+    Height = 162
     ActivePage = TabSheet1
     Align = alClient
+    BiDiMode = bdLeftToRight
+    ParentBiDiMode = False
     TabIndex = 0
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -618,7 +621,7 @@ object FrmMain: TFrmMain
         Left = 0
         Top = 0
         Width = 276
-        Height = 145
+        Height = 135
         Align = alClient
         BevelInner = bvLowered
         Color = clMenuText
@@ -648,6 +651,8 @@ object FrmMain: TFrmMain
         Align = alTop
         BevelOuter = bvNone
         Caption = ' '
+        Ctl3D = True
+        ParentCtl3D = False
         TabOrder = 0
         object LbLack: TLabel
           Left = 12
@@ -658,7 +663,7 @@ object FrmMain: TFrmMain
         end
         object GroupBox1: TGroupBox
           Left = 9
-          Top = 8
+          Top = 5
           Width = 256
           Height = 73
           Caption = #32593#32476#27969#37327
@@ -722,9 +727,9 @@ object FrmMain: TFrmMain
         end
         object GroupBoxProcessTime: TGroupBox
           Left = 9
-          Top = 83
+          Top = 82
           Width = 256
-          Height = 54
+          Height = 52
           Caption = #22788#29702#26102#38388
           TabOrder = 1
           object LabelSendTime: TLabel

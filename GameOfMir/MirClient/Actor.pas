@@ -1,4 +1,5 @@
 unit Actor;
+//精灵(包括人物heros,npc,怪物mon)类, 但是主要是heros类, NPC以及mon类派生于actor类
 
 interface
 
@@ -23,7 +24,7 @@ const
 
    RUN_MINHEALTH = 10;
    DEFSPELLFRAME = 10;
-   FIREHIT_READYFRAME = 6;  //堪拳搬 矫傈 橇贰烙
+   FIREHIT_READYFRAME = 6;  //开始打击时的准备帧数
    MAGBUBBLEBASE = 3890;    //魔法盾效果图位置
    MAGBUBBLESTRUCKBASE = 3900; //被攻击时魔法盾效果图位置
    MAXWPEFFECTFRAME = 5;
@@ -89,6 +90,8 @@ const
         ActStruck: (start: 472;    frame: 3;  skip: 5;  ftime: 70;  usetick: 0);
         ActDie:    (start: 536;    frame: 4;  skip: 4;  ftime: 120;  usetick: 0)
       );
+
+  //怪物动作定义    
   MA9: TMonsterAction = (//4C03D4
     ActStand:(Start:0;  frame:1;  skip:7;  ftime:200;  usetick:0);
     ActWalk:(Start:64;  frame:6;  skip:2;  ftime:120;  usetick:3);
@@ -125,25 +128,25 @@ const
         ActDie:    (start: 208;    frame: 4;  skip: 4;  ftime: 160;  usetick: 0);
         ActDeath:  (start: 272;    frame: 1;  skip: 0;  ftime: 0;    usetick: 0);
       );
-   MA13: TMonsterAction = (  //侥牢檬
+   MA13: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
-        ActWalk:   (start: 10;     frame: 8;  skip: 2;  ftime: 160;  usetick: 0); //殿厘...
+        ActWalk:   (start: 10;     frame: 8;  skip: 2;  ftime: 160;  usetick: 0); 
         ActAttack: (start: 30;     frame: 6;  skip: 4;  ftime: 120;  usetick: 0);
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 110;    frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 130;    frame: 10; skip: 0;  ftime: 120;  usetick: 0);
-        ActDeath:  (start: 20;     frame: 9;  skip: 0;  ftime: 150;  usetick: 0); //见澜..
+        ActDeath:  (start: 20;     frame: 9;  skip: 0;  ftime: 150;  usetick: 0);
       );
-   MA14: TMonsterAction = (  //秦榜 坷付
+   MA14: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0);
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 240;    frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 260;    frame: 10; skip: 0;  ftime: 120;  usetick: 0);
-        ActDeath:  (start: 340;    frame: 10; skip: 0;  ftime: 100;  usetick: 0); //归榜牢版快(家券)
+        ActDeath:  (start: 340;    frame: 10; skip: 0;  ftime: 100;  usetick: 0); //
       );
-   MA15: TMonsterAction = (  //档尝带瘤绰 坷付
+   MA15: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0);
@@ -152,7 +155,7 @@ const
         ActDie:    (start: 260;    frame: 10; skip: 0;  ftime: 120;  usetick: 0);
         ActDeath:  (start: 1;      frame: 1;  skip: 0;  ftime: 100;  usetick: 0);
       );
-   MA16: TMonsterAction = (  //啊胶筋绰 备单扁
+   MA16: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 160;  usetick: 0);
@@ -161,7 +164,7 @@ const
         ActDie:    (start: 260;    frame: 4;  skip: 6;  ftime: 160;  usetick: 0);
         ActDeath:  (start: 0;      frame: 1;  skip: 0;  ftime: 160;  usetick: 0);
       );
-   MA17: TMonsterAction = (  //官迭波府绰 各
+   MA17: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 60;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0);
@@ -170,7 +173,7 @@ const
         ActDie:    (start: 260;    frame: 10; skip: 0;  ftime: 100;  usetick: 0);
         ActDeath:  (start: 340;    frame: 1;  skip: 0;  ftime: 140;  usetick: 0); //
       );
-   MA19: TMonsterAction = (  //快搁蓖 (磷绰芭 弧府磷澜)
+   MA19: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0);
@@ -179,43 +182,43 @@ const
         ActDie:    (start: 260;    frame: 10; skip: 0;  ftime: 140;  usetick: 0);
         ActDeath:  (start: 340;    frame: 1;  skip: 0;  ftime: 140;  usetick: 0); //
       );
-   MA20: TMonsterAction = (  //磷菌促 混酒唱绰 粱厚)
+   MA20: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 120;  usetick: 0);
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 240;    frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 260;    frame: 10; skip: 0;  ftime: 100;  usetick: 0);
-        ActDeath:  (start: 340;    frame: 10; skip: 0;  ftime: 170;  usetick: 0); //促矫 混酒唱扁
+        ActDeath:  (start: 340;    frame: 10; skip: 0;  ftime: 170;  usetick: 0); //
       );
-   MA21: TMonsterAction = (  //国笼
+   MA21: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 0;      frame: 0;  skip: 0;  ftime: 0;    usetick: 0); //
-        ActAttack: (start: 10;     frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //国 惯荤
+        ActAttack: (start: 10;     frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 20;     frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 30;     frame: 10; skip: 0;  ftime: 160;  usetick: 0);
         ActDeath:  (start: 0;      frame: 0;  skip: 0;  ftime: 0;    usetick: 0); //
       );
-   MA22: TMonsterAction = (  //籍惑阁胶磐(堪家措厘,堪家厘焙)
+   MA22: TMonsterAction = (  //
         ActStand:  (start: 80;     frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 160;    frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 240;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0); //
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 320;    frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 340;    frame: 10; skip: 0;  ftime: 160;  usetick: 0);
-        ActDeath:  (start: 0;      frame: 6;  skip: 4;  ftime: 170;  usetick: 0); //籍惑踌澜
+        ActDeath:  (start: 0;      frame: 6;  skip: 4;  ftime: 170;  usetick: 0); //
       );
-   MA23: TMonsterAction = (  //林付空
+   MA23: TMonsterAction = (  //
         ActStand:  (start: 20;     frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 100;    frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 180;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0); //
         ActCritical:(start: 0;     frame: 0;  skip: 0;  ftime: 0;    usetick: 0);
         ActStruck: (start: 260;    frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 280;    frame: 10; skip: 0;  ftime: 160;  usetick: 0);
-        ActDeath:  (start: 0;      frame: 20; skip: 0;  ftime: 100;  usetick: 0); //籍惑踌澜
+        ActDeath:  (start: 0;      frame: 20; skip: 0;  ftime: 100;  usetick: 0); //
       );
-   MA24: TMonsterAction = (  //傈哎, 傍拜 2啊瘤
+   MA24: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
         ActWalk:   (start: 80;     frame: 6;  skip: 4;  ftime: 160;  usetick: 3); //
         ActAttack: (start: 160;    frame: 6;  skip: 4;  ftime: 100;  usetick: 0);
@@ -225,11 +228,11 @@ const
         ActDeath:  (start: 420;    frame: 1;  skip: 0;  ftime: 140;  usetick: 0); //
       );
       {
-   MA25: TMonsterAction = (  //瘤匙空
+   MA25: TMonsterAction = (  //
         ActStand:  (start: 0;      frame: 4;  skip: 6;  ftime: 200;  usetick: 0);
-        ActWalk:   (start: 70;     frame: 10; skip: 0;  ftime: 200;  usetick: 3); //殿厘
-        ActAttack: (start: 20;     frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //流立傍拜
-        ActCritical:(start: 10;    frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //刀魔傍拜(盔芭府)
+        ActWalk:   (start: 70;     frame: 10; skip: 0;  ftime: 200;  usetick: 3); //
+        ActAttack: (start: 20;     frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //
+        ActCritical:(start: 10;    frame: 6;  skip: 4;  ftime: 120;  usetick: 0); //
         ActStruck: (start: 50;     frame: 2;  skip: 0;  ftime: 100;  usetick: 0);
         ActDie:    (start: 60;     frame: 10; skip: 0;  ftime: 200;  usetick: 0);
         ActDeath:  (start: 0;      frame: 0;  skip: 0;  ftime: 140;  usetick: 0); //
@@ -458,8 +461,9 @@ const
     ActDie:(Start:524;  frame:6;  skip:0;  ftime:200;  usetick:0);
     ActDeath:(Start:524;  frame:6;  skip:0;  ftime:200;  usetick:0);
     );
+    
    WORDER: Array[0..1, 0..599] of byte = (  //第一维是性别，第二维是动作图片索引
-      (       //巢磊
+      (       //
       //站
       0,0,0,0,0,0,0,0,    1,1,1,1,1,1,1,1,    1,1,1,1,1,1,1,1,
       1,1,1,1,1,1,1,1,    0,0,0,0,0,0,0,0,    0,0,0,0,1,1,1,1,
@@ -550,13 +554,14 @@ const
 
 
 type
-   TActor = class//Size 0x240
+   //角色定义 （基类）
+   TActor = class //Size 0x240
      m_nRecogId                :Integer;    //角色标识 0x4
      m_nCurrX                  :Integer;    //当前所在地图座标X 0x08
      m_nCurrY                  :Integer;    //当前所在地图座标Y 0x0A
      m_btDir                   :Byte;       //当前站立方向 0x0C
      m_btSex                   :Byte;       //性别 0x0D
-     m_btRace                  :Byte;       //0x0E
+     m_btRace                  :Byte;       //种族 0x0E
      m_btHair                  :Byte;       //头发类型 0x0F
      m_btDress                 :Byte;       //衣服类型 0x10
      m_btWeapon                :Byte;       //武器类型
@@ -583,15 +588,15 @@ type
      m_boVisible               :Boolean;    //0x5D
      m_boHoldPlace             :Boolean;    //0x5E
 
-     m_SayingArr               :array[0..MAXSAY-1] of String; //最近说的话
+     m_SayingArr               :array[0..MAXSAY-1] of String;  //最近说的话
      m_SayWidthsArr            :array[0..MAXSAY-1] of Integer; //每句话的宽度
      m_dwSayTime               :LongWord;
      m_nSayX                   :Integer;
      m_nSayY                   :Integer;
      m_nSayLineCount           :Integer;
 
-     m_nShiftX                 :Integer;    //0x98
-     m_nShiftY                 :Integer;    //0x9C
+     m_nShiftX                 :Integer;  //0x98
+     m_nShiftY                 :Integer;  //0x9C
 
      m_nPx                     :Integer;  //0xA0
      m_nHpx                    :Integer;  //0xA4
@@ -601,25 +606,25 @@ type
      m_nPy                     :Integer;
      m_nHpy                    :Integer;
      m_nWpy                    :Integer;
-     m_nSpy                    :Integer;  //头发图片显示位置
+     m_nSpy                    :Integer; //头发图片显示位置
 
      m_nRx                     :Integer;
      m_nRy                     :Integer; //武器图片显示位置
-     m_nDownDrawLevel          :Integer;    //0xC8
+     m_nDownDrawLevel          :Integer; //0xC8
      m_nTargetX                :Integer;
      m_nTargetY                :Integer; //0xCC 0xD0
-     m_nTargetRecog            :Integer;      //0xD4
-     m_nHiterCode              :Integer;        //0xD8
-     m_nMagicNum               :Integer;         //0xDC
-     m_nCurrentEvent           :Integer; //辑滚狼 捞亥飘 酒捞叼
-     m_boDigFragment           :Boolean;  //捞锅 邦豹捞 龙捞 某脸绰瘤..
+     m_nTargetRecog            :Integer; //0xD4
+     m_nHiterCode              :Integer; //0xD8
+     m_nMagicNum               :Integer; //0xDC
+     m_nCurrentEvent           :Integer; //
+     m_boDigFragment           :Boolean; //挖掘碎片
      m_boThrow                 :Boolean;
 
-     m_nBodyOffset             :Integer;     //0x0E8   //0x0D0
-     m_nHairOffset             :Integer;     //0x0EC
+     m_nBodyOffset             :Integer;   //0x0E8   //0x0D0
+     m_nHairOffset             :Integer;   //0x0EC
      m_nHumWinOffset           :Integer;   //0x0F0
      m_nWeaponOffset           :Integer;   //0x0F4
-     m_boUseMagic              :Boolean;    //0x0F8   //0xE0
+     m_boUseMagic              :Boolean;   //0x0F8    //0xE0
      m_boHitEffect             :Boolean;   //0x0F9    //0xE1
      m_boUseEffect             :Boolean;   //0x0FA    //0xE2
      m_nHitEffectNumber        :Integer;              //0xE4
@@ -629,20 +634,20 @@ type
      m_nWaitForStatus          :Integer;
 
 
-     m_nCurEffFrame            :Integer;       //0x110
-     m_nSpellFrame             :Integer;        //0x114
-     m_CurMagic                :TUseMagicInfo;    //0x118  //m_CurMagic.EffectNumber 0x110
+     m_nCurEffFrame            :Integer;        //当前特效帧 0x110
+     m_nSpellFrame             :Integer;        //咒语帧 0x114
+     m_CurMagic                :TUseMagicInfo;  //当前魔法 0x118  //m_CurMagic.EffectNumber 0x110
       //GlimmingMode: Boolean;
       //CurGlimmer: integer;
       //MaxGlimmer: integer;
       //GlimmerTime: longword;
-     m_nGenAniCount            :Integer;                   //0x124
-     m_boOpenHealth            :Boolean;        //0x140
-     m_noInstanceOpenHealth    :Boolean;//0x141
+     m_nGenAniCount            :Integer;  //0x124
+     m_boOpenHealth            :Boolean;  //0x140
+     m_noInstanceOpenHealth    :Boolean;  //0x141
      m_dwOpenHealthStart       :LongWord;
-     m_dwOpenHealthTime        :LongWord;//Integer;jacky
+     m_dwOpenHealthTime        :LongWord; //Integer;jacky
 
-      //SRc: TRect;  //Screen Rect 拳搁狼 角力谅钎(付快胶 扁霖)
+     //SRc: TRect;  //Screen Rect 
      m_BodySurface             :TDirectDrawSurface;    //0x14C   //0x134
 
      m_boGrouped               :Boolean;    //0x150 是否组队
@@ -652,64 +657,64 @@ type
      m_dwWarModeTime           :LongWord;   //0x15C
      m_nChrLight               :Integer;    //0x160
      m_nMagLight               :Integer;    //0x164
-     m_nRushDir                :Integer;  //0, 1  //0x168
-     m_nXxI                    :Integer; //0x16C
-     m_boLockEndFrame          :Boolean;     //0x170
-     m_dwLastStruckTime        :LongWord;  //0x174
-     m_dwSendQueryUserNameTime :LongWord;    //0x178
-     m_dwDeleteTime            :LongWord;//0x17C
+     m_nRushDir                :Integer;    //0, 1  //0x168
+     m_nXxI                    :Integer;    //0x16C
+     m_boLockEndFrame          :Boolean;    //0x170
+     m_dwLastStruckTime        :LongWord;   //0x174
+     m_dwSendQueryUserNameTime :LongWord;   //0x178
+     m_dwDeleteTime            :LongWord;   //0x17C
 
-      //荤款靛 瓤苞
+     //音效
      m_nMagicStruckSound       :Integer;  //0x180 被魔法攻击弯腰发出的声音
      m_boRunSound              :Boolean;  //0x184 跑步发出的声音
      m_nFootStepSound          :Integer;  //CM_WALK, CM_RUN //0x188  走步声
-     m_nStruckSound            :Integer;  //SM_STRUCK         //0x18C  弯腰声音
+     m_nStruckSound            :Integer;  //SM_STRUCK       //0x18C  弯腰声音
      m_nStruckWeaponSound      :Integer;                //0x190  被指定武器攻击弯腰声音
 
-     m_nAppearSound            :Integer;  //殿厘家府 0    //0x194
-     m_nNormalSound            :Integer;  //老馆家府 1    //0x198
-     m_nAttackSound            :Integer;  //         2    //0x19C
-     m_nWeaponSound            :Integer; //          3    //0x1A0
-     m_nScreamSound            :Integer;  //         4    //0x1A4
-     m_nDieSound               :Integer;     //磷阑锭   5 SM_DEATHNOW //0x1A8
-     m_nDie2Sound              :Integer;                    //0x1AC
+     m_nAppearSound            :Integer;  //呈现声   0    //0x194
+     m_nNormalSound            :Integer;  //正常声   1    //0x198
+     m_nAttackSound            :Integer;  //打击声   2    //0x19C
+     m_nWeaponSound            :Integer;  //武器声   3    //0x1A0
+     m_nScreamSound            :Integer;  //尖叫声   4    //0x1A4
+     m_nDieSound               :Integer;  //死亡声   5  SM_DEATHNOW //0x1A8
+     m_nDie2Sound              :Integer;                  //0x1AC
 
-     m_nMagicStartSound        :Integer;     //0x1B0
-     m_nMagicFireSound         :Integer;      //0x1B4
-     m_nMagicExplosionSound    :Integer; //0x1B8
-     m_Action                  :pTMonsterAction;
+     m_nMagicStartSound        :Integer;  //魔法开始声 0x1B0
+     m_nMagicFireSound         :Integer;  //魔法火声   0x1B4
+     m_nMagicExplosionSound    :Integer;  //魔法爆炸声 0x1B8
+     m_Action                  :pTMonsterAction;  //动作
    private
      function GetMessage(ChrMsg:pTChrMsg):Boolean;
    protected
-     m_nStartFrame             :Integer;      //0x1BC        //0x1A8
-     m_nEndFrame               :Integer;        //0x1C0      //0x1AC
-     m_nCurrentFrame           :Integer;    //0x1C4          //0x1B0
-     m_nEffectStart            :Integer;     //0x1C8         //0x1B4
-     m_nEffectFrame            :Integer;     //0x1CC         //0x1B8
-     m_nEffectEnd              :Integer;       //0x1D0       //0x1BC
-     m_dwEffectStartTime       :LongWord;//0x1D4             //0x1C0
-     m_dwEffectFrameTime       :LongWord;//0x1D8             //0x1C4
-     m_dwFrameTime             :LongWord;      //0x1DC       //0x1C8
-     m_dwStartTime             :LongWord;      //0x1E0       //0x1CC
-     m_nMaxTick                :Integer;         //0x1E4
-     m_nCurTick                :Integer;         //0x1E8
-     m_nMoveStep               :Integer;        //0x1EC
-     m_boMsgMuch               :Boolean;            //0x1F0
+     m_nStartFrame             :Integer;    //开始帧 0x1BC      //0x1A8
+     m_nEndFrame               :Integer;    //结束帧 0x1C0      //0x1AC
+     m_nCurrentFrame           :Integer;    //当前帧 0x1C4      //0x1B0
+     m_nEffectStart            :Integer;    //特效开始 0x1C8    //0x1B4
+     m_nEffectFrame            :Integer;    //特效帧   0x1CC    //0x1B8
+     m_nEffectEnd              :Integer;    //特效结束 0x1D0    //0x1BC
+     m_dwEffectStartTime       :LongWord;   //特效帧开始时间  0x1D4  //0x1C0
+     m_dwEffectFrameTime       :LongWord;   //特效帧时间 0x1D8       //0x1C4
+     m_dwFrameTime             :LongWord;   //帧时间     0x1DC       //0x1C8
+     m_dwStartTime             :LongWord;   //开始时间   0x1E0       //0x1CC
+     m_nMaxTick                :Integer;    //0x1E4
+     m_nCurTick                :Integer;    //0x1E8
+     m_nMoveStep               :Integer;    //0x1EC
+     m_boMsgMuch               :Boolean;    //0x1F0
      m_dwStruckFrameTime       :LongWord;   //0x1F4
-     m_nCurrentDefFrame        :Integer;    //0x1F8          //0x1E4
-     m_dwDefFrameTime          :LongWord;      //0x1FC       //0x1E8
-     m_nDefFrameCount          :Integer;      //0x200        //0x1EC
-     m_nSkipTick               :Integer;           //0x204
-     m_dwSmoothMoveTime        :LongWord;    //0x208
+     m_nCurrentDefFrame        :Integer;    //0x1F8       //0x1E4
+     m_dwDefFrameTime          :LongWord;   //0x1FC       //0x1E8
+     m_nDefFrameCount          :Integer;    //0x200       //0x1EC
+     m_nSkipTick               :Integer;    //0x204
+     m_dwSmoothMoveTime        :LongWord;   //0x208
      m_dwGenAnicountTime       :LongWord;   //0x20C
      m_dwLoadSurfaceTime       :LongWord;   //0x210  //0x200
 
      m_nOldx                   :Integer;
      m_nOldy                   :Integer;
-     m_nOldDir                 :Integer; //0x214 0x218 0x21C
+     m_nOldDir                 :Integer;  //0x214 0x218 0x21C
      m_nActBeforeX             :Integer;
      m_nActBeforeY             :Integer;  //0x220 0x224
-     m_nWpord                  :Integer;                   //0x228
+     m_nWpord                  :Integer;  //0x228
 
       procedure CalcActorFrame; dynamic;
       procedure DefaultMotion; dynamic;
@@ -718,7 +723,7 @@ type
       procedure DrawWeaponGlimmer (dsurface: TDirectDrawSurface; ddx, ddy: integer);
    public
       m_MsgList: TGList;       //list of PTChrMsg 0x22C  //0x21C
-      RealActionMsg: TChrMsg; //FrmMain    0x230
+      RealActionMsg: TChrMsg;  //FrmMain    0x230
 
       constructor Create; dynamic;
       destructor Destroy; override;
@@ -743,7 +748,7 @@ type
       procedure  Run; dynamic;
       procedure  RunSound; dynamic;
       procedure  RunActSound (frame: integer); dynamic;
-      procedure  RunFrameAction (frame: integer); dynamic;  //橇贰烙付促 刀漂窍霸 秦具且老
+      procedure  RunFrameAction (frame: integer); dynamic;  //
       procedure  ActionEnded; dynamic;
       function   Move (step: integer): Boolean;
       procedure  MoveFail;
@@ -757,6 +762,7 @@ type
       procedure  DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); dynamic;
    end;
 
+   //NPC 角色定义
    TNpcActor = class (TActor)
    private
      m_nEffX      :Integer; //0x240
@@ -774,6 +780,7 @@ type
      procedure  DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;
    end;
 
+   //人类角色
    THumActor = class (TActor)//Size: 0x27C Address: 0x00475BB8
    private
      m_HairSurface         :TDirectDrawSurface; //0x250  //0x240
@@ -879,6 +886,7 @@ begin
     48{0E}: Result:=@MA23; //475E0C
     49{0E}: Result:=@MA23; //475E0C
     50{27}: begin//475F32
+    
       case Appr of
         23{01}: Result:=@MA36; //475F77
         24{02}: Result:=@MA37; //475F80
@@ -954,14 +962,15 @@ begin
   end
 
 end;
- //根据外貌确定图片库
+
+ //根据外貌确定怪物图片库
 function aGetMonImg (appr: integer): TWMImages;
 var
   WMImage:TWMImages;
 begin
    Result := FrmMain.WMonImg;
    case (appr div 10) of
-      0: Result := FrmMain.WMonImg;
+      0: Result := FrmMain.WMonImg;        //怪物图库
       1: Result := FrmMain.WMon2Img;
       2: Result := FrmMain.WMon3Img;
       3: Result := FrmMain.WMon4Img;
@@ -994,7 +1003,7 @@ begin
       27: Result := FrmMain.WMon28Img;
       80: Result := FrmMain.WDragonImg;
  }
-      90: Result := FrmMain.WEffectImg;
+      90: Result := FrmMain.WEffectImg;   //特效库图库
    end;
    {
    if (appr >= 1000) and FrmMain.GetMonImg(appr,WMImage) then begin
@@ -1209,7 +1218,7 @@ begin
   end;
 end;
 
-
+//角色创建
 constructor TActor.Create;
 begin
   inherited Create;
@@ -1350,6 +1359,7 @@ begin
     m_MsgList.UnLock;
   end;
 end;
+
 //计算动作的开始帧、帧数等
 procedure TActor.CalcActorFrame;
 var
@@ -1440,6 +1450,7 @@ begin
    end;
 end;
 
+//准备动作
 procedure TActor.ReadyAction (msg: TChrMsg);
 var
    n: integer;
@@ -1590,7 +1601,7 @@ begin
 
 end;
 
-
+//获取消息
 function TActor.GetMessage(ChrMsg:pTChrMsg): Boolean;
 var
   Msg:pTChrMsg;
@@ -1617,6 +1628,7 @@ begin
   end;
 end;
 
+//处理消息
 procedure TActor.ProcMsg;
 var
   Msg:TChrMsg;
@@ -1706,6 +1718,7 @@ begin
          Inc (n);
    end;
 end;
+
 //当前是否没有可执行的动作
 function  TActor.IsIdle: Boolean;
 begin
@@ -1713,6 +1726,7 @@ begin
       Result := TRUE
    else Result := FALSE;
 end;
+
 //当前动作是否已经完成
 function  TActor.ActionFinished: Boolean;
 begin
@@ -1743,6 +1757,7 @@ begin
  //     Result := -2;
 
 end;
+
 //是否被打晕
 function  TActor.Strucked: Boolean;
 var
@@ -1756,7 +1771,6 @@ begin
       end;
    end;
 end;
-
 
 //dir : 方向
 //step : 步长  (走是1，跑是2）
@@ -1912,7 +1926,8 @@ begin
       end;
    end;
 end;
- //装载当前动作对应的图片
+
+//装载当前动作对应的图片
 function   TActor.Light: integer;
 begin
    Result := m_nChrLight;
@@ -1932,6 +1947,7 @@ begin
                             m_nPx, m_nPy);
    end;
 end;
+
 //取角色的宽度
 function  TActor.CharWidth: Integer;
 begin
@@ -1939,6 +1955,7 @@ begin
       Result := m_BodySurface.Width
    else Result := 48;
 end;
+
 //取角色的高度
 function  TActor.CharHeight: Integer;
 begin
@@ -3124,7 +3141,7 @@ end;
 
 {============================== HUMActor =============================}
 
-//            荤恩
+//            人角色
 
 {-------------------------------}
 
@@ -3147,6 +3164,7 @@ begin
   inherited Destroy;
 end;
 
+//计算人类角色的帧
 procedure THumActor.CalcActorFrame;
 var
   haircount: integer;
@@ -3155,7 +3173,7 @@ begin
   m_boHitEffect := FALSE;
   m_nCurrentFrame := -1;
    //human
-  m_btHair   := HAIRfeature (m_nFeature);         //发型
+  m_btHair   := HAIRfeature (m_nFeature);       //发型
   m_btDress  := DRESSfeature (m_nFeature);      //服装
   m_btWeapon := WEAPONfeature (m_nFeature);     //武器
   m_btHorse  :=Horsefeature(m_nFeatureEx);
@@ -3357,7 +3375,7 @@ begin
             m_dwWarModeTime := GetTickCount;
             Shift (m_btDir, 0, 0, 1);
          end;
-      SM_SPELL:
+      SM_SPELL:   //使用魔法
          begin
             m_nStartFrame := HA.ActSpell.start + m_btDir * (HA.ActSpell.frame + HA.ActSpell.skip);
             m_nEndFrame := m_nStartFrame + HA.ActSpell.frame - 1;
@@ -3411,7 +3429,7 @@ begin
             WarModeTime := GetTickCount;
             Shift (Dir, 0, 0, 1);
          end; *)
-      SM_STRUCK:
+      SM_STRUCK:  //打击
          begin
             m_nStartFrame := HA.ActStruck.start + m_btDir * (HA.ActStruck.frame + HA.ActStruck.skip);
             m_nEndFrame := m_nStartFrame + HA.ActStruck.frame - 1;
@@ -3432,6 +3450,7 @@ begin
    end;
 end;
 
+//缺省移动
 procedure THumActor.DefaultMotion;
 begin
    inherited DefaultMotion;
@@ -3529,6 +3548,7 @@ begin
    end;
 end;
 
+//武器断裂效果
 procedure  THumActor.DoWeaponBreakEffect;
 begin
    m_boWeaponEffect := TRUE;
@@ -3680,6 +3700,7 @@ begin
 
 end;
 
+
 function   THumActor.Light: integer;
 var
    l: integer;
@@ -3744,6 +3765,7 @@ begin
      m_WeaponSurface:=FrmMain.GetWWeaponImg(0,m_btSex,m_nCurrentFrame, m_nWpx, m_nWpy);
 end;
 
+//绘制角色
 procedure  THumActor.DrawChr (dsurface: TDirectDrawSurface; dx, dy: integer; blend: Boolean;boFlag:Boolean);
 var
    idx, ax, ay: integer;
@@ -3898,11 +3920,12 @@ begin
       end;
    end;
 
-   //显示魔法效果
+   //显示魔法效果 ,当人物角色作用魔法时自己身体上出现的特效（如：诱惑之光 魔法，人特身上出现的电光环）
    if m_boUseMagic {and (EffDir[Dir] = 1)} and (m_CurMagic.EffectNumber > 0) then begin
       if m_nCurEffFrame in [0..m_nSpellFrame-1] then begin
          GetEffectBase (m_CurMagic.EffectNumber-1, 0, wimg, idx);
          idx := idx + m_nCurEffFrame;
+
          if wimg <> nil then
             d := wimg.GetCachedImage (idx, ax, ay);
          if d <> nil then
@@ -3938,10 +3961,5 @@ begin
    end;
 
 end;
-
-
-
-
-
 
 end.

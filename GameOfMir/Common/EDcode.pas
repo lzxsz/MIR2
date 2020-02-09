@@ -1,4 +1,5 @@
 unit EDcode;
+//消息加解密函数,6BIT加密算法的具体实现
 
 interface
 

@@ -1,4 +1,5 @@
 unit DWinCtl;
+//提供几个在DX下使用的控件
 
 interface
 

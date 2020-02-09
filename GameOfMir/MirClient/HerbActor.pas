@@ -1,4 +1,5 @@
 unit HerbActor;
+//BOSS밍
 
 interface
 
@@ -202,7 +203,7 @@ begin
             m_nEndFrame := m_nStartFrame + pm.ActDeath.frame - 1;
             m_dwFrameTime := pm.ActDeath.ftime;
             m_dwStartTime := GetTickCount;
-            m_boDelActionAfterFinished := TRUE;  //이동작이 끝나면 액터 지음
+            m_boDelActionAfterFinished := TRUE;  
          end;
    end;
 end;

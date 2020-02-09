@@ -19,7 +19,7 @@ const
   SWH           = SWH800;
 
   CUSTOMLIBFILE = 0; //自定义图库位置
-
+  
 {$IF SWH = SWH800}
    SCREENWIDTH = 800;
    SCREENHEIGHT = 600;

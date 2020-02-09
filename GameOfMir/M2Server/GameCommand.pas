@@ -135,9 +135,6 @@ begin
   StringGridGameCmd.Objects[0,nRefGameUserIndex]:=TObject(GameCmd);
 end;
 
-
-
-
 //  StringGridGameCmd.Cells[3,12]:='未使用';
 //  StringGridGameCmd.Cells[3,13]:='移动地图指定座标(需要戴传送装备)';
 //  StringGridGameCmd.Cells[3,14]:='探测人物所在位置(需要戴传送装备)';
@@ -164,6 +161,7 @@ end;
 //  StringGridGameCmd.Cells[3,35]:='从马上下来';
 //  StringGridGameCmd.Cells[3,36]:='';
 //  StringGridGameCmd.Cells[3,37]:='开启/关闭登录锁';
+
 procedure TfrmGameCmd.RefUserCommand;
 begin
   EditUserCmdOK.Enabled:=False;
@@ -246,7 +244,10 @@ begin
                    '未使用');
   RefGameUserCmd(@g_GameCommand.MEMBERFUNCTIONEX,
                    '@' + g_GameCommand.MEMBERFUNCTIONEX.sCmd,
-                   '');                   
+                   '');
+                   
+//取消 结婚 与 师徒 的相关内容
+{
   RefGameUserCmd(@g_GameCommand.DEAR,
                    '@' + g_GameCommand.DEAR.sCmd,
                    '查询夫妻位置');
@@ -265,7 +266,9 @@ begin
   RefGameUserCmd(@g_GameCommand.MASTERECALL,
                    '@' + g_GameCommand.MASTERECALL.sCmd,
                    '师父将徒弟召唤到身边');
-   RefGameUserCmd(@g_GameCommand.TAKEONHORSE,
+}
+                   
+  RefGameUserCmd(@g_GameCommand.TAKEONHORSE,
                    '@' + g_GameCommand.TAKEONHORSE.sCmd,
                    '带马牌后骑上马');
   RefGameUserCmd(@g_GameCommand.TAKEOFHORSE,
@@ -347,35 +350,36 @@ begin
   StringGridGameCmd.Cells[2,25]:='@' + g_GameCommand.MEMBERFUNCTION.sCmd;
   StringGridGameCmd.Objects[0,25]:=TObject(@g_GameCommand.MEMBERFUNCTION);
 
-  StringGridGameCmd.Cells[0,26]:=g_GameCommand.DEAR.sCmd;
-  StringGridGameCmd.Cells[1,26]:=IntToStr(g_GameCommand.DEAR.nPermissionMin);
-  StringGridGameCmd.Cells[2,26]:='@' + g_GameCommand.DEAR.sCmd;
-  StringGridGameCmd.Objects[0,26]:=TObject(@g_GameCommand.DEAR);
+//取消 结婚 与 师徒 的相关内容
+//  StringGridGameCmd.Cells[0,26]:=g_GameCommand.DEAR.sCmd;
+//  StringGridGameCmd.Cells[1,26]:=IntToStr(g_GameCommand.DEAR.nPermissionMin);
+//  StringGridGameCmd.Cells[2,26]:='@' + g_GameCommand.DEAR.sCmd;
+//  StringGridGameCmd.Objects[0,26]:=TObject(@g_GameCommand.DEAR);
 
-  StringGridGameCmd.Cells[0,27]:=g_GameCommand.ALLOWDEARRCALL.sCmd;
-  StringGridGameCmd.Cells[1,27]:=IntToStr(g_GameCommand.ALLOWDEARRCALL.nPermissionMin);
-  StringGridGameCmd.Cells[2,27]:='@' + g_GameCommand.ALLOWDEARRCALL.sCmd;
-  StringGridGameCmd.Objects[0,27]:=TObject(@g_GameCommand.ALLOWDEARRCALL);
+//  StringGridGameCmd.Cells[0,27]:=g_GameCommand.ALLOWDEARRCALL.sCmd;
+//  StringGridGameCmd.Cells[1,27]:=IntToStr(g_GameCommand.ALLOWDEARRCALL.nPermissionMin);
+//  StringGridGameCmd.Cells[2,27]:='@' + g_GameCommand.ALLOWDEARRCALL.sCmd;
+//  StringGridGameCmd.Objects[0,27]:=TObject(@g_GameCommand.ALLOWDEARRCALL);
 
-  StringGridGameCmd.Cells[0,28]:=g_GameCommand.DEARRECALL.sCmd;
-  StringGridGameCmd.Cells[1,28]:=IntToStr(g_GameCommand.DEARRECALL.nPermissionMin);
-  StringGridGameCmd.Cells[2,28]:='@' + g_GameCommand.DEARRECALL.sCmd;
-  StringGridGameCmd.Objects[0,28]:=TObject(@g_GameCommand.DEARRECALL);
+//  StringGridGameCmd.Cells[0,28]:=g_GameCommand.DEARRECALL.sCmd;
+//  StringGridGameCmd.Cells[1,28]:=IntToStr(g_GameCommand.DEARRECALL.nPermissionMin);
+//  StringGridGameCmd.Cells[2,28]:='@' + g_GameCommand.DEARRECALL.sCmd;
+//  StringGridGameCmd.Objects[0,28]:=TObject(@g_GameCommand.DEARRECALL);
 
-  StringGridGameCmd.Cells[0,29]:=g_GameCommand.MASTER.sCmd;
-  StringGridGameCmd.Cells[1,29]:=IntToStr(g_GameCommand.MASTER.nPermissionMin);
-  StringGridGameCmd.Cells[2,29]:='@' + g_GameCommand.MASTER.sCmd;
-  StringGridGameCmd.Objects[0,29]:=TObject(@g_GameCommand.MASTER);
+//  StringGridGameCmd.Cells[0,29]:=g_GameCommand.MASTER.sCmd;
+//  StringGridGameCmd.Cells[1,29]:=IntToStr(g_GameCommand.MASTER.nPermissionMin);
+//  StringGridGameCmd.Cells[2,29]:='@' + g_GameCommand.MASTER.sCmd;
+//  StringGridGameCmd.Objects[0,29]:=TObject(@g_GameCommand.MASTER);
 
-  StringGridGameCmd.Cells[0,30]:=g_GameCommand.ALLOWMASTERRECALL.sCmd;
-  StringGridGameCmd.Cells[1,30]:=IntToStr(g_GameCommand.ALLOWMASTERRECALL.nPermissionMin);
-  StringGridGameCmd.Cells[2,30]:='@' + g_GameCommand.ALLOWMASTERRECALL.sCmd;
-  StringGridGameCmd.Objects[0,30]:=TObject(@g_GameCommand.ALLOWMASTERRECALL);
+//  StringGridGameCmd.Cells[0,30]:=g_GameCommand.ALLOWMASTERRECALL.sCmd;
+//  StringGridGameCmd.Cells[1,30]:=IntToStr(g_GameCommand.ALLOWMASTERRECALL.nPermissionMin);
+//  StringGridGameCmd.Cells[2,30]:='@' + g_GameCommand.ALLOWMASTERRECALL.sCmd;
+//  StringGridGameCmd.Objects[0,30]:=TObject(@g_GameCommand.ALLOWMASTERRECALL);
 
-  StringGridGameCmd.Cells[0,31]:=g_GameCommand.MASTERECALL.sCmd;
-  StringGridGameCmd.Cells[1,31]:=IntToStr(g_GameCommand.MASTERECALL.nPermissionMin);
-  StringGridGameCmd.Cells[2,31]:='@' + g_GameCommand.MASTERECALL.sCmd;
-  StringGridGameCmd.Objects[0,31]:=TObject(@g_GameCommand.MASTERECALL);
+//  StringGridGameCmd.Cells[0,31]:=g_GameCommand.MASTERECALL.sCmd;
+//  StringGridGameCmd.Cells[1,31]:=IntToStr(g_GameCommand.MASTERECALL.nPermissionMin);
+//  StringGridGameCmd.Cells[2,31]:='@' + g_GameCommand.MASTERECALL.sCmd;
+//  StringGridGameCmd.Objects[0,31]:=TObject(@g_GameCommand.MASTERECALL);
 
   StringGridGameCmd.Cells[0,32]:=g_GameCommand.ATTACKMODE.sCmd;
   StringGridGameCmd.Cells[1,32]:=IntToStr(g_GameCommand.ATTACKMODE.nPermissionMin);
@@ -487,20 +491,24 @@ begin
   CommandConf.WriteString('Command','StorageLock',g_GameCommand.LOCK.sCmd);
   CommandConf.WriteString('Command','StorageSetPassword',g_GameCommand.SETPASSWORD.sCmd);
   CommandConf.WriteString('Command','StorageChgPassword',g_GameCommand.CHGPASSWORD.sCmd);
+
 //  CommandConf.WriteString('Command','StorageClearPassword',g_GameCommand.CLRPASSWORD.sCmd)
 //  CommandConf.WriteInteger('Permission','StorageClearPassword', g_GameCommand.CLRPASSWORD.nPermissionMin)
+
   CommandConf.WriteString('Command','StorageUserClearPassword',g_GameCommand.UNPASSWORD.sCmd);
   CommandConf.WriteString('Command','MemberFunc',g_GameCommand.MEMBERFUNCTION.sCmd);
-  CommandConf.WriteString('Command','Dear',g_GameCommand.DEAR.sCmd);
-  CommandConf.WriteString('Command','Master',g_GameCommand.MASTER.sCmd);
-  CommandConf.WriteString('Command','DearRecall',g_GameCommand.DEARRECALL.sCmd);
-  CommandConf.WriteString('Command','MasterRecall',g_GameCommand.MASTERECALL.sCmd);
-  CommandConf.WriteString('Command','AllowDearRecall',g_GameCommand.ALLOWDEARRCALL.sCmd);
-  CommandConf.WriteString('Command','AllowMasterRecall',g_GameCommand.ALLOWMASTERRECALL.sCmd);
-  CommandConf.WriteString('Command','AttackMode',g_GameCommand.ATTACKMODE.sCmd);
-  CommandConf.WriteString('Command','Rest',g_GameCommand.REST.sCmd);
-  CommandConf.WriteString('Command','TakeOnHorse',g_GameCommand.TAKEONHORSE.sCmd);
-  CommandConf.WriteString('Command','TakeOffHorse',g_GameCommand.TAKEOFHORSE.sCmd);
+
+//  CommandConf.WriteString('Command','Dear',g_GameCommand.DEAR.sCmd);
+//  CommandConf.WriteString('Command','Master',g_GameCommand.MASTER.sCmd);
+//  CommandConf.WriteString('Command','DearRecall',g_GameCommand.DEARRECALL.sCmd);
+//  CommandConf.WriteString('Command','MasterRecall',g_GameCommand.MASTERECALL.sCmd);
+//  CommandConf.WriteString('Command','AllowDearRecall',g_GameCommand.ALLOWDEARRCALL.sCmd);
+//  CommandConf.WriteString('Command','AllowMasterRecall',g_GameCommand.ALLOWMASTERRECALL.sCmd);
+
+//  CommandConf.WriteString('Command','AttackMode',g_GameCommand.ATTACKMODE.sCmd);
+//  CommandConf.WriteString('Command','Rest',g_GameCommand.REST.sCmd);
+//  CommandConf.WriteString('Command','TakeOnHorse',g_GameCommand.TAKEONHORSE.sCmd);
+//  CommandConf.WriteString('Command','TakeOffHorse',g_GameCommand.TAKEOFHORSE.sCmd);
 
   CommandConf.WriteInteger('Permission','Date', g_GameCommand.DATA.nPermissionMin);
   CommandConf.WriteInteger('Permission','PrvMsg', g_GameCommand.PRVMSG.nPermissionMin);
@@ -520,6 +528,7 @@ begin
   StringGridGameMasterCmd.Cells[3,nRefGameMasterIndex]:=sDesc;
   StringGridGameMasterCmd.Objects[0,nRefGameMasterIndex]:=TObject(GameCmd);
 end;
+
 procedure TfrmGameCmd.RefGameMasterCommand;
 var
   GameCmd:pTGameCmd;
@@ -712,7 +721,8 @@ begin
                    '@' + g_GameCommand.ADJUESTEXP.sCmd + ' 人物名称 经验值',
                    '调整指定人物的经验值(支持权限分配)');
 
-
+//取消 结婚 与 师徒 的相关内容
+{
   RefGameMasterCmd(@g_GameCommand.CHANGEDEARNAME,
                    '@' + g_GameCommand.CHANGEDEARNAME.sCmd + ' 人物名称 配偶名称(如果为 无 则清除)',
                    '更改指定人物的配偶名称(支持权限分配)');
@@ -720,6 +730,7 @@ begin
   RefGameMasterCmd(@g_GameCommand.CHANGEMASTERNAME,
                    '@' + g_GameCommand.CHANGEMASTERNAME.sCmd + ' 人物名称 师徒名称(如果为 无 则清除)',
                    '更改指定人物的师徒名称(支持权限分配)');
+}
 
   RefGameMasterCmd(@g_GameCommand.RECALLMOB,
                    '@' + g_GameCommand.RECALLMOB.sCmd + ' 怪物名称 数量 召唤等级',
@@ -1017,11 +1028,12 @@ begin
   RefGameDebugCmd(GameCmd,
                    '@' + GameCmd.sCmd,
                    '');
-
-  GameCmd:=@g_GameCommand.LOTTERYTICKET;
-  RefGameDebugCmd(GameCmd,
-                   '@' + GameCmd.sCmd,
-                   '');
+                   
+//取消彩票功能
+//  GameCmd:=@g_GameCommand.LOTTERYTICKET;
+//  RefGameDebugCmd(GameCmd,
+//                   '@' + GameCmd.sCmd,
+//                   '');
 
   GameCmd:=@g_GameCommand.RELOADADMIN;
   RefGameDebugCmd(GameCmd,
@@ -1276,8 +1288,10 @@ begin
   CommandConf.WriteString('Command','RefineWeapon',g_GameCommand.REFINEWEAPON.sCmd);
   CommandConf.WriteString('Command','AdjuestTLevel',g_GameCommand.ADJUESTLEVEL.sCmd);
   CommandConf.WriteString('Command','AdjuestExp',g_GameCommand.ADJUESTEXP.sCmd);
-  CommandConf.WriteString('Command','ChangeDearName',g_GameCommand.CHANGEDEARNAME.sCmd);
-  CommandConf.WriteString('Command','ChangeMasterrName',g_GameCommand.CHANGEMASTERNAME.sCmd);
+
+//  CommandConf.WriteString('Command','ChangeDearName',g_GameCommand.CHANGEDEARNAME.sCmd);
+//  CommandConf.WriteString('Command','ChangeMasterrName',g_GameCommand.CHANGEMASTERNAME.sCmd);
+
   CommandConf.WriteString('Command','RecallMob',g_GameCommand.RECALLMOB.sCmd);
   CommandConf.WriteString('Command','Training',g_GameCommand.TRAINING.sCmd);
   CommandConf.WriteString('Command','OpTraining',g_GameCommand.TRAININGSKILL.sCmd);
@@ -1343,8 +1357,10 @@ begin
   CommandConf.WriteInteger('Permission','RefineWeapon', g_GameCommand.REFINEWEAPON.nPermissionMin);
   CommandConf.WriteInteger('Permission','AdjuestTLevel', g_GameCommand.ADJUESTLEVEL.nPermissionMin);
   CommandConf.WriteInteger('Permission','AdjuestExp', g_GameCommand.ADJUESTEXP.nPermissionMin);
-  CommandConf.WriteInteger('Permission','ChangeDearName', g_GameCommand.CHANGEDEARNAME.nPermissionMin);
-  CommandConf.WriteInteger('Permission','ChangeMasterName', g_GameCommand.CHANGEMASTERNAME.nPermissionMin);
+
+//  CommandConf.WriteInteger('Permission','ChangeDearName', g_GameCommand.CHANGEDEARNAME.nPermissionMin);
+//  CommandConf.WriteInteger('Permission','ChangeMasterName', g_GameCommand.CHANGEMASTERNAME.nPermissionMin);
+
   CommandConf.WriteInteger('Permission','RecallMob', g_GameCommand.RECALLMOB.nPermissionMin);
   CommandConf.WriteInteger('Permission','Training', g_GameCommand.TRAINING.nPermissionMin);
   CommandConf.WriteInteger('Permission','OpTraining', g_GameCommand.TRAININGSKILL.nPermissionMin);

@@ -12,7 +12,6 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
     PageControl2: TPageControl;
     PageControl3: TPageControl;
     TabSheet4: TTabSheet;
@@ -56,10 +55,6 @@ type
     TimerStopGame: TTimer;
     TimerCheckRun: TTimer;
     MemoLog: TMemo;
-    GroupBox6: TGroupBox;
-    Label8: TLabel;
-    EditSkin: TSpinEdit;
-    ButtonFormSave: TButton;
     ButtonReLoadConfig: TButton;
     GroupBox7: TGroupBox;
     Label9: TLabel;
@@ -146,6 +141,7 @@ type
     ServerSocket: TServerSocket;
     Timer: TTimer;
     GroupBox22: TGroupBox;
+
     LabelRunGate_GatePort1: TLabel;
     EditRunGate_GatePort1: TEdit;
     LabelLabelRunGate_GatePort2: TLabel;
@@ -161,7 +157,7 @@ type
     LabelRunGate_GatePort7: TLabel;
     EditRunGate_GatePort7: TEdit;
     EditRunGate_GatePort8: TEdit;
-    LabelRunGate_GatePort78: TLabel;
+    LabelRunGate_GatePort8: TLabel;
     ButtonRunGateDefault: TButton;
     ButtonSelGateDefault: TButton;
     ButtonGeneralDefalult: TButton;
@@ -275,6 +271,16 @@ type
     StaticText1: TStaticText;
     StaticText2: TStaticText;
     GroupBox41: TGroupBox;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    lbl5: TLabel;
+    lbl6: TLabel;
+    lbl7: TLabel;
+    lbl8: TLabel;
+    lbl9: TLabel;
+    lbl10: TLabel;
     procedure ButtonNext1Click(Sender: TObject);
     procedure ButtonPrv2Click(Sender: TObject);
     procedure ButtonNext2Click(Sender: TObject);
@@ -295,8 +301,6 @@ type
     procedure CheckBoxRunGate2Click(Sender: TObject);
     procedure TimerStopGameTimer(Sender: TObject);
     procedure TimerCheckRunTimer(Sender: TObject);
-    procedure EditSkinChange(Sender: TObject);
-    procedure ButtonFormSaveClick(Sender: TObject);
     procedure ButtonReLoadConfigClick(Sender: TObject);
     procedure EditLoginGate_MainFormXChange(Sender: TObject);
     procedure EditLoginGate_MainFormYChange(Sender: TObject);
@@ -402,7 +406,6 @@ type
     procedure ProcessRunGate5Msg(wIdent:Word;sData:String);
     procedure ProcessRunGate6Msg(wIdent:Word;sData:String);
     procedure ProcessRunGate7Msg(wIdent:Word;sData:String);
-
 
     procedure ProcessM2ServerMsg(wIdent:Word;sData:String);
     procedure GetMutRunGateConfing(nIndex:Integer);
@@ -708,7 +711,9 @@ procedure TfrmMain.ButtonPrv9Click(Sender: TObject);
 begin
   PageControl3.ActivePageIndex:=7;
 end;
+
 procedure TfrmMain.ButtonSaveClick(Sender: TObject);
+
 begin
 //  ButtonSave.Enabled:=False;
   g_IniConf.WriteInteger('GameConf','dwStopTimeOut',g_dwStopTimeOut);
@@ -739,6 +744,8 @@ begin
   g_IniConf.WriteInteger('M2Server','MsgSrvPort',g_nM2Server_MsgSrvPort);
   g_IniConf.WriteBool('M2Server','GetStart',g_boM2Server_GetStart);
 
+  g_IniConf.WriteInteger('RunGate','MainFormX',g_nRunGate_MainFormX);
+  g_IniConf.WriteInteger('RunGate','MainFormY',g_nRunGate_MainFormY);
   g_IniConf.WriteInteger('RunGate','GatePort1',g_nRunGate_GatePort);
   g_IniConf.WriteInteger('RunGate','GatePort2',g_nRunGate1_GatePort);
   g_IniConf.WriteInteger('RunGate','GatePort3',g_nRunGate2_GatePort);
@@ -747,6 +754,8 @@ begin
   g_IniConf.WriteInteger('RunGate','GatePort6',g_nRunGate5_GatePort);
   g_IniConf.WriteInteger('RunGate','GatePort7',g_nRunGate6_GatePort);
   g_IniConf.WriteInteger('RunGate','GatePort8',g_nRunGate7_GatePort);
+
+  g_IniConf.WriteInteger('RunGate','Count',g_nRunGate_Count);
 
   g_IniConf.WriteInteger('LoginGate','MainFormX',g_nLoginGate_MainFormX);
   g_IniConf.WriteInteger('LoginGate','MainFormY',g_nLoginGate_MainFormY);
@@ -761,8 +770,6 @@ begin
   g_IniConf.WriteInteger('SelGate','GatePort',g_nSelGate_GatePort);
   g_IniConf.WriteInteger('SelGate','GatePort1',g_nSelGate_GatePort1);
 
-
-  g_IniConf.WriteInteger('RunGate','Count',g_nRunGate_Count);
 
   g_IniConf.WriteInteger('LoginServer','MainFormX',g_nLoginServer_MainFormX);
   g_IniConf.WriteInteger('LoginServer','MainFormY',g_nLoginServer_MainFormY);
@@ -780,8 +787,6 @@ begin
   g_IniConf.WriteBool('LoginServer','AutoClear',g_boLoginServer_AutoClear);
   g_IniConf.WriteInteger('LoginServer','AutoClearTime',g_dwLoginServer_AutoClearTime);
   g_IniConf.WriteInteger('LoginServer','ReadyServers',g_nLoginServer_ReadyServers);
-
-
 
   g_IniConf.WriteInteger('LogServer','MainFormX',g_nLogServer_MainFormX);
   g_IniConf.WriteInteger('LogServer','MainFormY',g_nLogServer_MainFormY);
@@ -1341,23 +1346,23 @@ begin
   EditRunGate2Program.Text:=g_sGameDirectory + g_sRunGate_Directory + g_sRunGate_ProgramFile;
 
   CheckBoxM2Server.Checked:=g_boM2Server_GetStart;
-  CheckBoxM2Server.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sM2Server_ProgramFile]);
+  CheckBoxM2Server.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sM2Server_Directory,g_sM2Server_ProgramFile]);
   CheckBoxDBServer.Checked:=g_boDBServer_GetStart;
   CheckBoxDBServer.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sDBServer_ProgramFile]);
   CheckBoxLoginServer.Checked:=g_boLoginServer_GetStart;
-  CheckBoxLoginServer.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sLoginServer_ProgramFile]);
+  CheckBoxLoginServer.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sLoginServer_Directory,g_sLoginServer_ProgramFile]);
   CheckBoxLogServer.Checked:=g_boLogServer_GetStart;
-  CheckBoxLogServer.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sLogServer_ProgramFile]);
+  CheckBoxLogServer.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sLogServer_Directory,g_sLogServer_ProgramFile]);
   CheckBoxLoginGate.Checked:=g_boLoginGate_GetStart;
-  CheckBoxLoginGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sLoginGate_ProgramFile]);
+  CheckBoxLoginGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sLoginGate_Directory,g_sLoginGate_ProgramFile]);
   CheckBoxSelGate.Checked:=g_boSelGate_GetStart;
-  CheckBoxSelGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sSelGate_ProgramFile]);
+  CheckBoxSelGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sSelGate_Directory,g_sSelGate_ProgramFile]);
   CheckBoxRunGate.Checked:=g_boRunGate_GetStart;
-  CheckBoxRunGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sRunGate_ProgramFile]);
+  CheckBoxRunGate.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sRunGate_Directory,g_sRunGate_ProgramFile]);
   CheckBoxRunGate1.Checked:=g_boRunGate1_GetStart;
-  CheckBoxRunGate1.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sRunGate_ProgramFile]);
+  CheckBoxRunGate1.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sRunGate_Directory,g_sRunGate_ProgramFile]);
   CheckBoxRunGate2.Checked:=g_boRunGate2_GetStart;
-  CheckBoxRunGate2.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sDBServer_Directory,g_sRunGate_ProgramFile]);
+  CheckBoxRunGate2.Hint:=format('程序所在位置: %s%s%s',[g_sGameDirectory,g_sRunGate_Directory,g_sRunGate_ProgramFile]);
 
   EditGameDir.Text:=g_sGameDirectory;
   EditHeroDB.Text:=g_sHeroDBName;
@@ -1377,6 +1382,8 @@ begin
   EditSelGate_GatePort.Text:=IntToStr(g_nSelGate_GatePort);
   EditSelGate_GatePort1.Text:=IntToStr(g_nSelGate_GatePort1);
 
+  EditRunGate_MainFormX.Value:=g_nRunGate_MainFormX;
+  EditRunGate_MainFormY.Value:=g_nRunGate_MainFormY;
   EditRunGate_Connt.Value:=g_nRunGate_Count;
   EditRunGate_GatePort1.Text:=IntToStr(g_nRunGate_GatePort);
   EditRunGate_GatePort2.Text:=IntToStr(g_nRunGate1_GatePort);
@@ -1507,13 +1514,14 @@ procedure TfrmMain.StartGame;
 var
   nRetCode:Integer;
 begin
+
   FillChar(DBServer,SizeOf(TProgram),#0);
   DBServer.boGetStart:=g_boDBServer_GetStart;
   DBServer.boReStart:=True;
   DBServer.sDirectory:=g_sGameDirectory + g_sDBServer_Directory;
   DBServer.sProgramFile:=g_sDBServer_ProgramFile;
   DBServer.nMainFormX:=g_nDBServer_MainFormX;
-  DBServer.nMainFormY:=g_nDBServer_MainFormY;  
+  DBServer.nMainFormY:=g_nDBServer_MainFormY;
 
   FillChar(LoginServer,SizeOf(TProgram),#0);
   LoginServer.boGetStart:=g_boLoginServer_GetStart;
@@ -1521,7 +1529,7 @@ begin
   LoginServer.sDirectory:=g_sGameDirectory + g_sLoginServer_Directory;
   LoginServer.sProgramFile:=g_sLoginServer_ProgramFile;
   LoginServer.nMainFormX:=g_nLoginServer_MainFormX;
-  LoginServer.nMainFormY:=g_nLoginServer_MainFormY;  
+  LoginServer.nMainFormY:=g_nLoginServer_MainFormY;
 
   FillChar(LogServer,SizeOf(TProgram),#0);
   LogServer.boGetStart:=g_boLogServer_GetStart;
@@ -1539,62 +1547,78 @@ begin
   M2Server.nMainFormX:=g_nM2Server_MainFormX;
   M2Server.nMainFormY:=g_nM2Server_MainFormY;
 
+  //RunGate
   FillChar(RunGate,SizeOf(TProgram),#0);
   RunGate.boGetStart:=g_boRunGate_GetStart;
   RunGate.boReStart:=True;
   RunGate.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate.nMainFormX:=g_nRunGate_MainFormX;
+  RunGate.nMainFormY:=g_nRunGate_MainFormY;
 
+  //RunGate1
   FillChar(RunGate1,SizeOf(TProgram),#0);
   RunGate1.boGetStart:=g_boRunGate1_GetStart;
-
-
   RunGate1.boReStart:=True;
   RunGate1.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate1.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate1.nMainFormX:=g_nRunGate_MainFormX + 30;
+  RunGate1.nMainFormY:=g_nRunGate_MainFormY + 30;
 
+  //RunGate2
   FillChar(RunGate2,SizeOf(TProgram),#0);
   RunGate2.boGetStart:=g_boRunGate2_GetStart;
-
   RunGate2.boReStart:=True;
   RunGate2.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate2.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate2.nMainFormX:=g_nRunGate_MainFormX + 30 *2;
+  RunGate2.nMainFormY:=g_nRunGate_MainFormY + 30 *2;
 
+  //RunGate3
   FillChar(RunGate3,SizeOf(TProgram),#0);
   RunGate3.boGetStart:=g_boRunGate3_GetStart;
-
   RunGate3.boReStart:=True;
   RunGate3.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate3.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate3.nMainFormX:=g_nRunGate_MainFormX + 30 *3;
+  RunGate3.nMainFormY:=g_nRunGate_MainFormY + 30 *3;
 
+  //RunGate4
   FillChar(RunGate4,SizeOf(TProgram),#0);
   RunGate4.boGetStart:=g_boRunGate4_GetStart;
-
   RunGate4.boReStart:=True;
   RunGate4.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate4.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate4.nMainFormX:=g_nRunGate_MainFormX + 30 *4;
+  RunGate4.nMainFormY:=g_nRunGate_MainFormY + 30 *4;
 
+  //RunGate5
   FillChar(RunGate5,SizeOf(TProgram),#0);
   RunGate5.boGetStart:=g_boRunGate5_GetStart;
-
   RunGate5.boReStart:=True;
   RunGate5.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate5.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate5.nMainFormX:=g_nRunGate_MainFormX + 30 *5;
+  RunGate5.nMainFormY:=g_nRunGate_MainFormY + 30 *5;
 
+  //RunGate6
   FillChar(RunGate6,SizeOf(TProgram),#0);
   RunGate6.boGetStart:=g_boRunGate6_GetStart;
-
   RunGate6.boReStart:=True;
   RunGate6.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
   RunGate6.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate6.nMainFormX:=g_nRunGate_MainFormX + 30 *6;
+  RunGate6.nMainFormY:=g_nRunGate_MainFormY + 30 *6;
 
+  //RunGate7
   FillChar(RunGate7,SizeOf(TProgram),#0);
   RunGate7.boGetStart:=g_boRunGate7_GetStart;
-
   RunGate7.boReStart:=True;
   RunGate7.sDirectory:=g_sGameDirectory + g_sRunGate_Directory;
-  RunGate7.sProgramFile:=g_sRunGate_ProgramFile;          
-
+  RunGate7.sProgramFile:=g_sRunGate_ProgramFile;
+  RunGate7.nMainFormX:=g_nRunGate_MainFormX + 30 *7;
+  RunGate7.nMainFormY:=g_nRunGate_MainFormY + 30 *7;
+  
   FillChar(SelGate,SizeOf(TProgram),#0);
   SelGate.boGetStart:=g_boSelGate_GetStart;
   SelGate.boReStart:=True;
@@ -1613,7 +1637,6 @@ begin
   SelGate1.sProgramFile:=g_sSelGate_ProgramFile;
   SelGate1.nMainFormX:=g_nSelGate_MainFormX;
   SelGate1.nMainFormY:=g_nSelGate_MainFormY;
-
 
   FillChar(LoginGate,SizeOf(TProgram),#0);
   LoginGate.boGetStart:=g_boLoginGate_GetStart;
@@ -1721,6 +1744,8 @@ begin
     end;
   end;
 
+
+
   if RunGate.boGetStart then begin
     case RunGate.btStartStatus of    //
       0: begin
@@ -1741,6 +1766,7 @@ begin
       end;
     end;
   end;
+
 
   if RunGate1.boGetStart then begin
     case RunGate1.btStartStatus of    //
@@ -1956,7 +1982,10 @@ begin
  ButtonStartGame.Caption:=g_sButtonStopGame;
  // ButtonStartGame.Enabled:=True;
   m_nStartStatus:=2;
- SetWindowPos(Self.Handle,HWND_TOPMOST,Self.Left,Self.Top,Self.Width,Self.Height,$40);
+
+ //SetWindowPos(Self.Handle,HWND_TOPMOST ,Self.Left,Self.Top,Self.Width,Self.Height,$40);
+ MoveWindow(Self.Handle, g_nGameCenter_MainFormX, g_nGameCenter_MainFormY, Self.Width,Self.Height, False);  //移动游戏中心窗口
+
 end;
 
 procedure TfrmMain.TimerStopGameTimer(Sender: TObject);
@@ -2248,7 +2277,7 @@ begin
     GetExitCodeProcess(RunGate.ProcessHandle,dwExitCode);
     if dwExitCode <> STILL_ACTIVE then begin
       GetMutRunGateConfing(0);
-      nRetCode:=RunProgram(RunGate,IntToStr(Self.Handle),2000);
+      nRetCode:=RunProgram(RunGate,IntToStr(Self.Handle),500);
       if nRetCode = 0 then begin
         CloseHandle(RunGate.ProcessHandle);
         RunGate.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate.ProcessInfo.dwProcessId);
@@ -2677,22 +2706,6 @@ begin
     2: ;
     3: ;
   end;
-
-end;
-
-
-
-procedure TfrmMain.EditSkinChange(Sender: TObject);
-begin
-  if EditSkin.Text = '' then begin
-    EditSkin.Text:='0';
-  end;
-  ButtonFormSave.Enabled:=True;
-end;
-
-procedure TfrmMain.ButtonFormSaveClick(Sender: TObject);
-begin
-  ButtonFormSave.Enabled:=False;
 
 end;
 

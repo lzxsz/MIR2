@@ -323,7 +323,7 @@ begin
             AutoRunInfo.sParam2 := sParam2;
             AutoRunInfo.sParam3 := sParam3;
             AutoRunInfo.sParam4 := sParam4;
-           AutoRunInfo.nParam1:=Str_ToInt(sParam1,1);
+           //AutoRunInfo.nParam1:=Str_ToInt(sParam1,1);    //lzx 2020-2-5
             m_AutoRunList.Add(AutoRunInfo);
           end;
         end;

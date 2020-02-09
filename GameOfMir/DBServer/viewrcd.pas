@@ -184,8 +184,9 @@ begin
   HumanGrid.Cells[7,2]:=IntToStr(HumData.btSex);
   HumanGrid.Cells[8,2]:=IntToStr(HumData.btHair);
   HumanGrid.Cells[9,2]:=IntToStr(HumData.nGold);
-  HumanGrid.Cells[10,2]:=HumData.sDearName;
-  HumanGrid.Cells[11,2]:=HumData.sHomeMap;
+  
+//  HumanGrid.Cells[10,2]:=HumData.sDearName;
+//  HumanGrid.Cells[11,2]:=HumData.sHomeMap;
 
   HumanGrid.Cells[0,4]:=IntToStr(HumData.wHomeX);
   HumanGrid.Cells[1,4]:=IntToStr(HumData.wHomeY);
@@ -213,8 +214,9 @@ begin
   HumanGrid.Cells[10,6]:=HumData.sAccount;
   HumanGrid.Cells[11,6]:=DateTimeToStr(ChrRecord.Header.dCreateDate);
 
-  HumanGrid.Cells[0,8]:=HumData.sDearName;
-  HumanGrid.Cells[1,8]:=HumData.sMasterName;
+//  HumanGrid.Cells[0,8]:=HumData.sDearName;
+//  HumanGrid.Cells[1,8]:=HumData.sMasterName;
+
   HumanGrid.Cells[2,8]:=HumData.sStoragePwd;
   HumanGrid.Cells[3,8]:=IntToStr(HumData.btCreditPoint);
 

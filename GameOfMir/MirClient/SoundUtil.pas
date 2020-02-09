@@ -1,4 +1,5 @@
 unit SoundUtil;
+//wav文件夹内声音文件的调用操作
 
 interface
 

@@ -23,6 +23,7 @@ object frmEditRcd: TfrmEditRcd
     Width = 433
     Height = 265
     ActivePage = TabSheet3
+    TabIndex = 2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #26222#36890

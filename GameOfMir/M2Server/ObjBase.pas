@@ -308,7 +308,7 @@ type
     m_boIsVisibleActive: Boolean; //是否在可视范围内有人物,及宝宝
     m_nProcessRunCount: ShortInt;
     m_VisibleActors: TList; //0x408
-    m_ItemList: TList; //0x40C  人物背包(Dword)数量
+    m_ItemList: TList; //0x40C  人物背包(Dword)的物品列表
     m_DealItemList: TList; //0x410
     m_nDealGolds: Integer; //0x414  交易的金币数量(Dword)
     m_boDealOK: Boolean; //0x418  确认交易标志(Byte
@@ -658,18 +658,27 @@ type
 
     m_boFirstAction: Boolean; //第一个操作
     m_dwActionTick: LongWord; //二次操作之间间隔时间
-    m_sDearName: string[ActorNameLen]; //配偶名称
-    m_DearHuman: TPlayObject;
-    m_boCanDearRecall: Boolean; //是否允许夫妻传送
-    m_boCanMasterRecall: Boolean;
-    m_dwDearRecallTick: LongWord; //夫妻传送时间
-    m_dwMasterRecallTick: LongWord;
-    m_sMasterName: string[ActorNameLen]; //师徒名称
-    m_MasterHuman: TPlayObject;
-    m_MasterList: TList;
-    m_boMaster: Boolean;
+
+//    m_sDearName: string[ActorNameLen]; //配偶名称
+//    m_DearHuman: TPlayObject;
+//    m_boCanDearRecall: Boolean; //是否允许夫妻传送
+//    m_boCanMasterRecall: Boolean;
+//    m_dwDearRecallTick: LongWord; //夫妻传送时间
+//    m_dwMasterRecallTick: LongWord;
+//    m_sMasterName: string[ActorNameLen]; //师徒名称
+//    m_MasterHuman: TPlayObject;
+//    m_MasterList: TList;
+//    m_boMaster: Boolean;    //是否为师父
+
+//   m_btMarryCount: Byte;    //结婚次数
+
+//   m_boStartMarry: Boolean;     //是否启动结婚
+//   m_boStartMaster: Boolean;    //是否启动收师
+//   m_boStartUnMarry: Boolean;   //是否离婚
+//   m_boStartUnMaster: Boolean;  //是否脱离师徒关系
+
     m_btCreditPoint: Byte; //声望点
-    m_btMarryCount: Byte; //离婚次数
+
     m_btReLevel: Byte; //转生等级
     m_btReColorIdx: Byte;
     m_dwReColorTick: LongWord;
@@ -688,17 +697,13 @@ type
     m_sTempPwd: string[7];
     m_sStoragePwd: string[7];
     m_PoseBaseObject: TBaseObject;
-    m_boStartMarry: Boolean;
-    m_boStartMaster: Boolean;
-    m_boStartUnMarry: Boolean;
-    m_boStartUnMaster: Boolean;
+
     m_boFilterSendMsg: Boolean; //禁止发方字(发的文字只能自己看到)
     m_nKillMonExpRate: Integer; //杀怪经验倍数(此数除以 100 为真正倍数)
     m_nPowerRate: Integer; //人物攻击力倍数(此数除以 100 为真正倍数)
     m_dwKillMonExpRateTime: LongWord;
     m_dwPowerRateTime: LongWord;
     m_dwRateTick: LongWord;
-
 
     m_boCanUseItem: Boolean; //是否允许使用物品
     m_boCanDeal: Boolean;
@@ -851,7 +856,10 @@ type
     procedure MoveToHome();
     function RepairWeapon(): Boolean;
     function SuperRepairWeapon(): Boolean;
-    function WinLottery(): Boolean;
+    
+//取消彩票功能
+//    function WinLottery(): Boolean;
+
     procedure ChangeServerMakeSlave(SlaveInfo: pTSlaveInfo);
     function WeaptonMakeLuck(): Boolean;
     function PileStones(nX, nY: Integer): Boolean;
@@ -904,8 +912,10 @@ type
     function CheckItemBindUse(UserItem: pTUserItem): Boolean;
     function CheckActionStatus(wIdent: Word; var dwDelayTime: LongWord): Boolean;
     procedure RecalcAdjusBonus;
-    procedure CheckMarry();
-    procedure CheckMaster();
+
+//    procedure CheckMarry();
+//    procedure CheckMaster();
+
     procedure RefMyStatus;
     procedure ProcessClientPassword(ProcessMsg: pTProcessMessage);
     function CheckDenyLogon: Boolean;
@@ -980,10 +990,11 @@ type
     procedure CmdMemberFunction(sCmd, sParam: string);
     procedure CmdMemberFunctionEx(sCmd, sParam: string);
 
-    procedure CmdSearchDear(sCmd, sParam: string);
-    procedure CmdSearchMaster(sCmd, sParam: string);
-    procedure CmdDearRecall(sCmd, sParam: string);
-    procedure CmdMasterRecall(sCmd, sParam: string);
+//    procedure CmdSearchDear(sCmd, sParam: string);
+//    procedure CmdSearchMaster(sCmd, sParam: string);
+//    procedure CmdDearRecall(sCmd, sParam: string);
+//    procedure CmdMasterRecall(sCmd, sParam: string);
+
     procedure CmdSbkDoorControl(sCmd, sParam: string);
 
     procedure CmdClearBagItem(Cmd: pTGameCmd; sHumanName: string);
@@ -1090,7 +1101,10 @@ type
     procedure CmdRefineWeapon(Cmd: pTGameCmd; nDc, nMc, nSc, nHit: Integer);
     procedure CmdRecallMob(Cmd: pTGameCmd; sMonName: string; nCount, nLevel, nAutoChangeColor, nFixColor: Integer);
     procedure CmdLuckPoint(sCmd: string; nPermission: Integer; sHumanName, sCtr, sPoint: string);
-    procedure CmdLotteryTicket(sCmd: string; nPermission: Integer; sParam1: string);
+    
+//取消彩票功能
+//    procedure CmdLotteryTicket(sCmd: string; nPermission: Integer; sParam1: string);
+
     procedure CmdReloadGuild(sCmd: string; nPermission: Integer; sParam1: string);
     procedure CmdReloadLineNotice(sCmd: string; nPermission: Integer; sParam1: string);
     procedure CmdReloadAbuse(sCmd: string; nPermission: Integer; sParam1: string);
@@ -1120,8 +1134,11 @@ type
     procedure CmdChangeObMode(sCmd: string; nPermission: Integer; sParam1: string; boFlag: Boolean);
     procedure CmdChangeSuperManMode(sCmd: string; nPermission: Integer; sParam1: string; boFlag: Boolean);
     procedure CmdChangeLevel(Cmd: pTGameCmd; sParam1: string);
-    procedure CmdChangeDearName(Cmd: pTGameCmd; sHumanName: string; sDearName: string);
-    procedure CmdChangeMasterName(Cmd: pTGameCmd; sHumanName: string; sMasterName, sIsMaster: string);
+
+//取消 结婚 与 师徒 的相关内容
+//    procedure CmdChangeDearName(Cmd: pTGameCmd; sHumanName: string; sDearName: string);
+//    procedure CmdChangeMasterName(Cmd: pTGameCmd; sHumanName: string; sMasterName, sIsMaster: string);
+
     procedure CmdStartQuest(Cmd: pTGameCmd; sQuestName: string);
     procedure CmdSetPermission(Cmd: pTGameCmd; sHumanName, sPermission: string);
     procedure CmdClearMapMonster(Cmd: pTGameCmd; sMapName, sMonName, sItems: string);
@@ -1640,6 +1657,7 @@ begin
   end;
 end;
 
+//客户端捡起物品
 function TPlayObject.ClientPickUpItem: Boolean; //004C5CB0
   function IsSelf(BaseObject: TBaseObject): Boolean;
   begin
@@ -1683,7 +1701,7 @@ begin
     SysMsg(g_sCanotPickUpItem {'在一定时间以内无法捡起此物品！！！'}, c_Red, t_Hint);
     Exit;
   end;
-  if CompareText(MapItem.Name, sSTRING_GOLDNAME) = 0 then
+  if CompareText(MapItem.Name, sSTRING_GOLDNAME) = 0 then  //捡的是金币
   begin
     if m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem)) = 1 then
     begin
@@ -1708,17 +1726,17 @@ begin
     Exit;
   end;
 
-  if IsEnoughBag then
+  if IsEnoughBag then   //背包空间是否足够
   begin
     if m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem)) = 1 then
     begin
       New(UserItem);
-      UserItem^ := MapItem.UserItem;
-      StdItem := UserEngine.GetStdItem(UserItem.wIndex);
-      if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then
+      UserItem^ := MapItem.UserItem;   //地图物品
+      StdItem := UserEngine.GetStdItem(UserItem.wIndex); //获取标准物品
+      if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then  //人物负重是否允许
       begin
         SendMsg(Self, RM_ITEMHIDE, 0, Integer(MapItem), m_nCurrX, m_nCurrY, '');
-        AddItemToBag(UserItem);
+        AddItemToBag(UserItem); //将物品放入背包
 
         if not IsCheapStuff(StdItem.StdMode) then
           if StdItem.NeedIdentify = 1 then //004C60FF
@@ -1732,7 +1750,7 @@ begin
               IntToStr(UserItem.MakeIndex) + #9 +
               '1' + #9 +
               '0');
-        Dispose(MapItem);
+        Dispose(MapItem);    //删除地图物品
         if m_btRaceServer = RC_PLAYOBJECT then
         begin
           PlayObject := TPlayObject(Self);
@@ -1747,7 +1765,6 @@ begin
     end;
   end;
 end;
-
 
 
 procedure TPlayObject.RunNotice; //004DA588
@@ -2647,8 +2664,6 @@ end;
 
 
 
-
-
 procedure TAnimalObject.Attack(TargeTBaseObject: TBaseObject; nDir: Integer); //004C9380
 begin
   inherited AttackDir(TargeTBaseObject, 0, nDir);
@@ -2777,6 +2792,7 @@ begin
   //WalkTime := WalkTime + (300 - _MIN(200, (Abil.Level div 5) * 20));
 end;
 
+//重新计算人物的能力
 procedure TBaseObject.RecalcAbilitys; //004C03B0
 var
   wOldHP, wOldMP: Word;
@@ -4035,7 +4051,7 @@ begin
           m_dwMasterRoyaltyTick := 0;
         end;
 
-        //宝宝叛变  开始
+        //宝宝叛变（宠物叛变）  开始
         nCheckCode := 423;
         if (GetTickCount > m_dwMasterRoyaltyTick) then
         begin
@@ -4045,7 +4061,11 @@ begin
             if m_Master.m_SlaveList.Items[i] = Self then
             begin
               nCheckCode := 425;
-              m_Master.m_SlaveList.Delete(i);
+
+              //宠物一定要叛变后，必需要将“是否驯化”标记改为FALSE，这样叛变的宝宝就会被重新招回来。
+              Self.m_boNoTame := False;  //修改宠物为未驯化（变成野生的）。该标记在宠物诱惑成功时被改为TRUE.
+
+              m_Master.m_SlaveList.Delete(i);  //从宠物列表中删除该宠物
               Break;
             end;
           end;
@@ -4054,7 +4074,8 @@ begin
           nCheckCode := 426;
           RefShowName();
         end;
-        //宝宝叛变 结束
+        //宝宝叛变（宠物叛变） 结束
+        
         nCheckCode := 427;
         if m_dwMasterTick <> 0 then
         begin
@@ -5532,10 +5553,11 @@ begin
         m_DefMsg := MakeDefaultMsg(SM_WINEXP, m_Abil.Exp, LoWord(ProcessMsg.nParam1), HiWord(ProcessMsg.nParam1), 0);
         SendSocket(@m_DefMsg, '');
       end;
-    RM_LEVELUP:
+    RM_LEVELUP:   //人物等级升级
       begin //10045 004D965B
-        m_DefMsg := MakeDefaultMsg(SM_LEVELUP, m_Abil.Exp, m_Abil.Level, 0, 0);
+        m_DefMsg := MakeDefaultMsg(SM_LEVELUP, m_Abil.Exp, m_Abil.Level, 0, 0);   //发等级升级信息
         SendSocket(@m_DefMsg, '');
+        
         m_DefMsg := MakeDefaultMsg(SM_ABILITY, m_nGold, MakeWord(m_btJob, 99), LoWord(m_nGameGold), HiWord(m_nGameGold));
           //0806 增加
         if (m_nSoftVersionDateEx = 0) and (m_dwClientTick = 0) then
@@ -5547,13 +5569,14 @@ begin
           SendSocket(@m_DefMsg, EncodeBuffer(@m_WAbil, SizeOf(TAbility)));
         end;
 
-          //SendSocket(@m_DefMsg,EncodeBuffer(@m_WAbil,SizeOf(TAbility)));
+        //SendSocket(@m_DefMsg,EncodeBuffer(@m_WAbil,SizeOf(TAbility)));
         SendDefMessage(SM_SUBABILITY,
           MakeLong(MakeWord(m_nAntiMagic, 0), 0),
           MakeWord(m_btHitPoint, m_btSpeedPoint),
           MakeWord(m_btAntiPoison, m_nPoisonRecover),
           MakeWord(m_nHealthRecover, m_nSpellRecover),
           '');
+
       end;
     RM_CHANGENAMECOLOR:
       begin //10046 004D9555
@@ -6993,6 +7016,9 @@ begin
     if GetTickCount - m_dwClearObjTick > 10000 then
     begin
       m_dwClearObjTick := GetTickCount();
+
+//取消 结婚 与 师徒 的相关内容 
+{
       if (m_DearHuman <> nil) and (m_DearHuman.m_boDeath or m_DearHuman.m_boGhost) then
       begin
         m_DearHuman := nil;
@@ -7014,6 +7040,8 @@ begin
           m_MasterHuman := nil;
         end;
       end;
+ }
+
     end;
   except
     on E: Exception do
@@ -7091,7 +7119,7 @@ begin
 end;
 
 
-
+//建立从属关系
 function TBaseObject.MakeSlave(sMonName: string; nMakeLevel, nExpLevel, nMaxMob: Integer; dwRoyaltySec: LongWord): TBaseObject; //004C37C0
 var
   nX, nY: Integer;
@@ -7120,7 +7148,7 @@ begin
   end;
 end;
 
-
+//处理用户行信息
 procedure TPlayObject.ProcessUserLineMsg(sData: string); //004D1E54
 var
   sCryCryMsg, SC, sCmd, sParam1, sParam2, sParam3, sParam4, sParam5, sParam6, sParam7: string;
@@ -7483,6 +7511,7 @@ begin
       exit;
     end;
     }
+
     if CompareText(sCmd, g_GameCommand.MEMBERFUNCTION.sCmd) = 0 then
     begin
       CmdMemberFunction(g_GameCommand.MEMBERFUNCTION.sCmd, sParam1);
@@ -7494,11 +7523,14 @@ begin
       Exit;
     end;
 
+//取消 结婚 与 师徒 的相关内容
+{
     if CompareText(sCmd, g_GameCommand.DEAR.sCmd) = 0 then
     begin
       CmdSearchDear(g_GameCommand.DEAR.sCmd, sParam1);
       Exit;
     end;
+
     if CompareText(sCmd, g_GameCommand.MASTER.sCmd) = 0 then
     begin
       CmdSearchMaster(g_GameCommand.MASTER.sCmd, sParam1);
@@ -7509,20 +7541,22 @@ begin
       CmdMasterRecall(g_GameCommand.MASTERECALL.sCmd, sParam1);
       Exit;
     end;
+
     if CompareText(sCmd, g_GameCommand.DEARRECALL.sCmd) = 0 then
     begin
       CmdDearRecall(g_GameCommand.DEARRECALL.sCmd, sParam1);
       Exit;
     end;
+
     if CompareText(sCmd, g_GameCommand.ALLOWDEARRCALL.sCmd) = 0 then
     begin
       m_boCanDearRecall := not m_boCanDearRecall;
       if m_boCanDearRecall then
       begin
-        SysMsg(g_sEnableDearRecall {'允许夫妻传送！！！'}, c_Blue, t_Hint);
+        SysMsg(g_sEnableDearRecall , c_Blue, t_Hint);  //'允许夫妻传送！！！'
       end else
       begin
-        SysMsg(g_sDisableDearRecall {'禁止夫妻传送！！！'}, c_Blue, t_Hint);
+        SysMsg(g_sDisableDearRecall , c_Blue, t_Hint); //'禁止夫妻传送！！！'
       end;
       Exit;
     end;
@@ -7531,13 +7565,14 @@ begin
       m_boCanMasterRecall := not m_boCanMasterRecall;
       if m_boCanMasterRecall then
       begin
-        SysMsg(g_sEnableMasterRecall {'允许师徒传送！！！'}, c_Blue, t_Hint);
+        SysMsg(g_sEnableMasterRecall, c_Blue, t_Hint);  //'允许师徒传送！！！'
       end else
       begin
-        SysMsg(g_sDisableMasterRecall {'禁止师徒传送！！！'}, c_Blue, t_Hint);
+        SysMsg(g_sDisableMasterRecall , c_Blue, t_Hint); //'禁止师徒传送！！！'
       end;
       Exit;
     end;
+}
 
     if CompareText(sCmd, g_GameCommand.Data.sCmd) = 0 then
     begin
@@ -7894,11 +7929,14 @@ begin
       CmdLuckPoint(g_GameCommand.LUCKYPOINT.sCmd, g_GameCommand.LUCKYPOINT.nPermissionMin, sParam1, sParam2, sParam3);
       Exit;
     end;
-    if CompareText(sCmd, g_GameCommand.LOTTERYTICKET.sCmd) = 0 then
-    begin
-      CmdLotteryTicket(g_GameCommand.LOTTERYTICKET.sCmd, g_GameCommand.LOTTERYTICKET.nPermissionMin, sParam1);
-      Exit;
-    end;
+
+//取消彩票功能
+//    if CompareText(sCmd, g_GameCommand.LOTTERYTICKET.sCmd) = 0 then
+//    begin
+//      CmdLotteryTicket(g_GameCommand.LOTTERYTICKET.sCmd, g_GameCommand.LOTTERYTICKET.nPermissionMin, sParam1);
+//      Exit;
+//    end;
+
     if CompareText(sCmd, g_GameCommand.RELOADGUILD.sCmd) = 0 then
     begin
       CmdReloadGuild(g_GameCommand.RELOADGUILD.sCmd, g_GameCommand.RELOADGUILD.nPermissionMin, sParam1);
@@ -8054,16 +8092,19 @@ begin
       CmdDenyIPaddrLogon(@g_GameCommand.DENYIPLOGON, sParam1, sParam2);
       Exit;
     end;
-    if CompareText(sCmd, g_GameCommand.CHANGEDEARNAME.sCmd) = 0 then
-    begin
-      CmdChangeDearName(@g_GameCommand.CHANGEDEARNAME, sParam1, sParam2);
-      Exit;
-    end;
-    if CompareText(sCmd, g_GameCommand.CHANGEMASTERNAME.sCmd) = 0 then
-    begin
-      CmdChangeMasterName(@g_GameCommand.CHANGEMASTERNAME, sParam1, sParam2, sParam3);
-      Exit;
-    end;
+
+// 取消 结婚系统 与 师徒系的相关内容  
+//    if CompareText(sCmd, g_GameCommand.CHANGEDEARNAME.sCmd) = 0 then
+//    begin
+//      CmdChangeDearName(@g_GameCommand.CHANGEDEARNAME, sParam1, sParam2);
+//      Exit;
+//    end;
+//    if CompareText(sCmd, g_GameCommand.CHANGEMASTERNAME.sCmd) = 0 then
+//    begin
+//      CmdChangeMasterName(@g_GameCommand.CHANGEMASTERNAME, sParam1, sParam2, sParam3);
+//      Exit;
+//    end;
+
     if CompareText(sCmd, g_GameCommand.CLEARMON.sCmd) = 0 then
     begin
       CmdClearMapMonster(@g_GameCommand.CLEARMON, sParam1, sParam2, sParam3);
@@ -8871,6 +8912,7 @@ begin
   end;
 end;
 
+//客户端技能反馈处理
 function TPlayObject.ClientSpellXY(wIdent: Word; nKey: Integer; nTargetX, nTargetY: Integer; TargeTBaseObject: TBaseObject; boLateDelivery: Boolean; var dwDelayTime: LongWord): Boolean; //004CBCEC
 var
   UserMagic: pTUserMagic;
@@ -8926,7 +8968,6 @@ begin
   Dec(m_nSpellTick, 450);
   m_nSpellTick := _MAX(0, m_nSpellTick);
 
-
   if boIsWarrSkill then
   begin
         //m_dwMagicAttackInterval:=0;
@@ -8936,9 +8977,17 @@ begin
     m_dwMagicAttackInterval := UserMagic.MagicInfo.dwDelayTime + g_Config.dwMagicHitIntervalTime;
   end;
   m_dwMagicAttackTick := GetTickCount();
-  case UserMagic.wMagIdx of //
+
+  case UserMagic.wMagIdx of
+   SKILL_ONESWORD,  //3  基本剑术    (战士)
+   SKILL_ILKWANG,   //4  精神力战法  (道士)
+   SKILL_YEDO:      //7  攻杀剑术    (战士)
+    begin
+         Result := True;  //对无需功能键的这三个技能直接返回，防止客户端使用功能键操作这些技能时出现异常（如，客户端死机）
+    end;
+
     SKILL_ERGUM {12}:
-      begin //刺杀剑法
+      begin //刺杀剑术
         if m_MagicErgumSkill <> nil then
         begin
           if not m_boUseThrusting then
@@ -9051,7 +9100,7 @@ begin
           end;
         end; //004CC1B5
       end;
-    SKILL_CROSSMOON:
+    SKILL_CROSSMOON: {34}
       begin //双龙斩
           {if m_MagicBanwolSkill <> nil then begin
             if m_boUseHalfMoon then begin
@@ -9074,7 +9123,7 @@ begin
         end;
         Result := True;
       end;
-    SKILL_TWINBLADE:
+    SKILL_TWINBLADE:  {38}
       begin //狂风斩
         if m_MagicTwnHitSkill <> nil then
         begin
@@ -9767,7 +9816,7 @@ begin
   Result := False;
   if m_ItemList.Count < MAXBAGITEM then
   begin
-    m_ItemList.Add(UserItem);
+    m_ItemList.Add(UserItem);   //将物品放入背包
     WeightChanged();
     Result := True;
   end;
@@ -10592,16 +10641,29 @@ begin
     else m_btAttatckMode := HAM_ALL;
   end;
   case m_btAttatckMode of
-    HAM_ALL: SysMsg(sAttackModeOfAll, c_Green, t_Hint); //[攻击模式: 全体攻击]
-    HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green, t_Hint); //[攻击模式: 和平攻击]
-    HAM_DEAR: SysMsg(sAttackModeOfDear, c_Green, t_Hint); //[攻击模式: 和平攻击]
-    HAM_MASTER: SysMsg(sAttackModeOfMaster, c_Green, t_Hint); //[攻击模式: 和平攻击]
-    HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint); //[攻击模式: 编组攻击]
-    HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint); //[攻击模式: 行会攻击]
-    HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint); //[攻击模式: 红名攻击]
-  end;
+  
+//      {
+//       HAM_ALL: SysMsg(sAttackModeOfAll, c_Green, t_Hint);         //[攻击模式: 全体攻击]
+//       HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green, t_Hint);  //[攻击模式: 和平攻击]
+//       HAM_DEAR: SysMsg(sAttackModeOfDear, c_Green, t_Hint);       //[攻击模式: 夫妻攻击]   ***(取消)
+//       HAM_MASTER: SysMsg(sAttackModeOfMaster, c_Green, t_Hint);   //[攻击模式: 师徒攻击]   ***(取消)
+//       HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint);     //[攻击模式: 编组攻击]
+//       HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint);     //[攻击模式: 行会攻击]
+//       HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint); //[攻击模式: 红名攻击]
+//      }
+
+       HAM_ALL: SysMsg(sAttackModeOfAll, c_Blue , t_Hint);          //c_Green  //[攻击模式: 全体攻击]
+       HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green , t_Hint);             //[攻击模式: 和平攻击]
+       HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint);                 //[攻击模式: 编组攻击]
+       HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint);                 //[攻击模式: 行会攻击]
+       HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint);           //[攻击模式: 红名攻击]
+
+   end;
 end;
-procedure TPlayObject.CmdChangeDearName(Cmd: pTGameCmd; sHumanName, sDearName: string);
+
+//取消 结婚 相关的代码
+{
+procedure TPlayObject.CmdChangeDearName(Cmd: pTGameCmd; sHumanName, sDearName: string);   //修改赔偶名
 var
   PlayObject: TPlayObject;
 begin
@@ -10635,6 +10697,10 @@ begin
     SysMsg(Format(g_sNowNotOnLineOrOnOtherServer, [sHumanName]), c_Red, t_Hint);
   end;
 end;
+
+}
+
+//修改性别
 procedure TPlayObject.CmdChangeGender(Cmd: pTGameCmd; sHumanName, sSex: string);
 var
   PlayObject: TPlayObject;
@@ -10759,7 +10825,12 @@ begin
     MainOutMessage(Format(g_sGameCommandLevelConsoleMsg, [m_sCharName, nOLevel, m_Abil.Level]));
   end;
 end;
-procedure TPlayObject.CmdChangeMasterName(Cmd: pTGameCmd; sHumanName, sMasterName, sIsMaster: string);
+
+
+//取消 师徒 系统相关的代码
+
+{
+procedure TPlayObject.CmdChangeMasterName(Cmd: pTGameCmd; sHumanName, sMasterName, sIsMaster: string);  //改师父名
 var
   PlayObject: TPlayObject;
 begin
@@ -10796,6 +10867,9 @@ begin
     SysMsg(Format(g_sNowNotOnLineOrOnOtherServer, [sHumanName]), c_Red, t_Hint);
   end;
 end;
+}
+
+
 procedure TPlayObject.CmdChangeObMode(sCmd: string; nPermission: Integer; sParam1: string; boFlag: Boolean);
 begin
   if (m_btPermission < nPermission) then
@@ -11307,6 +11381,9 @@ begin
     '------------------------------------');
 end;
 
+
+//取消 师徒 和 结婚系统 的相关功能
+{
 procedure TPlayObject.CmdDearRecall(sCmd, sParam: string);
 begin
   if (sParam <> '') and (sParam[1] = '?') then
@@ -11396,6 +11473,9 @@ begin
     end;
   end;
 end;
+
+}
+
 
 procedure TPlayObject.CmdDelBonuPoint(Cmd: pTGameCmd; sHumName: string);
 var
@@ -11500,6 +11580,9 @@ begin
 
 end;
 
+
+//取消 师徒 和 结婚系统 的相关功能
+{
 procedure TPlayObject.CmdSearchDear(sCmd, sParam: string);
 begin
   if (sParam <> '') and (sParam[1] = '?') then
@@ -11509,32 +11592,32 @@ begin
   end;
   if m_sDearName = '' then
   begin
-    SysMsg(g_sYouAreNotMarryedMsg {'你都没结婚查什么？'}, c_Red, t_Hint);
+    SysMsg(g_sYouAreNotMarryedMsg , c_Red, t_Hint);  //'你都没结婚查什么？'
     Exit;
   end;
   if m_DearHuman = nil then
   begin
     if m_btGender = gMan then
     begin
-      SysMsg(g_sYourWifeNotOnlineMsg {'你的老婆还没有上线！！！'}, c_Red, t_Hint);
+      SysMsg(g_sYourWifeNotOnlineMsg , c_Red, t_Hint);   //'你的老婆还没有上线！！！'
     end else
     begin
-      SysMsg(g_sYourHusbandNotOnlineMsg {'你的老公还没有上线！！！'}, c_Red, t_Hint);
+      SysMsg(g_sYourHusbandNotOnlineMsg , c_Red, t_Hint);  //'你的老公还没有上线！！！'
     end;
     Exit;
   end;
 
   if m_btGender = gMan then
   begin
-    SysMsg(g_sYourWifeNowLocateMsg {'你的老婆现在位于:'}, c_Green, t_Hint);
+    SysMsg(g_sYourWifeNowLocateMsg , c_Green, t_Hint);  //'你的老婆现在位于:'
     SysMsg(m_DearHuman.m_sCharName + ' ' + m_DearHuman.m_PEnvir.sMapDesc + '(' + IntToStr(m_DearHuman.m_nCurrX) + ':' + IntToStr(m_DearHuman.m_nCurrY) + ')', c_Green, t_Hint);
-    m_DearHuman.SysMsg(g_sYourHusbandSearchLocateMsg {'你的老公正在找你，他现在位于:'}, c_Green, t_Hint);
+    m_DearHuman.SysMsg(g_sYourHusbandSearchLocateMsg , c_Green, t_Hint);  //'你的老公正在找你，他现在位于:'
     m_DearHuman.SysMsg(m_sCharName + ' ' + m_PEnvir.sMapDesc + '(' + IntToStr(m_nCurrX) + ':' + IntToStr(m_nCurrY) + ')', c_Green, t_Hint);
   end else
   begin
-    SysMsg(g_sYourHusbandNowLocateMsg {'你的老公现在位于:'}, c_Red, t_Hint);
+    SysMsg(g_sYourHusbandNowLocateMsg , c_Red, t_Hint);  //'你的老公现在位于:'
     SysMsg(m_DearHuman.m_sCharName + ' ' + m_DearHuman.m_PEnvir.sMapDesc + '(' + IntToStr(m_DearHuman.m_nCurrX) + ':' + IntToStr(m_DearHuman.m_nCurrY) + ')', c_Green, t_Hint);
-    m_DearHuman.SysMsg(g_sYourWifeSearchLocateMsg {'你的老婆正在找你，她现在位于:'}, c_Green, t_Hint);
+    m_DearHuman.SysMsg(g_sYourWifeSearchLocateMsg , c_Green, t_Hint); //'你的老婆正在找你，她现在位于:'
     m_DearHuman.SysMsg(m_sCharName + ' ' + m_PEnvir.sMapDesc + '(' + IntToStr(m_nCurrX) + ':' + IntToStr(m_nCurrY) + ')', c_Green, t_Hint);
   end;
 
@@ -11583,6 +11666,8 @@ begin
     m_MasterHuman.SysMsg(m_sCharName + ' ' + m_PEnvir.sMapDesc + '(' + IntToStr(m_nCurrX) + ':' + IntToStr(m_nCurrY) + ')', c_Green, t_Hint);
   end;
 end;
+
+}
 
 procedure TPlayObject.CmdSetPermission(Cmd: pTGameCmd; sHumanName, sPermission: string);
 var
@@ -11646,6 +11731,7 @@ begin
     SysMsg(Format(g_sGameCommandShowHumanFlagOFFMsg, [PlayObject.m_sCharName, nFlag]), c_Green, t_Hint);
   end;
 end;
+
 
 procedure TPlayObject.CmdShowHumanUnit(sCmd: string; nPermission: Integer;
   sHumanName, sUnit: string);
@@ -11991,6 +12077,9 @@ begin
                                               Envir.Flag.boNORECALL := False;
                                             end;
                                           end else
+
+//取消 结婚 与 师徒 的相关内容                                          
+{
                                             if CompareText(sMapMode, 'NOGUILDRECALL') = 0 then
                                             begin
                                               if (sParam1 <> '') then
@@ -12021,6 +12110,8 @@ begin
                                                     Envir.Flag.boNOMASTERRECALL := False;
                                                   end;
                                                 end else
+}
+
                                                   if CompareText(sMapMode, 'NORANDOMMOVE') = 0 then
                                                   begin
                                                     if (sParam1 <> '') then
@@ -13162,6 +13253,8 @@ begin
 
 end;
 
+//取消彩票功能
+{
 procedure TPlayObject.CmdLotteryTicket(sCmd: string; nPermission: Integer;
   sParam1: string);
 begin
@@ -13184,6 +13277,7 @@ begin
       g_Config.nWinLotteryLevel5,
       g_Config.nWinLotteryLevel6]), c_Green, t_Hint);
 end;
+}
 
 procedure TPlayObject.CmdLuckPoint(sCmd: string; nPermission: Integer;
   sHumanName, sCtr, sPoint: string);
@@ -15234,16 +15328,19 @@ begin
 
   m_nPayMentPoint := 0;
 
-  m_DearHuman := nil;
-  m_MasterHuman := nil;
-  m_MasterList := TList.Create;
+// 取消结婚和师徒的相关内容  
+//  m_DearHuman := nil;
+//  m_MasterHuman := nil;
+//  m_MasterList := TList.Create;
+
+//  m_boCanMasterRecall := False;
+//  m_boCanDearRecall := False;
+//  m_dwDearRecallTick := GetTickCount();
+//  m_dwMasterRecallTick := GetTickCount();
+
   m_boSendMsgFlag := False;
   m_boChangeItemNameFlag := False;
 
-  m_boCanMasterRecall := False;
-  m_boCanDearRecall := False;
-  m_dwDearRecallTick := GetTickCount();
-  m_dwMasterRecallTick := GetTickCount();
   m_btReColorIdx := 0;
   m_GetWhisperHuman := nil;
   m_boOnHorse := False;
@@ -15308,7 +15405,8 @@ destructor TPlayObject.Destroy; //004C9B54
 var
   i: Integer;
 begin
-  m_MasterList.Free;
+//  m_MasterList.Free;
+
   for i := 0 to TList55C.Count - 1 do
   begin
 
@@ -15963,6 +16061,7 @@ begin
 
 end;
 
+//客户端用户销售物品
 procedure TPlayObject.ClientUserSellItem(nParam1, nMakeIndex: Integer; sMsg: string); //004DBE1C
 var
   i: Integer;
@@ -15987,6 +16086,9 @@ begin
           (abs(Merchant.m_nCurrX - m_nCurrX) < 15) and
           (abs(Merchant.m_nCurrY - m_nCurrY) < 15)) then
         begin
+
+          // MainOutMessage(Format('ClientUserSellItem: %d  %s',[UserItem.wIndex -1 ,sUserItemName]));    //debug_lzx20200208
+
           if Merchant.ClientSellItem(Self, UserItem) then
           begin
             if UserItem.btValue[13] = 1 then
@@ -16005,6 +16107,7 @@ begin
   end; // for
 end;
 
+//客户端买商品的消息处理函数
 procedure TPlayObject.ClientUserBuyItem(nIdent, nParam1, nInt, nZz: Integer; sMsg: string); //004DCA10
 var
   Merchant: TMerchant;
@@ -16020,11 +16123,11 @@ begin
 
     if nIdent = CM_USERBUYITEM then
     begin
-      Merchant.ClientBuyItem(Self, sMsg, nInt);
+      Merchant.ClientBuyItem(Self, sMsg, nInt);      //买商品
     end;
     if nIdent = CM_USERGETDETAILITEM then
     begin
-      Merchant.ClientGetDetailGoodsList(Self, sMsg, nZz);
+      Merchant.ClientGetDetailGoodsList(Self, sMsg, nZz);        //获取商品名细列表
     end;
   except
     on E: Exception do
@@ -16380,13 +16483,22 @@ begin
       end;
 
       case m_btAttatckMode of
-        HAM_ALL: SysMsg(sAttackModeOfAll, c_Green, t_Hint); //[攻击模式: 全体攻击]
-        HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green, t_Hint); //[攻击模式: 和平攻击]
-        HAM_DEAR: SysMsg(sAttackModeOfDear, c_Green, t_Hint); //[攻击模式: 和平攻击]
-        HAM_MASTER: SysMsg(sAttackModeOfMaster, c_Green, t_Hint); //[攻击模式: 和平攻击]
-        HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint); //[攻击模式: 编组攻击]
-        HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint); //[攻击模式: 行会攻击]
-        HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint); //[攻击模式: 红名攻击]
+//       {
+//        HAM_ALL: SysMsg(sAttackModeOfAll, c_Green, t_Hint);         //[攻击模式: 全体攻击]
+//       HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green, t_Hint);  //[攻击模式: 和平攻击]
+//        HAM_DEAR: SysMsg(sAttackModeOfDear, c_Green, t_Hint);       //[攻击模式: 夫妻攻击]   ***(取消)
+//        HAM_MASTER: SysMsg(sAttackModeOfMaster, c_Green, t_Hint);   //[攻击模式: 师徒攻击]   ***(取消)
+//        HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint);     //[攻击模式: 编组攻击]
+//        HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint);     //[攻击模式: 行会攻击]
+//        HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint); //[攻击模式: 红名攻击]
+//       }
+
+       HAM_ALL: SysMsg(sAttackModeOfAll, c_Blue , t_Hint);          //c_Green  //[攻击模式: 全体攻击]
+       HAM_PEACE: SysMsg(sAttackModeOfPeaceful, c_Green , t_Hint);             //[攻击模式: 和平攻击]
+       HAM_GROUP: SysMsg(sAttackModeOfGroup, c_Green, t_Hint);                 //[攻击模式: 编组攻击]
+       HAM_GUILD: SysMsg(sAttackModeOfGuild, c_Green, t_Hint);                 //[攻击模式: 行会攻击]
+       HAM_PKATTACK: SysMsg(sAttackModeOfRedWhite, c_Green, t_Hint);           //[攻击模式: 红名攻击]
+
       end;
       SysMsg(sStartChangeAttackModeHelp, c_Green, t_Hint); //使用组合快捷键 CTRL-H 更改攻击...
       if g_Config.boTestServer then
@@ -16457,12 +16569,14 @@ begin
     end;
 
     m_boFixedHideMode := False; //01/21 增加
-                            // PlayObject.Create 过程里被置为True，在执行完登录脚本后再置False
+                                // PlayObject.Create 过程里被置为True，在执行完登录脚本后再置False
 
-    if m_sDearName <> '' then
-      CheckMarry();
+                                
+// 取消 结婚和师徒 系统的相关功能
+//    if m_sDearName <> '' then
+//      CheckMarry();
 
-    CheckMaster();
+//    CheckMaster();
 
 
     m_boFilterSendMsg := GetDisableSendMsgList(m_sCharName);
@@ -16487,6 +16601,7 @@ begin
         m_boCanSendMsg := not g_Config.boLockSendMsgAction;
         m_boObMode := g_Config.boLockInObModeAction;
         m_boAdminMode := g_Config.boLockInObModeAction;
+
 {$IF VEROWNER = WL}
         SysMsg(g_sActionIsLockedMsg + ' 开锁命令: @' + g_GameCommand.LOCKLOGON.sCmd, c_Red, t_Hint);
         SendMsg(g_ManageNPC, RM_MENU_OK, 0, Integer(Self), 0, 0, g_sActionIsLockedMsg + '\ \'
@@ -16512,8 +16627,6 @@ begin
 
 {$IFEND}
 
-
-
   end;
 
 
@@ -16528,6 +16641,7 @@ begin
       m_boEmergencyClose:=True;
     end;
   end;}
+
   //重置泡点方面计时
   m_dwIncGamePointTick := GetTickCount();
   m_dwIncGameGoldTick := GetTickCount();
@@ -18424,15 +18538,15 @@ begin
   begin
     UserMagic := m_MagicList.Items[i];
     case UserMagic.wMagIdx of
-      SKILL_ONESWORD:
-        begin //内功心法
+      SKILL_ONESWORD: {3}
+        begin //基本剑术
           m_MagicOneSwordSkill := UserMagic;
           if UserMagic.btLevel > 0 then
           begin
             m_btHitPoint := m_btHitPoint + Round(9 / 3 * UserMagic.btLevel);
           end;
         end;
-      SKILL_YEDO:
+      SKILL_YEDO: {7}
         begin //攻杀剑法
           m_MagicPowerHitSkill := UserMagic;
           if UserMagic.btLevel > 0 then
@@ -21235,14 +21349,17 @@ begin
             if BaseObject.m_btRaceServer >= RC_ANIMAL then
               Result := True;
           end;
-        HAM_DEAR:
+
+//取消 夫妻攻击 和 师徒攻击  模式
+{
+        HAM_DEAR:   //夫妻攻击
           begin
             if BaseObject <> TPlayObject(Self).m_DearHuman then
             begin
               Result := True;
             end;
           end;
-        HAM_MASTER:
+        HAM_MASTER: //师徒攻击
           begin
             if BaseObject.m_btRaceServer = RC_PLAYOBJECT then
             begin
@@ -21271,6 +21388,8 @@ begin
               end;
             end else Result := True;
           end;
+}
+
         HAM_GROUP {2}:
           begin
             if (BaseObject.m_btRaceServer < RC_NPC) or (BaseObject.m_btRaceServer > RC_PEACENPC) then
@@ -23267,6 +23386,7 @@ begin
   end;
 end;
 
+//读书
 function TPlayObject.ReadBook(StdItem: TItem): Boolean; //004C67DC
 var
   Magic: pTMagic;
@@ -23274,7 +23394,7 @@ var
   PlayObject: TPlayObject;
 begin
   Result := False;
-  Magic := UserEngine.FindMagic(StdItem.Name);
+  Magic := UserEngine.FindMagic(StdItem.Name); //通过书名查找魔法
   if Magic <> nil then
   begin
     if not IsTrainingSkill(Magic.wMagicId) then
@@ -23407,10 +23527,13 @@ begin
       begin
         if SuperRepairWeapon() then Result := True;
       end;
-    11:
-      begin
-        if WinLottery() then Result := True;
-      end;
+
+//取消彩票功能     
+//    11:
+//      begin
+//        if WinLottery() then Result := True;
+//      end;
+
   end;
 end;
 procedure TPlayObject.MoveToHome;
@@ -23523,139 +23646,140 @@ begin
   Result := True;
 end;
 
-function TPlayObject.WinLottery: Boolean; //004BD7F8
-var
-  nGold, nWinLevel, nRate: Integer;
-begin
-  nGold := 0;
-  nWinLevel := 0;
-  {
-  case Random(30000) of
-    0..4999: begin //004BD866
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=500;
-       nWinLevel:=6;
-       Inc(nWinLotteryLevel6);
-     end;
-    end;
-    14000..15999: begin //004BD895
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=1000;
-       nWinLevel:=5;
-       Inc(nWinLotteryLevel5);
-     end;
-    end;
-    16000..16149: begin //004BD8C4
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=10000;
-       nWinLevel:=4;
-       Inc(nWinLotteryLevel4);
-     end;
-    end;
-    16150..16169: begin //004BD8F0
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=100000;
-       nWinLevel:=3;
-       Inc(nWinLotteryLevel3);
-     end;
-    end;
-    16170..16179: begin //004BD918
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=200000;
-       nWinLevel:=2;
-       Inc(nWinLotteryLevel2);
-     end;
-    end;
-    16180 + 1820: begin //004BD940
-     if nWinLotteryCount < nNoWinLotteryCount then begin
-       nGold:=1000000;
-       nWinLevel:=1;
-       Inc(nWinLotteryLevel1);
-     end;
-    end;
-  end;
-  }
-  nRate := Random(g_Config.nWinLotteryRate);
-  if nRate in [g_Config.nWinLottery6Min..g_Config.nWinLottery6Max] then
-  begin
-    if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-    begin
-      nGold := g_Config.nWinLottery6Gold;
-      nWinLevel := 6;
-      Inc(g_Config.nWinLotteryLevel6);
-    end;
-  end else
-    if nRate in [g_Config.nWinLottery5Min..g_Config.nWinLottery5Max] then
-    begin
-      if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-      begin
-        nGold := g_Config.nWinLottery5Gold;
-        nWinLevel := 5;
-        Inc(g_Config.nWinLotteryLevel5);
-      end;
-    end else
-      if nRate in [g_Config.nWinLottery4Min..g_Config.nWinLottery4Max] then
-      begin
-        if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-        begin
-          nGold := g_Config.nWinLottery4Gold;
-          nWinLevel := 4;
-          Inc(g_Config.nWinLotteryLevel4);
-        end;
-      end else
-        if nRate in [g_Config.nWinLottery3Min..g_Config.nWinLottery3Max] then
-        begin
-          if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-          begin
-            nGold := g_Config.nWinLottery3Gold;
-            nWinLevel := 3;
-            Inc(g_Config.nWinLotteryLevel3);
-          end;
-        end else
-          if nRate in [g_Config.nWinLottery2Min..g_Config.nWinLottery2Max] then
-          begin
-            if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-            begin
-              nGold := g_Config.nWinLottery2Gold;
-              nWinLevel := 2;
-              Inc(g_Config.nWinLotteryLevel2);
-            end;
-          end else
-            if nRate in [g_Config.nWinLottery1Min + g_Config.nWinLottery1Max] then
-            begin
-              if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
-              begin
-                nGold := g_Config.nWinLottery1Gold;
-                nWinLevel := 1;
-                Inc(g_Config.nWinLotteryLevel1);
-              end;
-            end;
-  if nGold > 0 then
-  begin
-    case nWinLevel of //
-      1: SysMsg(g_sWinLottery1Msg {'祝贺您，中了一等奖。'}, c_Green, t_Hint);
-      2: SysMsg(g_sWinLottery2Msg {'祝贺您，中了二等奖。'}, c_Green, t_Hint);
-      3: SysMsg(g_sWinLottery3Msg {'祝贺您，中了三等奖。'}, c_Green, t_Hint);
-      4: SysMsg(g_sWinLottery4Msg {'祝贺您，中了四等奖。'}, c_Green, t_Hint);
-      5: SysMsg(g_sWinLottery5Msg {'祝贺您，中了五等奖。'}, c_Green, t_Hint);
-      6: SysMsg(g_sWinLottery6Msg {'祝贺您，中了六等奖。'}, c_Green, t_Hint);
-    end;
-    if IncGold(nGold) then
-    begin
-      GoldChanged();
-    end else
-    begin
-      DropGoldDown(nGold, True, nil, nil);
-    end;
-
-  end else
-  begin
-    Inc(g_Config.nNoWinLotteryCount, 500);
-    SysMsg(g_sNotWinLotteryMsg {'等下次机会吧！！！'}, c_Red, t_Hint);
-  end;
-  Result := True;
-end;
-
+//取消彩票功能
+//function TPlayObject.WinLottery: Boolean; //004BD7F8
+//var
+//  nGold, nWinLevel, nRate: Integer;
+//begin
+//  nGold := 0;
+//  nWinLevel := 0;
+//  {
+//  case Random(30000) of
+//    0..4999: begin //004BD866
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=500;
+//       nWinLevel:=6;
+//       Inc(nWinLotteryLevel6);
+//     end;
+//    end;
+//    14000..15999: begin //004BD895
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=1000;
+//       nWinLevel:=5;
+//       Inc(nWinLotteryLevel5);
+//     end;
+//    end;
+//    16000..16149: begin //004BD8C4
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=10000;
+//       nWinLevel:=4;
+//       Inc(nWinLotteryLevel4);
+//     end;
+//    end;
+//    16150..16169: begin //004BD8F0
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=100000;
+//       nWinLevel:=3;
+//       Inc(nWinLotteryLevel3);
+//     end;
+//    end;
+//    16170..16179: begin //004BD918
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=200000;
+//       nWinLevel:=2;
+//       Inc(nWinLotteryLevel2);
+//     end;
+//    end;
+//    16180 + 1820: begin //004BD940
+//     if nWinLotteryCount < nNoWinLotteryCount then begin
+//       nGold:=1000000;
+//       nWinLevel:=1;
+//       Inc(nWinLotteryLevel1);
+//     end;
+//    end;
+//  end;
+//  }
+//  nRate := Random(g_Config.nWinLotteryRate);
+//  if nRate in [g_Config.nWinLottery6Min..g_Config.nWinLottery6Max] then
+//  begin
+//    if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//    begin
+//      nGold := g_Config.nWinLottery6Gold;
+//      nWinLevel := 6;
+//      Inc(g_Config.nWinLotteryLevel6);
+//    end;
+//  end else
+//    if nRate in [g_Config.nWinLottery5Min..g_Config.nWinLottery5Max] then
+//    begin
+//      if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//      begin
+//        nGold := g_Config.nWinLottery5Gold;
+//        nWinLevel := 5;
+//        Inc(g_Config.nWinLotteryLevel5);
+//      end;
+//    end else
+//      if nRate in [g_Config.nWinLottery4Min..g_Config.nWinLottery4Max] then
+//      begin
+//        if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//        begin
+//          nGold := g_Config.nWinLottery4Gold;
+//          nWinLevel := 4;
+//          Inc(g_Config.nWinLotteryLevel4);
+//        end;
+//      end else
+//        if nRate in [g_Config.nWinLottery3Min..g_Config.nWinLottery3Max] then
+//        begin
+//          if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//          begin
+//            nGold := g_Config.nWinLottery3Gold;
+//            nWinLevel := 3;
+//            Inc(g_Config.nWinLotteryLevel3);
+//          end;
+//        end else
+//          if nRate in [g_Config.nWinLottery2Min..g_Config.nWinLottery2Max] then
+//          begin
+//            if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//            begin
+//              nGold := g_Config.nWinLottery2Gold;
+//              nWinLevel := 2;
+//              Inc(g_Config.nWinLotteryLevel2);
+//            end;
+//          end else
+//            if nRate in [g_Config.nWinLottery1Min + g_Config.nWinLottery1Max] then
+//            begin
+//              if g_Config.nWinLotteryCount < g_Config.nNoWinLotteryCount then
+//              begin
+//                nGold := g_Config.nWinLottery1Gold;
+//                nWinLevel := 1;
+//                Inc(g_Config.nWinLotteryLevel1);
+//              end;
+//            end;
+//  if nGold > 0 then
+//  begin
+//    case nWinLevel of //
+//      1: SysMsg(g_sWinLottery1Msg {'祝贺您，中了一等奖。'}, c_Green, t_Hint);
+//      2: SysMsg(g_sWinLottery2Msg {'祝贺您，中了二等奖。'}, c_Green, t_Hint);
+//      3: SysMsg(g_sWinLottery3Msg {'祝贺您，中了三等奖。'}, c_Green, t_Hint);
+//      4: SysMsg(g_sWinLottery4Msg {'祝贺您，中了四等奖。'}, c_Green, t_Hint);
+//      5: SysMsg(g_sWinLottery5Msg {'祝贺您，中了五等奖。'}, c_Green, t_Hint);
+//      6: SysMsg(g_sWinLottery6Msg {'祝贺您，中了六等奖。'}, c_Green, t_Hint);
+//    end;
+//    if IncGold(nGold) then
+//    begin
+//      GoldChanged();
+//    end else
+//    begin
+//      DropGoldDown(nGold, True, nil, nil);
+//    end;
+//
+//  end else
+//  begin
+//    Inc(g_Config.nNoWinLotteryCount, 500);
+//    SysMsg(g_sNotWinLotteryMsg {'等下次机会吧！！！'}, c_Red, t_Hint);
+//  end;
+//  Result := True;
+//end;
+//
 
 
 procedure TBaseObject.DamageBubbleDefence(nInt: Integer); //004C6ED0
@@ -23918,10 +24042,13 @@ function TBaseObject.IsProperFriend(BaseObject: TBaseObject): Boolean; //004C909
   begin
     Result := False;
     if cret.m_btRaceServer = RC_PLAYOBJECT then
-    begin //措惑捞 荤恩牢 版快父
+    begin
       case m_btAttatckMode of
         HAM_ALL: Result := True;
         HAM_PEACE: Result := True;
+
+//取消 夫妻攻击 和 师徒攻击  模式
+{
         HAM_DEAR:
           begin
             if (Self = cret) or (cret = TPlayObject(Self).m_DearHuman) then
@@ -23958,6 +24085,8 @@ function TBaseObject.IsProperFriend(BaseObject: TBaseObject): Boolean; //004C909
                   end;
                 end;
           end;
+}
+
         HAM_GROUP:
           begin
             if cret = Self then
@@ -24725,9 +24854,10 @@ begin
   HumData.btCreditPoint := m_btCreditPoint;
   HumData.btReLevel := m_btReLevel;
 
-  HumData.sMasterName := m_sMasterName;
-  HumData.boMaster := m_boMaster;
-  HumData.sDearName := m_sDearName;
+//取消 结婚 和 师徒系统相关的数据
+//  HumData.sMasterName := m_sMasterName;
+//  HumData.boMaster := m_boMaster;
+//  HumData.sDearName := m_sDearName;
 
   HumData.nGameGold := m_nGameGold;
   HumData.nGamePoint := m_nGamePoint;
@@ -24766,9 +24896,10 @@ begin
   HumItems[U_RINGL] := m_UseItems[U_RINGL];
   HumItems[U_RINGR] := m_UseItems[U_RINGR];
   HumItems[U_BUJUK] := m_UseItems[U_BUJUK];
-  HumItems[U_BELT] := m_UseItems[U_BELT];
-  HumItems[U_BOOTS] := m_UseItems[U_BOOTS];
-  HumItems[U_CHARM] := m_UseItems[U_CHARM];
+
+//  HumItems[U_BELT] := m_UseItems[U_BELT];
+//  HumItems[U_BOOTS] := m_UseItems[U_BOOTS];
+//  HumItems[U_CHARM] := m_UseItems[U_CHARM];
 
   BagItems := @HumanRcd.Data.BagItems;
   for i := 0 to m_ItemList.Count - 1 do
@@ -25596,17 +25727,16 @@ begin
   end;
 end;
 
-
-
-
-
+//老式的 获取显示名字的函数
 {
 function TPlayObject.GetShowName: String;
 var
   sShowName:String;
   sGuildName:String;
-  sDearName:String;
-  sMasterName:String;
+
+//  sDearName:String;
+//  sMasterName:String;
+
 begin
 try
   //sShowName:=m_sCharName;
@@ -25619,6 +25749,7 @@ try
       end;
     end;
   end;
+
   if m_sMasterName <> '' then begin
     if m_boMaster then begin
       sMasterName:= m_sMasterName + '的师傅';
@@ -25650,14 +25781,20 @@ except
   end;
 end;
 end;
+
 }
+
+//新式的 获取显示名字的函数
 function TPlayObject.GetShowName: string;
 var
   sShowName: string;
   sCharName: string;
   sGuildName: string;
-  sDearName: string;
-  sMasterName: string;
+
+//取消 结婚 与 师徒 的相关内容
+//  sDearName: string;
+//  sMasterName: string;
+
   Castle: TUserCastle;
 resourcestring
   sExceptionMsg = '[Exception] TPlayObject::GetShowName';
@@ -25666,8 +25803,11 @@ begin
   //sShowName:=m_sCharName;
     sCharName := '';
     sGuildName := '';
-    sDearName := '';
-    sMasterName := '';
+
+//取消 结婚 与 师徒 的相关内容
+//    sDearName := '';
+//    sMasterName := '';
+
     if m_MyGuild <> nil then
     begin
       Castle := g_CastleManager.IsCastleMember(Self);
@@ -25712,7 +25852,8 @@ begin
       sCharName := Format(m_sRankLevelName, [m_sCharName]);
     end;
 
-
+//取消夫妻 和 师徒 关系的名称显示
+{
     if m_sMasterName <> '' then
     begin
       if m_boMaster then
@@ -25736,11 +25877,15 @@ begin
         sDearName := Format(g_sWoManDearName, [m_sDearName]); // + '的老婆';
       end;
     end;
+}
 
     sShowName := AnsiReplaceText(g_sHumanShowName, '%chrname', sCharName);
     sShowName := AnsiReplaceText(sShowName, '%guildname', sGuildName);
-    sShowName := AnsiReplaceText(sShowName, '%dearname', sDearName);
-    sShowName := AnsiReplaceText(sShowName, '%mastername', sMasterName);
+
+//取消名字上显示 夫妻关系 和师徒关系
+//    sShowName := AnsiReplaceText(sShowName, '%dearname', sDearName);
+//    sShowName := AnsiReplaceText(sShowName, '%mastername', sMasterName);
+
     Result := sShowName;
   except
     on E: Exception do
@@ -25750,6 +25895,7 @@ begin
     end;
   end;
 end;
+
 function TPlayObject.CheckItemsNeed(StdItem: TItem): Boolean;
 var
   Castle: TUserCastle;
@@ -25804,6 +25950,10 @@ begin
   end;
 
 end;
+
+
+//取消 师徒 和 结婚 系统的相关功能
+{
 procedure TPlayObject.CheckMarry;
 var
   boIsfound: Boolean;
@@ -26096,6 +26246,9 @@ begin
     end;
   end;
 end;
+
+}
+
 procedure TPlayObject.MakeGhost;
 var
   i: Integer;
@@ -26111,7 +26264,10 @@ begin
     if (g_HighMCHuman = Self) then g_HighMCHuman := nil;
     if (g_HighSCHuman = Self) then g_HighSCHuman := nil;
     if (g_HighOnlineHuman = Self) then g_HighOnlineHuman := nil;
-  //人物下线后通知配偶，并把对方的相关记录清空
+
+//取消配偶 或 师徒 下线的通知
+{    
+    //人物下线后通知配偶，并把对方的相关记录清空
     if m_DearHuman <> nil then
     begin
       if m_btGender = gMan then
@@ -26134,7 +26290,9 @@ begin
       m_DearHuman.m_DearHuman := nil;
       m_DearHuman := nil;
     end;
-    if (m_MasterHuman <> nil) or (m_MasterList.Count > 0) then
+
+    //人物下线后通知师父，并把对方的相关记录清空
+    if (m_MasterHuman <> nil) or (m_MasterList.Count > 0) then   //if 1
     begin
       if m_boMaster then
       begin
@@ -26158,7 +26316,7 @@ begin
         sSayMsg := AnsiReplaceText(sSayMsg, '%y', IntToStr(m_nCurrY));
         m_MasterHuman.SysMsg(sSayMsg, c_Red, t_Hint);
 
-      //如果为大徒弟则将对方的记录清空
+       //如果为大徒弟则将对方的记录清空
         if m_MasterHuman.m_sMasterName = m_sCharName then
         begin
           m_MasterHuman.m_MasterHuman := nil;
@@ -26173,7 +26331,10 @@ begin
           end;
         end;
       end;
-    end;
+    end;   // if 1 end
+}
+
+
   except
     on E: Exception do
     begin

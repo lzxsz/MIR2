@@ -1,4 +1,5 @@
 unit WIL;
+//在原delphix图像包装类的基础上改装而成,封装了wil文件及其全部操作(结合wmUtil)
 
 interface
 

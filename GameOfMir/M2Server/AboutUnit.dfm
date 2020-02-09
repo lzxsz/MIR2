@@ -87,19 +87,19 @@ object FrmAbout: TFrmAbout
     object Label7: TLabel
       Left = 11
       Top = 96
-      Width = 168
+      Width = 54
       Height = 12
-      Caption = #31243#24207#32593#31449': http://www.***.com'
+      Caption = #31243#24207#32593#31449':'
     end
     object Label8: TLabel
       Left = 11
       Top = 116
-      Width = 168
+      Width = 54
       Height = 12
-      Caption = #31243#24207#35770#22363': http://www.***.com'
+      Caption = #31243#24207#35770#22363':'
     end
     object Label1: TLabel
-      Left = 67
+      Left = 69
       Top = 16
       Width = 96
       Height = 12

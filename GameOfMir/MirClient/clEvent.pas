@@ -1,4 +1,5 @@
 unit clEvent;
+//消息管理器
 
 interface
 

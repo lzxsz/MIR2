@@ -1,7 +1,7 @@
 object frmViewSession: TfrmViewSession
   Left = 359
   Top = 235
-  Width = 446
+  Width = 464
   Height = 208
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = #26597#30475#20840#23616#20250#35805
@@ -28,14 +28,14 @@ object frmViewSession: TfrmViewSession
   object PanelStatus: TPanel
     Left = 0
     Top = 0
-    Width = 430
+    Width = 448
     Height = 129
     Align = alTop
     TabOrder = 1
     object GridSession: TStringGrid
       Left = 1
       Top = 1
-      Width = 428
+      Width = 446
       Height = 127
       Align = alClient
       ColCount = 6

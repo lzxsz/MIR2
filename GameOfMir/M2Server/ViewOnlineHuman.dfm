@@ -1,11 +1,11 @@
 object frmViewOnlineHuman: TfrmViewOnlineHuman
-  Left = 277
-  Top = 128
+  Left = 276
+  Top = 257
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #22312#32447#20154#29289
   ClientHeight = 262
-  ClientWidth = 688
+  ClientWidth = 854
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   TextHeight = 12
   object Label1: TLabel
     Left = 112
-    Top = 236
+    Top = 234
     Width = 30
     Height = 12
     Caption = #25490#24207':'
@@ -28,7 +28,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   object PanelStatus: TPanel
     Left = 0
     Top = 0
-    Width = 688
+    Width = 854
     Height = 217
     Align = alTop
     Caption = #27491#22312#35835#21462#25968#25454'...'
@@ -36,7 +36,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
     object GridHuman: TStringGrid
       Left = 1
       Top = 1
-      Width = 686
+      Width = 852
       Height = 215
       Align = alClient
       ColCount = 14
@@ -64,7 +64,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   end
   object ButtonRefGrid: TButton
     Left = 10
-    Top = 230
+    Top = 228
     Width = 73
     Height = 25
     Caption = #21047#26032'(&R)'
@@ -73,7 +73,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   end
   object ComboBoxSort: TComboBox
     Left = 152
-    Top = 234
+    Top = 232
     Width = 113
     Height = 20
     Style = csDropDownList
@@ -92,14 +92,14 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   end
   object EditSearchName: TEdit
     Left = 320
-    Top = 234
+    Top = 232
     Width = 129
     Height = 20
     TabOrder = 3
   end
   object ButtonSearch: TButton
     Left = 456
-    Top = 230
+    Top = 228
     Width = 73
     Height = 25
     Caption = #25628#32034'(&S)'
@@ -108,7 +108,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   end
   object ButtonView: TButton
     Left = 599
-    Top = 230
+    Top = 228
     Width = 80
     Height = 25
     Caption = #20154#29289#20449#24687'(&V)'

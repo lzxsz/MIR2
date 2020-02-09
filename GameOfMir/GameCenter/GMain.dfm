@@ -1,10 +1,10 @@
 object frmMain: TfrmMain
-  Left = 415
-  Top = 204
+  Left = 209
+  Top = 206
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #28216#25103#25511#21046#22120
-  ClientHeight = 376
+  ClientHeight = 392
   ClientWidth = 534
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -573,7 +573,7 @@ object frmMain: TfrmMain
     Left = 8
     Top = 8
     Width = 520
-    Height = 360
+    Height = 377
     ActivePage = TabSheet1
     HotTrack = True
     TabIndex = 0
@@ -584,7 +584,7 @@ object frmMain: TfrmMain
         Left = 8
         Top = 8
         Width = 497
-        Height = 313
+        Height = 330
         Caption = #26381#21153#22120#25511#21046
         TabOrder = 0
         object EditM2ServerProgram: TEdit
@@ -624,7 +624,7 @@ object frmMain: TfrmMain
           Visible = False
         end
         object EditLoginGateProgram: TEdit
-          Left = 472
+          Left = 464
           Top = 112
           Width = 297
           Height = 20
@@ -652,9 +652,9 @@ object frmMain: TfrmMain
         end
         object ButtonStartGame: TButton
           Left = 176
-          Top = 272
+          Top = 280
           Width = 145
-          Height = 33
+          Height = 40
           Caption = #21551#21160#28216#25103#26381#21153#22120'(&S)'
           TabOrder = 7
           OnClick = ButtonStartGameClick
@@ -777,10 +777,10 @@ object frmMain: TfrmMain
           Visible = False
         end
         object MemoLog: TMemo
-          Left = 11
-          Top = 152
+          Left = 12
+          Top = 142
           Width = 473
-          Height = 105
+          Height = 130
           Color = clNone
           Font.Charset = ANSI_CHARSET
           Font.Color = clLime
@@ -800,7 +800,7 @@ object frmMain: TfrmMain
         Left = 8
         Top = 8
         Width = 497
-        Height = 321
+        Height = 325
         Caption = #23458#25143#31471#37197#32622
         TabOrder = 0
         object Label24: TLabel
@@ -867,7 +867,7 @@ object frmMain: TfrmMain
           Left = 416
           Top = 32
           Width = 73
-          Height = 25
+          Height = 30
           Caption = #20445#23384#21015#34920
           Enabled = False
           TabOrder = 3
@@ -893,7 +893,7 @@ object frmMain: TfrmMain
         Left = 8
         Top = 8
         Width = 497
-        Height = 321
+        Height = 326
         Caption = #30331#24405#24080#21495#23494#30721
         TabOrder = 0
         object Label30: TLabel
@@ -913,7 +913,7 @@ object frmMain: TfrmMain
         object ButtonSearchLoginAccount: TButton
           Left = 184
           Top = 16
-          Width = 65
+          Width = 70
           Height = 25
           Caption = #25628#32034'(&S)'
           TabOrder = 1
@@ -923,7 +923,7 @@ object frmMain: TfrmMain
           Left = 8
           Top = 48
           Width = 481
-          Height = 265
+          Height = 266
           Caption = #24080#21495#20449#24687
           TabOrder = 2
           object Label31: TLabel
@@ -1166,10 +1166,10 @@ object frmMain: TfrmMain
             OnClick = CkFullEditModeClick
           end
           object ButtonLoginAccountOK: TButton
-            Left = 408
-            Top = 224
-            Width = 65
-            Height = 25
+            Left = 393
+            Top = 227
+            Width = 80
+            Height = 30
             Caption = #30830#23450'(&O)'
             Enabled = False
             TabOrder = 14
@@ -1201,10 +1201,10 @@ object frmMain: TfrmMain
         Left = 0
         Top = 0
         Width = 512
-        Height = 333
-        ActivePage = TabSheet6
+        Height = 350
+        ActivePage = TabSheet4
         Align = alClient
-        TabIndex = 2
+        TabIndex = 0
         TabOrder = 1
         TabPosition = tpBottom
         object TabSheet4: TTabSheet
@@ -1213,7 +1213,7 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #31243#24207#30446#24405#21450#29289#21697#25968#25454#24211#35774#32622
             TabOrder = 0
             object Label1: TLabel
@@ -1300,10 +1300,10 @@ object frmMain: TfrmMain
               OnClick = CheckBoxDynamicIPModeClick
             end
             object ButtonGeneralDefalult: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 6
               OnClick = ButtonGeneralDefalultClick
@@ -1312,16 +1312,16 @@ object frmMain: TfrmMain
           object ButtonNext1: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 1
             OnClick = ButtonNext1Click
           end
           object ButtonReLoadConfig: TButton
-            Left = 312
+            Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #37325#21152#36733'(&R)'
             TabOrder = 2
@@ -1334,7 +1334,7 @@ object frmMain: TfrmMain
           object ButtonNext2: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 0
@@ -1344,12 +1344,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #30331#24405#32593#20851#35774#32622
             TabOrder = 1
             object GroupBox7: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -1394,17 +1394,17 @@ object frmMain: TfrmMain
               end
             end
             object ButtonLoginGateDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 1
               OnClick = ButtonLoginGateDefaultClick
             end
             object GroupBox23: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 129
               Height = 49
               Caption = #32593#20851#31471#21475
@@ -1427,7 +1427,7 @@ object frmMain: TfrmMain
             end
             object GroupBox27: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -1446,7 +1446,7 @@ object frmMain: TfrmMain
           object ButtonPrv2: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 2
@@ -1460,12 +1460,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #35282#33394#32593#20851#35774#32622
             TabOrder = 0
             object GroupBox8: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -1510,17 +1510,17 @@ object frmMain: TfrmMain
               end
             end
             object ButtonSelGateDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 1
               OnClick = ButtonSelGateDefaultClick
             end
             object GroupBox24: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #32593#20851#31471#21475
@@ -1558,7 +1558,7 @@ object frmMain: TfrmMain
             end
             object GroupBox28: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -1577,7 +1577,7 @@ object frmMain: TfrmMain
           object ButtonPrv3: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 1
@@ -1586,7 +1586,7 @@ object frmMain: TfrmMain
           object ButtonNext3: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 2
@@ -1599,7 +1599,7 @@ object frmMain: TfrmMain
           object ButtonPrv4: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 0
@@ -1608,7 +1608,7 @@ object frmMain: TfrmMain
           object ButtonNext4: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 1
@@ -1618,12 +1618,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #28216#25103#32593#20851#35774#32622
             TabOrder = 2
             object GroupBox18: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -1672,7 +1672,7 @@ object frmMain: TfrmMain
             end
             object GroupBox19: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 57
               Caption = #24320#21551#32593#20851#25968#37327
@@ -1699,7 +1699,7 @@ object frmMain: TfrmMain
             end
             object GroupBox22: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 209
               Height = 137
               Caption = #32593#20851#31471#21475
@@ -1753,7 +1753,7 @@ object frmMain: TfrmMain
                 Height = 12
                 Caption = #32593#20851#19971':'
               end
-              object LabelRunGate_GatePort78: TLabel
+              object LabelRunGate_GatePort8: TLabel
                 Left = 104
                 Top = 68
                 Width = 42
@@ -1826,10 +1826,10 @@ object frmMain: TfrmMain
               end
             end
             object ButtonRunGateDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 3
               OnClick = ButtonRunGateDefaultClick
@@ -1843,12 +1843,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #30331#24405#26381#21153#22120#35774#32622
             TabOrder = 0
             object GroupBox10: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -1893,27 +1893,27 @@ object frmMain: TfrmMain
               end
             end
             object ButtonLoginServerConfig: TButton
-              Left = 312
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 293
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #39640#32423#35774#32622
               TabOrder = 1
               Visible = False
               OnClick = ButtonLoginServerConfigClick
             end
             object ButtonLoginSrvDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 2
               OnClick = ButtonLoginSrvDefaultClick
             end
             object GroupBox33: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 209
               Height = 73
               Caption = #32593#20851#31471#21475
@@ -1951,7 +1951,7 @@ object frmMain: TfrmMain
             end
             object GroupBox34: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -1970,7 +1970,7 @@ object frmMain: TfrmMain
           object ButtonPrv5: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 1
@@ -1979,7 +1979,7 @@ object frmMain: TfrmMain
           object ButtonNext5: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 2
@@ -1993,12 +1993,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #25968#25454#24211#26381#21153#22120#35774#32622
             TabOrder = 0
             object GroupBox12: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -2044,28 +2044,28 @@ object frmMain: TfrmMain
             end
             object GroupBox20: TGroupBox
               Left = 144
-              Top = 96
+              Top = 100
               Width = 129
               Height = 65
               Caption = #33258#21160#22791#20221#25968#25454
               TabOrder = 1
               object Label59: TLabel
                 Left = 8
-                Top = 36
+                Top = 42
                 Width = 30
                 Height = 12
                 Caption = #38388#38548':'
               end
               object Label60: TLabel
                 Left = 96
-                Top = 36
+                Top = 42
                 Width = 24
                 Height = 12
                 Caption = #20998#38047
               end
               object CheckBoxAutoBackupHumData: TCheckBox
                 Left = 8
-                Top = 16
+                Top = 17
                 Width = 105
                 Height = 17
                 Caption = #24320#21551#33258#21160#22791#20221
@@ -2074,7 +2074,7 @@ object frmMain: TfrmMain
               end
               object EditBackupTime: TSpinEdit
                 Left = 40
-                Top = 32
+                Top = 38
                 Width = 49
                 Height = 21
                 MaxValue = 0
@@ -2085,17 +2085,17 @@ object frmMain: TfrmMain
               end
             end
             object ButtonDBServerDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 2
               OnClick = ButtonDBServerDefaultClick
             end
             object GroupBox35: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -2112,7 +2112,7 @@ object frmMain: TfrmMain
             end
             object GroupBox36: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 209
               Height = 73
               Caption = #32593#20851#31471#21475
@@ -2152,7 +2152,7 @@ object frmMain: TfrmMain
           object ButtonPrv6: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 1
@@ -2161,7 +2161,7 @@ object frmMain: TfrmMain
           object ButtonNext6: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 2
@@ -2175,12 +2175,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #28216#25103#26085#24535#26381#21153#22120#35774#32622
             TabOrder = 0
             object GroupBox14: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -2225,17 +2225,17 @@ object frmMain: TfrmMain
               end
             end
             object ButtonLogServerDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 1
               OnClick = ButtonLogServerDefaultClick
             end
             object GroupBox37: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -2252,7 +2252,7 @@ object frmMain: TfrmMain
             end
             object GroupBox38: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 209
               Height = 73
               Caption = #32593#32476#31471#21475
@@ -2277,7 +2277,7 @@ object frmMain: TfrmMain
           object ButtonPrv7: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 1
@@ -2286,7 +2286,7 @@ object frmMain: TfrmMain
           object ButtonNext7: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 2
@@ -2300,12 +2300,12 @@ object frmMain: TfrmMain
             Left = 8
             Top = 8
             Width = 489
-            Height = 177
+            Height = 200
             Caption = #28216#25103#24341#25806#26381#21153#22120#35774#32622
             TabOrder = 0
             object GroupBox16: TGroupBox
               Left = 8
-              Top = 16
+              Top = 20
               Width = 129
               Height = 73
               Caption = #31383#21475#20301#32622
@@ -2350,17 +2350,17 @@ object frmMain: TfrmMain
               end
             end
             object ButtonM2ServerDefault: TButton
-              Left = 400
-              Top = 144
-              Width = 81
-              Height = 25
+              Left = 390
+              Top = 160
+              Width = 90
+              Height = 30
               Caption = #40664#35748#35774#32622'(&D)'
               TabOrder = 1
               OnClick = ButtonM2ServerDefaultClick
             end
             object GroupBox32: TGroupBox
               Left = 144
-              Top = 96
+              Top = 100
               Width = 145
               Height = 73
               Caption = #26032#20154#35774#32622
@@ -2407,7 +2407,7 @@ object frmMain: TfrmMain
             end
             object GroupBox39: TGroupBox
               Left = 144
-              Top = 16
+              Top = 20
               Width = 209
               Height = 73
               Caption = #31471#21475
@@ -2445,7 +2445,7 @@ object frmMain: TfrmMain
             end
             object GroupBox40: TGroupBox
               Left = 8
-              Top = 96
+              Top = 100
               Width = 129
               Height = 41
               Caption = #26159#21542#21551#21160
@@ -2464,7 +2464,7 @@ object frmMain: TfrmMain
           object ButtonPrv8: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 1
@@ -2473,7 +2473,7 @@ object frmMain: TfrmMain
           object ButtonNext8: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19979#19968#27493'(&N)'
             TabOrder = 2
@@ -2486,7 +2486,7 @@ object frmMain: TfrmMain
           object ButtonSave: TButton
             Left = 408
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #20445#23384'(&S)'
             TabOrder = 0
@@ -2495,7 +2495,7 @@ object frmMain: TfrmMain
           object ButtonGenGameConfig: TButton
             Left = 232
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #29983#25104#37197#32622'(&G)'
             TabOrder = 1
@@ -2504,7 +2504,7 @@ object frmMain: TfrmMain
           object ButtonPrv9: TButton
             Left = 320
             Top = 263
-            Width = 81
+            Width = 80
             Height = 33
             Caption = #19978#19968#27493'(&P)'
             TabOrder = 2
@@ -2513,58 +2513,19 @@ object frmMain: TfrmMain
         end
       end
     end
-    object TabSheet3: TTabSheet
-      Caption = #32508#21512#35774#32622
-      ImageIndex = 2
-      object GroupBox6: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 249
-        Height = 145
-        Caption = #30028#22806#24418
-        TabOrder = 0
-        object Label8: TLabel
-          Left = 8
-          Top = 28
-          Width = 54
-          Height = 12
-          Caption = #36873#25321#22806#24418':'
-        end
-        object EditSkin: TSpinEdit
-          Left = 64
-          Top = 24
-          Width = 81
-          Height = 21
-          MaxValue = 0
-          MinValue = -1
-          TabOrder = 0
-          Value = 0
-          OnChange = EditSkinChange
-        end
-        object ButtonFormSave: TButton
-          Left = 176
-          Top = 112
-          Width = 65
-          Height = 25
-          Caption = #20445#23384
-          TabOrder = 1
-          OnClick = ButtonFormSaveClick
-        end
-      end
-    end
     object TabSheet13: TTabSheet
       Caption = #30456#20851#20449#24687
       ImageIndex = 3
       object GroupBox4: TGroupBox
         Left = 8
-        Top = 8
+        Top = 224
         Width = 497
-        Height = 89
+        Height = 104
         Caption = #29256#26435#22768#26126
         TabOrder = 0
         object StaticText1: TStaticText
           Left = 18
-          Top = 24
+          Top = 26
           Width = 472
           Height = 16
           Caption = #26412#31243#24207#21482#36866#29992#20110#20013#21326#20154#27665#20849#21644#22269#27861#24459#20801#35768#33539#22260#20869#30340#20010#20154#23089#20048#65292#19981#24471#29992#20110#21830#19994#30408#21033#24615#32463#33829#65292
@@ -2574,7 +2535,7 @@ object frmMain: TfrmMain
         end
         object StaticText2: TStaticText
           Left = 18
-          Top = 43
+          Top = 47
           Width = 220
           Height = 16
           Caption = #22914#22240#27492#36896#25104#30340#21518#26524#33258#36127#65292#19982#26412#36719#20214#26080#20851#12290
@@ -2583,10 +2544,81 @@ object frmMain: TfrmMain
       end
       object GroupBox41: TGroupBox
         Left = 8
-        Top = 104
+        Top = 8
         Width = 497
-        Height = 225
+        Height = 201
+        Caption = #29256#26412#20449#24687
         TabOrder = 1
+        object lbl1: TLabel
+          Left = 76
+          Top = 48
+          Width = 96
+          Height = 12
+          Caption = '1.5.0 (20020522)'
+        end
+        object lbl2: TLabel
+          Left = 18
+          Top = 148
+          Width = 54
+          Height = 12
+          Caption = #31243#24207#35770#22363':'
+        end
+        object lbl3: TLabel
+          Left = 18
+          Top = 123
+          Width = 54
+          Height = 12
+          Caption = #31243#24207#32593#31449':'
+        end
+        object lbl4: TLabel
+          Left = 18
+          Top = 98
+          Width = 54
+          Height = 12
+          Caption = #31243#24207#21046#20316':'
+        end
+        object lbl5: TLabel
+          Left = 18
+          Top = 73
+          Width = 54
+          Height = 12
+          Caption = #26356#26032#26085#26399':'
+        end
+        object lbl6: TLabel
+          Left = 18
+          Top = 48
+          Width = 54
+          Height = 12
+          Caption = #36719#20214#29256#26412':'
+        end
+        object lbl7: TLabel
+          Left = 18
+          Top = 24
+          Width = 54
+          Height = 12
+          Caption = #36719#20214#21517#31216':'
+        end
+        object lbl8: TLabel
+          Left = 78
+          Top = 98
+          Width = 42
+          Height = 12
+          Caption = 'Cola PI'
+        end
+        object lbl9: TLabel
+          Left = 78
+          Top = 73
+          Width = 60
+          Height = 12
+          Caption = '2019/09/09'
+        end
+        object lbl10: TLabel
+          Left = 76
+          Top = 23
+          Width = 108
+          Height = 12
+          Caption = 'MIR2'#28216#25103#24341#25806#25511#21046#21488
+        end
       end
     end
     object TabSheetDebug: TTabSheet
@@ -2601,9 +2633,9 @@ object frmMain: TfrmMain
         TabOrder = 0
         object GroupBox30: TGroupBox
           Left = 8
-          Top = 16
+          Top = 20
           Width = 265
-          Height = 113
+          Height = 101
           Caption = #28216#25103#24341#25806
           TabOrder = 0
           object Label45: TLabel
@@ -2642,9 +2674,9 @@ object frmMain: TfrmMain
             TabOrder = 1
           end
           object ButtonM2Suspend: TButton
-            Left = 200
+            Left = 187
             Top = 32
-            Width = 57
+            Width = 70
             Height = 25
             Caption = #26242#20572#31243#24207
             TabOrder = 2
@@ -2661,7 +2693,7 @@ object frmMain: TfrmMain
         end
         object GroupBox31: TGroupBox
           Left = 8
-          Top = 136
+          Top = 130
           Width = 265
           Height = 105
           Caption = #25968#25454#24211
@@ -2702,9 +2734,9 @@ object frmMain: TfrmMain
             TabOrder = 1
           end
           object Button3: TButton
-            Left = 200
+            Left = 187
             Top = 32
-            Width = 57
+            Width = 70
             Height = 25
             Caption = #26242#20572#31243#24207
             TabOrder = 2
@@ -2751,7 +2783,7 @@ object frmMain: TfrmMain
     OnClientRead = ServerSocketClientRead
     OnClientError = ServerSocketClientError
     Left = 480
-    Top = 208
+    Top = 240
   end
   object Timer: TTimer
     Enabled = False

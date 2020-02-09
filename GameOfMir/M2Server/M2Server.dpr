@@ -84,7 +84,6 @@ begin
   Application.CreateForm(TFormIP, FormIP);
   Application.CreateForm(TFromAddGuild, FromAddGuild);
   Application.CreateForm(TFrmAbout, FrmAbout);
-  Application.CreateForm(TfrmConfigGameShop, frmConfigGameShop);
   Application.Run;
 
 end.

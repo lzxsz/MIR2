@@ -1,6 +1,6 @@
 object frmItemSet: TfrmItemSet
-  Left = 254
-  Top = 281
+  Left = 267
+  Top = 278
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #29305#27530#23646#24615#29289#21697#35774#32622
@@ -27,6 +27,15 @@ object frmItemSet: TfrmItemSet
     TabOrder = 0
     object TabSheet8: TTabSheet
       Caption = #29305#27530#23646#24615
+      object ButtonItemSetSave: TButton
+        Left = 334
+        Top = 237
+        Width = 65
+        Height = 25
+        Caption = #20445#23384'(&S)'
+        TabOrder = 0
+        OnClick = ButtonItemSetSaveClick
+      end
       object ItemSetPageControl: TPageControl
         Left = 8
         Top = 4
@@ -35,7 +44,7 @@ object frmItemSet: TfrmItemSet
         ActivePage = TabSheet1
         MultiLine = True
         TabIndex = 0
-        TabOrder = 0
+        TabOrder = 1
         TabPosition = tpBottom
         object TabSheet1: TTabSheet
           Caption = #32463#39564#32763#20493
@@ -83,22 +92,22 @@ object frmItemSet: TfrmItemSet
               OnChange = EditItemExpRateChange
             end
             object GroupBox1: TGroupBox
-              Left = 176
+              Left = 160
               Top = 16
-              Width = 185
-              Height = 81
+              Width = 200
+              Height = 75
               Caption = #25968#25454#24211#35774#32622#32534#21495' [141]'
               TabOrder = 1
               object Label1: TLabel
                 Left = 8
-                Top = 16
+                Top = 18
                 Width = 180
                 Height = 12
                 Caption = #27494#22120#12289#34593#28891#31867#20351#29992#23383#27573': AniCount'
               end
               object Label2: TLabel
                 Left = 8
-                Top = 32
+                Top = 36
                 Width = 126
                 Height = 12
                 Caption = #39318#39280#31867#20351#29992#23383#27573': Shape'
@@ -153,22 +162,22 @@ object frmItemSet: TfrmItemSet
               OnChange = EditItemPowerRateChange
             end
             object GroupBox2: TGroupBox
-              Left = 176
+              Left = 160
               Top = 16
-              Width = 185
-              Height = 81
+              Width = 200
+              Height = 75
               Caption = #25968#25454#24211#35774#32622#32534#21495' [142]'
               TabOrder = 1
               object Label4: TLabel
                 Left = 8
-                Top = 16
+                Top = 18
                 Width = 180
                 Height = 12
                 Caption = #27494#22120#12289#34593#28891#31867#20351#29992#23383#27573': AniCount'
               end
               object Label5: TLabel
                 Left = 8
-                Top = 32
+                Top = 36
                 Width = 126
                 Height = 12
                 Caption = #39318#39280#31867#20351#29992#23383#27573': Shape'
@@ -226,22 +235,22 @@ object frmItemSet: TfrmItemSet
               OnChange = EditGuildRecallTimeChange
             end
             object GroupBox29: TGroupBox
-              Left = 176
+              Left = 160
               Top = 16
-              Width = 185
-              Height = 81
+              Width = 200
+              Height = 75
               Caption = #25968#25454#24211#35774#32622#32534#21495' [145]'
               TabOrder = 1
               object Label87: TLabel
                 Left = 8
-                Top = 16
+                Top = 18
                 Width = 180
                 Height = 12
                 Caption = #27494#22120#12289#34593#28891#31867#20351#29992#23383#27573': AniCount'
               end
               object Label88: TLabel
                 Left = 8
-                Top = 32
+                Top = 36
                 Width = 126
                 Height = 12
                 Caption = #39318#39280#31867#20351#29992#23383#27573': Shape'
@@ -260,37 +269,37 @@ object frmItemSet: TfrmItemSet
             Caption = #32463#39564#32763#20493
             TabOrder = 0
             object GroupBox45: TGroupBox
-              Left = 176
-              Top = 16
-              Width = 185
+              Left = 167
+              Top = 20
+              Width = 195
               Height = 81
               Caption = #25968#25454#24211#35774#32622#32534#21495' [113]'
               TabOrder = 0
               object Label122: TLabel
                 Left = 8
-                Top = 16
+                Top = 18
                 Width = 180
                 Height = 12
                 Caption = #27494#22120#12289#34593#28891#31867#20351#29992#23383#27573': AniCount'
               end
               object Label123: TLabel
                 Left = 8
-                Top = 32
+                Top = 36
                 Width = 126
                 Height = 12
                 Caption = #39318#39280#31867#20351#29992#23383#27573': Shape'
               end
             end
             object GroupBox42: TGroupBox
-              Left = 8
-              Top = 16
-              Width = 161
+              Left = 7
+              Top = 20
+              Width = 155
               Height = 81
               Caption = #21442#25968
               TabOrder = 1
               object Label120: TLabel
                 Left = 11
-                Top = 24
+                Top = 22
                 Width = 54
                 Height = 12
                 Caption = #40635#30201#26426#29575':'
@@ -303,7 +312,7 @@ object frmItemSet: TfrmItemSet
                 Caption = #40635#30201#26102#38388':'
               end
               object Label124: TLabel
-                Left = 131
+                Left = 127
                 Top = 48
                 Width = 12
                 Height = 12
@@ -311,7 +320,7 @@ object frmItemSet: TfrmItemSet
               end
               object EditAttackPosionRate: TSpinEdit
                 Left = 72
-                Top = 20
+                Top = 18
                 Width = 49
                 Height = 21
                 Hint = #40635#30201#25104#21151#26426#29575#65292#25968#23383#36234#23567#26426#29575#36234#22823#65292#27492#35774#32622#40664#35748#20026'5'
@@ -349,31 +358,31 @@ object frmItemSet: TfrmItemSet
             Caption = #20256#36865
             TabOrder = 0
             object GroupBox46: TGroupBox
-              Left = 176
-              Top = 16
-              Width = 185
+              Left = 167
+              Top = 20
+              Width = 195
               Height = 81
               Caption = #25968#25454#24211#35774#32622#32534#21495' [112]'
               TabOrder = 0
               object Label117: TLabel
                 Left = 8
-                Top = 16
+                Top = 18
                 Width = 180
                 Height = 12
                 Caption = #27494#22120#12289#34593#28891#31867#20351#29992#23383#27573': AniCount'
               end
               object Label118: TLabel
                 Left = 8
-                Top = 32
+                Top = 36
                 Width = 126
                 Height = 12
                 Caption = #39318#39280#31867#20351#29992#23383#27573': Shape'
               end
             end
             object GroupBox47: TGroupBox
-              Left = 8
-              Top = 16
-              Width = 161
+              Left = 7
+              Top = 20
+              Width = 155
               Height = 81
               Caption = #21442#25968
               TabOrder = 1
@@ -385,7 +394,7 @@ object frmItemSet: TfrmItemSet
                 Caption = #20351#29992#38388#38548':'
               end
               object Label121: TLabel
-                Left = 123
+                Left = 125
                 Top = 56
                 Width = 12
                 Height = 12
@@ -427,19 +436,6 @@ object frmItemSet: TfrmItemSet
             end
           end
         end
-        object TabSheet7: TTabSheet
-          Caption = 'TabSheet7'
-          ImageIndex = 6
-        end
-      end
-      object ButtonItemSetSave: TButton
-        Left = 334
-        Top = 237
-        Width = 65
-        Height = 25
-        Caption = #20445#23384'(&S)'
-        TabOrder = 1
-        OnClick = ButtonItemSetSaveClick
       end
     end
     object TabSheet19: TTabSheet
@@ -450,9 +446,9 @@ object frmItemSet: TfrmItemSet
         Top = 4
         Width = 393
         Height = 253
-        ActivePage = TabSheet20
+        ActivePage = TabSheet27
         MultiLine = True
-        TabIndex = 2
+        TabIndex = 0
         TabOrder = 0
         TabPosition = tpBottom
         object TabSheet27: TTabSheet
@@ -1206,9 +1202,9 @@ object frmItemSet: TfrmItemSet
         Top = 4
         Width = 393
         Height = 245
-        ActivePage = TabSheet16
+        ActivePage = TabSheet10
         MultiLine = True
-        TabIndex = 6
+        TabIndex = 0
         TabOrder = 0
         TabPosition = tpBottom
         object TabSheet10: TTabSheet
@@ -1268,9 +1264,9 @@ object frmItemSet: TfrmItemSet
           object Label32: TLabel
             Left = 8
             Top = 176
-            Width = 216
+            Width = 222
             Height = 12
-            Caption = #27494#22120#31867#65292#29289#21697#25968#25454#24211#23383#27573' StdMode 5 '#25110'6'
+            Caption = #27494#22120#31867#65292#29289#21697#25968#25454#24211#23383#27573' StdMode 5 '#25110' 6'
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -12
@@ -1429,9 +1425,9 @@ object frmItemSet: TfrmItemSet
           object Label33: TLabel
             Left = 136
             Top = 176
-            Width = 228
+            Width = 234
             Height = 12
-            Caption = #34915#26381#31867#65292#29289#21697#25968#25454#24211#23383#27573' StdMode 10 '#25110'11'
+            Caption = #34915#26381#31867#65292#29289#21697#25968#25454#24211#23383#27573' StdMode 10 '#25110' 11'
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -12

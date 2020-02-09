@@ -1,4 +1,5 @@
 unit DrawScrn;
+//整个游戏场景的最终绘图工作
 
 interface
 
@@ -10,9 +11,11 @@ uses
 
 const
    MAXSYSLINE = 8;
-
+   
    BOTTOMBOARD = 1;
-   VIEWCHATLINE = 9;
+
+   VIEWCHATLINE = 8; //9;  //聊天信息框最大显示行数(用于聊天文本滚动)
+
    AREASTATEICONBASE = 150;
    HEALTHBAR_BLACK = 0;
    HEALTHBAR_RED = 1;
@@ -191,7 +194,8 @@ begin
       AddChatBoardString (' ' + str, fcolor, bcolor);
 
 end;
-//这里只计算提示信息的宽度和高度，并不显示
+
+//这里只计算浮动提示信息的宽度和高度，但不显示 ，浮动提示信息的显示在函数TDrawScreen.DrawHint()中进行
 procedure TDrawScreen.ShowHint (x, y: integer; str: string; color: TColor; drawup: Boolean);
 var
    data: string;
@@ -391,7 +395,8 @@ begin
       end;
    end;
 end;
-//显示左上角信息文字
+
+//屏幕左上角显示系统消息文字
 procedure TDrawScreen.DrawScreenTop (MSurface: TDirectDrawSurface);
 var
    i, sx, sy: integer;
@@ -404,8 +409,12 @@ begin
          if m_SysMsgList.Count > 0 then begin
             sx := 30;
             sy := 40;
+
             for i:=0 to m_SysMsgList.Count-1 do begin
-               BoldTextOut (MSurface, sx, sy, clGreen, clBlack, m_SysMsgList[i]);
+
+               //BoldTextOut (MSurface, sx, sy, clGreen, clBlack, m_SysMsgList[i]);
+               BoldTextOut (MSurface, sx, sy, TColor($00FF00) , clBlack, m_SysMsgList[i]);  //clAqua显示系统消息文字
+
                inc (sy, 16);
             end;
             //3秒减少一个系统消息
@@ -416,15 +425,19 @@ begin
       end;
    end;
 end;
-//显示提示信息
+
+//在游戏界面显示提示信息。如地图名，角色位置坐标，系统时间
 procedure TDrawScreen.DrawHint (MSurface: TDirectDrawSurface);
 var
    d: TDirectDrawSurface;
    i, hx, hy, old: integer;
    str: string;
+   oldFontSize: integer;
 begin
    hx:=0;
-   hy:=0;  //显示提示框
+   hy:=0;
+
+   //显示浮动提示框
    if HintList.Count > 0 then begin
       d := g_WMainImages.Images[394];
       if d <> nil then begin
@@ -439,9 +452,11 @@ begin
          DrawBlendEx (MSurface, hx, hy, d, 0, 0, HintWidth, HintHeight, 0);
       end;
    end;
-   //在提示框中显示提示信息
+
    with MSurface do begin
-      SetBkMode (Canvas.Handle, TRANSPARENT);
+      SetBkMode (Canvas.Handle, TRANSPARENT);  //设置Canvas背景为透明模式
+
+      //在浮动提示框中显示提示信息
       if HintList.Count > 0 then begin
          Canvas.Font.Color := HintColor;
          for i:=0 to HintList.Count-1 do begin
@@ -450,7 +465,7 @@ begin
       end;
 
       if g_MySelf <> nil then begin
-         
+
          //显示人物血量
          //BoldTextOut (MSurface, 15, SCREENHEIGHT - 120, clWhite, clBlack, IntToStr(g_MySelf.m_Abil.HP) + '/' + IntToStr(g_MySelf.m_Abil.MaxHP));
          //人物MP值
@@ -460,30 +475,32 @@ begin
          //人物背包重量
          //BoldTextOut (MSurface, 655, SCREENHEIGHT - 25, clWhite, clBlack, IntToStr(g_MySelf.Abil.Weight) + '/' + IntToStr(g_MySelf.Abil.MaxWeight));
 
-
+         //显示绿色提示 (用于调试) -----------------
          if g_boShowGreenHint then begin
-          str:= 'Time: ' + TimeToStr(Time) +
-                ' Exp: ' + IntToStr(g_MySelf.m_Abil.Exp) + '/' + IntToStr(g_MySelf.m_Abil.MaxExp) +
-                ' Weight: ' + IntToStr(g_MySelf.m_Abil.Weight) + '/' + IntToStr(g_MySelf.m_Abil.MaxWeight) +
-                ' ' + g_sGoldName + ': ' + IntToStr(g_MySelf.m_nGold) +
-                ' Cursor: ' + IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY) + '(' + IntToStr(g_nMouseX) + ':' + IntToStr(g_nMouseY) + ')';
-          if g_FocusCret <> nil then begin
-            str:= str + ' Target: ' + g_FocusCret.m_sUserName + '(' + IntToStr(g_FocusCret.m_Abil.HP) + '/' + IntToStr(g_FocusCret.m_Abil.MaxHP) + ')';
-          end else begin
-            str:= str + ' Target: -/-';
-          end;
+            str:= 'Time: ' + TimeToStr(Time) +
+                  ' Exp: ' + IntToStr(g_MySelf.m_Abil.Exp) + '/' + IntToStr(g_MySelf.m_Abil.MaxExp) +
+                  ' Weight: ' + IntToStr(g_MySelf.m_Abil.Weight) + '/' + IntToStr(g_MySelf.m_Abil.MaxWeight) +
+                  ' ' + g_sGoldName + ': ' + IntToStr(g_MySelf.m_nGold) +
+                  ' Cursor: ' + IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY) + '(' + IntToStr(g_nMouseX) + ':' + IntToStr(g_nMouseY) + ')';
+            if g_FocusCret <> nil then begin
+              str:= str + ' Target: ' + g_FocusCret.m_sUserName + '(' + IntToStr(g_FocusCret.m_Abil.HP) + '/' + IntToStr(g_FocusCret.m_Abil.MaxHP) + ')';
+            end else begin
+              str:= str + ' Target: -/-';
+            end;
 
-          BoldTextOut (MSurface, 10, 0, clLime , clBlack, str);
+            BoldTextOut (MSurface, 10, 0, clLime , clBlack, str);
 
-          str:='';
+            str:='';
          end;
+         //显示绿色提示结束 ------------------
 
+         //显示在坏地图时的情况信息(用于调试)
          if g_boCheckBadMapMode then begin
               str := IntToStr(m_dwDrawFrameCount) +  ' '
               + '  Mouse ' + IntToStr(g_nMouseX) + ':' + IntToStr(g_nMouseY) + '(' + IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY) + ')'
               + '  HP' + IntToStr(g_MySelf.m_Abil.HP) + '/' + IntToStr(g_MySelf.m_Abil.MaxHP)
               + '  D0 ' + IntToStr(g_nDebugCount)
-              + ' D1 ' + IntToStr(g_nDebugCount1) + ' D2 '
+              + '  D1 ' + IntToStr(g_nDebugCount1) + ' D2 '
               + IntToStr(g_nDebugCount2);
               BoldTextOut (MSurface, 10, 0, clWhite, clBlack, str);
          end;
@@ -492,29 +509,47 @@ begin
          //Canvas.Font.Size := 8;
          //BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clWhite, clBlack, ServerName);
 
+         //显示白示提 (用于调试) ------------------
          if g_boShowWhiteHint then begin
-         if g_MySelf.m_nGameGold > 10 then begin
-           BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clWhite, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
-         end else begin
-           BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clRed, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
-         end;
+             if g_MySelf.m_nGameGold > 10 then begin
+                BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clWhite, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
+             end else begin
+                BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clRed, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
+            end;
+
          if g_MySelf.m_nGamePoint > 10 then begin
-           BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clWhite, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
-         end else begin
-           BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clRed, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
+               BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clWhite, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
+            end else begin
+             BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clRed, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
+            end;
+
+            //鼠标所指坐标
+            BoldTextOut (MSurface, 115, SCREENHEIGHT - 40, clWhite, clBlack, IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY));
+            //显示时间
+            BoldTextOut (MSurface, 410, SCREENHEIGHT - 147, clWhite, clBlack, FormatDateTime('dddddd hh:mm:ss ampm', Now));
          end;
+        //显示白示提结束 -----------------------
 
-         //鼠标所指坐标
-         BoldTextOut (MSurface, 115, SCREENHEIGHT - 40, clWhite, clBlack, IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY));
-         //显示时间
-         BoldTextOut (MSurface, 410, SCREENHEIGHT - 147, clWhite, clBlack, FormatDateTime('dddddd hh:mm:ss ampm', Now));
-         end;
+        // BoldTextOut (MSurface, 8, SCREENHEIGHT- 74, clWhite, clBlack, format('AllocMemCount:%d',[AllocMemCount]));
+        // BoldTextOut (MSurface, 8, SCREENHEIGHT- 90, clWhite, clBlack, format('AllocMemSize:%d',[AllocMemSize div 1024]));
 
-//         BoldTextOut (MSurface, 8, SCREENHEIGHT- 74, clWhite, clBlack, format('AllocMemCount:%d',[AllocMemCount]));
-//         BoldTextOut (MSurface, 8, SCREENHEIGHT- 90, clWhite, clBlack, format('AllocMemSize:%d',[AllocMemSize div 1024]));
-
-         BoldTextOut (MSurface, 8, SCREENHEIGHT-20, clWhite, clBlack, g_sMapTitle + ' ' + IntToStr(g_MySelf.m_nCurrX) + ':' + IntToStr(g_MySelf.m_nCurrY));
          //Canvas.Font.Size := old;
+
+          //-------------------------------------------------------
+          //正式用
+          //在显示游戏界面显示【地图名，位置坐标】，【系统时间】
+           SetBkMode (Canvas.Handle, TRANSPARENT);
+           oldFontSize := Canvas.Font.Size;
+           Canvas.Font.Size :=11;
+
+           //在游戏界面左下角，显示角色所在地图和位置 (坐标)
+           BoldTextOut (MSurface, 8, SCREENHEIGHT-20, clWhite, clBlack, g_sMapTitle + ' ' + IntToStr(g_MySelf.m_nCurrX) + ':' + IntToStr(g_MySelf.m_nCurrY));
+
+           //在游戏界面左下角，显示时间 (系统时间)
+           //BoldTextOut (MSurface, SCREENWIDTH - 125, SCREENHEIGHT - 23, clWhite, clBlack, FormatDateTime('tt', Now));  //hh:mm:ss ampm
+           Canvas.Font.Size := oldFontSize;
+           //-------------------------------------------------------
+
       end;
       //BoldTextOut (MSurface, 10, 20, clWhite, clBlack, IntToStr(DebugCount) + ' / ' + IntToStr(DebugCount1));
       Canvas.Release;

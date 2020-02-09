@@ -110,6 +110,9 @@ var
   dwSayMsgTime                :LongWord = 1000;  //发主间隔时间
   dwHitTime                   :LongWord = 300;  //攻击间隔时间
   dwSessionTimeOutTime        :LongWord = 60 * 60 * 1000;
+
+  g_dwGameCenterHandle:THandle;
+
 implementation
 
 procedure AddMainLogMsg(Msg:String;nLevel:Integer);

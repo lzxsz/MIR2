@@ -384,9 +384,9 @@ var
   nGamePoint:Integer;
   nCreditPoint:Integer;
   nBonusPoint:Integer;
-  boGameMaster:Boolean;
+  boGameMaster:Boolean;      //GM模式
   boObServer:Boolean;
-  boSuperman:Boolean;
+  boSuperman:Boolean;        //无敌模式
 begin
   if PlayObject = nil then exit;
   nLevel:=EditLevel.Value;

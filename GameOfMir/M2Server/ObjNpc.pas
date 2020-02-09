@@ -2,7 +2,7 @@ unit ObjNpc;
 
 interface
 uses
-  Windows, Classes, SysUtils, StrUtils, ObjBase, Grobal2, SDK, IniFiles;
+  Windows, Classes, SysUtils, StrUtils, ObjBase, Grobal2, SDK, IniFiles ;
 type
   TUpgradeInfo = record //0x40
     sUserName: string[ActorNameLen]; //0x00
@@ -90,14 +90,18 @@ type
 
     procedure ExeAction(PlayObject: TPlayObject; sParam1, sParam2, sParam3: string; nParam1, nParam2, nParam3: Integer);
     procedure ActionOfChangeLevel(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfUnMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfUnMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfGiveItem(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
 
-    procedure ActionOfGetMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfGetMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//取消 师徒 和 结婚 功能    
+//    procedure ActionOfMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfUnMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfUnMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfGetMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfGetMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfDelMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+//    procedure ActionOfDelMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+
+    procedure ActionOfGiveItem(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfClearSkill(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfDelNoJobSkill(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfDelSkill(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
@@ -134,8 +138,7 @@ type
     procedure ActionOfKick(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfBonusPoint(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfRestReNewLevel(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfDelMarry(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
-    procedure ActionOfDelMaster(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
+
     procedure ActionOfClearNeedItems(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfClearMakeItems(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfUpgradeItems(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
@@ -175,29 +178,27 @@ type
     procedure ActionOfGroupRecall(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
     procedure ActionOfGroupMoveMap(PlayObject: TPlayObject; QuestActionInfo: pTQuestActionInfo);
 
-
-
-
-
     function ConditionOfCheckGroupCount(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckPoseDir(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckPoseLevel(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckPoseGender(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckPoseMarry(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckLevelEx(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckSlaveCount(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckBonusPoint(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckAccountIPList(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckNameIPList(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckMarry(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckMarryCount(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfHaveMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckPoseMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfPoseHaveMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
 
-    function ConditionOfCheckIsMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-    function ConditionOfCheckPoseIsMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//取消 师徒 和 结婚 功能 
+//    function ConditionOfCheckPoseMarry(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckMarry(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckMarryCount(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfHaveMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckPoseMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfPoseHaveMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckIsMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+//    function ConditionOfCheckPoseIsMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+
     function ConditionOfCheckHaveGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsGuildMaster(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsCastleaGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
@@ -211,7 +212,6 @@ type
     function ConditionOfCheckReNewLevel(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckSlaveLevel(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckSlaveName(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
-
 
     function ConditionOfCheckCreditPoint(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckOfGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
@@ -277,18 +277,20 @@ type
     procedure SendMsgToUser(PlayObject: TPlayObject; sMsg: string);
     procedure SendCustemMsg(PlayObject: TPlayObject; sMsg: string); virtual;
   end;
-  TMerchant = class(TNormNpc) //0x594
-    m_sScript: string; //0x568
+  TMerchant = class(TNormNpc)    //0x594
+    m_sScript: string;           //0x568
     n56C: Integer;
-    m_nPriceRate: Integer; //0x570   物品价格倍率 默认为 100%
+    m_nPriceRate: Integer;       //0x570   物品价格倍率 默认为 100%
     bo574: Boolean;
-    m_boCastle: Boolean; //0x575
+    m_boCastle: Boolean;         //0x575
     dwRefillGoodsTick: LongWord; //0x578
     dwClearExpreUpgradeTick: LongWord; //0x57C
-    m_ItemTypeList: TList; //0x580  NPC买卖物品类型列表，脚本中前面的 +1 +30 之类的
-    m_RefillGoodsList: TList; //0x584
-    m_GoodsList: TList; //0x588
-    m_ItemPriceList: TList; //0x58C
+    m_ItemTypeList: TList;       //0x580  NPC买卖物品类型列表，脚本中前面的 +1 +30 之类的
+
+    m_RefillGoodsList: TList;    //0x584  销售架上的商品列表，包含：从NPC脚本中[goods]加载的设定的商品列表 和 从m_GoodsList中转入的商品
+    m_GoodsList: TList;          //0x588  NPC临时商品列表，游戏中玩家卖给NPC的商品，这些商品是不可见的，需要定时转到销售上架列表m_RefillGoodsList中
+
+    m_ItemPriceList: TList;      //0x58C
     m_UpgradeWeaponList: TList;
     m_boCanMove: Boolean;
     m_dwMoveTime: LongWord;
@@ -304,16 +306,20 @@ type
     m_boRepair: Boolean;
     m_boS_repair: Boolean;
     m_boSendmsg: Boolean;
-    m_boGetMarry: Boolean;
-    m_boGetMaster: Boolean;
+    
+//取消 师徒 和 结婚 功能
+//    m_boGetMarry: Boolean;
+//    m_boGetMaster: Boolean;
+
     m_boUseItemName: Boolean;
+    
   private
     procedure ClearExpreUpgradeListData();
     function GetItemPrice(nIndex: Integer): Integer;
     function GetUserPrice(PlayObject: TPlayObject; nPrice: Integer): Integer;
     function CheckItemType(nStdMode: Integer): Boolean;
     procedure CheckItemPrice(nIndex: Integer);
-    function GetRefillList(nIndex: Integer): TList;
+    function GetRefillList(nIndex: Integer): TList;  //获取客户销售给NPC的商品列表
     procedure AddItemPrice(nIndex, nPrice: Integer);
     function GetUserItemPrice(UserItem: pTUserItem): Integer;
     function GetSellItemPrice(nPrice: Integer): Integer;
@@ -322,8 +328,11 @@ type
     procedure UpgradeWapon(User: TPlayObject);
     procedure ChangeUseItemName(PlayObject: TPlayObject; sLabel, sItemName: string);
     procedure SaveUpgradingList;
-    procedure GetMarry(PlayObject: TPlayObject; sDearName: string);
-    procedure GetMaster(PlayObject: TPlayObject; sMasterName: string);
+
+//取消 结婚 与 师徒 的相关内容
+//    procedure GetMarry(PlayObject: TPlayObject; sDearName: string);
+//    procedure GetMaster(PlayObject: TPlayObject; sMasterName: string);
+
   public
     constructor Create(); override;
     destructor Destroy; override;
@@ -339,10 +348,10 @@ type
     procedure ClearScript(); override;
     procedure ClearData();
     procedure GetVariableText(PlayObject: TPlayObject; var sMsg: string; sVariable: string); override; //FFE9
-    procedure ClientBuyItem(PlayObject: TPlayObject; sItemName: string; nInt: Integer);
+    procedure ClientBuyItem(PlayObject: TPlayObject; sItemName: string; nInt: Integer);   //买物品
     procedure ClientGetDetailGoodsList(PlayObject: TPlayObject; sItemName: string; nInt: Integer);
     procedure ClientQuerySellPrice(PlayObject: TPlayObject; UserItem: pTUserItem);
-    function ClientSellItem(PlayObject: TPlayObject; UserItem: pTUserItem): Boolean;
+    function ClientSellItem(PlayObject: TPlayObject; UserItem: pTUserItem): Boolean;   //卖物品
     procedure ClientMakeDrugItem(PlayObject: TPlayObject; sItemName: string);
     procedure ClientQueryRepairCost(PlayObject: TPlayObject; UserItem: pTUserItem);
     function ClientRepairItem(PlayObject: TPlayObject; UserItem: pTUserItem): Boolean;
@@ -434,10 +443,16 @@ begin
     end else
       if sVariable = '$CASTLEDOORSTATE' then
       begin
+        //城堡大门的状态
         CastleDoor := TCastleDoor(TUserCastle(m_Castle).m_MainDoor.BaseObject);
-        if CastleDoor.m_boDeath then sText := 'destroyed'
-        else if CastleDoor.m_boOpened then sText := 'opened'
-        else sText := 'closed';
+
+        if CastleDoor.m_boDeath then
+             sText := '毁坏'   //'destroyed'    毁坏
+        else if CastleDoor.m_boOpened then
+             sText := '打开'   //'opened'      打开
+        else
+             sText := '关闭';  //'closed';     关闭
+
         sMsg := sub_49ADB8(sMsg, '<$CASTLEDOORSTATE>', sText);
       end else
         if sVariable = '$REPAIRDOORGOLD' then
@@ -519,7 +534,7 @@ begin
           end else
             if CompareText(sLabel, sWITHDRAWAL) = 0 then
             begin
-              case TUserCastle(m_Castle).WithDrawalGolds(PlayObject, Str_ToInt(sMsg, 0)) of
+              case TUserCastle(m_Castle).WithDrawalGolds(PlayObject, Str_ToInt(sMsg, 0)) of    //收回现金
                 -4: s18 := '输入的金币数不正确！！！';
                 -3: s18 := '您无法携带更多的东西了。';
                 -2: s18 := '该城内没有这么多金币.';
@@ -572,7 +587,7 @@ begin
                               s20 := Copy(sLabel, Length(sHIREGUARDNOW) + 1, Length(sLabel));
                               HireGuard(s20, PlayObject);
                               PlayObject.SendMsg(Self, RM_MENU_OK, 0, Integer(Self), 0, 0, '');
-          //GotoLable(PlayObject,sHIREGUARDOK,False);
+                             //GotoLable(PlayObject,sHIREGUARDOK,False);
                             end else
                               if CompareLStr(sLabel, sHIREARCHERNOW, Length(sHIREARCHERNOW)) then
                               begin
@@ -806,6 +821,8 @@ begin
     AddItemPrice(nIndex, Round(StdItem.Price * 1.1));
   end;
 end;
+
+//获取客户销售给NPC的商品列表
 function TMerchant.GetRefillList(nIndex: Integer): TList; //0049F118
 var
   i: Integer;
@@ -813,6 +830,7 @@ var
 begin
   Result := nil;
   if nIndex <= 0 then Exit;
+  
   for i := 0 to m_GoodsList.Count - 1 do
   begin
     List := TList(m_GoodsList.Items[i]);
@@ -827,8 +845,12 @@ begin
   end;
 end;
 
+
+//重新装满物品 （刷新商品列表）
 procedure TMerchant.RefillGoods; //0049F950
-  procedure RefillItems(var List: TList; sItemName: string; nInt: Integer); //0049F824
+
+  //将m_RefillGoodsList中的商品加到m_GoodsList中。参数：目标商品列表，商品名，数量
+  procedure RefillItems(var List: TList; sItemName: string; nInt: Integer); //0049F824  重装商品条目
   var
     i: Integer;
     UserItem: pTUserItem;
@@ -836,17 +858,18 @@ procedure TMerchant.RefillGoods; //0049F950
     if List = nil then
     begin
       List := TList.Create;
-      m_GoodsList.Add(List);
+      m_GoodsList.Add(List);    //List是来自m_RefillGoodsList有的商品
     end;
     for i := 0 to nInt - 1 do
     begin
-      New(UserItem);
+      New(UserItem);    //New分配内存
       if UserEngine.CopyToUserItemFromName(sItemName, UserItem) then
       begin
         List.Insert(0, UserItem);
-      end else Dispose(UserItem);
+      end else Dispose(UserItem);   //Dispose释放内存
     end;
   end;
+
   procedure DelReFillItem(var List: TList; nInt: Integer); //0049F8F8
   var
     i: Integer;
@@ -866,10 +889,15 @@ var
   nIndex, nRefillCount: Integer;
   RefillList, RefillList20: TList;
   bo21: Boolean;
+
+//  UserItem: pTUserItem; //debug_lzx20200208
+
 resourcestring
   sExceptionMsg = '[Exception] TMerchant::RefillGoods %s/%d:%d [%s] Code:%d';
 begin //0049F950
   try
+
+    //将m_RefillGoodsList脚本中[goods]字段预先设定的商品加入到m_GoodsList中。m_GoodsList是销售可见的商品列表
     for i := 0 to m_RefillGoodsList.Count - 1 do
     begin
       Goods := m_RefillGoodsList.Items[i];
@@ -880,14 +908,14 @@ begin //0049F950
         nIndex := UserEngine.GetStdItemIdx(Goods.sItemName);
         if nIndex >= 0 then
         begin
-         // memo.Lines.Add('test');
+          //memo.Lines.Add('test');
           RefillList := GetRefillList(nIndex);
           nRefillCount := 0;
           if RefillList <> nil then nRefillCount := RefillList.Count;
           if Goods.nCount > nRefillCount then
           begin
             CheckItemPrice(nIndex);
-            RefillItems(RefillList, Goods.sItemName, Goods.nCount - nRefillCount);
+            RefillItems(RefillList, Goods.sItemName, Goods.nCount - nRefillCount);  //将RefillList加到m_GoodsList中
             FrmDB.SaveGoodRecord(Self, m_sScript + '-' + m_sMapName);
             FrmDB.SaveGoodPriceRecord(Self, m_sScript + '-' + m_sMapName);
           end;
@@ -900,15 +928,36 @@ begin //0049F950
         end; //0049FB83
       end;
     end;
+
+   //debug view
+   {
+     if m_GoodsList.Count > 0 then  begin
+
+      MainOutMessage(Format('TMerchant.RefillGoods: ---- m_GoodsList.Count: %d ------', [m_GoodsList.Count]));   //debug_lzx20200208
+
+      for i := 0 to m_GoodsList.Count - 1 do           //debug_lzx20200208
+      begin
+        RefillList20 := TList(m_GoodsList.Items[i]);
+        UserItem := RefillList20.Items[0];
+
+        MainOutMessage(Format('%d  %s',[UserItem.wIndex-1 ,UserEngine.GetStdItemName(UserItem.wIndex)]));    //debug_lzx20200208
+      end;
+
+       MainOutMessage('---------------------------------');
+    end;
+    }
+
+   //如果某个商品的库存量大于1000个，则删除超出的数量
     for i := 0 to m_GoodsList.Count - 1 do
     begin
       RefillList20 := TList(m_GoodsList.Items[i]);
-      if RefillList20.Count > 1000 then
+      if RefillList20.Count > 1000 then               //商品的库存量是否超过1000
       begin
         bo21 := False;
         for ii := 0 to m_RefillGoodsList.Count - 1 do
         begin
           Goods := m_RefillGoodsList.Items[ii];
+
           nIndex := UserEngine.GetStdItemIdx(Goods.sItemName);
           if pTItemPrice(RefillList20.Items[0]).wIndex = nIndex then
           begin
@@ -925,12 +974,14 @@ begin //0049F950
         end;
       end; //0049FC79
     end;
+
   except
     on E: Exception do
       MainOutMessage(Format(sExceptionMsg, [m_sCharName, m_nCurrX, m_nCurrY,
         E.Message, nCHECK]));
-  end;
-end;
+  end;  
+end;    //TMerchant.RefillGoods end.
+
 function TMerchant.CheckItemType(nStdMode: Integer): Boolean; //0049F374
 var
   i: Integer;
@@ -1363,6 +1414,8 @@ begin
     Result := Round(nPrice / 100 * m_nPriceRate);
   end;
 end;
+
+//用户选择
 procedure TMerchant.UserSelect(PlayObject: TPlayObject; sData: string); //004A1820
   procedure SuperRepairItem(User: TPlayObject); //004A159C
   begin
@@ -1410,6 +1463,7 @@ procedure TMerchant.UserSelect(PlayObject: TPlayObject; sData: string); //004A18
   begin
     User.SendMsg(Self, RM_SENDUSERREPAIR, 0, Integer(Self), 0, 0, '');
   end;
+  
   procedure MakeDurg(User: TPlayObject); //004A16A0
   var
     i: Integer;
@@ -1519,6 +1573,9 @@ begin //004A1820
                             begin
                               if m_boGetBackupgnow then GetBackupgWeapon(PlayObject);
                             end else
+
+//取消脚本中对 结婚 和 师徒 的命令处理
+{
                               if CompareText(sLabel, sGETMARRY) = 0 then
                               begin
                                 if m_boGetMarry then GetBackupgWeapon(PlayObject);
@@ -1527,6 +1584,7 @@ begin //004A1820
                                 begin
                                   if m_boGetMaster then GetBackupgWeapon(PlayObject);
                                 end else
+}
                                   if CompareLStr(sLabel, sUSEITEMNAME, Length(sUSEITEMNAME)) then
                                   begin
 
@@ -1546,7 +1604,8 @@ begin //004A1820
   except
     MainOutMessage(Format(sExceptionMsg, [sData]));
   end;
-end;
+end;   //TMerchant.UserSelect end.
+
 procedure TMerchant.Run(); //004A2ECC
 var
   nCheckCode: Integer;
@@ -1556,12 +1615,14 @@ resourcestring
 begin
   nCheckCode := 0;
   try
+    //30000 毫秒(30秒) 刷新一次商品列表
     if (GetTickCount - dwRefillGoodsTick) > 30000 then
     begin
     //if (GetTickCount - dwTick578) > 3000 then begin
       dwRefillGoodsTick := GetTickCount();
-      RefillGoods();
+      RefillGoods();    //重新装满商品    debug viewpoint.   debug viewpoint. lzx 2020/02/08
     end;
+
     nCheckCode := 1;
     if (GetTickCount - dwClearExpreUpgradeTick) > 10 * 60 * 1000 then
     begin
@@ -1667,8 +1728,8 @@ begin
   m_boGetBackupgnow := False;
   m_boRepair := False;
   m_boS_repair := False;
-  m_boGetMarry := False;
-  m_boGetMaster := False;
+//  m_boGetMarry := False;
+//  m_boGetMaster := False;
   m_boUseItemName := False;
   m_dwMoveTick := GetTickCount();
 end;
@@ -1772,6 +1833,8 @@ begin
   end;
 
 end;
+
+//获取物品价格
 function TMerchant.GetUserItemPrice(UserItem: pTUserItem): Integer; //0049F428
 var
   n10: Integer;
@@ -1790,7 +1853,7 @@ begin
       (UserItem.DuraMax > 0) then
     begin
       if StdItem.StdMode = 40 then
-      begin //肉
+      begin //40肉
         if UserItem.Dura <= UserItem.DuraMax then
         begin
           n20 := (n10 / 2.0 / UserItem.DuraMax * (UserItem.DuraMax - UserItem.Dura));
@@ -1800,8 +1863,9 @@ begin
           n10 := n10 + Round(n10 / UserItem.DuraMax * 2.0 * (UserItem.DuraMax - UserItem.Dura));
         end;
       end; //0049F528
+
       if (StdItem.StdMode = 43) then
-      begin
+      begin //43矿石
         if UserItem.DuraMax < 10000 then UserItem.DuraMax := 10000;
         if UserItem.Dura <= UserItem.DuraMax then
         begin
@@ -1812,13 +1876,14 @@ begin
           n10 := n10 + Round(n10 / UserItem.DuraMax * 1.3 * (UserItem.DuraMax - UserItem.Dura));
         end;
       end; //0049F5C5
+
       if StdItem.StdMode > 4 then
       begin
         n14 := 0;
         nC := 0;
         while (True) do
         begin
-          if (StdItem.StdMode = 5) or (StdItem.StdMode = 6) then
+          if (StdItem.StdMode = 5) or (StdItem.StdMode = 6) then    //5,6武器
           begin
             if (nC <> 4) or (nC <> 9) then
             begin
@@ -1852,6 +1917,8 @@ begin
   end;
   Result := n10;
 end;
+
+//客户端购买物品
 procedure TMerchant.ClientBuyItem(PlayObject: TPlayObject; sItemName: string;
   nInt: Integer); //004A2334
 var
@@ -1866,6 +1933,9 @@ var
 begin
   bo29 := False;
   n1C := 1;
+
+  //MainOutMessage(Format('ClientBuyItem：------ %d ------', [m_GoodsList.Count]));    //debug_lzx20200208
+
   for i := 0 to m_GoodsList.Count - 1 do
   begin
     if bo29 or (bo574) then Break;
@@ -1874,10 +1944,14 @@ begin
     UserItem := List20.Items[0];
 
     StdItem := UserEngine.GetStdItem(UserItem.wIndex);
+
     if StdItem <> nil then
     begin
       //取自定义物品名称
       sUserItemName := GetItemName(UserItem);
+
+      //MainOutMessage(Format('%d %s',[UserItem.wIndex-1,sUserItemName]));    //debug_lzx20200208
+
       if PlayObject.IsAddWeightAvailable(StdItem.Weight) then
       begin
         if sUserItemName = sItemName then
@@ -1953,8 +2027,8 @@ begin
 
 end;
 
-procedure TMerchant.ClientGetDetailGoodsList(PlayObject: TPlayObject; sItemName: string;
-  nInt: Integer); //004A26F0
+//获取商品列表
+procedure TMerchant.ClientGetDetailGoodsList(PlayObject: TPlayObject; sItemName: string; nInt: Integer); //004A26F0
 var
   i, ii, n18: Integer;
   List20: TList;
@@ -2055,25 +2129,31 @@ begin
   Result := Round(nPrice / 2.0);
 end;
 
-function TMerchant.ClientSellItem(PlayObject: TPlayObject;
-  UserItem: pTUserItem): Boolean; //004A1CD8
+//客户端销售物品
+function TMerchant.ClientSellItem(PlayObject: TPlayObject; UserItem: pTUserItem): Boolean; //004A1CD8
   function sub_4A1C84(UserItem: pTUserItem): Boolean;
   var
     StdItem: TItem;
   begin
     Result := True;
     StdItem := UserEngine.GetStdItem(UserItem.wIndex);
+    //25黄色药粉(少量) 5000, 30火把 20000
     if (StdItem <> nil) and ((StdItem.StdMode = 25) or (StdItem.StdMode = 30)) then
     begin
-      if UserItem.Dura < 4000 then Result := False;
+      if UserItem.Dura < 4000 then Result := False;   //Dura is durable
     end;
   end;
 var
   nPrice: Integer;
   StdItem: TItem;
+
+//  UserItem20: pTUserItem;   //debug_lzx20200208
+//  RefillList20: TList;      //debug_lzx20200208
+//  i: Integer;               //debug_lzx20200208
+
 begin //004A1CD8
   Result := False;
-  nPrice := GetSellItemPrice(GetUserItemPrice(UserItem));
+  nPrice := GetSellItemPrice(GetUserItemPrice(UserItem));  //价格
   if (nPrice > 0) and (not bo574) and
     sub_4A1C84(UserItem) then
   begin
@@ -2083,6 +2163,8 @@ begin //004A1CD8
       if m_boCastle or g_Config.boGetAllNpcTax then
         UserCastle.IncRateGold(nPrice);
       }
+
+
       if m_boCastle or g_Config.boGetAllNpcTax then
       begin
         if m_Castle <> nil then
@@ -2094,8 +2176,29 @@ begin //004A1CD8
             g_CastleManager.IncRateGold(g_Config.nUpgradeWeaponPrice);
           end;
       end;
-      PlayObject.SendMsg(Self, RM_USERSELLITEM_OK, 0, PlayObject.m_nGold, 0, 0, '');
-      AddItemToGoodsList(UserItem);
+
+       PlayObject.SendMsg(Self, RM_USERSELLITEM_OK, 0, PlayObject.m_nGold, 0, 0, '');
+       AddItemToGoodsList(UserItem);
+
+      //debug_lzx20200208
+      {
+        //---------------------------------------------------------
+        MainOutMessage(Format('ClientSellItem: ---- m_GoodsList.Count: %d ------', [m_GoodsList.Count]));   //debug_lzx20200208
+
+        for i := 0 to m_GoodsList.Count - 1 do           //debug_lzx20200208
+        begin
+          RefillList20 := TList(m_GoodsList.Items[i]);
+          UserItem20 := RefillList20.Items[0];
+
+          MainOutMessage(Format('%d  %s',[UserItem20.wIndex-1 ,UserEngine.GetStdItemName(UserItem20.wIndex)]));    //debug_lzx20200208
+        end;
+
+        //RefillGoods();    //调试用          debug_lzx20200208
+
+       //---------------------------------------------------------
+      }
+
+
       StdItem := UserEngine.GetStdItem(UserItem.wIndex);
       //004A1E95
       if StdItem.NeedIdentify = 1 then
@@ -2109,6 +2212,7 @@ begin //004A1CD8
           IntToStr(UserItem.MakeIndex) + #9 +
           '1' + #9 +
           m_sCharName);
+
       Result := True;
     end else
     begin //004A1EA0
@@ -2121,20 +2225,51 @@ begin //004A1CD8
 
 end;
 
+//将销售的商品加入到商品列表中
+//
+//注意：该函原来的做有错误，当用户向NPC销售商品时，加入到商品列表的销售商品的信息会错误，并且出现负的价格(-1)，
+//原因是程序代码中 ItemList.add(UserItem); 语句的做法有问题。
+//
 function TMerchant.AddItemToGoodsList(UserItem: pTUserItem): Boolean; //004A1BF8
 var
   n10: Integer;
   ItemList: TList;
+
+  SellItem: pTUserItem; //lzx add 2020/02/08
+  sItemName: string;    //lzx add 2020/02/08
+
+//  RefillList20: TList;  //debug_lzx20200208
+//  i: Integer;           //debug_lzx20200208
+
 begin
   Result := False;
   if UserItem.Dura <= 0 then Exit;
-  ItemList := GetRefillList(UserItem.wIndex);
+
+  //检查新加的商品是否为已经上架的商品
+  ItemList := GetRefillList(UserItem.wIndex);   //获取重装满的商品列表
   if ItemList = nil then
   begin
     ItemList := TList.Create;
-    m_GoodsList.Add(ItemList);
+    m_GoodsList.Add(ItemList);    //在商品列表中加入商品名细
   end;
-  ItemList.Insert(0, UserItem);
+
+   //MainOutMessage(Format('------ AddItemToGoodsList :%d %s',[UserItem.wIndex-1,  GetItemName(UserItem)]));    //debug_lzx20200208
+
+   //-----------------------------------------------------------
+   //修正销售商品加信列表信息错误的问题
+   //原来错误的做法
+   //该语句直接向列表中增加函数传入的对象指针UserItem，这个指针指向和是客户背包上的物品，当交易成功后该物品会从人物背包中删除，
+   //于是UserItem就变成了野指针，从而造成加入到商品列表的物品信息错误。正确的方法重新生成一个物品的实例对象，然后加入到商品列表中。
+   //
+   //  ItemList.add(UserItem);  //加入商品的错误问题所在！！！             //Modified by lzx 2020/02/08 
+
+   //修正后的做法。注意：这里必需要New一个pTUserItem实例对象，然后复制入信息，才能入到ItemList列表中
+   New(SellItem);
+   sItemName := UserEngine.GetStdItemName(UserItem.wIndex);
+   UserEngine.CopyToUserItemFromName(sItemName, SellItem);
+   ItemList.add(SellItem);
+   //-----------------------------------------------------------
+
   Result := True;
 end;
 
@@ -2369,8 +2504,10 @@ begin
   m_boGetBackupgnow := False;
   m_boRepair := False;
   m_boS_repair := False;
-  m_boGetMarry := False;
-  m_boGetMaster := False;
+  
+//  m_boGetMarry := False;
+//  m_boGetMaster := False;
+
   m_boUseItemName := False;
   inherited;
 end;
@@ -2390,29 +2527,6 @@ begin
   except
     MainOutMessage('Failure in loading upgradinglist - ' + m_sCharName);
   end;
-end;
-
-procedure TMerchant.GetMarry(PlayObject: TPlayObject; sDearName: string);
-var
-  MarryHuman: TPlayObject;
-begin
-  MarryHuman := UserEngine.GetPlayObject(sDearName);
-  if (MarryHuman <> nil) and
-    (MarryHuman.m_PEnvir = PlayObject.m_PEnvir) and
-    (abs(PlayObject.m_nCurrX - MarryHuman.m_nCurrX) < 5) and
-    (abs(PlayObject.m_nCurrY - MarryHuman.m_nCurrY) < 5) then
-  begin
-    SendMsgToUser(MarryHuman, PlayObject.m_sCharName + ' 向你求婚，你是否愿意嫁给他为妻？');
-  end else
-  begin
-    Self.SendMsgToUser(PlayObject, sDearName + ' 没有在你身边，你的请求无效！！！');
-  end;
-
-end;
-
-procedure TMerchant.GetMaster(PlayObject: TPlayObject; sMasterName: string);
-begin
-
 end;
 
 procedure TMerchant.SendCustemMsg(PlayObject: TPlayObject; sMsg: string);
@@ -2537,7 +2651,8 @@ begin
       m_dw568 := GetTickCount();
       Inc(n570);
 
-      ProcessSayMsg('Destructive power is ' + IntToStr(ProcessMsg.wParam) + ', Average  is ' + IntToStr(n56C div n570));
+      //ProcessSayMsg('Destructive power is ' + IntToStr(ProcessMsg.wParam) + ', Average  is ' + IntToStr(n56C div n570));
+      ProcessSayMsg('破坏力' + Format('%2d',[ProcessMsg.wParam]) + ', 平均值' + Format('%2d',[n56C div n570]));
     end;
   end;
   if ProcessMsg.wIdent = RM_MAGSTRUCK then
@@ -2550,7 +2665,8 @@ begin
   begin
     if (GetTickCount - m_dw568) > 3 * 1000 then
     begin
-      ProcessSayMsg('Total destructive power is ' + IntToStr(n56C) + ', Average destructive power is ' + IntToStr(n56C div n570));
+        //ProcessSayMsg('Total destructive power is ' + IntToStr(n56C) + ', Average destructive power is ' + IntToStr(n56C div n570));
+        ProcessSayMsg('总破坏力' + Format('%2d',[n56C]) + ', 平均破坏力' + Format('%2d',[n56C div n570]));
       n570 := 0;
       n56C := 0;
     end;
@@ -3236,41 +3352,6 @@ begin
     PlayObject.GameGoldChanged;
 end;
 
-
-procedure TNormNpc.ActionOfGetMarry(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-var
-  PoseBaseObject: TBaseObject;
-begin
-  PoseBaseObject := PlayObject.GetPoseCreate();
-  if (PoseBaseObject <> nil) and (PoseBaseObject.m_btRaceServer = RC_PLAYOBJECT) and (PoseBaseObject.m_btGender <> PlayObject.m_btGender) then
-  begin
-    PlayObject.m_sDearName := PoseBaseObject.m_sCharName;
-    PlayObject.RefShowName;
-    PoseBaseObject.RefShowName;
-  end else
-  begin
-    GotoLable(PlayObject, '@MarryError', False);
-  end;
-end;
-
-procedure TNormNpc.ActionOfGetMaster(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-var
-  PoseBaseObject: TBaseObject;
-begin
-  PoseBaseObject := PlayObject.GetPoseCreate();
-  if (PoseBaseObject <> nil) and (PoseBaseObject.m_btRaceServer = RC_PLAYOBJECT) and (PoseBaseObject.m_btGender <> PlayObject.m_btGender) then
-  begin
-    PlayObject.m_sMasterName := PoseBaseObject.m_sCharName;
-    PlayObject.RefShowName;
-    PoseBaseObject.RefShowName;
-  end else
-  begin
-    GotoLable(PlayObject, '@MasterError', False);
-  end;
-end;
-
 procedure TNormNpc.ActionOfLineMsg(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
 var
@@ -3309,6 +3390,38 @@ procedure TNormNpc.ActionOfMapTing(PlayObject: TPlayObject;
 begin
 
 end;
+
+
+//取消 师徒 和 结婚系统 的相关功能
+{
+procedure TMerchant.GetMarry(PlayObject: TPlayObject; sDearName: string);
+var
+  MarryHuman: TPlayObject;
+begin
+  MarryHuman := UserEngine.GetPlayObject(sDearName);
+  if (MarryHuman <> nil) and
+    (MarryHuman.m_PEnvir = PlayObject.m_PEnvir) and
+    (abs(PlayObject.m_nCurrX - MarryHuman.m_nCurrX) < 5) and
+    (abs(PlayObject.m_nCurrY - MarryHuman.m_nCurrY) < 5) then
+  begin
+    SendMsgToUser(MarryHuman, PlayObject.m_sCharName + ' 向你求婚，你是否愿意嫁给他为妻？');
+  end else
+  begin
+    Self.SendMsgToUser(PlayObject, sDearName + ' 没有在你身边，你的请求无效！！！');
+  end;
+
+end;
+
+procedure TMerchant.GetMaster(PlayObject: TPlayObject; sMasterName: string);
+begin
+
+end;
+}
+
+
+//取消 结婚 和 师徒 功能
+{
+
 
 procedure TNormNpc.ActionOfMarry(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
@@ -3371,7 +3484,7 @@ begin
     end;
     Exit;
   end;
-  if CompareText(QuestActionInfo.sParam1, 'REQUESTMARRY' {sREQUESTMARRY}) = 0 then
+  if CompareText(QuestActionInfo.sParam1, 'REQUESTMARRY') = 0 then   //sREQUESTMARRY
   begin
     if PlayObject.m_boStartMarry and PoseHuman.m_boStartMarry then
     begin
@@ -3391,7 +3504,7 @@ begin
     end;
     Exit;
   end;
-  if CompareText(QuestActionInfo.sParam1, 'RESPONSEMARRY' {sRESPONSEMARRY}) = 0 then
+  if CompareText(QuestActionInfo.sParam1, 'RESPONSEMARRY' ) = 0 then   //sRESPONSEMARRY
   begin
     if (PlayObject.m_btGender = gWoMan) and (PoseHuman.m_btGender = gMan) then
     begin
@@ -3522,6 +3635,272 @@ begin
   end;
 
 end;
+
+}
+
+//取消 师徒和 结婚 的相关功能
+{
+procedure TNormNpc.ActionOfUnMarry(PlayObject: TPlayObject;    //离婚
+  QuestActionInfo: pTQuestActionInfo);
+var
+  PoseHuman: TPlayObject;
+  LoadList: TStringList;
+  sUnMarryFileName: string;
+begin
+  if PlayObject.m_sDearName = '' then
+  begin
+    GotoLable(PlayObject, '@ExeMarryFail', False);
+    Exit;
+  end;
+  PoseHuman := TPlayObject(PlayObject.GetPoseCreate);
+  if PoseHuman = nil then
+  begin
+    GotoLable(PlayObject, '@UnMarryCheckDir', False);
+  end;
+  if PoseHuman <> nil then
+  begin
+    if QuestActionInfo.sParam1 = '' then
+    begin
+      if PoseHuman.m_btRaceServer <> RC_PLAYOBJECT then
+      begin
+        GotoLable(PlayObject, '@UnMarryTypeErr', False);
+        Exit;
+      end;
+      if PoseHuman.GetPoseCreate = PlayObject then
+      begin
+        if (PlayObject.m_sDearName = PoseHuman.m_sCharName)  then   // and (PosHum.AddInfo.sDearName = Hum.sName)
+        begin
+          GotoLable(PlayObject, '@StartUnMarry', False);
+          GotoLable(PoseHuman, '@StartUnMarry', False);
+          Exit;
+        end;
+      end;
+    end;
+  end;
+  if (CompareText(QuestActionInfo.sParam1, 'REQUESTUNMARRY' ) = 0) then  //sREQUESTUNMARRY
+  begin
+    if (QuestActionInfo.sParam2 = '') then
+    begin
+      if PoseHuman <> nil then
+      begin
+        PlayObject.m_boStartUnMarry := True;
+        if PlayObject.m_boStartUnMarry and PoseHuman.m_boStartUnMarry then
+        begin
+          UserEngine.SendBroadCastMsg('[' + m_sCharName + ']: ' + '我宣布' + PoseHuman.m_sCharName + ' ' + '与' + PlayObject.m_sCharName + ' ' + ' ' + '正式脱离夫妻关系。' , t_Say);
+          PlayObject.m_sDearName := '';
+          PoseHuman.m_sDearName := '';
+          Inc(PlayObject.m_btMarryCount);
+          Inc(PoseHuman.m_btMarryCount);
+          PlayObject.m_boStartUnMarry := False;
+          PoseHuman.m_boStartUnMarry := False;
+          PlayObject.RefShowName;
+          PoseHuman.RefShowName;
+          GotoLable(PlayObject, '@UnMarryEnd', False);
+          GotoLable(PoseHuman, '@UnMarryEnd', False);
+        end else
+        begin
+          GotoLable(PlayObject, '@WateUnMarry', False);
+//          GotoLable(PoseHuman,'@RevUnMarry',False);
+        end;
+      end;
+      Exit;
+    end else
+    begin
+      //强行离婚
+      if (CompareText(QuestActionInfo.sParam2, 'FORCE') = 0) then
+      begin
+        UserEngine.SendBroadCastMsg('[' + m_sCharName + ']: ' + '我宣布'  + PlayObject.m_sCharName + ' ' + '与'  + PlayObject.m_sDearName + ' ' + ' ' + '已经正式脱离夫妻关系！！！' , t_Say);
+        PoseHuman := UserEngine.GetPlayObject(PlayObject.m_sDearName);
+        if PoseHuman <> nil then
+        begin
+          PoseHuman.m_sDearName := '';
+          Inc(PoseHuman.m_btMarryCount);
+          PoseHuman.RefShowName;
+        end else
+        begin
+          sUnMarryFileName := g_Config.sEnvirDir + 'UnMarry.txt';
+          LoadList := TStringList.Create;
+          if FileExists(sUnMarryFileName) then
+          begin
+            LoadList.LoadFromFile(sUnMarryFileName);
+          end;
+          LoadList.Add(PlayObject.m_sDearName);
+          LoadList.SaveToFile(sUnMarryFileName);
+          LoadList.Free;
+        end;
+        PlayObject.m_sDearName := '';
+        Inc(PlayObject.m_btMarryCount);
+        GotoLable(PlayObject, '@UnMarryEnd', False);
+        PlayObject.RefShowName;
+      end;
+      Exit;
+    end;
+  end;
+end;
+
+
+procedure TNormNpc.ActionOfUnMaster(PlayObject: TPlayObject;
+  QuestActionInfo: pTQuestActionInfo);
+var
+  PoseHuman: TPlayObject;
+  LoadList: TStringList;
+  sUnMarryFileName: string;
+  sMsg: string;
+begin
+  if PlayObject.m_sMasterName = '' then
+  begin
+    GotoLable(PlayObject, '@ExeMasterFail', False);
+    Exit;
+  end;
+  PoseHuman := TPlayObject(PlayObject.GetPoseCreate);
+  if PoseHuman = nil then
+  begin
+    GotoLable(PlayObject, '@UnMasterCheckDir', False);
+  end;
+  if PoseHuman <> nil then
+  begin
+    if QuestActionInfo.sParam1 = '' then
+    begin
+      if PoseHuman.m_btRaceServer <> RC_PLAYOBJECT then
+      begin
+        GotoLable(PlayObject, '@UnMasterTypeErr', False);
+        Exit;
+      end;
+      if PoseHuman.GetPoseCreate = PlayObject then
+      begin
+        if (PlayObject.m_sMasterName = PoseHuman.m_sCharName) then
+        begin
+          if PlayObject.m_boMaster then
+          begin
+            GotoLable(PlayObject, '@UnIsMaster', False);
+            Exit;
+          end;
+          if PlayObject.m_sMasterName <> PoseHuman.m_sCharName then
+          begin
+            GotoLable(PlayObject, '@UnMasterError', False);
+            Exit;
+          end;
+
+          GotoLable(PlayObject, '@StartUnMaster', False);
+          GotoLable(PoseHuman, '@WateUnMaster', False);
+          Exit;
+        end;
+      end;
+    end;
+  end;
+  if (CompareText(QuestActionInfo.sParam1, 'REQUESTUNMASTER' ) = 0) then   //sREQUESTUNMARRY
+  begin
+    if (QuestActionInfo.sParam2 = '') then
+    begin
+      if PoseHuman <> nil then
+      begin
+        PlayObject.m_boStartUnMaster := True;
+        if PlayObject.m_boStartUnMaster and PoseHuman.m_boStartUnMaster then
+        begin
+          sMsg := AnsiReplaceText(g_sNPCSayUnMasterOKMsg, '%n', m_sCharName);
+          sMsg := AnsiReplaceText(sMsg, '%s', PlayObject.m_sCharName);
+          sMsg := AnsiReplaceText(sMsg, '%d', PoseHuman.m_sCharName);
+          UserEngine.SendBroadCastMsg(sMsg, t_Say);
+          PlayObject.m_sMasterName := '';
+          PoseHuman.m_sMasterName := '';
+          PlayObject.m_boStartUnMaster := False;
+          PoseHuman.m_boStartUnMaster := False;
+          PlayObject.RefShowName;
+          PoseHuman.RefShowName;
+          GotoLable(PlayObject, '@UnMasterEnd', False);
+          GotoLable(PoseHuman, '@UnMasterEnd', False);
+        end else
+        begin
+          GotoLable(PlayObject, '@WateUnMaster', False);
+          GotoLable(PoseHuman, '@RevUnMaster', False);
+        end;
+      end;
+      Exit;
+    end else
+    begin
+      //强行出师
+      if (CompareText(QuestActionInfo.sParam2, 'FORCE') = 0) then
+      begin
+        sMsg := AnsiReplaceText(g_sNPCSayForceUnMasterMsg, '%n', m_sCharName);
+        sMsg := AnsiReplaceText(sMsg, '%s', PlayObject.m_sCharName);
+        sMsg := AnsiReplaceText(sMsg, '%d', PlayObject.m_sMasterName);
+        UserEngine.SendBroadCastMsg(sMsg, t_Say);
+
+        PoseHuman := UserEngine.GetPlayObject(PlayObject.m_sMasterName);
+        if PoseHuman <> nil then
+        begin
+          PoseHuman.m_sMasterName := '';
+          PoseHuman.RefShowName;
+        end else
+        begin
+          g_UnForceMasterList.Lock;
+          try
+            g_UnForceMasterList.Add(PlayObject.m_sMasterName);
+            SaveUnForceMasterList();
+          finally
+            g_UnForceMasterList.UnLock;
+          end;
+        end;
+        PlayObject.m_sMasterName := '';
+        GotoLable(PlayObject, '@UnMasterEnd', False);
+        PlayObject.RefShowName;
+      end;
+      Exit;
+    end;
+  end;
+end;
+
+
+procedure TNormNpc.ActionOfGetMarry(PlayObject: TPlayObject;
+  QuestActionInfo: pTQuestActionInfo);
+var
+  PoseBaseObject: TBaseObject;
+begin
+  PoseBaseObject := PlayObject.GetPoseCreate();
+  if (PoseBaseObject <> nil) and (PoseBaseObject.m_btRaceServer = RC_PLAYOBJECT) and (PoseBaseObject.m_btGender <> PlayObject.m_btGender) then
+  begin
+    PlayObject.m_sDearName := PoseBaseObject.m_sCharName;
+    PlayObject.RefShowName;
+    PoseBaseObject.RefShowName;
+  end else
+  begin
+    GotoLable(PlayObject, '@MarryError', False);
+  end;
+end;
+
+procedure TNormNpc.ActionOfGetMaster(PlayObject: TPlayObject;
+  QuestActionInfo: pTQuestActionInfo);
+var
+  PoseBaseObject: TBaseObject;
+begin
+  PoseBaseObject := PlayObject.GetPoseCreate();
+  if (PoseBaseObject <> nil) and (PoseBaseObject.m_btRaceServer = RC_PLAYOBJECT) and (PoseBaseObject.m_btGender <> PlayObject.m_btGender) then
+  begin
+    PlayObject.m_sMasterName := PoseBaseObject.m_sCharName;
+    PlayObject.RefShowName;
+    PoseBaseObject.RefShowName;
+  end else
+  begin
+    GotoLable(PlayObject, '@MasterError', False);
+  end;
+end;
+
+procedure TNormNpc.ActionOfDelMarry(PlayObject: TPlayObject;
+  QuestActionInfo: pTQuestActionInfo);
+begin
+  PlayObject.m_sDearName := '';
+  PlayObject.RefShowName;
+end;
+
+procedure TNormNpc.ActionOfDelMaster(PlayObject: TPlayObject;
+  QuestActionInfo: pTQuestActionInfo);
+begin
+  PlayObject.m_sMasterName := '';
+  PlayObject.RefShowName;
+end;
+
+
+}
 
 procedure TNormNpc.ActionOfMessageBox(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
@@ -3732,103 +4111,6 @@ begin
   end;
 end;
 
-procedure TNormNpc.ActionOfUnMarry(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-var
-  PoseHuman: TPlayObject;
-  LoadList: TStringList;
-  sUnMarryFileName: string;
-begin
-  if PlayObject.m_sDearName = '' then
-  begin
-    GotoLable(PlayObject, '@ExeMarryFail', False);
-    Exit;
-  end;
-  PoseHuman := TPlayObject(PlayObject.GetPoseCreate);
-  if PoseHuman = nil then
-  begin
-    GotoLable(PlayObject, '@UnMarryCheckDir', False);
-  end;
-  if PoseHuman <> nil then
-  begin
-    if QuestActionInfo.sParam1 = '' then
-    begin
-      if PoseHuman.m_btRaceServer <> RC_PLAYOBJECT then
-      begin
-        GotoLable(PlayObject, '@UnMarryTypeErr', False);
-        Exit;
-      end;
-      if PoseHuman.GetPoseCreate = PlayObject then
-      begin
-        if (PlayObject.m_sDearName = PoseHuman.m_sCharName) {and (PosHum.AddInfo.sDearName = Hum.sName)} then
-        begin
-          GotoLable(PlayObject, '@StartUnMarry', False);
-          GotoLable(PoseHuman, '@StartUnMarry', False);
-          Exit;
-        end;
-      end;
-    end;
-  end;
-  if (CompareText(QuestActionInfo.sParam1, 'REQUESTUNMARRY' {sREQUESTUNMARRY}) = 0) then
-  begin
-    if (QuestActionInfo.sParam2 = '') then
-    begin
-      if PoseHuman <> nil then
-      begin
-        PlayObject.m_boStartUnMarry := True;
-        if PlayObject.m_boStartUnMarry and PoseHuman.m_boStartUnMarry then
-        begin
-          UserEngine.SendBroadCastMsg('[' + m_sCharName + ']: ' + '我宣布' {sUnMarryMsg8} + PoseHuman.m_sCharName + ' ' + '与' {sMarryMsg0} + PlayObject.m_sCharName + ' ' + ' ' + '正式脱离夫妻关系。' {sUnMarryMsg9}, t_Say);
-          PlayObject.m_sDearName := '';
-          PoseHuman.m_sDearName := '';
-          Inc(PlayObject.m_btMarryCount);
-          Inc(PoseHuman.m_btMarryCount);
-          PlayObject.m_boStartUnMarry := False;
-          PoseHuman.m_boStartUnMarry := False;
-          PlayObject.RefShowName;
-          PoseHuman.RefShowName;
-          GotoLable(PlayObject, '@UnMarryEnd', False);
-          GotoLable(PoseHuman, '@UnMarryEnd', False);
-        end else
-        begin
-          GotoLable(PlayObject, '@WateUnMarry', False);
-//          GotoLable(PoseHuman,'@RevUnMarry',False);
-        end;
-      end;
-      Exit;
-    end else
-    begin
-      //强行离婚
-      if (CompareText(QuestActionInfo.sParam2, 'FORCE') = 0) then
-      begin
-        UserEngine.SendBroadCastMsg('[' + m_sCharName + ']: ' + '我宣布' {sUnMarryMsg8} + PlayObject.m_sCharName + ' ' + '与' {sMarryMsg0} + PlayObject.m_sDearName + ' ' + ' ' + '已经正式脱离夫妻关系！！！' {sUnMarryMsg9}, t_Say);
-        PoseHuman := UserEngine.GetPlayObject(PlayObject.m_sDearName);
-        if PoseHuman <> nil then
-        begin
-          PoseHuman.m_sDearName := '';
-          Inc(PoseHuman.m_btMarryCount);
-          PoseHuman.RefShowName;
-        end else
-        begin
-          sUnMarryFileName := g_Config.sEnvirDir + 'UnMarry.txt';
-          LoadList := TStringList.Create;
-          if FileExists(sUnMarryFileName) then
-          begin
-            LoadList.LoadFromFile(sUnMarryFileName);
-          end;
-          LoadList.Add(PlayObject.m_sDearName);
-          LoadList.SaveToFile(sUnMarryFileName);
-          LoadList.Free;
-        end;
-        PlayObject.m_sDearName := '';
-        Inc(PlayObject.m_btMarryCount);
-        GotoLable(PlayObject, '@UnMarryEnd', False);
-        PlayObject.RefShowName;
-      end;
-      Exit;
-    end;
-  end;
-end;
 
 procedure TNormNpc.ClearScript; //0049E914
 var
@@ -4802,6 +5084,7 @@ begin
   Result := PlayObject.IsGuildMaster;
 end;
 
+{
 function TNormNpc.ConditionOfCheckIsMaster(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 begin
@@ -4810,12 +5093,13 @@ begin
     Result := True;
 end;
 
+}
+
 function TNormNpc.ConditionOfCheckListCount(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 begin
 
 end;
-
 
 
 function TNormNpc.ConditionOfCheckItemAddValue(PlayObject: TPlayObject;
@@ -4948,6 +5232,9 @@ begin
     Result := True;
 end;
 
+
+//取消 结婚 和 师徒系统 的相关功能
+{
 function TNormNpc.ConditionOfCheckMarry(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 begin
@@ -4985,6 +5272,52 @@ begin
     Result := True;
 end;
 
+function TNormNpc.ConditionOfCheckPoseIsMaster(PlayObject: TPlayObject;
+  QuestConditionInfo: pTQuestConditionInfo): Boolean;
+var
+  PoseHuman: TBaseObject;
+begin
+  Result := False;
+  PoseHuman := PlayObject.GetPoseCreate();
+  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
+  begin
+    if (TPlayObject(PoseHuman).m_sMasterName <> '') and (TPlayObject(PoseHuman).m_boMaster) then
+      Result := True;
+  end;
+end;
+
+function TNormNpc.ConditionOfCheckPoseMaster(PlayObject: TPlayObject;
+  QuestConditionInfo: pTQuestConditionInfo): Boolean;
+var
+  PoseHuman: TBaseObject;
+begin
+  Result := False;
+  PoseHuman := PlayObject.GetPoseCreate();
+  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
+  begin
+    if (TPlayObject(PoseHuman).m_sMasterName <> '') and not (TPlayObject(PoseHuman).m_boMaster) then
+      Result := True;
+  end;
+end;
+
+function TNormNpc.ConditionOfCheckPoseMarry(PlayObject: TPlayObject;
+  QuestConditionInfo: pTQuestConditionInfo): Boolean;
+var
+  PoseHuman: TBaseObject;
+begin
+  Result := False;
+  PoseHuman := PlayObject.GetPoseCreate();
+  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
+  begin
+    if TPlayObject(PoseHuman).m_sDearName <> '' then
+      Result := True;
+  end;
+end;
+
+}
+
+
+
 function TNormNpc.ConditionOfCheckMemBerLevel(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 var
@@ -5006,6 +5339,7 @@ begin
   else if PlayObject.m_nMemberLevel >= nLevel then Result := True;
   end;
 end;
+
 
 function TNormNpc.ConditionOfCheckMemberType(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
@@ -5119,19 +5453,6 @@ begin
   end;
 end;
 
-function TNormNpc.ConditionOfCheckPoseIsMaster(PlayObject: TPlayObject;
-  QuestConditionInfo: pTQuestConditionInfo): Boolean;
-var
-  PoseHuman: TBaseObject;
-begin
-  Result := False;
-  PoseHuman := PlayObject.GetPoseCreate();
-  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
-  begin
-    if (TPlayObject(PoseHuman).m_sMasterName <> '') and (TPlayObject(PoseHuman).m_boMaster) then
-      Result := True;
-  end;
-end;
 
 function TNormNpc.ConditionOfCheckPoseLevel(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
@@ -5159,34 +5480,6 @@ begin
     end;
   end;
 
-end;
-
-function TNormNpc.ConditionOfCheckPoseMarry(PlayObject: TPlayObject;
-  QuestConditionInfo: pTQuestConditionInfo): Boolean;
-var
-  PoseHuman: TBaseObject;
-begin
-  Result := False;
-  PoseHuman := PlayObject.GetPoseCreate();
-  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
-  begin
-    if TPlayObject(PoseHuman).m_sDearName <> '' then
-      Result := True;
-  end;
-end;
-
-function TNormNpc.ConditionOfCheckPoseMaster(PlayObject: TPlayObject;
-  QuestConditionInfo: pTQuestConditionInfo): Boolean;
-var
-  PoseHuman: TBaseObject;
-begin
-  Result := False;
-  PoseHuman := PlayObject.GetPoseCreate();
-  if (PoseHuman <> nil) and (PoseHuman.m_btRaceServer = RC_PLAYOBJECT) then
-  begin
-    if (TPlayObject(PoseHuman).m_sMasterName <> '') and not (TPlayObject(PoseHuman).m_boMaster) then
-      Result := True;
-  end;
 end;
 
 
@@ -6045,6 +6338,9 @@ begin
                       sMsg := sub_49ADB8(sMsg, '<$BUJUK>', sText);
                       Exit;
                     end else
+                    
+//取消1.70版增加的3个物品
+{
                       if sVariable = '$BELT' then
                       begin
                         sText := UserEngine.GetStdItemName(PlayObject.m_UseItems[U_BELT].wIndex);
@@ -6063,6 +6359,7 @@ begin
                             sMsg := sub_49ADB8(sMsg, '<$CHARM>', sText);
                             Exit;
                           end else
+}                          
                             if sVariable = '$IPADDR' then
                             begin
                               sText := PlayObject.m_sIPaddr;
@@ -6544,6 +6841,7 @@ var
       if i >= 10 then Break;
     end; // while
   end;
+
   function CheckItemW(sItemType: string; nParam: Integer): pTUserItem; //0049BA7C
   var
     nCount: Integer;
@@ -6597,6 +6895,7 @@ var
       end;
       Exit;
     end;
+
     if CompareLStr(sItemType, '[BUJUK]', 4) then
     begin
       if PlayObject.m_UseItems[U_BUJUK].wIndex > 0 then
@@ -6605,6 +6904,9 @@ var
       end;
       Exit;
     end;
+
+//取消1.70版增加的3个物品
+{
     if CompareLStr(sItemType, '[BELT]', 4) then
     begin
       if PlayObject.m_UseItems[U_BELT].wIndex > 0 then
@@ -6629,6 +6931,9 @@ var
       end;
       Exit;
     end;
+
+}
+
     Result := PlayObject.sub_4C4CD4(sItemType, nCount);
     if nCount < nParam then
       Result := nil;
@@ -6976,14 +7281,16 @@ var
         nSC_CHECKPOSEGENDER: if not ConditionOfCheckPoseGender(PlayObject, QuestConditionInfo) then Result := False;
         nSC_CHECKLEVELEX: if not ConditionOfCheckLevelEx(PlayObject, QuestConditionInfo) then Result := False;
         nSC_CHECKBONUSPOINT: if not ConditionOfCheckBonusPoint(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKMARRY: if not ConditionOfCheckMarry(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKPOSEMARRY: if not ConditionOfCheckPoseMarry(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKMARRYCOUNT: if not ConditionOfCheckMarryCount(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKMASTER: if not ConditionOfCheckMaster(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_HAVEMASTER: if not ConditionOfHaveMaster(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKPOSEMASTER: if not ConditionOfCheckPoseMaster(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_POSEHAVEMASTER: if not ConditionOfPoseHaveMaster(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKISMASTER: if not ConditionOfCheckIsMaster(PlayObject, QuestConditionInfo) then Result := False;
+
+//        nSC_CHECKMARRY: if not ConditionOfCheckMarry(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_CHECKPOSEMARRY: if not ConditionOfCheckPoseMarry(PlayObject, QuestConditionInfo) then Result := False;  //检查对方是否结婚
+//        nSC_CHECKMARRYCOUNT: if not ConditionOfCheckMarryCount(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_CHECKMASTER: if not ConditionOfCheckMaster(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_HAVEMASTER: if not ConditionOfHaveMaster(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_CHECKPOSEMASTER: if not ConditionOfCheckPoseMaster(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_POSEHAVEMASTER: if not ConditionOfPoseHaveMaster(PlayObject, QuestConditionInfo) then Result := False;
+//        nSC_CHECKISMASTER: if not ConditionOfCheckIsMaster(PlayObject, QuestConditionInfo) then Result := False;
+
         nSC_HASGUILD: if not ConditionOfCheckHaveGuild(PlayObject, QuestConditionInfo) then Result := False;
 
         nSC_ISGUILDMASTER: if not ConditionOfCheckIsGuildMaster(PlayObject, QuestConditionInfo) then Result := False;
@@ -6994,7 +7301,9 @@ var
         nSC_CHECKCASTLEDOOR: if not ConditionOfCheckCastleDoorStatus(PlayObject, QuestConditionInfo) then Result := False;
         nSC_ISATTACKALLYGUILD: if not ConditionOfCheckIsAttackAllyGuild(PlayObject, QuestConditionInfo) then Result := False;
         nSC_ISDEFENSEALLYGUILD: if not ConditionOfCheckIsDefenseAllyGuild(PlayObject, QuestConditionInfo) then Result := False;
-        nSC_CHECKPOSEISMASTER: if not ConditionOfCheckPoseIsMaster(PlayObject, QuestConditionInfo) then Result := False;
+
+//        nSC_CHECKPOSEISMASTER: if not ConditionOfCheckPoseIsMaster(PlayObject, QuestConditionInfo) then Result := False;
+
         nSC_CHECKNAMEIPLIST: if not ConditionOfCheckNameIPList(PlayObject, QuestConditionInfo) then Result := False;
         nSC_CHECKACCOUNTIPLIST: if not ConditionOfCheckAccountIPList(PlayObject, QuestConditionInfo) then Result := False;
         nSC_CHECKSLAVECOUNT: if not ConditionOfCheckSlaveCount(PlayObject, QuestConditionInfo) then Result := False;
@@ -7287,6 +7596,7 @@ var
       end;
     end;
   end;
+  
   procedure TakeWItem(sItemName: string; nItemCount: Integer); //0049CCF8
   var
     i: Integer;
@@ -7366,6 +7676,7 @@ var
         Exit;
       end;
     end;
+
     if CompareLStr(sItemName, '[U_BUJUK]', 4) then
     begin
       if PlayObject.m_UseItems[U_BUJUK].wIndex > 0 then
@@ -7376,6 +7687,9 @@ var
         Exit;
       end;
     end;
+
+//取消1.70版增加的3个物品
+{
     if CompareLStr(sItemName, '[U_BELT]', 4) then
     begin
       if PlayObject.m_UseItems[U_BELT].wIndex > 0 then
@@ -7406,6 +7720,8 @@ var
         Exit;
       end;
     end;
+}
+
     for i := Low(THumanUseItems) to High(THumanUseItems) do
     begin
       if nItemCount <= 0 then Exit;
@@ -8017,12 +8333,17 @@ var
         nSC_CLEARNAMELIST: ActionOfClearNameList(PlayObject, QuestActionInfo);
         nSC_MAPTING: ActionOfMapTing(PlayObject, QuestActionInfo);
         nSC_CHANGELEVEL: ActionOfChangeLevel(PlayObject, QuestActionInfo);
-        nSC_MARRY: ActionOfMarry(PlayObject, QuestActionInfo);
-        nSC_MASTER: ActionOfMaster(PlayObject, QuestActionInfo);
-        nSC_UNMASTER: ActionOfUnMaster(PlayObject, QuestActionInfo);
-        nSC_UNMARRY: ActionOfUnMarry(PlayObject, QuestActionInfo);
-        nSC_GETMARRY: ActionOfGetMarry(PlayObject, QuestActionInfo);
-        nSC_GETMASTER: ActionOfGetMaster(PlayObject, QuestActionInfo);
+
+//取消 [师徒] 和 [结婚] 系统相关的功能 
+//        nSC_MARRY: ActionOfMarry(PlayObject, QuestActionInfo);
+//        nSC_MASTER: ActionOfMaster(PlayObject, QuestActionInfo);
+//        nSC_UNMASTER: ActionOfUnMaster(PlayObject, QuestActionInfo);
+//        nSC_UNMARRY: ActionOfUnMarry(PlayObject, QuestActionInfo);
+//        nSC_GETMARRY: ActionOfGetMarry(PlayObject, QuestActionInfo);
+//        nSC_GETMASTER: ActionOfGetMaster(PlayObject, QuestActionInfo);
+//        nSC_DELMARRY: ActionOfDelMarry(PlayObject, QuestActionInfo);
+//        nSC_DELMASTER: ActionOfDelMaster(PlayObject, QuestActionInfo);
+
         nSC_CLEARSKILL: ActionOfClearSkill(PlayObject, QuestActionInfo);
         nSC_DELNOJOBSKILL: ActionOfDelNoJobSkill(PlayObject, QuestActionInfo);
         nSC_DELSKILL: ActionOfDelSkill(PlayObject, QuestActionInfo);
@@ -8054,8 +8375,7 @@ var
         nSC_KICK: ActionOfKick(PlayObject, QuestActionInfo);
         nSC_BONUSPOINT: ActionOfBonusPoint(PlayObject, QuestActionInfo);
         nSC_RESTRENEWLEVEL: ActionOfRestReNewLevel(PlayObject, QuestActionInfo);
-        nSC_DELMARRY: ActionOfDelMarry(PlayObject, QuestActionInfo);
-        nSC_DELMASTER: ActionOfDelMaster(PlayObject, QuestActionInfo);
+
         nSC_CREDITPOINT: ActionOfChangeCreditPoint(PlayObject, QuestActionInfo);
         nSC_CLEARNEEDITEMS: ActionOfClearNeedItems(PlayObject, QuestActionInfo);
         nSC_CLEARMAEKITEMS: ActionOfClearMakeItems(PlayObject, QuestActionInfo);
@@ -9195,19 +9515,6 @@ begin
   end;
 end;
 
-procedure TNormNpc.ActionOfDelMarry(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-begin
-  PlayObject.m_sDearName := '';
-  PlayObject.RefShowName;
-end;
-
-procedure TNormNpc.ActionOfDelMaster(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-begin
-  PlayObject.m_sMasterName := '';
-  PlayObject.RefShowName;
-end;
 
 procedure TNormNpc.ActionOfRestBonusPoint(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
@@ -9471,6 +9778,9 @@ begin
                                             Envir.Flag.boNOGUILDRECALL := False;
                                           end;
                                         end else
+                                        
+//取消 结婚 与 师徒 的相关内容
+{
                                           if CompareText(sMapMode, 'NODEARRECALL') = 0 then
                                           begin
                                             if (sParam1 <> '') then
@@ -9491,6 +9801,8 @@ begin
                                                 Envir.Flag.boNOMASTERRECALL := False;
                                               end;
                                             end else
+}
+
                                               if CompareText(sMapMode, 'NORANDOMMOVE') = 0 then
                                               begin
                                                 if (sParam1 <> '') then
@@ -9841,6 +10153,7 @@ begin
 
 end;
 
+{
 function TNormNpc.ConditionOfHaveMaster(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 begin
@@ -9863,117 +10176,7 @@ begin
   end;
 end;
 
-procedure TNormNpc.ActionOfUnMaster(PlayObject: TPlayObject;
-  QuestActionInfo: pTQuestActionInfo);
-var
-  PoseHuman: TPlayObject;
-  LoadList: TStringList;
-  sUnMarryFileName: string;
-  sMsg: string;
-begin
-  if PlayObject.m_sMasterName = '' then
-  begin
-    GotoLable(PlayObject, '@ExeMasterFail', False);
-    Exit;
-  end;
-  PoseHuman := TPlayObject(PlayObject.GetPoseCreate);
-  if PoseHuman = nil then
-  begin
-    GotoLable(PlayObject, '@UnMasterCheckDir', False);
-  end;
-  if PoseHuman <> nil then
-  begin
-    if QuestActionInfo.sParam1 = '' then
-    begin
-      if PoseHuman.m_btRaceServer <> RC_PLAYOBJECT then
-      begin
-        GotoLable(PlayObject, '@UnMasterTypeErr', False);
-        Exit;
-      end;
-      if PoseHuman.GetPoseCreate = PlayObject then
-      begin
-        if (PlayObject.m_sMasterName = PoseHuman.m_sCharName) then
-        begin
-          if PlayObject.m_boMaster then
-          begin
-            GotoLable(PlayObject, '@UnIsMaster', False);
-            Exit;
-          end;
-          if PlayObject.m_sMasterName <> PoseHuman.m_sCharName then
-          begin
-            GotoLable(PlayObject, '@UnMasterError', False);
-            Exit;
-          end;
-
-          GotoLable(PlayObject, '@StartUnMaster', False);
-          GotoLable(PoseHuman, '@WateUnMaster', False);
-          Exit;
-        end;
-      end;
-    end;
-  end;
-  if (CompareText(QuestActionInfo.sParam1, 'REQUESTUNMASTER' {sREQUESTUNMARRY}) = 0) then
-  begin
-    if (QuestActionInfo.sParam2 = '') then
-    begin
-      if PoseHuman <> nil then
-      begin
-        PlayObject.m_boStartUnMaster := True;
-        if PlayObject.m_boStartUnMaster and PoseHuman.m_boStartUnMaster then
-        begin
-          sMsg := AnsiReplaceText(g_sNPCSayUnMasterOKMsg, '%n', m_sCharName);
-          sMsg := AnsiReplaceText(sMsg, '%s', PlayObject.m_sCharName);
-          sMsg := AnsiReplaceText(sMsg, '%d', PoseHuman.m_sCharName);
-          UserEngine.SendBroadCastMsg(sMsg, t_Say);
-          PlayObject.m_sMasterName := '';
-          PoseHuman.m_sMasterName := '';
-          PlayObject.m_boStartUnMaster := False;
-          PoseHuman.m_boStartUnMaster := False;
-          PlayObject.RefShowName;
-          PoseHuman.RefShowName;
-          GotoLable(PlayObject, '@UnMasterEnd', False);
-          GotoLable(PoseHuman, '@UnMasterEnd', False);
-        end else
-        begin
-          GotoLable(PlayObject, '@WateUnMaster', False);
-          GotoLable(PoseHuman, '@RevUnMaster', False);
-        end;
-      end;
-      Exit;
-    end else
-    begin
-      //强行出师
-      if (CompareText(QuestActionInfo.sParam2, 'FORCE') = 0) then
-      begin
-        sMsg := AnsiReplaceText(g_sNPCSayForceUnMasterMsg, '%n', m_sCharName);
-        sMsg := AnsiReplaceText(sMsg, '%s', PlayObject.m_sCharName);
-        sMsg := AnsiReplaceText(sMsg, '%d', PlayObject.m_sMasterName);
-        UserEngine.SendBroadCastMsg(sMsg, t_Say);
-
-        PoseHuman := UserEngine.GetPlayObject(PlayObject.m_sMasterName);
-        if PoseHuman <> nil then
-        begin
-          PoseHuman.m_sMasterName := '';
-          PoseHuman.RefShowName;
-        end else
-        begin
-          g_UnForceMasterList.Lock;
-          try
-            g_UnForceMasterList.Add(PlayObject.m_sMasterName);
-            SaveUnForceMasterList();
-          finally
-            g_UnForceMasterList.UnLock;
-          end;
-        end;
-        PlayObject.m_sMasterName := '';
-        GotoLable(PlayObject, '@UnMasterEnd', False);
-        PlayObject.RefShowName;
-      end;
-      Exit;
-    end;
-  end;
-end;
-
+}
 
 function TNormNpc.ConditionOfCheckCastleGold(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;

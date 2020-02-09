@@ -1,4 +1,6 @@
 unit AxeMon;
+//怪物单元,包含怪物在客户端的攻击等效果的实现,由actor类派生,不知为什么命名为axemon斧怪?
+//怪物对主角的伤害等算法当然不包含在,这是服务器res的工作
 
 interface
 
@@ -20,11 +22,12 @@ const
    SCULPTUREFIREBASE = 1680;
    MOTHPOISONGASBASE = 3590;
    DUNGPOISONGASBASE = 3590;
-   WARRIORELFFIREBASE = 820;
+   WARRIORELFFIREBASE = 820;   //神兽火焰
    //Jacky
    SUPERIORGUARDBASE = 760;
 
 type
+   //骷髅
    TSkeletonOma = class (TActor) //Size:25C
    private
    protected
@@ -151,6 +154,7 @@ type
    public
    end;
 
+   //喷火怪物（如：神兽）
    TWarriorElfMonster = class (TSkeletonOma)
    private
       oldframe: integer;
@@ -164,32 +168,44 @@ type
       procedure CalcActorFrame; override;
       procedure LoadSurface; override;
    end;
+   
+   //BOSS猪怪(深绿色) ，在Mon19
    TBossPigMon = class (TGasKuDeGi)//0x3d
    protected
    public
-    //  procedure LoadSurface; override;    //lzx 2019-11-10
+      //procedure LoadSurface; override;  lzx 2019-11-10
    end;
+
+   //
    TKingOfSculpureKingMon = class (TGasKuDeGi)//0x3e
    protected
    public
       procedure CalcActorFrame; override;
-//      procedure LoadSurface; override;     //lzx 2019-11-10 
+      //procedure LoadSurface; override;   //lzx modified 2019-11-10
    end;
+
+   //骷髅王,  在Mon20
    TSkeletonKingMon = class (TGasKuDeGi)//0x3f
    protected
    public
       procedure CalcActorFrame; override;
-  //    procedure LoadSurface; override;    //lzx 2019-11-10 
-  //    procedure Run; override;            //lzx 2019-11-10 
+      //procedure LoadSurface; override;   //lzx modified 2019-11-10
+      //procedure Run; override;           //lzx modified 2019-11-10
    end;
+
+   //
    TSamuraiMon = class (TGasKuDeGi)//0x41
    protected
    public
    end;
+
+   //骷髅战士
    TSkeletonSoldierMon = class (TGasKuDeGi)//0x42 0x43 0x44
    protected
    public
    end;
+
+   //骷髅弓箭手, 在Mon20
    TSkeletonArcherMon = class (TArcherMon)//Size: 0x26C Address: 0x004623B4 //0x45
       AttackEffectSurface :TDirectDrawSurface;//0x25C
       bo260:Boolean;
@@ -198,40 +214,47 @@ type
    protected
    public
       procedure CalcActorFrame; override;
-    //  procedure LoadSurface; override;   //lzx 2019-11-10 
+      //procedure LoadSurface; override;    //lzx modified 2019-11-10
       procedure Run; override;
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;
    end;
+
+   //
    TBanyaGuardMon = class (TSkeletonArcherMon)//Size: 0x270 Address: 0x00462430 0x46 0x47 0x48 0x4e
      n26C:TDirectDrawSurface;
    protected
    public
       constructor Create; override;
       procedure CalcActorFrame; override;
-    //  procedure LoadSurface; override;   //lzx 2019-11-10 
+      //procedure LoadSurface; override;    //lzx modified 2019-11-10
       procedure Run; override;
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;
    end;
+
+   //BOSS石头怪, 在Mon22
    TStoneMonster = class (TSkeletonArcherMon)//Size: 0x270 0x4d 0x4b
      n26C:TDirectDrawSurface;
    protected
    public
       constructor Create; override;
       procedure CalcActorFrame; override;
-   //   procedure LoadSurface; override;     //lzx 2019-11-10 
+      //procedure LoadSurface; override;   //lzx modified 2019-11-10
       procedure Run; override;
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;   
    end;
+
    TPBOMA1Mon = class (TCatMon)//0x49
    protected
    public
-  //    procedure Run; override;    //lzx 2019-11-10
+      //procedure Run; override;     //lzx modified 2019-11-10
    end;
+
    TPBOMA6Mon = class (TCatMon)//0x4f
    protected
    public
-//      procedure Run; override;     //lzx 2019-11-10 
+      //procedure Run; override;     //lzx modified 2019-11-10
    end;
+   
    TAngel = class (TBanyaGuardMon)//Size: 0x27C 0x51
      n270:Integer;
      n274:Integer;
@@ -241,6 +264,8 @@ type
       procedure  LoadSurface; override;
       procedure  DrawChr (dsurface: TDirectDrawSurface; dx, dy: integer; blend: Boolean;boFlag:Boolean); override;
    end;
+
+   //火龙, 在WDragonImg
    TFireDragon = class (TSkeletonArcherMon)//0x53
      n270:TDirectDrawSurface;
    private
@@ -249,17 +274,18 @@ type
    public
       constructor Create; override;
       procedure CalcActorFrame; override;
-    //  procedure LoadSurface; override;        //lzx 2019-11-10 
+      //procedure LoadSurface; override;     //lzx modified 2019-11-10
       procedure Run; override;
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;   
    end;
+
    TDragonStatue = class (TSkeletonArcherMon)//Size: 0x270 0x54
      n26C:TDirectDrawSurface;
    protected
    public
       constructor Create; override;
       procedure CalcActorFrame; override;
- //     procedure LoadSurface; override;   //lzx 2019-11-10 
+      //procedure LoadSurface; override;    //lzx modified 2019-11-10
       procedure Run; override;
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;   
    end;
@@ -619,8 +645,8 @@ end;
 
 //         TCatMon : 豹捞,  橇贰烙篮 秦榜捞尔 鞍绊, 磐瘤绰 局聪啊 绝澜.
 
-
-procedure  TWarriorElfMonster.RunFrameAction (frame: integer); //橇贰烙付促 刀漂窍霸 秦具且老
+//喷火
+procedure  TWarriorElfMonster.RunFrameAction (frame: integer);
 var
    meff: TMapEffect;
    event: TClEvent;

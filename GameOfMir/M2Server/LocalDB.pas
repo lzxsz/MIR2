@@ -753,6 +753,9 @@ begin
             MapFlag.boNOGUILDRECALL := True;
             Continue;
           end;
+
+//取消 夫妻 和 师徒 系统相关的功能
+{
           if CompareLStr(s34, 'NODEARRECALL', Length('NODEARRECALL')) then
           begin
             MapFlag.boNODEARRECALL := True;
@@ -763,6 +766,7 @@ begin
             MapFlag.boNOMASTERRECALL := True;
             Continue;
           end;
+}          
           if CompareLStr(s34, 'NORANDOMMOVE', Length('NORANDOMMOVE')) then
           begin
             MapFlag.boNORANDOMMOVE := True;
@@ -1760,6 +1764,8 @@ var
     NPC.m_ScriptList.Add(ScriptInfo);
     Result:=ScriptInfo;
   end;
+
+  //查询条件
   function QuestCondition(sText:String;QuestConditionInfo:pTQuestConditionInfo):Boolean; //00489DDC
   var
     sCmd,sParam1,sParam2,sParam3,sParam4,sParam5,sParam6:String;
@@ -1840,11 +1846,11 @@ var
       Goto L001;
     end;
 
-    if sCmd = sSC_ISGUILDMASTER then begin
+    if sCmd = sSC_ISGUILDMASTER then begin      //GUILD MASTER 是行会老大
       nCMDCode:=nSC_ISGUILDMASTER;
       Goto L001;
     end;
-    if sCmd = sSC_CHECKCASTLEMASTER then begin
+    if sCmd = sSC_CHECKCASTLEMASTER then begin    //CASTLE MASTER 是城堡老大
       nCMDCode:=nSC_CHECKCASTLEMASTER;
       Goto L001;
     end;
@@ -2173,6 +2179,8 @@ var
       Goto L001;
     end;
 
+//取消 "师徒" 和 "结婚" 系统的相关查询功能    
+{
     if sCmd = sSC_CHECKMARRY then begin
       nCMDCode:=nSC_CHECKMARRY;
       Goto L001;
@@ -2209,6 +2217,8 @@ var
       nCMDCode:=nSC_CHECKPOSEISMASTER;
       Goto L001;
     end;
+}
+
     if sCmd = sSC_CHECKNAMEIPLIST then begin
       nCMDCode:=nSC_CHECKNAMEIPLIST;
       Goto L001;
@@ -2288,6 +2298,8 @@ var
     end;
       
   end;
+
+ //查询动作 
   function QuestAction(sText:String;QuestActionInfo:pTQuestActionInfo):Boolean; //0048A640
   var
     sCmd,sParam1,sParam2,sParam3,sParam4,sParam5,sParam6:String;
@@ -2559,11 +2571,13 @@ var
       Goto L001;
     end;
 
-
     if sCmd = sSC_CHANGELEVEL then begin
       nCMDCode:=nSC_CHANGELEVEL;
       Goto L001;
     end;
+
+//取消 "师徒" 和 "结婚" 系统的相关查询功能
+{
     if sCmd = sSC_MARRY then begin
       nCMDCode:=nSC_MARRY;
       Goto L001;
@@ -2580,6 +2594,8 @@ var
       nCMDCode:=nSC_GETMASTER;
       Goto L001;
     end;
+}
+    
     if sCmd = sSC_CLEARSKILL then begin
       nCMDCode:=nSC_CLEARSKILL;
       Goto L001;
@@ -2789,6 +2805,9 @@ var
       nCMDCode:=nSC_RESTRENEWLEVEL;
       Goto L001;
     end;
+
+//取消 "师徒" 和 "结婚" 系统的相关查询功能
+{    
     if sCmd = sSC_DELMARRY then begin
       nCMDCode:=nSC_DELMARRY;
       Goto L001;
@@ -2805,6 +2824,8 @@ var
       nCMDCode:=nSC_UNMASTER;
       Goto L001;
     end;
+}
+    
     if sCmd = sSC_CREDITPOINT then begin
       nCMDCode:=nSC_CREDITPOINT;
       Goto L001;
@@ -3003,6 +3024,7 @@ begin   //0048B684
     SayingRecord:=nil;
     nQuestIdx:=0;
 
+    //对脚本进行处理
     for I := 0 to LoadList.Count - 1 do begin //0048B9FC
       s34:=Trim(LoadList.Strings[i]);
       if (s34 = '') or (s34[1] = ';') or (s34[1] = '/') then Continue;
@@ -3107,13 +3129,14 @@ begin   //0048B684
         Continue;
       end; //0048BCF0
 
+      //NPC交易的商品
       if s34[1] = '[' then begin
         n6C:=10;
         if Script = nil then  begin
           Script := MakeNewScript();
           Script.nQuest:=n70;
         end;
-        if CompareText(s34,'[goods]') = 0 then begin
+        if CompareText(s34,'[goods]') = 0 then begin      //商品
           n6C:=20;
           Continue;
         end;
@@ -3207,6 +3230,7 @@ begin   //0048B684
             ArrestStringEx(s48,'"','"',s48);
           end;
 
+          //如果物品允许销售，则加入商品列表
           if CanSellItem(s48) then begin
             New(Goods);
           
@@ -3214,7 +3238,7 @@ begin   //0048B684
             Goods.nCount:=Str_ToInt(s4C,0);
             Goods.dwRefillTime:=Str_ToInt(s50,0);
             Goods.dwRefillTick:=0;
-            TMerchant(NPC).m_RefillGoodsList.Add(Goods);
+            TMerchant(NPC).m_RefillGoodsList.Add(Goods);    //将脚本中[goos]字段的商品加到m_RefillGoodsList中，并将保存到Market_Saved文件夹。  debug viewpoint. lzx 2020/02/08
           end;
         end; //0048C2D2
       end; //0048C2D2      
@@ -3226,6 +3250,7 @@ begin   //0048B684
   Result:=1;
 end;
 
+//保存商品记录
 function TFrmDB.SaveGoodRecord(NPC: TMerchant; sFile: String):Integer;//0048C748
 var
   I,II: Integer;
@@ -3234,6 +3259,7 @@ var
   UserItem:pTUserItem;
   List:TList;
   Header420:TGoodFileHeader;
+
 begin
   Result:= -1;
   sFileName:='.\Envir\Market_Saved\' + sFile + '.sav';
@@ -3249,9 +3275,10 @@ begin
       Inc(Header420.nItemCount,List.Count);
     end;
     FileWrite(FileHandle,Header420,SizeOf(TGoodFileHeader));
+
     for I := 0 to NPC.m_GoodsList.Count - 1 do begin
       List:=TList(NPC.m_GoodsList.Items[i]);
-      for II := 0 to List.Count - 1 do begin
+       for II := 0 to List.Count - 1 do begin
         UserItem:=List.Items[II];
         FileWrite(FileHandle,UserItem^,SizeOf(TUserItem));
       end;
@@ -3458,6 +3485,7 @@ begin
   end;
 end;
 
+//加载商品记录
 function TFrmDB.LoadGoodRecord(NPC: TMerchant; sFile: String): Integer;//0048C574
 var
   I: Integer;
@@ -3466,6 +3494,7 @@ var
   UserItem:pTUserItem;
   List:TList;
   Header420:TGoodFileHeader;
+
 begin
   Result:= -1;
   sFileName:='.\Envir\Market_Saved\' + sFile + '.sav';
@@ -3480,11 +3509,11 @@ begin
             if List = nil then begin
               List:=TList.Create;
               List.Add(UserItem)
-            end else begin
+            end else begin 
               if pTUserItem(List.Items[0]).wIndex = UserItem.wIndex then begin
                 List.Add(UserItem);
               end else begin
-                NPC.m_GoodsList.Add(List);
+                NPC.m_GoodsList.Add(List);   //lzx? 1
                 List:=TList.Create;
                 List.Add(UserItem);
               end;
@@ -3492,7 +3521,8 @@ begin
           end;
         end;
         if List <> nil then
-          NPC.m_GoodsList.Add(List);
+          NPC.m_GoodsList.Add(List);     //lzx? 2
+
         FileClose(FileHandle);
         Result:=1;
       end;

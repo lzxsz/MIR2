@@ -757,9 +757,21 @@ begin
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
+var
+  nX,nY:Integer;
 begin
+
+  g_dwGameCenterHandle:=Str_ToInt(ParamStr(1),0);
+  nX:=Str_ToInt(ParamStr(2),-1);
+  nY:=Str_ToInt(ParamStr(3),-1);
+  if (nX >= 0) or (nY >= 0) then begin
+    Left:=nX;
+    Top:=nY;
+  end;
+    
   TempLogList:=TStringList.Create;
   dwLoopCheckTick:=GetTickCount();
+
 end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);

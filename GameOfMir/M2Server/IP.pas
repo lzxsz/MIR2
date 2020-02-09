@@ -89,14 +89,14 @@ begin
 end;
 procedure TFormIP.Label1Click(Sender: TObject);
 begin
-  ShellExecute(Application.Handle, 'Open', PChar('http://update.cz88.net/soft/qqwry.rar'), nil, nil, sw_ShowNormal);
+  // ShellExecute(Application.Handle, 'Open', PChar('http://update.***.net/soft/qqwry.rar'), nil, nil, sw_ShowNormal);
 end;
 
 procedure TFormIP.Label1MouseMove(Sender: TObject; Shift: TShiftState; x,
   y: Integer);
 begin
-  Label1.Font.Color := clRed;
-
+  //Label1.Font.Color := clRed;
+  Label1.Font.Color := clBlue;
 end;
 
 procedure TFormIP.Label1MouseLeave(Sender: TObject);

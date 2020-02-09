@@ -13,8 +13,8 @@ resourcestring
   g_sUpDateTime = '更新日期: 2019/09/09';
   g_sProgram = '程序制作: Cola PI';
   
-  g_sWebSite = '程序网站: http://www.***.com';
-  g_sBbsSite = '程序论坛: http://www.***.com';
+  g_sWebSite = '程序网站:';   // http://www.***.com
+  g_sBbsSite = '程序论坛:';   // http://bbs.***.com
   g_sCopyright = 'Copyright (C) 2002';
 
 const
@@ -93,14 +93,37 @@ const
 
   BODYLUCKUNIT = 5000; //10?
 
-  //攻击模式
-  HAM_ALL = 0;        //全体攻击
-  HAM_PEACE = 1;      //和平功击
-  HAM_DEAR = 2;       //夫妻攻击
-  HAM_MASTER = 3;     //师徒攻击
-  HAM_GROUP = 4;      //编组攻击
-  HAM_GUILD = 5;      //行会攻击
-  HAM_PKATTACK = 6;   //红名攻击（善恶攻击败）
+  //《热血传奇》1.50版“虎卫传说”
+  // 时间：2002年8月 新的冒险乐园被一个接一个的发现：白日门、丛林迷宫、赤月峡谷，尘封已久的天尊、法神、圣战套装终于出世。　
+
+  //《热血传奇》1.70版“魔神归来”
+  // 时间：2003年1月 封魔谷的入口打开，虹魔教主威力初显。师徒、好友、婚姻系统的全面推出。
+
+  //攻击模式 (热血传奇1.70版)
+{
+  HAM_ALL      = 0;   //全体攻击              (First)
+  HAM_PEACE    = 1;   //和平功击
+  HAM_DEAR     = 2;   //夫妻攻击
+  HAM_MASTER   = 3;   //师徒攻击
+  HAM_GROUP    = 4;   //编组攻击
+  HAM_GUILD    = 5;   //行会攻击
+  HAM_PKATTACK = 6;   //红名攻击（善恶攻击）   (Last)
+}
+
+  //攻击模式 (热血传奇1.50版)
+  HAM_ALL      = 0;   //全体攻击                (First)
+  HAM_PEACE    = 1;   //和平功击
+  HAM_GROUP    = 2;   //编组攻击
+  HAM_GUILD    = 3;   //行会攻击
+  HAM_PKATTACK = 4;   //红名攻击(善恶攻击)      (Last)
+
+  //注：热血传奇1.50版 无 夫妻攻击 和 师徒攻击
+
+  // 和平攻击模式：除了对暴民以外其他攻击都无效。
+  // 行会联盟攻击模式：对自己行会内的其他玩家攻击无效
+  // 编组攻击模式：处于同一小组的玩家攻击无效
+  // 全体攻击模式：对所有的玩家和暴民都具有攻击效果。
+  // 善恶攻击模式：PK红名专用攻击模式。
 
   DEFHIT = 5;
   DEFSPEED = 15;
@@ -110,8 +133,9 @@ const
 
   //lzx2020 - for debug bag item count by davy 2020-1-17
   //注意：该数值只有在数据库构发生改变后才需要调整(如背包最大物品数量)，否则不要改变该数值。
-  SIZEOFTHUMAN = 3660; //3588;  //人物数据结构的字节大小。如果只改了背包物品数量，其他结构没变，则3660 对应 46个物品, 3588 对应 43个物品。
+  SIZEOFTHUMAN = 3628; //3660; //3588;  //人物数据结构的字节大小。如果只改了背包物品数量，其他结构没变，则3660 对应 46个物品, 3588 对应 43个物品。
 
+  //怪物、动物和卫士编号
   MONSTER_SANDMOB = 3;
   MONSTER_ROCKMAN = 4;
   MONSTER_RON = 9;
@@ -336,6 +360,10 @@ const
   nSC_CHECKLEVELEX = 141;
   sSC_CHECKBONUSPOINT = 'CHECKBONUSPOINT';
   nSC_CHECKBONUSPOINT = 142;
+
+
+//取消 师徒 和 结婚系统 的相关内容
+{
   sSC_CHECKMARRY = 'CHECKMARRY';
   nSC_CHECKMARRY = 143;
   sSC_CHECKPOSEMARRY = 'CHECKPOSEMARRY';
@@ -354,6 +382,8 @@ const
   nSC_CHECKISMASTER = 150;
   sSC_CHECKPOSEISMASTER = 'CHECKISMASTER';
   nSC_CHECKPOSEISMASTER = 151;
+}
+
   sSC_CHECKNAMEIPLIST = 'CHECKNAMEIPLIST';
   nSC_CHECKNAMEIPLIST = 152;
   sSC_CHECKACCOUNTIPLIST = 'CHECKACCOUNTIPLIST';
@@ -832,22 +862,17 @@ const
   sSC_SETFAME = 'SETFAME';
   nSC_SETFAME = 273;
 
-
-
-
-
-
-
   sSC_CHANGELEVEL = 'CHANGELEVEL';
   nSC_CHANGELEVEL = 300;
-  sSC_MARRY = 'MARRY';
-  nSC_MARRY = 301;
-  sSC_UNMARRY = 'UNMARRY';
-  nSC_UNMARRY = 302;
-  sSC_GETMARRY = 'GETMARRY';
-  nSC_GETMARRY = 303;
-  sSC_GETMASTER = 'GETMASTER';
-  nSC_GETMASTER = 304;
+
+//  sSC_MARRY = 'MARRY';
+//  nSC_MARRY = 301;
+//  sSC_UNMARRY = 'UNMARRY';
+//  nSC_UNMARRY = 302;
+//  sSC_GETMARRY = 'GETMARRY';
+//  nSC_GETMARRY = 303;
+//  sSC_GETMASTER = 'GETMASTER';
+//  nSC_GETMASTER = 304;
 
   sSC_CLEARSKILL = 'CLEARSKILL';
   nSC_CLEARSKILL = 305;
@@ -902,14 +927,16 @@ const
   nSC_BONUSPOINT = 329;
   sSC_RESTRENEWLEVEL = 'RESTRENEWLEVEL';
   nSC_RESTRENEWLEVEL = 330;
-  sSC_DELMARRY = 'DELMARRY';
-  nSC_DELMARRY = 331;
-  sSC_DELMASTER = 'DELMASTER';
-  nSC_DELMASTER = 332;
-  sSC_MASTER = 'MASTER';
-  nSC_MASTER = 333;
-  sSC_UNMASTER = 'UNMASTER';
-  nSC_UNMASTER = 334;
+
+//  sSC_DELMARRY = 'DELMARRY';
+//  nSC_DELMARRY = 331;
+//  sSC_DELMASTER = 'DELMASTER';
+//  nSC_DELMASTER = 332;
+//  sSC_MASTER = 'MASTER';
+//  nSC_MASTER = 333;
+//  sSC_UNMASTER = 'UNMASTER';
+//  nSC_UNMASTER = 334;
+
   sSC_CREDITPOINT = 'CREDITPOINT';
   nSC_CREDITPOINT = 335;
   sSC_CLEARNEEDITEMS = 'CLEARNEEDITEMS';
@@ -1020,8 +1047,9 @@ const
   sMAIN = '@main';
   sFAILMAIN = '~@main';
 
-  sGETMASTER = '@@getmaster';
-  sGETMARRY = '@@getmarry';
+//  sGETMASTER = '@@getmaster';
+//  sGETMARRY = '@@getmarry';
+
   sUSEITEMNAME = '@@useitemname';
 
   sBUILDGUILDNOW = '@@buildguildnow';
@@ -1516,11 +1544,11 @@ var
     nConfigSize: SizeOf(TM2Config);
     sServerName             :'热血传奇';
     sServerIPaddr           :'127.0.0.1';
-    sWebSite                :'http://www.***.com';
-    sBbsSite                :'http://bbs.www.***.com';
-    sClientDownload         :'http://www.www.***.com';
-    sQQ                     :'123456789';
-    sPhone                  :'123456789';
+    sWebSite                :'';   // http://www.***.com
+    sBbsSite                :'';   // http://bbs.***.com
+    sClientDownload         :'';   // http://www.***.com
+    sQQ                     :'';   // 123456789
+    sPhone                  :'';   // 123456789
     sBankAccount0           :'工商银行';
     sBankAccount1           :'农业银行';
     sBankAccount2           :'建设银行';
@@ -1595,9 +1623,9 @@ var
     sSpider                 :'小蜘蛛';
     sWomaHorn               :'沃玛号角';
     sZumaPiece              :'祖玛头像';
-    sGameGoldName           :'元宝';
-    sGamePointName          :'游戏点';
-    sPayMentPointName       :'充值点';
+    sGameGoldName           :'元宝';    //游戏币
+    sGamePointName          :'游戏点';  //游戏点（能量点）
+    sPayMentPointName       :'充值点';  //秒卡点
     DBSocket: INVALID_SOCKET;
     nHealthFillTime: 300;
     nSpellFillTime: 800;
@@ -1937,33 +1965,36 @@ var
     nStoneGeneralDuraRate: 13000;
     nStoneAddDuraRate: 20;
     nStoneAddDuraMax: 10000;
-    nWinLottery6Min: 1;
-    nWinLottery6Max: 4999;
-    nWinLottery5Min: 14000;
-    nWinLottery5Max: 15999;
-    nWinLottery4Min: 16000;
-    nWinLottery4Max: 16149;
-    nWinLottery3Min: 16150;
-    nWinLottery3Max: 16169;
-    nWinLottery2Min: 16170;
-    nWinLottery2Max: 16179;
-    nWinLottery1Min: 16180;
-    nWinLottery1Max: 16185; //16180 + 1820;
-    nWinLottery1Gold: 1000000;
-    nWinLottery2Gold: 200000;
-    nWinLottery3Gold: 100000;
-    nWinLottery4Gold: 10000;
-    nWinLottery5Gold: 1000;
-    nWinLottery6Gold: 500;
-    nWinLotteryRate: 30000;
-    nWinLotteryCount: 0;
-    nNoWinLotteryCount: 0;
-    nWinLotteryLevel1: 0;
-    nWinLotteryLevel2: 0;
-    nWinLotteryLevel3: 0;
-    nWinLotteryLevel4: 0;
-    nWinLotteryLevel5: 0;
-    nWinLotteryLevel6: 0;
+
+//取消彩票功能
+//    nWinLottery6Min: 1;
+//    nWinLottery6Max: 4999;
+//    nWinLottery5Min: 14000;
+//    nWinLottery5Max: 15999;
+//    nWinLottery4Min: 16000;
+//    nWinLottery4Max: 16149;
+//    nWinLottery3Min: 16150;
+//    nWinLottery3Max: 16169;
+//    nWinLottery2Min: 16170;
+//    nWinLottery2Max: 16179;
+//    nWinLottery1Min: 16180;
+//    nWinLottery1Max: 16185; //16180 + 1820;
+//    nWinLottery1Gold: 1000000;
+//    nWinLottery2Gold: 200000;
+//    nWinLottery3Gold: 100000;
+//    nWinLottery4Gold: 10000;
+//    nWinLottery5Gold: 1000;
+//    nWinLottery6Gold: 500;
+//    nWinLotteryRate: 30000;
+//    nWinLotteryCount: 0;
+//    nNoWinLotteryCount: 0;
+//    nWinLotteryLevel1: 0;
+//    nWinLotteryLevel2: 0;
+//    nWinLotteryLevel3: 0;
+//    nWinLotteryLevel4: 0;
+//    nWinLotteryLevel5: 0;
+//    nWinLotteryLevel6: 0;
+
     GlobalVal: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     nItemNumber: 0;
     nItemNumberEx: High(Integer) div 2;
@@ -2711,12 +2742,15 @@ var
     UNPASSWORD             :(sCmd:'UnPassword';nPerMissionMin:0;nPerMissionMax:10);
     MEMBERFUNCTION         :(sCmd:'MemberFunc';nPerMissionMin:0;nPerMissionMax:10);
     MEMBERFUNCTIONEX       :(sCmd:'MemberFuncEx';nPerMissionMin:0;nPerMissionMax:10);
-    DEAR                   :(sCmd:'Dear';nPerMissionMin:0;nPerMissionMax:10);
-    ALLOWDEARRCALL         :(sCmd:'AllowDearRecall';nPerMissionMin:0;nPerMissionMax:10);
-    DEARRECALL             :(sCmd:'DearRecall';nPerMissionMin:0;nPerMissionMax:10);
-    MASTER                 :(sCmd:'Master';nPerMissionMin:0;nPerMissionMax:10);
-    ALLOWMASTERRECALL      :(sCmd:'AllowMasterRecall';nPerMissionMin:0;nPerMissionMax:10);
-    MASTERECALL            :(sCmd:'MasterRecall';nPerMissionMin:0;nPerMissionMax:10);
+
+//取消 结婚 与 师徒 的相关内容    
+//    DEAR                   :(sCmd:'Dear';nPerMissionMin:0;nPerMissionMax:10);
+//    ALLOWDEARRCALL         :(sCmd:'AllowDearRecall';nPerMissionMin:0;nPerMissionMax:10);
+//   DEARRECALL             :(sCmd:'DearRecall';nPerMissionMin:0;nPerMissionMax:10);
+//    MASTER                 :(sCmd:'Master';nPerMissionMin:0;nPerMissionMax:10);
+//    ALLOWMASTERRECALL      :(sCmd:'AllowMasterRecall';nPerMissionMin:0;nPerMissionMax:10);
+//    MASTERECALL            :(sCmd:'MasterRecall';nPerMissionMin:0;nPerMissionMax:10);
+
     ATTACKMODE             :(sCmd:'AttackMode';nPerMissionMin:0;nPerMissionMax:10);
     REST                   :(sCmd:'Rest';nPerMissionMin:0;nPerMissionMax:10);
     TAKEONHORSE            :(sCmd:'骑马';nPerMissionMin:0;nPerMissionMax:10);
@@ -2753,7 +2787,10 @@ var
     NPCSCRIPT              :(sCmd:'NpcScript';nPerMissionMin:10;nPerMissionMax:10);
     RECALLMOB              :(sCmd:'RecallMob';nPerMissionMin:10;nPerMissionMax:10);
     LUCKYPOINT             :(sCmd:'LuckyPoint';nPerMissionMin:10;nPerMissionMax:10);
-    LOTTERYTICKET          :(sCmd:'LotteryTicket';nPerMissionMin:10;nPerMissionMax:10);
+
+    //取消彩票功能
+    //LOTTERYTICKET          :(sCmd:'LotteryTicket';nPerMissionMin:10;nPerMissionMax:10);  //彩票
+    
     RELOADGUILD            :(sCmd:'ReloadGuild';nPerMissionMin:10;nPerMissionMax:10);
     RELOADLINENOTICE       :(sCmd:'ReloadLineNotice';nPerMissionMin:10;nPerMissionMax:10);
     RELOADABUSE            :(sCmd:'ReloadAbuse';nPerMissionMin:10;nPerMissionMax:10);
@@ -2846,8 +2883,11 @@ var
     TESTGA                 :(sCmd:'Testga';nPerMissionMin:10;nPerMissionMax:10);
     MAPINFO                :(sCmd:'MapInfo';nPerMissionMin:10;nPerMissionMax:10);
     SBKDOOR                :(sCmd:'SbkDoor';nPerMissionMin:10;nPerMissionMax:10);
-    CHANGEDEARNAME         :(sCmd:'DearName';nPerMissionMin:10;nPerMissionMax:10);
-    CHANGEMASTERNAME       :(sCmd:'MasterName';nPerMissionMin:10;nPerMissionMax:10);
+
+//取消 结婚 与 师徒 的相关内容
+//    CHANGEDEARNAME         :(sCmd:'DearName';nPerMissionMin:10;nPerMissionMax:10);
+//    CHANGEMASTERNAME       :(sCmd:'MasterName';nPerMissionMin:10;nPerMissionMax:10);
+
     STARTQUEST             :(sCmd:'StartQuest';nPerMissionMin:10;nPerMissionMax:10);
     SETPERMISSION          :(sCmd:'SetPermission';nPerMissionMin:10;nPerMissionMax:10);
     CLEARMON               :(sCmd:'ClearMon';nPerMissionMin:10;nPerMissionMax:10);
@@ -2891,8 +2931,11 @@ var
   g_sNowIsFreePlayMode        :String = '当前服务器运行于测试模式.';
   sAttackModeOfAll            :String = '[攻击模式: 全体攻击]';
   sAttackModeOfPeaceful       :String = '[攻击模式: 和平攻击]';
-  sAttackModeOfDear           :String = '[攻击模式: 夫妻攻击]';
-  sAttackModeOfMaster         :String = '[攻击模式: 师徒攻击]';
+
+//取消 结婚 与 师徒 的相关内容
+//  sAttackModeOfDear           :String = '[攻击模式: 夫妻攻击]'; 
+//  sAttackModeOfMaster         :String = '[攻击模式: 师徒攻击]';
+
   sAttackModeOfGroup          :String = '[攻击模式: 编组攻击]';
   sAttackModeOfGuild          :String = '[攻击模式: 行会攻击]';
   sAttackModeOfRedWhite       :String = '[攻击模式: 红名攻击]';
@@ -3004,6 +3047,9 @@ var
   g_sPoseDealOKMsg                :String = '对方已经确认交易了.';
   g_sKickClientUserMsg            :String = '请不要使用非法外挂软件.';
 
+
+//取消 师徒 和 结婚系统 的相关内容  
+{  
   g_sStartMarryManMsg             :String = '[%n]: %s 与 %d 的婚礼现在开始...';
   g_sStartMarryWoManMsg           :String = '[%n]: %d 与 %s 的婚礼现在开始...';
   g_sStartMarryManAskQuestionMsg  :String = '[%n]: %s 你愿意娶 %d 小姐为妻，并照顾她一生一世吗？';
@@ -3075,6 +3121,7 @@ var
 
   g_sNPCSayForceUnMasterMsg       :String = '[%n]: 我宣布%s与%d已经正式脱离师徒关系！！！';
 
+}
 
   g_sMyInfo                       :String; //'『<人物名称>』: %name 『<当前位置>』: %map(%x:%y)\『<当前等级>』: %level 『<金 币 数>』: %gold 『<PK 点 数>』:%pk\『<生 命 值>』: %minhp/%maxhp 『<魔 法 值>』: %minmp/%maxmp\『<攻 击 力>』: %mindc/%maxdc 『<魔 法 力>』: %minmc/%maxmc 『<道 术 力>』: %minsc/%maxsc\『<登录时间>』: %logontime 『<在线时长>』: %logonlong 分钟\';
   g_sSendOnlineCountMsg           :String = '当前在线人数: %c';
@@ -3086,13 +3133,16 @@ var
   g_sDefenceUpTime                :String = '防御力增加%d秒';
   g_sMagDefenceUpTime             :String = '魔法防御力增加%d秒';
   g_sAttPowerUpTime               :String = '你中毒了[时间:%d秒，点数:%d点]';
-  g_sWinLottery1Msg               :String = '祝贺您，中了一等奖。';
-  g_sWinLottery2Msg               :String = '祝贺您，中了二等奖。';
-  g_sWinLottery3Msg               :String = '祝贺您，中了三等奖。';
-  g_sWinLottery4Msg               :String = '祝贺您，中了四等奖。';
-  g_sWinLottery5Msg               :String = '祝贺您，中了五等奖。';
-  g_sWinLottery6Msg               :String = '祝贺您，中了六等奖。';
-  g_sNotWinLotteryMsg             :String = '等下次机会吧!';
+
+//取消彩票功能
+//  g_sWinLottery1Msg               :String = '祝贺您，中了一等奖。';
+//  g_sWinLottery2Msg               :String = '祝贺您，中了二等奖。';
+//  g_sWinLottery3Msg               :String = '祝贺您，中了三等奖。';
+//  g_sWinLottery4Msg               :String = '祝贺您，中了四等奖。';
+//  g_sWinLottery5Msg               :String = '祝贺您，中了五等奖。';
+//  g_sWinLottery6Msg               :String = '祝贺您，中了六等奖。';
+//  g_sNotWinLotteryMsg             :String = '等下次机会吧!';
+
   g_sWeaptonMakeLuck              :String = '武器被加幸运了...';
   g_sWeaptonNotMakeLuck           :String = '无效.';
   g_sTheWeaponIsCursed            :String = '你的武器被诅咒了.';
@@ -3100,10 +3150,12 @@ var
   g_sJoinGroup                    :String = '%s 已加入小组.';
   g_sTryModeCanotUseStorage       :String = '试玩模式不可以使用仓库功能.';
   g_sCanotGetItems                :String = '无法携带更多的东西.';
-  g_sEnableDearRecall             :String = '[允许夫妻传送]';
-  g_sDisableDearRecall            :String = '[禁止夫妻传送]';
-  g_sEnableMasterRecall           :String = '[允许师徒传送]';
-  g_sDisableMasterRecall          :String = '[禁止师徒传送]';
+
+//  g_sEnableDearRecall             :String = '[允许夫妻传送]';
+//  g_sDisableDearRecall            :String = '[禁止夫妻传送]';
+//  g_sEnableMasterRecall           :String = '[允许师徒传送]';
+//  g_sDisableMasterRecall          :String = '[禁止师徒传送]';
+
   g_sNowCurrDateTime              :String = '前系统日期时间: ';
   g_sEnableHearWhisper            :String = '[允许私聊]';
   g_sDisableHearWhisper           :String = '[禁止私聊]';
@@ -3140,11 +3192,14 @@ var
   g_sWizardReNewName              :String = '%chrname\*<神>*';
   g_sTaosReNewName                :String = '%chrname\*<尊>*';
   g_sRankLevelName                :String = '%s\Level';
-  g_sManDearName                  :String = '%ss 的老公';
-  g_sWoManDearName                :String = '%ss 的老婆';
-  g_sMasterName                   :String = '%ss 的师父';
-  g_sNoMasterName                 :String = '%ss 的徒弟';
-  g_sHumanShowName                :String = '%chrname\%guildname\%dearname\%mastername';
+
+//  g_sManDearName                  :String = '%ss 的老公';
+//  g_sWoManDearName                :String = '%ss 的老婆';
+//  g_sMasterName                   :String = '%ss 的师父';
+//  g_sNoMasterName                 :String = '%ss 的徒弟';
+//  g_sHumanShowName                :String = '%chrname\%guildname\%dearname\%mastername';
+
+  g_sHumanShowName                :String = '%chrname\%guildname';  //更改角名显示：角色名和行会名  （这是传奇1.50版的显示）
 
   g_sChangePermissionMsg          :String = '当前权限等级为:%d';
   g_sChangeKillMonExpRateMsg      :String = '经验倍数:%g 时长%d秒';
@@ -3245,7 +3300,10 @@ ResourceString
   g_sGameCommandLuckPointHelpMsg            = '人物名称 控制符 幸运点数';
 
   g_sGameCommandLuckPointMsg                = '%s 的幸运点数为:%d/%g 幸运值为:%d';
-  g_sGameCommandLotteryTicketMsg            = '已中彩票数:%d 未中彩票数:%d 一等奖:%d 二等奖:%d 三等奖:%d 四等奖:%d 五等奖:%d 六等奖:%d ';
+
+//取消彩票功能
+//  g_sGameCommandLotteryTicketMsg            = '已中彩票数:%d 未中彩票数:%d 一等奖:%d 二等奖:%d 三等奖:%d 四等奖:%d 五等奖:%d 六等奖:%d ';
+
   g_sGameCommandReloadGuildHelpMsg          = '行会名称';
   g_sGameCommandReloadGuildOnMasterserver   = '此命令只能在主游戏服务器上执行！！！';
   g_sGameCommandReloadGuildNotFoundGuildMsg = '未找到行会%s！！！';
@@ -3289,7 +3347,7 @@ ResourceString
   g_sGameCommandMobFireBurnMapNotFountMsg   = '地图%s 不存在';
 
 resourcestring
-  {U_DRESSNAME       = '衣服';
+  {U_DRESSNAME      = '衣服';
   U_WEAPONNAME      = '武器';
   U_RIGHTHANDNAME   = '照明物';
   U_NECKLACENAME    = '项链';
@@ -3304,20 +3362,20 @@ resourcestring
   U_BOOTSNAME       = '鞋子';
   U_CHARMNAME       = '宝石';}
 
-  U_DRESSNAME = 'Dress';
-  U_WEAPONNAME = 'Weapon';
-  U_RIGHTHANDNAME = 'RightHand';
-  U_NECKLACENAME = 'Necklace';
-  U_HELMETNAME = 'Helmet';
-  U_ARMRINGLNAME = 'BraceL';
-  U_ARMRINGRNAME = 'BraceR';
-  U_RINGLNAME = 'RingL';
-  U_RINGRNAME = 'RingR';
+  U_DRESSNAME     = 'Dress';     //衣服
+  U_WEAPONNAME    = 'Weapon';    //武器
+  U_RIGHTHANDNAME = 'RightHand'; //照明物 (火把)
+  U_NECKLACENAME  = 'Necklace';  //项链
+  U_HELMETNAME    = 'Helmet';    //头盔
+  U_ARMRINGLNAME  = 'BraceL';    //左手镯
+  U_ARMRINGRNAME  = 'BraceR';    //右手镯
+  U_RINGLNAME     = 'RingL';     //左戒指
+  U_RINGRNAME     = 'RingR';     //右戒指
+  U_BUJUKNAME     = 'Bujuk';     //护身符(道符)
 
-  U_BUJUKNAME = 'Bujuk';
-  U_BELTNAME = 'Belt';
-  U_BOOTSNAME = 'Boots';
-  U_CHARMNAME = 'Charm';
+//  U_BELTNAME  = 'Belt';        //腰带
+//  U_BOOTSNAME = 'Boots';       //鞋子
+//  U_CHARMNAME = 'Charm';
 
 //===============================================================
 var
@@ -3402,6 +3460,7 @@ begin
   end;
 end;
 
+//获取扩展的版本号
 function GetExVersionNO(nVersionDate: Integer; var nOldVerstionDate: Integer): Integer;
 begin
   Result := 0;
@@ -3417,6 +3476,7 @@ begin
   end;
   nOldVerstionDate := nVersionDate;
 end;
+
 function GetNextDirection(sX, sY, dx, dy: Integer): Byte; //004B2C38
 var
   flagx, flagy: Integer;
@@ -3453,12 +3513,12 @@ begin
     U_HELMET: if StdItem.StdMode = 15 then Result := True;
     U_ARMRINGL: if (StdItem.StdMode = 24) or (StdItem.StdMode = 25) or (StdItem.StdMode = 26) then Result := True;
     U_ARMRINGR: if (StdItem.StdMode = 24) or (StdItem.StdMode = 26) then Result := True;
-    U_RINGL,
-      U_RINGR: if (StdItem.StdMode = 22) or (StdItem.StdMode = 23) then Result := True;
+    U_RINGL, U_RINGR: if (StdItem.StdMode = 22) or (StdItem.StdMode = 23) then Result := True;
     U_BUJUK: if (StdItem.StdMode = 25) or (StdItem.StdMode = 51) then Result := True;
-    U_BELT: if (StdItem.StdMode = 54) or (StdItem.StdMode = 64) then Result := True;
-    U_BOOTS: if (StdItem.StdMode = 52) or (StdItem.StdMode = 62) then Result := True;
-    U_CHARM: if (StdItem.StdMode = 53) or (StdItem.StdMode = 63) then Result := True;
+
+//    U_BELT: if (StdItem.StdMode = 54) or (StdItem.StdMode = 64) then Result := True;
+//    U_BOOTS: if (StdItem.StdMode = 52) or (StdItem.StdMode = 62) then Result := True;
+//    U_CHARM: if (StdItem.StdMode = 53) or (StdItem.StdMode = 63) then Result := True;
   end;
 end;
 
@@ -3755,6 +3815,7 @@ begin
   end;
 end;
 
+//物品是否允许销售
 function CanSellItem(sItemName: string): Boolean;
 var
   i: Integer;
@@ -4373,10 +4434,14 @@ begin
                   if CompareText(sName, U_RINGRNAME) = 0 then
                   begin
                     Result := 8;
-                  end else
-                    if CompareText(sName, U_BUJUKNAME) = 0 then
+                    end else
+                    if CompareText(sName, U_BUJUKNAME) = 0 then   //护身符
                     begin
                       Result := 9;
+                 end;   //结束
+
+//取消1.70增加的3个装备
+{
                     end else
                       if CompareText(sName, U_BELTNAME) = 0 then
                       begin
@@ -4390,6 +4455,7 @@ begin
                           begin
                             Result := 12;
                           end;
+}                          
 
 end;
 function GetUseItemName(nIndex: Integer): string;
@@ -4406,9 +4472,10 @@ begin
     7: Result := U_RINGLNAME;
     8: Result := U_RINGRNAME;
     9: Result := U_BUJUKNAME;
-    10: Result := U_BELTNAME;
-    11: Result := U_BOOTSNAME;
-    12: Result := U_CHARMNAME;
+
+//    10: Result := U_BELTNAME;
+//    11: Result := U_BOOTSNAME;
+//    12: Result := U_CHARMNAME;
   end;
 end;
 
@@ -5409,6 +5476,8 @@ begin
     CommandConf.WriteString('Command', 'MemberFuncEx', g_GameCommand.MEMBERFUNCTIONEX.sCmd)
   else g_GameCommand.MEMBERFUNCTIONEX.sCmd := LoadString;
 
+//取消 结婚 与 师徒 的相关内容  
+{
   LoadString := CommandConf.ReadString('Command', 'Dear', '');
   if LoadString = '' then
     CommandConf.WriteString('Command', 'Dear', g_GameCommand.DEAR.sCmd)
@@ -5438,6 +5507,9 @@ begin
   if LoadString = '' then
     CommandConf.WriteString('Command', 'AllowMasterRecall', g_GameCommand.ALLOWMASTERRECALL.sCmd)
   else g_GameCommand.ALLOWMASTERRECALL.sCmd := LoadString;
+
+ }
+
 
   LoadString := CommandConf.ReadString('Command', 'AttackMode', '');
   if LoadString = '' then
@@ -5755,14 +5827,15 @@ begin
     CommandConf.WriteInteger('Permission', 'LuckPoint', g_GameCommand.LUCKYPOINT.nPermissionMin)
   else g_GameCommand.LUCKYPOINT.nPermissionMin := nLoadInteger;
 
-  LoadString := CommandConf.ReadString('Command', 'LotteryTicket', '');
-  if LoadString = '' then
-    CommandConf.WriteString('Command', 'LotteryTicket', g_GameCommand.LOTTERYTICKET.sCmd)
-  else g_GameCommand.LOTTERYTICKET.sCmd := LoadString;
-  nLoadInteger := CommandConf.ReadInteger('Permission', 'LotteryTicket', -1);
-  if nLoadInteger < 0 then
-    CommandConf.WriteInteger('Permission', 'LotteryTicket', g_GameCommand.LOTTERYTICKET.nPermissionMin)
-  else g_GameCommand.LOTTERYTICKET.nPermissionMin := nLoadInteger;
+//取消彩票功能
+//  LoadString := CommandConf.ReadString('Command', 'LotteryTicket', '');
+//  if LoadString = '' then
+//    CommandConf.WriteString('Command', 'LotteryTicket', g_GameCommand.LOTTERYTICKET.sCmd)
+//  else g_GameCommand.LOTTERYTICKET.sCmd := LoadString;
+//  nLoadInteger := CommandConf.ReadInteger('Permission', 'LotteryTicket', -1);
+//  if nLoadInteger < 0 then
+//    CommandConf.WriteInteger('Permission', 'LotteryTicket', g_GameCommand.LOTTERYTICKET.nPermissionMin)
+//  else g_GameCommand.LOTTERYTICKET.nPermissionMin := nLoadInteger;
 
   LoadString := CommandConf.ReadString('Command', 'ReloadGuild', '');
   if LoadString = '' then
@@ -6581,6 +6654,8 @@ begin
     CommandConf.WriteInteger('Permission', 'SbkDoor', g_GameCommand.SBKDOOR.nPermissionMin)
   else g_GameCommand.SBKDOOR.nPermissionMin := nLoadInteger;
 
+// 取消 结婚 与 师徒 的相关内容
+{
   LoadString := CommandConf.ReadString('Command', 'ChangeDearName', '');
   if LoadString = '' then
     CommandConf.WriteString('Command', 'ChangeDearName', g_GameCommand.CHANGEDEARNAME.sCmd)
@@ -6598,6 +6673,7 @@ begin
   if nLoadInteger < 0 then
     CommandConf.WriteInteger('Permission', 'ChangeMasterName', g_GameCommand.CHANGEMASTERNAME.nPermissionMin)
   else g_GameCommand.CHANGEMASTERNAME.nPermissionMin := nLoadInteger;
+}
 
   LoadString := CommandConf.ReadString('Command', 'StartQuest', '');
   if LoadString = '' then
@@ -7381,6 +7457,8 @@ begin
     StringConf.WriteString('String', 'CanotUseItemMsg', g_sCanotUseItemMsg)
   else g_sCanotUseItemMsg := LoadString;
 
+//取消结婚 与 师徒系统的 相关功能  
+{  
   LoadString := StringConf.ReadString('String', 'StartMarryManMsg', '');
   if LoadString = '' then
     StringConf.WriteString('String', 'StartMarryManMsg', g_sStartMarryManMsg)
@@ -7626,7 +7704,7 @@ begin
     StringConf.WriteString('String', 'NPCSayForceUnMasterMsg', g_sNPCSayForceUnMasterMsg)
   else g_sNPCSayForceUnMasterMsg := LoadString;
 
-
+}
 
 
   LoadString := StringConf.ReadString('String', 'MyInfo', '');
@@ -7669,6 +7747,8 @@ begin
     StringConf.WriteString('String', 'MagDefenceUpTime', g_sMagDefenceUpTime)
   else g_sMagDefenceUpTime := LoadString;
 
+//取消彩票功能
+{
   LoadString := StringConf.ReadString('String', 'WinLottery1Msg', '');
   if LoadString = '' then
     StringConf.WriteString('String', 'WinLottery1Msg', g_sWinLottery1Msg)
@@ -7703,6 +7783,7 @@ begin
   if LoadString = '' then
     StringConf.WriteString('String', 'NotWinLotteryMsg', g_sNotWinLotteryMsg)
   else g_sNotWinLotteryMsg := LoadString;
+}
 
   LoadString := StringConf.ReadString('String', 'WeaptonMakeLuck', '');
   if LoadString = '' then
@@ -7739,6 +7820,8 @@ begin
     StringConf.WriteString('String', 'CanotGetItemsMsg', g_sCanotGetItems)
   else g_sCanotGetItems := LoadString;
 
+//取消 允许 夫妻 和 师徒 传送提示文本  
+{
   LoadString := StringConf.ReadString('String', 'EnableDearRecall', '');
   if LoadString = '' then
     StringConf.WriteString('String', 'EnableDearRecall', g_sEnableDearRecall)
@@ -7758,6 +7841,7 @@ begin
   if LoadString = '' then
     StringConf.WriteString('String', 'DisableMasterRecall', g_sDisableMasterRecall)
   else g_sDisableMasterRecall := LoadString;
+}
 
   LoadString := StringConf.ReadString('String', 'NowCurrDateTime', '');
   if LoadString = '' then
@@ -7934,6 +8018,8 @@ begin
     StringConf.WriteString('String', 'RankLevelName', g_sRankLevelName)
   else g_sRankLevelName := LoadString;
 
+//取消 夫妻 和 师徒 关系 显示文字 
+{
   LoadString := StringConf.ReadString('String', 'ManDearName', '');
   if LoadString = '' then
     StringConf.WriteString('String', 'ManDearName', g_sManDearName)
@@ -7953,6 +8039,7 @@ begin
   if LoadString = '' then
     StringConf.WriteString('String', 'NoMasterName', g_sNoMasterName)
   else g_sNoMasterName := LoadString;
+}
 
   LoadString := StringConf.ReadString('String', 'HumanShowName', '');
   if LoadString = '' then
@@ -8377,6 +8464,21 @@ begin
     Config.WriteString('Share', 'PlugDir', g_Config.sPlugDir);
   g_Config.sPlugDir := Config.ReadString('Share', 'PlugDir', g_Config.sPlugDir);
 
+  //游戏币设
+  sLoadString := Config.ReadString('Share', 'GameGold', '');   //游戏币
+  if sLoadString = '' then
+    Config.WriteString('Share', 'GameGold', g_Config.sGameGoldName)
+  else g_Config.sGameGoldName := sLoadString;
+
+  sLoadString := Config.ReadString('Share', 'GamePoint', '');    //游戏点
+  if sLoadString = '' then
+    Config.WriteString('Share', 'GamePoint', g_Config.sGamePointName)
+  else g_Config.sGamePointName := sLoadString;
+
+  sLoadString := Config.ReadString('Share', 'PayMentPointName', '');  //秒卡点 (充值点)
+  if sLoadString = '' then
+    Config.WriteString('Share', 'PayMentPointName', g_Config.sPayMentPointName)
+  else g_Config.sPayMentPointName := sLoadString;
 
   //============================================================================
   //名称设置
@@ -8494,21 +8596,6 @@ begin
     Config.WriteString('Names', 'Angel', g_Config.sAngel);
   g_Config.sAngel := Config.ReadString('Names', 'Angel', g_Config.sAngel);
 
-  sLoadString := Config.ReadString('Names', 'GameGold', '');
-  if sLoadString = '' then
-    Config.WriteString('Share', 'GameGold', g_Config.sGameGoldName)
-  else g_Config.sGameGoldName := sLoadString;
-
-  sLoadString := Config.ReadString('Names', 'GamePoint', '');
-  if sLoadString = '' then
-    Config.WriteString('Share', 'GamePoint', g_Config.sGamePointName)
-  else g_Config.sGamePointName := sLoadString;
-
-  sLoadString := Config.ReadString('Names', 'PayMentPointName', '');
-  if sLoadString = '' then
-    Config.WriteString('Share', 'PayMentPointName', g_Config.sPayMentPointName)
-  else g_Config.sPayMentPointName := sLoadString;
-
   if g_Config.nAppIconCrc <> 1242102148 then
     g_Config.boCheckFail := True;
   //============================================================================
@@ -8591,8 +8678,6 @@ begin
   if Config.ReadInteger('Setup', 'RedDieHomeY', -1) < 0 then
     Config.WriteInteger('Setup', 'RedDieHomeY', g_Config.nRedDieHomeY);
   g_Config.nRedDieHomeY := Config.ReadInteger('Setup', 'RedDieHomeY', g_Config.nRedDieHomeY);
-
-
 
 
   if Config.ReadInteger('Setup', 'JobHomePointSystem', -1) < 0 then
@@ -9876,6 +9961,8 @@ begin
     Config.WriteInteger('Setup', 'StoneAddDuraMax', g_Config.nStoneAddDuraMax);
   g_Config.nStoneAddDuraMax := Config.ReadInteger('Setup', 'StoneAddDuraMax', g_Config.nStoneAddDuraMax);
 
+//取消彩票功能
+{
   if Config.ReadInteger('Setup', 'WinLottery1Min', -1) < 0 then
     Config.WriteInteger('Setup', 'WinLottery1Min', g_Config.nWinLottery1Min);
   g_Config.nWinLottery1Min := Config.ReadInteger('Setup', 'WinLottery1Min', g_Config.nWinLottery1Min);
@@ -9951,6 +10038,7 @@ begin
   if Config.ReadInteger('Setup', 'WinLottery6Gold', -1) < 0 then
     Config.WriteInteger('Setup', 'WinLottery6Gold', g_Config.nWinLottery6Gold);
   g_Config.nWinLottery6Gold := Config.ReadInteger('Setup', 'WinLottery6Gold', g_Config.nWinLottery6Gold);
+}
 
   if Config.ReadInteger('Setup', 'GuildRecallTime', -1) < 0 then
     Config.WriteInteger('Setup', 'GuildRecallTime', g_Config.nGuildRecallTime);
@@ -10817,6 +10905,9 @@ begin
       Config.WriteInteger('Setup', 'GlobalVal' + IntToStr(i), g_Config.GlobalVal[i])
     else g_Config.GlobalVal[i] := nLoadInteger;
   end;
+
+//取消彩票功能  
+{
   nLoadInteger := Config.ReadInteger('Setup', 'WinLotteryCount', -1);
   if nLoadInteger < 0 then
     Config.WriteInteger('Setup', 'WinLotteryCount', g_Config.nWinLotteryCount)
@@ -10856,7 +10947,7 @@ begin
   if nLoadInteger < 0 then
     Config.WriteInteger('Setup', 'WinLotteryLevel6', g_Config.nWinLotteryLevel6)
   else g_Config.nWinLotteryLevel6 := nLoadInteger;
-
+}
 
 end;
 function GetRGB(c256: Byte): TColor;

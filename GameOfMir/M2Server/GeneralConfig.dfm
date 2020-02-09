@@ -1,6 +1,6 @@
 object frmGeneralConfig: TfrmGeneralConfig
-  Left = 279
-  Top = 196
+  Left = 352
+  Top = 197
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #22522#26412#35774#32622
@@ -36,6 +36,12 @@ object frmGeneralConfig: TfrmGeneralConfig
     Width = 401
     Height = 249
     ActivePage = NetWorkSheet
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #23435#20307
+    Font.Style = []
+    ParentFont = False
     TabIndex = 0
     TabOrder = 0
     OnChanging = PageControlChanging
@@ -335,7 +341,7 @@ object frmGeneralConfig: TfrmGeneralConfig
         end
       end
       object GroupBox5: TGroupBox
-        Left = 200
+        Left = 207
         Top = 5
         Width = 166
         Height = 97
@@ -347,6 +353,7 @@ object frmGeneralConfig: TfrmGeneralConfig
           Width = 54
           Height = 12
           Caption = #24320#22987#31561#32423':'
+          Enabled = False
         end
         object Label13: TLabel
           Left = 8
@@ -354,6 +361,7 @@ object frmGeneralConfig: TfrmGeneralConfig
           Width = 54
           Height = 12
           Caption = #24320#22987#37329#24065':'
+          Enabled = False
         end
         object Label14: TLabel
           Left = 8
@@ -361,6 +369,7 @@ object frmGeneralConfig: TfrmGeneralConfig
           Width = 54
           Height = 12
           Caption = #27979#35797#20154#25968':'
+          Enabled = False
         end
         object EditTestLevel: TEdit
           Left = 77
@@ -393,12 +402,13 @@ object frmGeneralConfig: TfrmGeneralConfig
           OnChange = EditValueChange
         end
         object CheckBoxTestServer: TCheckBox
-          Left = 8
+          Left = 11
           Top = -2
           Width = 73
           Height = 17
           Hint = #27979#35797#27169#24335','#25171#24320#27492#27169#24335','#21487#23545#26381#21153#22120#21508#39033#21442#25968#21450#21151#33021#36827#34892#27979#35797'.'
           Caption = #27979#35797#27169#24335
+          Enabled = False
           TabOrder = 3
           OnClick = CheckBoxTestServerClick
         end
@@ -413,9 +423,9 @@ object frmGeneralConfig: TfrmGeneralConfig
         OnClick = ButtonServerInfoSaveClick
       end
       object GroupBox6: TGroupBox
-        Left = 8
+        Left = 207
         Top = 112
-        Width = 185
+        Width = 167
         Height = 49
         Caption = #26368#39640#19978#32447#20154#25968
         TabOrder = 3
@@ -426,6 +436,7 @@ object frmGeneralConfig: TfrmGeneralConfig
           Width = 54
           Height = 12
           Caption = #19978#38480#20154#25968':'
+          Enabled = False
         end
         object EditUserFull: TEdit
           Left = 64
@@ -440,7 +451,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       end
       object GroupBox7: TGroupBox
         Left = 8
-        Top = 168
+        Top = 112
         Width = 185
         Height = 49
         Caption = #28216#25103#25968#25454#28304#21517#31216
@@ -536,7 +547,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditGuildDir: TEdit
         Left = 64
         Top = 8
-        Width = 241
+        Width = 280
         Height = 20
         Hint = #34892#20250#25968#25454#20445#23384#30446#24405'.'
         TabOrder = 0
@@ -545,7 +556,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditGuildFile: TEdit
         Left = 64
         Top = 32
-        Width = 241
+        Width = 280
         Height = 20
         Hint = #34892#20250#25968#25454#20445#23384#25991#20214#21517'.'
         TabOrder = 1
@@ -554,7 +565,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditConLogDir: TEdit
         Left = 64
         Top = 56
-        Width = 241
+        Width = 280
         Height = 20
         Hint = #20154#29289#30331#24405#26085#24535#20449#24687#20445#23384#30446#24405'.'
         TabOrder = 2
@@ -563,7 +574,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditCastleDir: TEdit
         Left = 64
         Top = 80
-        Width = 241
+        Width = 280
         Height = 20
         TabOrder = 3
         OnChange = EditValueChange
@@ -571,7 +582,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditEnvirDir: TEdit
         Left = 64
         Top = 104
-        Width = 241
+        Width = 280
         Height = 20
         TabOrder = 4
         OnChange = EditValueChange
@@ -579,7 +590,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditMapDir: TEdit
         Left = 64
         Top = 128
-        Width = 241
+        Width = 280
         Height = 20
         TabOrder = 5
         OnChange = EditValueChange
@@ -587,7 +598,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditNoticeDir: TEdit
         Left = 64
         Top = 152
-        Width = 241
+        Width = 280
         Height = 20
         TabOrder = 6
         OnChange = EditValueChange
@@ -595,7 +606,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditPlugDir: TEdit
         Left = 64
         Top = 176
-        Width = 241
+        Width = 250
         Height = 20
         TabOrder = 7
         OnChange = EditValueChange
@@ -603,7 +614,7 @@ object frmGeneralConfig: TfrmGeneralConfig
       object EditVentureDir: TEdit
         Left = 64
         Top = 200
-        Width = 241
+        Width = 250
         Height = 20
         TabOrder = 8
         OnChange = EditValueChange
@@ -630,7 +641,7 @@ object frmGeneralConfig: TfrmGeneralConfig
         TabOrder = 0
         object ColorBoxHint: TColorBox
           Left = 8
-          Top = 16
+          Top = 18
           Width = 113
           Height = 22
           Hint = #24377#20986#35828#26126#25991#26412#26694#39068#33394'.'

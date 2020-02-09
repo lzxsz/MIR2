@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, Spin, Grids,AddGuild;
+  Dialogs, ComCtrls, StdCtrls, Spin, Grids, AddGuild ,Guild;
 
 type
   TfrmCastleManage = class(TForm)
@@ -33,15 +33,12 @@ type
     Label8: TLabel;
     EditPower: TSpinEdit;
     TabSheet3: TTabSheet;
-    GroupBox5: TGroupBox;
-    ListViewGuard: TListView;
-    ButtonRefresh: TButton;
     Label9: TLabel;
     Edit1: TEdit;
     Label10: TLabel;
     Label11: TLabel;
     Edit3: TEdit;
-    Button1: TButton;
+    btnSaveSetting: TButton;
     SpinEdit1: TSpinEdit;
     SpinEdit2: TSpinEdit;
     TabSheet4: TTabSheet;
@@ -51,10 +48,15 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
-    Button6: TButton;
+    btnSaveCastleInfo: TButton;
+    grp1: TGroupBox;
+    ListViewGuard: TListView;
+    btnRefresh: TButton;
     procedure ListViewCastleClick(Sender: TObject);
-    procedure ButtonRefreshClick(Sender: TObject);
+    procedure btnRefreshClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure btnSaveCastleInfoClick(Sender: TObject);
+    procedure btnSaveSettingClick(Sender: TObject);
 
   private
     procedure RefCastleList;
@@ -70,7 +72,7 @@ var
 
 implementation
 
-uses Castle, M2Share;
+uses Castle, M2Share, ObjMon2;
 
 {$R *.dfm}
 var
@@ -95,15 +97,21 @@ var
   i, ii: Integer;
   ListItem: TListItem;
   ObjUnit: pTObjUnit;
+  CastleDoor : TCastleDoor;
 begin
   if CurCastle = nil then Exit;
   boRefing := True;
+
+  //基本装态
   if CurCastle.m_MasterGuild = nil then EditOwenGuildName.Text := ''
-  else EditOwenGuildName.Text := CurCastle.m_MasterGuild.sGuildName;
-  EditTotalGold.Value := CurCastle.m_nTotalGold;
-  EditTodayIncome.Value := CurCastle.m_nTodayIncome;
-  EditTechLevel.Value := CurCastle.m_nTechLevel;
-  EditPower.Value := CurCastle.m_nPower;
+  else EditOwenGuildName.Text := CurCastle.m_MasterGuild.sGuildName;      //所属行会
+
+  EditTotalGold.Value := CurCastle.m_nTotalGold;         //资金总数
+  EditTodayIncome.Value := CurCastle.m_nTodayIncome;     //当天收入
+  EditTechLevel.Value := CurCastle.m_nTechLevel;         //等级
+  EditPower.Value := CurCastle.m_nPower;                 //资源
+
+  //守卫状态
   ListViewGuard.Clear;
   ListItem := ListViewGuard.Items.Add;
   ListItem.Caption := '0';
@@ -112,17 +120,34 @@ begin
     ListItem.SubItems.Add(CurCastle.m_MainDoor.BaseObject.m_sCharName);
     ListItem.SubItems.Add(Format('%d:%d', [CurCastle.m_MainDoor.BaseObject.m_nCurrX, CurCastle.m_MainDoor.BaseObject.m_nCurrY]));
     ListItem.SubItems.Add(Format('%d/%d', [CurCastle.m_MainDoor.BaseObject.m_WAbil.HP, CurCastle.m_MainDoor.BaseObject.m_WAbil.MaxHP]));
+
+    CastleDoor :=  TCastleDoor(CurCastle.m_MainDoor.BaseObject);
     if CurCastle.m_MainDoor.BaseObject.m_boDeath then
     begin
-      ListItem.SubItems.Add('损坏');
+       ListItem.SubItems.Add('毁坏');
     end else
-      if (CurCastle.m_DoorStatus <> nil) and CurCastle.m_DoorStatus.boOpened then
-      begin
-        ListItem.SubItems.Add('开启');
-      end else
-      begin
-        ListItem.SubItems.Add('关闭');
-      end;
+     if CastleDoor.m_boOpened then
+    begin
+       ListItem.SubItems.Add('打开');
+    end else
+    begin
+       ListItem.SubItems.Add('关闭');
+    end;
+
+    {
+    if CurCastle.m_MainDoor.BaseObject.m_boDeath then
+    begin
+       ListItem.SubItems.Add('损坏');
+    end else
+    if (CurCastle.m_DoorStatus <> nil) and CurCastle.m_DoorStatus.boOpened then
+    begin
+      ListItem.SubItems.Add('打开');
+    end else
+    begin
+      ListItem.SubItems.Add('关闭');
+    end;
+    }
+     
   end else
   begin
     ListItem.SubItems.Add(CurCastle.m_MainDoor.sName);
@@ -205,6 +230,20 @@ begin
       ListItem.SubItems.Add(Format('%d/%d', [0, 0]));
     end;
   end;
+
+  //设置
+  Edit4.Text := CurCastle.m_sName;      //城堡名
+  
+  if CurCastle.m_MasterGuild = nil then EditOwenGuildName.Text := ''
+  else Edit5.Text := CurCastle.m_MasterGuild.sGuildName;      //所属行会
+
+  Edit1.Text := CurCastle.m_sPalaceMap;    //皇宫所在地图名
+  Edit6.Text := CurCastle.m_sHomeMap;      //行会回城点地图
+  SpinEdit1.Value := CurCastle.m_nHomeX;   //回城坐标 X
+  SpinEdit2.Value := CurCastle.m_nHomeY;  //回城坐标 Y
+
+  Edit3.Text := CurCastle.m_sSecretMap;   //密道地图
+
   boRefing := False;
 end;
 
@@ -239,7 +278,7 @@ begin
   RefCastleInfo();
 end;
 
-procedure TfrmCastleManage.ButtonRefreshClick(Sender: TObject);
+procedure TfrmCastleManage.btnRefreshClick(Sender: TObject);
 begin
   RefCastleInfo();
 end;
@@ -256,4 +295,72 @@ begin
   FromAddGuild.Free;
 end;
 
+//保存城堡信息
+procedure TfrmCastleManage.btnSaveCastleInfoClick(Sender: TObject);
+
+begin
+
+    //城保名不能为空
+    if CurCastle = nil then begin
+        Application.MessageBox( PChar('错误：没有选择城堡!'),'错误信息',MB_OK + MB_ICONERROR);
+        Exit;
+     end;
+
+    CurCastle.m_nTotalGold := EditTotalGold.Value;         //资金总数
+    CurCastle.m_nTodayIncome := EditTodayIncome.Value;     //当天收入
+    CurCastle.m_nTechLevel := EditTechLevel.Value;         //等级
+    CurCastle.m_nPower := EditPower.Value;                 //资源
+
+    CurCastle.SaveConfigFile();                            //保存配置
+
+    Application.MessageBox( '基本状态已保存','信息',MB_OK + MB_ICONINFORMATION);
+
+end;
+
+//保存城堡设置
+procedure TfrmCastleManage.btnSaveSettingClick(Sender: TObject);
+var
+ Guild: TGUild;
+ sGuildName : string;
+ isOK : Integer;
+begin
+
+    //城保名不能为空
+     if CurCastle = nil then begin
+        Application.MessageBox( PChar('错误：没有选择城堡!'),'错误信息',MB_OK + MB_ICONERROR);
+        Exit;
+     end;
+
+    sGuildName := Edit5.Text ;
+    Guild := g_GuildManager.FindGuild( sGuildName );
+    if (Guild = nil) and (CurCastle.m_MasterGuild = nil) then begin
+       Application.MessageBox( PChar(sGuildName + '  行会不存在！'),'错误信息',MB_OK + MB_ICONWARNING);
+
+    end  else if (Guild = nil) and (CurCastle.m_MasterGuild <> nil) then begin
+     isOK :=  Application.MessageBox( PChar(sGuildName +'  行会不存在！请确认是否保存？如果保存将会清除城堡的所属行会。'),'信息',MB_OKCANCEL + MB_ICONERROR);
+       if  isOK = 1 then begin
+          CurCastle.m_sOwnGuild :='游戏管理';               //清空城堡的所有者
+          CurCastle.m_MasterGuild := nil;
+          CurCastle.SaveConfigFile();                       //保存配置
+
+          Edit5.Text := '';      //清空所属行会输入框
+       end;
+    end  else begin
+      //注意：城堡地图，行会回城点地图，是固定的不能修改 ， 这里可以修改城堡的所属行会
+
+      CurCastle.m_nHomeX := SpinEdit1.Value;    //回城坐标 X
+      CurCastle.m_nHomeY := SpinEdit2.Value  ;  //回城坐标 Y
+
+      CurCastle.m_sPalaceMap := Edit1.Text;    //皇宫所在地图 
+      CurCastle.m_sSecretMap := Edit3.Text;    //密道地图
+      
+      CurCastle.m_MasterGuild := Guild;
+      CurCastle.m_sOwnGuild   := sGuildName;
+      
+      CurCastle.SaveConfigFile();
+      Application.MessageBox( '设置已保存','信息',MB_OK + MB_ICONINFORMATION);
+      
+    end;
+ end;
+ 
 end.

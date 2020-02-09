@@ -48,6 +48,10 @@ var
   g_boDynamicIPMode               :Boolean = False;
   g_nLimitOnlineUser              :Integer = 2000;  //服务器最高上线人数
 
+  //游戏控制中心位置坐标
+  g_nGameCenter_MainFormX            :Integer = 310;
+  g_nGameCenter_MainFormY            :Integer = 0;
+
   g_sDBServer_ProgramFile         :String = 'DBServer.exe';
   g_sDBServer_Directory           :String = 'DBServer\';
   g_boDBServer_GetStart           :Boolean = True;
@@ -83,8 +87,8 @@ var
   g_boDBServer_Config_ViewHackMsg :Boolean = False;
   g_sDBServer_AddrTableFile       :String  = '!addrtable.txt';
   g_sDBServer_ServerinfoFile      :String  = '!serverinfo.txt';
-  g_nDBServer_MainFormX           :Integer = 0;
-  g_nDBServer_MainFormY           :Integer = 326;
+  g_nDBServer_MainFormX           :Integer = 305;
+  g_nDBServer_MainFormY           :Integer = 0;
   g_boDBServer_AutoBackup         :Boolean = False;
   g_boDBServer_BackupClearData    :Boolean = True;
   g_dwDBServer_BackupTime         :LongWord = 7200000;
@@ -125,12 +129,9 @@ var
   g_sLoginServerUserLimitFile     :String = '!UserLimit.txt';
   g_sLoginServerFeedIDListFile    :String = 'FeedIDList.txt';
   g_sLoginServerFeedIPListFile    :String = 'FeedIPList.txt';
-  g_nLoginServer_MainFormX        :Integer = 251;
+  g_nLoginServer_MainFormX        :Integer = 305;
   g_nLoginServer_MainFormY        :Integer = 0;
   g_nLoginServer_RouteList        :TList;
-
-
-
 
   g_sLogServer_ProgramFile        :String = 'LogDataServer.exe';
   g_sLogServer_Directory          :String = 'LogServer\';
@@ -139,8 +140,8 @@ var
   g_sLogServer_BaseDir            :String = 'BaseDir\';
   g_sLogServer_ServerAddr         :String = '127.0.0.1';
   g_nLogServer_Port               :Integer = 10000;
-  g_nLogServer_MainFormX          :Integer = 251;
-  g_nLogServer_MainFormY          :Integer = 239;
+  g_nLogServer_MainFormX          :Integer = 940;
+  g_nLogServer_MainFormY          :Integer = 0;
 
   g_sM2Server_ProgramFile         :String = 'M2Server.exe';
   g_sM2Server_Directory           :String = 'Mir200\';
@@ -174,8 +175,8 @@ var
   g_sM2Server_EnvirDir            :String = 'Envir\';
   g_sM2Server_MapDir              :String = 'Map\';
   g_sM2Server_NoticeDir           :String = 'Notice\';
-  g_nM2Server_MainFormX          :Integer = 560;
-  g_nM2Server_MainFormY          :Integer = 0;
+  g_nM2Server_MainFormX          :Integer = 860;
+  g_nM2Server_MainFormY          :Integer = 250;
 
   g_sLoginGate_ProgramFile        :String = 'LoginGate.exe';
   g_sLoginGate_Directory          :String = 'LoginGate\';
@@ -207,7 +208,7 @@ var
   g_nSelGate_BlockMethod        :Integer = 0;
   g_nSelGate_KeepConnectTimeOut :Integer = 60000;
   g_nSelGate_MainFormX          :Integer = 0;
-  g_nSelGate_MainFormY          :Integer = 163;
+  g_nSelGate_MainFormY          :Integer = 200;
 
   g_sRunGate_ProgramFile          :String = 'RunGate.exe';
   g_sRunGate_Directory            :String = 'RunGate\';
@@ -239,6 +240,8 @@ var
   g_nRunGate6_GatePort            :Integer = 7800;
   g_sRunGate7_GateAddr            :String = '0.0.0.0';
   g_nRunGate7_GatePort            :Integer = 7900;
+  g_nRunGate_MainFormX            :Integer = 0;
+  g_nRunGate_MainFormY            :Integer = 400;
 
   DBServer       :TProgram;
   LoginServer    :TProgram;
@@ -260,12 +263,15 @@ var
 
   g_dwStopTick   :LongWord;
   g_dwStopTimeOut :LongWord = 10000;
-  g_boShowDebugTab:Boolean = False;
+  g_boShowDebugTab:Boolean = False;  //用代码控制是否显示TabSheetDebug页（即测试页），False不显示，True显示
   g_dwM2CheckCodeAddr:LongWord;
   g_dwDBCheckCodeAddr:LongWord;
 implementation
 procedure  LoadConfig();
 begin
+  g_nGameCenter_MainFormX := g_IniConf.ReadInteger('GameCenter','MainFormX',g_nGameCenter_MainFormX);
+  g_nGameCenter_MainFormY := g_IniConf.ReadInteger('GameCenter','MainFormY',g_nGameCenter_MainFormY);
+
   g_dwStopTimeOut:=g_IniConf.ReadInteger('GameConf','dwStopTimeOut',g_dwStopTimeOut);
   g_boShowDebugTab:=g_Iniconf.ReadBool('GameConf','ShowDebugTab',g_boShowDebugTab);
   g_sGameDirectory:=g_IniConf.ReadString('GameConf','GameDirectory',g_sGameDirectory);
@@ -304,6 +310,8 @@ begin
   g_nSelGate_GatePort1:=g_IniConf.ReadInteger('SelGate','GatePort1',g_nSelGate_GatePort1);
   g_boSelGate_GetStart:=g_IniConf.ReadBool('SelGate','GetStart',g_boSelGate_GetStart);
 
+  g_nRunGate_MainFormX:=g_IniConf.ReadInteger('RunGate','MainFormX',g_nRunGate_MainFormX);
+  g_nRunGate_MainFormY:=g_IniConf.ReadInteger('RunGate','MainFormY',g_nRunGate_MainFormY);
   g_nRunGate_Count:=g_IniConf.ReadInteger('RunGate','Count',g_nRunGate_Count);
   g_nRunGate_GatePort:=g_IniConf.ReadInteger('RunGate','GatePort1',g_nRunGate_GatePort);
   g_nRunGate1_GatePort:=g_IniConf.ReadInteger('RunGate','GatePort2',g_nRunGate1_GatePort);

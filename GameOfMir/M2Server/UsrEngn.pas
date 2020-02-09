@@ -27,7 +27,7 @@ type
     nProcessHumanLoopTime: Integer;
     nMerchantPosition: Integer; //0x4C
     nNpcPosition: Integer; //0x50
-    StdItemList: TList; //List_54
+    StdItemList: TList; //List_54  数据库中标准的商品列表
     MonsterList: TList; //List_58
     m_MonGenList: TList; //List_5C
     m_MonFreeList: TList;
@@ -729,8 +729,10 @@ procedure TUserEngine.ProcessHumans;
       PlayObject.m_nPayMent := UserOpenInfo.LoadUser.nPayMent;
       PlayObject.m_nPayMode := UserOpenInfo.LoadUser.nPayMode;
       PlayObject.m_dwLoadTick := UserOpenInfo.LoadUser.dwNewUserTick;
-//      PlayObject.m_nSoftVersionDate:=UserOpenInfo.HumInfo.nSoftVersionDate;
-      PlayObject.m_nSoftVersionDateEx := GetExVersionNO(UserOpenInfo.LoadUser.nSoftVersionDate, PlayObject.m_nSoftVersionDate);
+
+      //  PlayObject.m_nSoftVersionDate:=UserOpenInfo.HumInfo.nSoftVersionDate;
+      PlayObject.m_nSoftVersionDateEx := GetExVersionNO(UserOpenInfo.LoadUser.nSoftVersionDate, PlayObject.m_nSoftVersionDate);   //获取软件版本号 (重要，软件版本号不对会让游戏端无法运行)
+
       Result := PlayObject;
     except
       MainOutMessage(sExceptionMsg);
@@ -1445,7 +1447,7 @@ end;
 function TUserEngine.GetStdItem(nItemIdx: Integer): TItem; //004AC2F8
 begin
   Result := nil;
-  Dec(nItemIdx);
+  Dec(nItemIdx);  // nItemIdx 减1
   if (nItemIdx >= 0) and (StdItemList.Count > nItemIdx) then
   begin
     Result := StdItemList.Items[nItemIdx];
@@ -1485,14 +1487,14 @@ begin
   end;
 end;
 
+//跟据商品ID号获取标准商品名
 function TUserEngine.GetStdItemName(nItemIdx: Integer): string; //004AC1AC
 begin
   Result := '';
-  Dec(nItemIdx);
+  Dec(nItemIdx);  //将序号减1,从0开始计算起
   if (nItemIdx >= 0) and (StdItemList.Count > nItemIdx) then
   begin
     Result := TItem(StdItemList.Items[nItemIdx]).Name;
-
   end else Result := '';
 end;
 
@@ -1530,6 +1532,7 @@ begin
   Run();
 end;
 
+//怪物获取随机物品
 function TUserEngine.MonGetRandomItems(mon: TBaseObject): Integer; //004AD2E8
 var
   i: Integer;
@@ -1601,8 +1604,9 @@ begin
   Result := 1;
 end;
 
+//通过物品名称复制物品的信息
 //004AC404
-function TUserEngine.CopyToUserItemFromName(sItemName: string; Item: pTUserItem): Boolean;
+function TUserEngine.CopyToUserItemFromName(sItemName: string; Item: pTUserItem): Boolean;        //lzx??
 var
   i: Integer;
   StdItem: TItem;
@@ -1612,7 +1616,8 @@ begin
   begin
     for i := 0 to StdItemList.Count - 1 do
     begin
-      StdItem := StdItemList.Items[i];
+      StdItem := StdItemList.Items[i];  //StdItemList 是数据库中标准的商品列表
+
       if CompareText(StdItem.Name, sItemName) = 0 then
       begin
         FillChar(Item^, SizeOf(TUserItem), #0);
@@ -1809,6 +1814,8 @@ begin
     FrmMsgClient.SendSocket(IntToStr(nCode) + '/' + EncodeString(IntToStr(nServerIdx)) + '/' + EncodeString(sMsg));
   end;
 end;
+
+//在地图中加入卫士、动物、怪物
 function TUserEngine.AddBaseObject(sMapName: string; nX, nY: Integer; nMonRace: Integer; sMonName: string): TBaseObject; //004AD56C
 var
   Map: TEnvirnoment;
@@ -1825,14 +1832,14 @@ begin
     SUPREGUARD: Cert := TSuperGuard.Create;
     PETSUPREGUARD: Cert := TPetSuperGuard.Create;
     ARCHER_POLICE: Cert := TArcherPolice.Create;
-    ANIMAL_CHICKEN:
+    ANIMAL_CHICKEN:  //鸡
       begin
         Cert := TMonster.Create;
         Cert.m_boAnimal := True;
         Cert.m_nMeatQuality := Random(3500) + 3000;
         Cert.m_nBodyLeathery := 50;
       end;
-    ANIMAL_DEER:
+    ANIMAL_DEER:     //鹿
       begin
         if Random(30) = 0 then
         begin
@@ -1848,7 +1855,7 @@ begin
           Cert.m_nBodyLeathery := 150;
         end;
       end;
-    ANIMAL_WOLF:
+    ANIMAL_WOLF:      //狼
       begin
         Cert := TATMonster.Create;
         Cert.m_boAnimal := True;
@@ -2327,9 +2334,10 @@ begin
   PlayObject.m_btCreditPoint := HumData.btCreditPoint;
   PlayObject.m_btReLevel := HumData.btReLevel;
 
-  PlayObject.m_sMasterName := HumData.sMasterName;
-  PlayObject.m_boMaster := HumData.boMaster;
-  PlayObject.m_sDearName := HumData.sDearName;
+//取消 结婚 和 师徒 系统相关的数据  
+//  PlayObject.m_sMasterName := HumData.sMasterName;
+//  PlayObject.m_boMaster := HumData.boMaster;
+//  PlayObject.m_sDearName := HumData.sDearName;
 
   PlayObject.m_sStoragePwd := HumData.sStoragePwd;
   if PlayObject.m_sStoragePwd <> '' then
@@ -2374,9 +2382,10 @@ begin
   PlayObject.m_UseItems[U_RINGL] := HumItems[U_RINGL];
   PlayObject.m_UseItems[U_RINGR] := HumItems[U_RINGR];
   PlayObject.m_UseItems[U_BUJUK] := HumItems[U_BUJUK];
-  PlayObject.m_UseItems[U_BELT] := HumItems[U_BELT];
-  PlayObject.m_UseItems[U_BOOTS] := HumItems[U_BOOTS];
-  PlayObject.m_UseItems[U_CHARM] := HumItems[U_CHARM];
+
+//  PlayObject.m_UseItems[U_BELT] := HumItems[U_BELT];
+//  PlayObject.m_UseItems[U_BOOTS] := HumItems[U_BOOTS];
+//  PlayObject.m_UseItems[U_CHARM] := HumItems[U_CHARM];
 
   BagItems := @HumanRcd.Data.BagItems;
   for i := Low(TBagItems) to High(TBagItems) do
