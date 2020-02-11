@@ -540,7 +540,7 @@ begin
           //在显示游戏界面显示【地图名，位置坐标】，【系统时间】
            SetBkMode (Canvas.Handle, TRANSPARENT);
            oldFontSize := Canvas.Font.Size;
-           Canvas.Font.Size :=11;
+           Canvas.Font.Size :=10;
 
            //在游戏界面左下角，显示角色所在地图和位置 (坐标)
            BoldTextOut (MSurface, 8, SCREENHEIGHT-20, clWhite, clBlack, g_sMapTitle + ' ' + IntToStr(g_MySelf.m_nCurrX) + ':' + IntToStr(g_MySelf.m_nCurrY));
