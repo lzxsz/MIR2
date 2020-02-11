@@ -1482,7 +1482,7 @@ begin
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);  //创建魔法
             meff.MagExplosionBase := 1564; //1570;  //1560~1569帧是人物使用该魔法时自己身体上出现的特效果，1570~1579是目标上出现的特效
             meff.TargetActor := target;
-            meff.NextFrameTime := 80;
+            meff.NextFrameTime := 60;  //80;
             meff.ExplosionFrame := 16;         //爆炸帧的数量
           end;
     

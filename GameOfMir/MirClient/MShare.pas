@@ -434,8 +434,8 @@ var
   g_boParalyCanHit       :Boolean  = False;//麻痹是否可以攻击
   g_boParalyCanSpell     :Boolean  = False;//麻痹是否可以魔法
 
-  g_boShowRedHPLable     :Boolean  = True; //显示血条     saharah
-  g_boShowHPNumber       :Boolean  = True; //显示血量数字
+  g_boShowRedHPLable     :Boolean  = False; // True; //显示血条     saharah
+  g_boShowHPNumber       :Boolean  = False; // True; //显示血量数字
   g_boShowJobLevel       :Boolean  = True; //显示职业等级
   g_boDuraAlert          :Boolean  = True; //物品持久警告
   g_boMagicLock          :Boolean  = False; //魔法锁定

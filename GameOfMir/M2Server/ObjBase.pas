@@ -1658,6 +1658,8 @@ begin
 end;
 
 //客户端捡起物品
+//修正：当捡人物起地面的技能书时物品时，出现书的类型数据掉失，造成技能书在背包显示类型错误。
+//
 function TPlayObject.ClientPickUpItem: Boolean; //004C5CB0
   function IsSelf(BaseObject: TBaseObject): Boolean;
   begin
@@ -1731,8 +1733,14 @@ begin
     if m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem)) = 1 then
     begin
       New(UserItem);
-      UserItem^ := MapItem.UserItem;   //地图物品
-      StdItem := UserEngine.GetStdItem(UserItem.wIndex); //获取标准物品
+      
+      //问题错误所在：这里不能直接将创建的对象指向地面的物品，因为地面的物品会被删除。
+      //正确的方法是通过商品名从标准库中重新复制商品信息，然后加到背包中。  
+      //UserItem^ := MapItem.UserItem;   //地图物品      Modiied lzx2020/02/11
+
+      StdItem := UserEngine.GetStdItem(MapItem.UserItem.wIndex); //获取标准物品
+      UserEngine.CopyToUserItemFromName(StdItem.Name, UserItem); //重要！！ 从标准库中重新复制商品信息到新创建的对象中 Add lzx2020/02/11
+
       if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then  //人物负重是否允许
       begin
         SendMsg(Self, RM_ITEMHIDE, 0, Integer(MapItem), m_nCurrX, m_nCurrY, '');
@@ -1751,6 +1759,7 @@ begin
               '1' + #9 +
               '0');
         Dispose(MapItem);    //删除地图物品
+        
         if m_btRaceServer = RC_PLAYOBJECT then
         begin
           PlayObject := TPlayObject(Self);
@@ -16753,6 +16762,7 @@ begin
     '');
 end;
 
+//发送服务端对客户端的配置
 procedure TPlayObject.SendServerConfig;
 var
   nRecog, nParam: Integer;

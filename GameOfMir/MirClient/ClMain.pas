@@ -6414,6 +6414,7 @@ begin
   end;
 end;
 
+//获取服务端对客户端的配置
 procedure TfrmMain.ClientGetServerConfig(Msg: TDefaultMessage;sBody: String);
 var
   ClientConf:TClientConf;
@@ -6444,8 +6445,8 @@ begin
   g_boParalyCanWalk      :=ClientConf.boParalyCanWalk;
   g_boParalyCanHit       :=ClientConf.boParalyCanHit;
   g_boParalyCanSpell     :=ClientConf.boParalyCanSpell;
-  g_boShowRedHPLable     :=ClientConf.boShowRedHPLable;
-  g_boShowHPNumber       :=ClientConf.boShowHPNumber;
+  g_boShowRedHPLable     := ClientConf.boShowRedHPLable;  //服务端控制是否显示血条,缺省为False
+  g_boShowHPNumber       := ClientConf.boShowHPNumber;
   g_boShowJobLevel       :=ClientConf.boShowJobLevel;
   g_boDuraAlert          :=ClientConf.boDuraAlert;
   g_boMagicLock          :=ClientConf.boMagicLock;

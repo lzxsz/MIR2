@@ -4155,7 +4155,7 @@ begin
                if (g_MouseItem.S.Shape = 13) and (g_MouseItem.S.StdMode = 3) then
                  line2 := '授予用户 ' +inttostr(g_MouseItem.S.DuraMax) +' 点经验值'
             end;
-         4:
+         4:     // 书
             begin
                line1 := line1 + sWgt +  IntToStr(g_MouseItem.S.Weight);
                line3 := '需要等级' + IntToStr(g_MouseItem.S.DuraMax);

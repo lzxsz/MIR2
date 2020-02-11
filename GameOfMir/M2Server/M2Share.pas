@@ -2165,7 +2165,7 @@ var
     boParalyCanWalk: False;
     boParalyCanHit: False;
     boParalyCanSpell: False;
-    boShowRedHPLable: False;
+    boShowRedHPLable: False;  //ÊÇ·ñÏÔÊ¾ÑªÌõ
     boShowHPNumber: False;
     boShowJobLevel: True;
     boDuraAlert: True;

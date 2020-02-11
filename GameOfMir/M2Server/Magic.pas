@@ -502,7 +502,7 @@ begin //0049350C
       if MagMakeFireCross(PlayObject,
                           PlayObject.GetAttackPower (GetPower(MPow(UserMagic)) + LoWord(PlayObject.m_WAbil.MC),
                           SmallInt(HiWord(PlayObject.m_WAbil.MC)-LoWord(PlayObject.m_WAbil.MC))+ 1),
-                          GetPower(10) + (Word(GetRPow(PlayObject.m_WAbil.MC)) shr 1),
+                          GetPower(10) + (Word(GetRPow(PlayObject.m_WAbil.MC)) shr 1),  //火墙时间
                           nTargetX,
                           nTargetY) > 0 then
         boTrain:=True;
@@ -796,9 +796,9 @@ begin
           if Random(1) = 0 then begin
 
             // if Random((BaseObject.m_Abil.Level + 20) + (nMagicLevel * 5)) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
-            if RandomRange(BaseObject.m_Abil.Level, (BaseObject.m_Abil.Level + 20)) + (nMagicLevel * 5) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
+            if RandomRange(BaseObject.m_Abil.Level, (BaseObject.m_Abil.Level + 20) + (nMagicLevel * 5)) > (TargeTBaseObject.m_Abil.Level + g_Config.nMagTammingTargetLevel{10}) then begin
 
-              if not(TargeTBaseObject.m_boNoTame) and   //目标宠物是否已被训化，如果已经有主人的宠物，说明是被已被训化的（m_boNoTame为TRUE）
+               if not(TargeTBaseObject.m_boNoTame) and   //目标宠物是否已被训化，如果已经有主人的宠物，说明是被已被训化的（m_boNoTame为TRUE）
                  (TargeTBaseObject.m_btLifeAttrib <> LA_UNDEAD) and                                                             
                  (TargeTBaseObject.m_Abil.Level < g_Config.nMagTammingLevel{50}) and
                  (BaseObject.m_SlaveList.Count < g_Config.nMagTammingCount{(nMagicLevel + 2)}) then begin
@@ -809,7 +809,6 @@ begin
                  else Inc(n14,n14);       //n14 + n14 --> n14  怪物血量大于规定血量时，增加诱惑难度
 
                 if (TargeTBaseObject.m_Master <> BaseObject) and (Random(n14) = 0) then begin
-                //if (TargeTBaseObject.m_Master <> BaseObject)  then begin
                 
                   TargeTBaseObject.BreakCrazyMode();
                   if TargeTBaseObject.m_Master <> nil then begin
@@ -844,25 +843,30 @@ begin
                   BaseObject.m_SlaveList.Add(TargeTBaseObject);   //诱惑怪物成功
                   
                 end else begin //004925F2
-                  if Random(20) = 0 then TargeTBaseObject.m_WAbil.HP:=0;     //怪物被招死    14
-                end;                  
+                  if Random(14) = 0 then TargeTBaseObject.m_WAbil.HP:=0;     //怪物被招死
+
+                end;
               end else begin //00492615
                 if (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then   //所招怪物为不死系 （如稻草人）
                   TargeTBaseObject.m_WAbil.HP:=0;        //怪物被招死
+
               end;
             end else begin //00492641
               if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) and (Random(20) = 0) then //所招怪物为非不死系 （如钉耙猫）
                 TargeTBaseObject.OpenCrazyMode(Random(20) + 10);  //怪物狂怒，名字变红色
-            end;
+
+             end;
           end else begin //00492674
             if not (TargeTBaseObject.m_btLifeAttrib = LA_UNDEAD) then    //所招怪物为非不死系
               TargeTBaseObject.OpenCrazyMode(Random(20) + 10);  //怪物狂怒，名字变红色
+
           end;
         end; //004926B0
 
       end else begin //00492699
          //TargeTBaseObject.OpenHolySeizeMode((nMagicLevel * 5 + 10) * 1000);    
          TargeTBaseObject.OpenHolySeizeMode(Random(nMagicLevel * 5 + 10) * 1000);   //怪物被定住，名字变褐色
+
       end;
       Result:=True;
       
