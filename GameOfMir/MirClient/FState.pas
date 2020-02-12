@@ -4589,7 +4589,7 @@ begin
    end;
 end;
 
-//显示顶部栏物品信息（需要包裹窗口打开，在包裹窗口下面信息栏显示）
+//显示背包物品信息，包括顶部快捷栏6个物品的信息
 procedure TFrmDlg.DItemBagDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -4604,7 +4604,10 @@ begin
       if d <> nil then
          dsurface.Draw (SurfaceX(Left), SurfaceY(Top), d.ClientRect, d, TRUE);   //显示包裹背景图片
 
-      GetMouseItemInfo (d0, d1, d2, d3, useable);
+         
+      //显示背包物品信息
+      GetMouseItemInfo (d0, d1, d2, d3, useable);    
+
       with dsurface.Canvas do begin
          SetBkMode (Handle, TRANSPARENT);
          Font.Color := clWhite;
@@ -4612,16 +4615,17 @@ begin
          if d0 <> '' then begin
             n := TextWidth (d0);
             Font.Color := clYellow;
-            TextOut (SurfaceX(Left+70{70}), SurfaceY(Top+215{215}), d0);
+            TextOut (SurfaceX(Left+70), SurfaceY(Top+215), d0);
             Font.Color := clWhite;
-            TextOut (SurfaceX(Left+70{70}) + n, SurfaceY(Top+215{215}), d1);
-            TextOut (SurfaceX(Left+70{70}), SurfaceY(Top+215{215}+14), d2);
+            TextOut (SurfaceX(Left+70) + n, SurfaceY(Top+215), d1);
+            TextOut (SurfaceX(Left+70), SurfaceY(Top+215+14), d2);
             if not useable then
                Font.Color := clRed;
-            TextOut (SurfaceX(Left+70{70}), SurfaceY(Top+215{215}+14*2), d3);
+            TextOut (SurfaceX(Left+70), SurfaceY(Top+215+14*2), d3);
          end;
          Release;
       end;
+
    end;
 end;
 
@@ -4666,7 +4670,7 @@ begin
    DItemBag.Visible := FALSE;
 end;
 
-//包裹物品信息，光标提示功能  （该功能取消）
+//包裹物品信息，光标浮动提示功能  （该功能取消）
 procedure TFrmDlg.DItemGridGridMouseMove(Sender: TObject; ACol,
   ARow: Integer; Shift: TShiftState);
 var
@@ -4682,11 +4686,15 @@ begin
    end else begin
       idx := ACol + ARow * DItemGrid.ColCount + 6;
       if idx in [6..MAXBAGITEM-1] then begin
-         g_MouseItem := g_ItemArr[idx];
-       GetMouseItemInfo (iname, d1, d2, d3, useable);
+       g_MouseItem := g_ItemArr[idx];    //获取光标指向物品的信息
+       
 
-         //包裹物品信息光标提示功能 （取消提示显示）。modified by lzx 2019-12-16
-         {
+     //显示背包物品信息 (浮动提示)
+ {
+       GetMouseItemInfo (iname, d1, d2, d3, useable); 
+
+        //包裹物品信息光标提示功能 （取消提示显示）。modified by lzx 2019-12-16
+
          if iname <> '' then begin
             if useable then hcolor := clWhite
             else hcolor := clRed;
@@ -4698,7 +4706,7 @@ begin
            end;
 
           g_MouseItem.S.Name := ''; //本代码是在包裹底部显示物品信息，这里清除信息，是指不底部信息栏显示。
-         }
+ }
 
       end;
    end;
@@ -6114,7 +6122,7 @@ begin
      //原为打开，显示他人人物信息里的装备信息，显示在人物下方
         if g_MouseUserStateItem.S.Name <> '' then begin
          g_MouseItem := g_MouseUserStateItem;
-         
+
          GetMouseItemInfo (iname, d1, d2, d3, useable);
          if iname <> '' then begin
             if g_MouseItem.Dura = 0 then hcolor := clRed

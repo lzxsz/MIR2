@@ -244,6 +244,8 @@ begin
     Result := 1;
   end;
 end;
+
+//加载物品数据库
 //004855E0
 function TFrmDB.LoadItemsDB: Integer;
 var

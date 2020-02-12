@@ -318,7 +318,6 @@ var
   g_wAvailIPDay             :Word;
   g_wAvailIPHour            :Word;
 
-
   g_MySelf                  :THumActor;
   g_MyDrawActor             :THumActor; //未用
   g_UseItems                :array[0..12] of TClientItem;
@@ -357,8 +356,8 @@ var
   g_nDealGold               :Integer;
   g_nDealRemoteGold         :Integer;
   g_boDealEnd               :Boolean;
-  g_sDealWho                :String;  //交易对方名字
-  g_MouseItem               :TClientItem;
+  g_sDealWho                :String;        //交易对方名字
+  g_MouseItem               :TClientItem;  //背包光标指向的物品
   g_MouseStateItem          :TClientItem;  //本人光标信息
   g_MouseUserStateItem      :TClientItem;  //他人光标信息
 
@@ -375,9 +374,6 @@ var
   g_boNoDarkness            :Boolean;
   g_nRunReadyCount          :Integer; //助跑就绪次数，在跑前必须走几步助跑
 
-
-
-
   g_EatingItem              :TClientItem;
   g_dwEatTime               :LongWord; //timeout...
 
@@ -390,12 +386,8 @@ var
   g_nFadeIndex              :Integer;
   g_boDoFastFadeOut         :Boolean;
 
-
-
-
   g_boAutoDig               :Boolean;  //自动锄矿
   g_boSelectMyself          :Boolean;  //鼠标是否指到自己
-
 
   //游戏速度检测相关变量
   g_dwFirstServerTime       :LongWord;

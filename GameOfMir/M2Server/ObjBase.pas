@@ -1658,8 +1658,6 @@ begin
 end;
 
 //客户端捡起物品
-//修正：当捡人物起地面的技能书时物品时，出现书的类型数据掉失，造成技能书在背包显示类型错误。
-//
 function TPlayObject.ClientPickUpItem: Boolean; //004C5CB0
   function IsSelf(BaseObject: TBaseObject): Boolean;
   begin
@@ -1734,17 +1732,14 @@ begin
     begin
       New(UserItem);
       
-      //问题错误所在：这里不能直接将创建的对象指向地面的物品，因为地面的物品会被删除。
-      //正确的方法是通过商品名从标准库中重新复制商品信息，然后加到背包中。  
-      //UserItem^ := MapItem.UserItem;   //地图物品      Modiied lzx2020/02/11
+      UserItem^ := MapItem.UserItem;   //地图物品 
 
       StdItem := UserEngine.GetStdItem(MapItem.UserItem.wIndex); //获取标准物品
-      UserEngine.CopyToUserItemFromName(StdItem.Name, UserItem); //重要！！ 从标准库中重新复制商品信息到新创建的对象中 Add lzx2020/02/11
 
       if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then  //人物负重是否允许
       begin
-        SendMsg(Self, RM_ITEMHIDE, 0, Integer(MapItem), m_nCurrX, m_nCurrY, '');
         AddItemToBag(UserItem); //将物品放入背包
+        SendMsg(Self, RM_ITEMHIDE, 0, Integer(MapItem), m_nCurrX, m_nCurrY, '');   //地面物品隐藏
 
         if not IsCheapStuff(StdItem.StdMode) then
           if StdItem.NeedIdentify = 1 then //004C60FF
@@ -1753,7 +1748,7 @@ begin
               IntToStr(m_nCurrX) + #9 +
               IntToStr(m_nCurrY) + #9 +
               m_sCharName + #9 +
-                                    //UserEngine.GetStdItemName(pu.wIndex) + #9 +
+              //UserEngine.GetStdItemName(pu.wIndex) + #9 +
               StdItem.Name + #9 +
               IntToStr(UserItem.MakeIndex) + #9 +
               '1' + #9 +

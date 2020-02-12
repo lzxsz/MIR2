@@ -1093,6 +1093,7 @@ end;
 procedure TFrmMain.MENU_CONTROL_RELOAD_CONFClick(Sender: TObject);
 begin
   ReloadConfig(Sender);
+  MainOutMessage('信息: 重新加载参数设置完成...');
 end;
 
 procedure TFrmMain.MENU_CONTROL_CLEARLOGMSGClick(Sender: TObject);
@@ -1505,7 +1506,7 @@ procedure TFrmMain.MENU_CONTROL_RELOAD_MONSTERSAYClick(Sender: TObject);
 begin
   UserEngine.ClearMonSayMsg();
   LoadMonSayMsg();
-  MainOutMessage('信息：重新加载怪物说话配置成功...');
+  MainOutMessage('信息: 重新加载怪物说话配置成功...');
 end;
 
 procedure TFrmMain.MENU_CONTROL_RELOAD_DISABLEMAKEClick(Sender: TObject);
@@ -1530,14 +1531,14 @@ begin
   LoadDenyChrNameList();
   LoadNoClearMonList();
   FrmDB.LoadAdminList();
-  MainOutMessage('信息：重新加载列表信息完成...');
+  MainOutMessage('信息: 重新加载数据列表信息完成...');
 end;
 
 
 procedure TFrmMain.MENU_CONTROL_RELOAD_STARTPOINTClick(Sender: TObject);
 begin
   FrmDB.LoadStartPoint();
-  MainOutMessage('信息：重新加载地图安全区列表完成...');
+  MainOutMessage('信息: 重新加载地图安全区列表完成...');
 end;
 
 procedure TFrmMain.MENU_CONTROL_GATE_OPENClick(Sender: TObject);

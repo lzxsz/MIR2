@@ -2095,7 +2095,7 @@ object frmGameConfig: TfrmGameConfig
           MaxValue = 2000
           MinValue = 1
           TabOrder = 0
-          Value = 10
+          Value = 1
           OnChange = EditKillMonExpMultipleChange
         end
         object CheckBoxHighLevelKillMonFixExp: TCheckBox
