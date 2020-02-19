@@ -85,6 +85,8 @@ OriginalFilename=
 ProductName=LoginGate.exe
 ProductVersion=1.5.0 (20020522)
 Comments=
+[Excluded Packages]
+D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -96,6 +98,7 @@ Count=2
 Item0=..\Build\LoginGate\
 Item1=..\..\Build\LoginGate\
 [HistoryLists\hlOutputDirectorry]
-Count=2
+Count=3
 Item0=..\MirServer
-Item1=..\..\Release\LoginGate\
+Item1=D:\Mirserver\LoginGate
+Item2=..\..\Release\LoginGate\

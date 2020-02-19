@@ -117,13 +117,20 @@ object frmGeneralConfig: TfrmGeneralConfig
       Top = 56
       Width = 145
       Height = 25
+      Orientation = trHorizontal
+      Frequency = 1
+      Position = 0
+      SelEnd = 0
+      SelStart = 0
       TabOrder = 1
+      TickMarks = tmBottomRight
+      TickStyle = tsAuto
     end
   end
   object ButtonOK: TButton
-    Left = 296
+    Left = 278
     Top = 128
-    Width = 65
+    Width = 80
     Height = 25
     Caption = #30830#23450'(&O)'
     TabOrder = 2
