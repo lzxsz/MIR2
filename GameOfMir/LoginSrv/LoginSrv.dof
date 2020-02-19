@@ -85,6 +85,8 @@ OriginalFilename=
 ProductName=LoginSrv.exe
 ProductVersion=1.5.0 (20020522)
 Comments=
+[Excluded Packages]
+D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -99,10 +101,11 @@ Item2=c:\gameofmir\release\loginsvr
 Item3=c:\gameofmir\release\loginsrv
 Item4=..\Build\LoginTools\
 [HistoryLists\hlOutputDirectorry]
-Count=6
+Count=7
 Item0=..\MirServer
-Item1=..\..\Release\LoginSrv\
-Item2=..\Release\LoginSrv\
-Item3=c:\gameofmir\release\loginsvr
-Item4=c:\gameofmir\release\loginsrv
-Item5=C:\mir2
+Item1=D:\Mirserver\LoginSrv
+Item2=..\..\Release\LoginSrv\
+Item3=..\Release\LoginSrv\
+Item4=c:\gameofmir\release\loginsvr
+Item5=c:\gameofmir\release\loginsrv
+Item6=C:\mir2

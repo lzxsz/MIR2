@@ -4,9 +4,15 @@ interface
 uses
   Windows,Classes,SysUtils,Forms,Grobal2,MudUtil;
 ResourceString
-  sDBHeaderDesc     = '游戏数据库文件 2009/09/09';
-  sDBIdxHeaderDesc  = '游戏数据库索引文件 2009/09/09';
+  //sDBHeaderDesc     = '游戏数据库文件 2009/09/09';
+  //sDBIdxHeaderDesc  = '游戏数据库索引文件 2009/09/09';
+
+   sDBHeaderDesc     = 'MIR2 DB File 2002/05/22';
+   sDBIdxHeaderDesc  = 'MIR2 DB Index File 2002/05/22';
 type
+
+
+{
   TDBHeader = packed record
     sDesc       :String[34]; //0x00
     n23         :Integer;    //0x23
@@ -31,9 +37,41 @@ type
     nDeletedIdx :Integer;    //0x70
     dUpdateDate :TDateTime;  //0x74
   end;
+ }
+
+  //登录帐号(ID DB)文件头  (字节128 Byte)
+  //TDBHeader = packed record
+  TDBHeader =  record
+    sDesc       :String[39]; //0x00   40 Byte
+    n28         :Integer;    //0x28   4  Byte
+    n2C         :Integer;    //0x2C
+    n30         :Integer;    //0x30
+    n34         :Integer;    //0x34
+    n38         :Integer;    //0x38
+    n3C         :Integer;    //0x3C
+    n40         :Integer;    //0x40
+    n44         :Integer;    //0x44
+    n48         :Integer;    //0x48
+    n4C         :Integer;    //0x4C
+    n50         :Integer;    //0x50
+    n54         :Integer;    //0x54
+    n58         :Integer;    //0x58
+    nLastIndex  :Integer;    //0x5C
+    dLastDate   :TDateTime;  //0x60   8 Byte
+    nIDCount    :Integer;    //0x68
+    n6C         :Integer;    //0x6C                           
+    nDeletedIdx :Integer;    //0x70
+    n74         :Integer;    //0x74
+    dUpdateDate :TDateTime;  //0x78   8 Byte
+  end;
+
   pTDBHeader = ^TDBHeader;
-  TIdxHeader = packed record
-    sDesc       :String[43]; //0x00
+
+  //登录帐号(ID DB)索引文件头  (字节128 Byte)
+  //TIdxHeader = packed record
+  TIdxHeader =  record
+    sDesc       :String[39]; //0x00    40 Byte
+    n28         :Integer;    //0x28    4  Byte
     n2C         :Integer;    //0x2C
     n30         :Integer;    //0x30
     n34         :Integer;    //0x34
@@ -51,9 +89,10 @@ type
     nQuickCount :Integer;    //0x64
     nIDCount    :Integer;    //0x68
     nLastIndex  :Integer;    //0x6C
-    dUpdateDate :TDateTime;  //0x70
+    n70         :Integer;    //0x70
+    n74         :Integer;    //0x74
+    dUpdateDate :TDateTime;  //0x78   8  Byte
   end;
-
 
   TRecordDeletedHeader = packed record
     boDeleted     :Boolean;
@@ -67,20 +106,19 @@ type
 //    sAccount   :String[11];//0x14
   end;
 
-
-
   TIdxRecord = packed record
-    sName       :String[11];
-    nIndex      :Integer;
+    sName       :String[11];   // 12 Byte
+    nIndex      :Integer;      // 4  Byte
   end;
   pTIdxRecord = ^TIdxRecord;
+  
   //TNotifyEvent = procedure(Sender: TObject) of object;
   TFileIDDB = class
     m_nLastReadIdx  :Integer;        //0x4  最后访问的记录号
     m_nDeletedIdx   :Integer;        //0x8  已删除的最后一个记录号
     nC              :Integer;        //0x0C
-//    w10         :Word;           //0x10
-//    w12         :Word;           //0x12
+//    w10         :Word;             //0x10
+//    w12         :Word;             //0x12
 //    n14         :Integer;
     m_OnChange      :TNotifyEvent;
     m_boChanged     :Boolean;        //0x18 数据库已被更改
@@ -169,6 +207,7 @@ begin
   end else begin
     m_nFileHandle:=FileCreate(m_sDBFileName);
     if m_nFileHandle > 0 then begin
+      FillChar(m_Header,SizeOf(TDBHeader),#0);
       m_Header.sDesc       := sDBHeaderDesc;
       m_Header.nIDCount    := 0;
       m_Header.n6C         := 0;
