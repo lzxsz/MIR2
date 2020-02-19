@@ -21,10 +21,13 @@ type
     EditAccount: TEdit;
     Label3: TLabel;
     EditPassword: TEdit;
-    Label4: TLabel;
-    EditDearName: TEdit;
-    Label5: TLabel;
-    EditMasterName: TEdit;
+
+//取消结婚、师徒功能
+//    Label4: TLabel;
+//    EditDearName: TEdit;
+//    Label5: TLabel;
+//    EditMasterName: TEdit;
+
     GroupBox2: TGroupBox;
     Label6: TLabel;
     Label7: TLabel;
@@ -65,11 +68,14 @@ type
     ButtonImportData: TButton;
     SaveDialog: TSaveDialog;
     OpenDialog: TOpenDialog;
-    CheckBoxIsMaster: TCheckBox;
+
+//取消结婚、师徒功能
+//    CheckBoxIsMaster: TCheckBox;
+
     procedure ButtonExportDataClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure EditPasswordChange(Sender: TObject);
-  private
+   private
     m_boOpened:Boolean;
     procedure RefShow();
     procedure RefShowRcd();
@@ -412,5 +418,7 @@ begin
   end
 
 end;
+
+
 
 end.

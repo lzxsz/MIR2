@@ -85,6 +85,8 @@ OriginalFilename=
 ProductName=DBServer.exe
 ProductVersion=1.5.0 (20020522)
 Comments=
+[Excluded Packages]
+D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -97,7 +99,9 @@ Item0=..\Build\DBServer
 Item1=..\..\Build\DBServer\
 Item2=..\Build\DBServer\
 [HistoryLists\hlOutputDirectorry]
-Count=3
+Count=5
 Item0=..\MirServer
-Item1=..\..\Release\DBServer\
-Item2=..\Release\DBServer\
+Item1=D:\Mirserver\DBServer
+Item2=D:\GameOfMir\DBServer
+Item3=..\..\Release\DBServer\
+Item4=..\Release\DBServer\

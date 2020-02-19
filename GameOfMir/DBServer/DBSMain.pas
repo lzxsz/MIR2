@@ -635,8 +635,8 @@ begin
   SendGameCenterMsg(SG_STARTNOW,'正在启动数据库服务器...');
   StartTimer.Enabled:=False;
   boOpenDBBusy:=True;
-  HumChrDB:=TFileHumDB.Create(sHumDBFilePath + 'Hum.DB');
-  HumDataDB:=TFileDB.Create(sDataDBFilePath + 'Mir.DB');
+  HumChrDB:=TFileHumDB.Create(sHumDBFilePath + 'Hum.DB');  //人物角色文件
+  HumDataDB:=TFileDB.Create(sDataDBFilePath + 'Mir.DB');   //人物数据文件
   boOpenDBBusy:=False;
   boAutoClearDB:=True;
   Label4.Caption:='';

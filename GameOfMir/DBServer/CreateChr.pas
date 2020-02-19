@@ -16,6 +16,7 @@ type
     Label3: TLabel;
     EditSelectID: TEdit;
     procedure FormShow(Sender : TObject);
+
   private
     function  GetInputInfo():Boolean;
     { Private declarations }
@@ -61,7 +62,15 @@ begin
       MessageBox(Handle,'选择ID输入不正确！！！','确认信息',MB_OK + MB_ICONEXCLAMATION);
       exit;
     end;
+
+    if sChrName = '' then begin
+      MessageBox(Handle,'人物名称不能为空','错误',MB_OK + MB_ICONERROR);
+      Exit;
+    end;
+
       Result:= True;
   end;
 end;
+
+
 end.

@@ -1,6 +1,6 @@
 object frmDBTool: TfrmDBTool
-  Left = 224
-  Top = 281
+  Left = 362
+  Top = 264
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #25968#25454#31649#29702#24037#20855
@@ -17,7 +17,7 @@ object frmDBTool: TfrmDBTool
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
-    Left = 8
+    Left = 9
     Top = 8
     Width = 577
     Height = 273
@@ -34,17 +34,17 @@ object frmDBTool: TfrmDBTool
         Caption = #20154#29289#20449#24687#25968#25454#24211'(Mir.DB)'
         TabOrder = 0
         object GridMirDBInfo: TStringGrid
-          Left = 8
-          Top = 16
-          Width = 257
-          Height = 201
+          Left = 7
+          Top = 20
+          Width = 260
+          Height = 200
           ColCount = 2
           DefaultRowHeight = 18
           RowCount = 10
           TabOrder = 0
           ColWidths = (
             64
-            181)
+            187)
         end
       end
       object GroupBox2: TGroupBox
@@ -55,17 +55,17 @@ object frmDBTool: TfrmDBTool
         Caption = #20154#29289#25968#25454#24211'(Hum.DB)'
         TabOrder = 1
         object GridHumDBInfo: TStringGrid
-          Left = 8
-          Top = 16
-          Width = 257
-          Height = 201
+          Left = 7
+          Top = 19
+          Width = 260
+          Height = 200
           ColCount = 2
           DefaultRowHeight = 18
           RowCount = 10
           TabOrder = 0
           ColWidths = (
             64
-            181)
+            187)
         end
       end
     end
@@ -73,11 +73,11 @@ object frmDBTool: TfrmDBTool
       Caption = #25968#25454#24211#37325#24314
       ImageIndex = 1
       object LabelProcess: TLabel
-        Left = 8
-        Top = 224
-        Width = 64
+        Left = 14
+        Top = 216
+        Width = 60
         Height = 13
-        Caption = 'LabelProcess'
+        Caption = #22788#29702#25552#31034'    '
       end
       object ButtonStartRebuild: TButton
         Left = 8
@@ -91,14 +91,14 @@ object frmDBTool: TfrmDBTool
       object GroupBox3: TGroupBox
         Left = 8
         Top = 48
-        Width = 185
-        Height = 121
+        Width = 241
+        Height = 137
         Caption = #37325#24314#36873#39033
         TabOrder = 1
         object CheckBoxDelDenyChr: TCheckBox
           Left = 16
-          Top = 16
-          Width = 113
+          Top = 26
+          Width = 161
           Height = 17
           Caption = #21024#38500#24050#31105#29992#30340#35282#33394
           TabOrder = 0
@@ -106,8 +106,8 @@ object frmDBTool: TfrmDBTool
         end
         object CheckBoxDelAllItem: TCheckBox
           Left = 16
-          Top = 48
-          Width = 113
+          Top = 68
+          Width = 129
           Height = 17
           Caption = #21024#38500#20154#29289#29289#21697
           TabOrder = 1
@@ -115,8 +115,8 @@ object frmDBTool: TfrmDBTool
         end
         object CheckBoxDelAllSkill: TCheckBox
           Left = 16
-          Top = 64
-          Width = 113
+          Top = 89
+          Width = 129
           Height = 17
           Caption = #21024#38500#20154#29289#25216#33021
           TabOrder = 2
@@ -124,8 +124,8 @@ object frmDBTool: TfrmDBTool
         end
         object CheckBoxDelBonusAbil: TCheckBox
           Left = 16
-          Top = 80
-          Width = 113
+          Top = 110
+          Width = 137
           Height = 17
           Caption = #21024#38500#20154#29289#23646#24615#28857
           TabOrder = 3
@@ -133,8 +133,8 @@ object frmDBTool: TfrmDBTool
         end
         object CheckBoxDelLevel: TCheckBox
           Left = 16
-          Top = 32
-          Width = 153
+          Top = 47
+          Width = 201
           Height = 17
           Caption = #21024#38500#20154#29289#31561#32423#21450#30456#20851#20449#24687
           TabOrder = 4
@@ -147,7 +147,7 @@ object frmDBTool: TfrmDBTool
     Enabled = False
     Interval = 500
     OnTimer = TimerShowInfoTimer
-    Left = 104
-    Top = 248
+    Left = 224
+    Top = 240
   end
 end

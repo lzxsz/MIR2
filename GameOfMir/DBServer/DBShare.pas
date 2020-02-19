@@ -106,7 +106,7 @@ var
   sGateIDConfFileName:String = '.\SelectID.txt';
 
   sMapFile           :String;
-  DenyChrNameList    :TStringList;
+  DenyChrNameList    :TStringList;  //拒绝接受的角色名称
   ServerIPList       :TStringList;
   GateIDList         :TStringList;
   {

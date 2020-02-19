@@ -146,8 +146,8 @@ procedure TFrmFDBExplore.BtnAutoCleanClick(Sender : TObject);
 //0x004A5D40
 begin
   boAutoClearDB:=not boAutoClearDB;
-  if boAutoClearDB then BtnAutoClean.Caption:='已启动'
-  else BtnAutoClean.Caption:='已停止';
+  if boAutoClearDB then BtnAutoClean.Caption:='自动清理'
+  else BtnAutoClean.Caption:='停止清理';
 end;
 
 procedure TFrmFDBExplore.Timer1Timer(Sender : TObject);

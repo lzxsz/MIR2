@@ -11,6 +11,8 @@ type
     nSelectID   :Integer;
   end;
   pTQuickID =^TQuickID;
+
+  //人物快速列表
   TQuickList = class(TStringList)
   private
     CriticalSection:TRTLCriticalSection;
@@ -27,6 +29,8 @@ type
   published
     property boCaseSensitive:Boolean read GetCaseSensitive write SetCaseSensitive;
   end;
+
+  //人物快速列表索引
   TQuickIDList = class(TStringList)
   public
     procedure AddRecord(sAccount, sChrName:String;nIndex,nSelIndex: Integer);

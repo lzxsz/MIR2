@@ -262,7 +262,7 @@ begin
   Result:=nUserCount;
 end;
 
-
+//创建新角色
 function TFrmUserSoc.NewChrData(sChrName:String;nSex,nJob,nHair:Integer):Boolean;
 var
   ChrRecord:THumDataInfo;
@@ -270,6 +270,7 @@ begin
   Result:=False;
   FillChar(ChrRecord,SizeOf(THumDataInfo),#0);
   try
+    //打开人物数据文件(Mir.DB)，查询该人物是否存在，如不在，则创建人物
     if HumDataDB.Open and (HumDataDB.Index(sChrName) = -1) then begin
       ChrRecord.Header.sName:=sChrName;
       ChrRecord.Data.sChrName:=sChrName;
@@ -718,6 +719,14 @@ begin
   SendUserSocket(UserInfo.Socket,UserInfo.sConnID,sMsg);
   g_CheckCode.dwThread0:=1000303;
 end;
+
+//创建人物角色
+//向客户端返回的信息代码
+// 0: [错误] 输入的角色名称包含非法字符!
+// 2: [错误] 创建角色名称已被其他人使用!
+// 3: [错误] 您只能创建二个游戏角色!
+// 4: [错误] 创建角色时出现错误！ 错误代码 = 4
+
 procedure TFrmUserSoc.NewChr(sData: String;var UserInfo: pTUserInfo);//004A3C08
 var
   Data,sAccount,sChrName,sHair,sJob,sSex:String;
@@ -726,6 +735,8 @@ var
   sMsg:String;
   HumRecord:THumInfo;
   i:Integer;
+  nn,n08,nIndex:Integer;
+  HumDBRecord:THumInfo;
 begin
   nCode:= -1;
   Data:=DecodeString(sData);
@@ -735,10 +746,13 @@ begin
   Data:=GetValidStr3(Data,sJob,['/']);
   Data:=GetValidStr3(Data,sSex,['/']);
   if Trim(Data) <> '' then nCode:=0;
+  
   sChrName:=Trim(sChrName);
   if length(sChrName) < 3 then nCode:=0;
+
   if g_boEnglishNames and not IsEnglishStr(sChrName) then nCode:=-1; //  语言验证
   if not CheckDenyChrName(sChrName) then nCode:= 2;
+  
   if not CheckChrName(sChrName) then nCode:=0;
   for I := 1 to length(sChrName) do begin
     if (sChrName[i] = #$A1) or
@@ -775,17 +789,18 @@ begin
        (sChrName[i] = '}') then nCode:=0;
   end;
 
-  if nCode = -1 then begin
+  if nCode = -1 then begin     //if1
   try
     HumDataDB.Lock;
-    if HumDataDB.Index(sChrName) >= 0 then nCode:=2;
+    if HumDataDB.Index(sChrName) >= 0 then nCode:=2;   //从查询人物在使用列表是否存，如果存在则设置nCode标记为2
   finally
     HumDataDB.UnLock;
   end;
-  FillChar(HumRecord,SizeOf(THumInfo),#0);
 
     try
       if HumChrDB.Open then begin
+
+        //如果登录帐号人物角色数量小于2，则填定新角色的内容
         if HumChrDB.ChrCountOfAccount(sAccount) < 2 then begin
           HumRecord.sChrName         := sChrName;
           HumRecord.sAccount         := sAccount;
@@ -793,30 +808,44 @@ begin
           HumRecord.btCount          := 0;
           HumRecord.Header.sName     := sChrName;
           HumRecord.Header.nSelectID := UserInfo.nSelGateID;
+
           if HumRecord.Header.sName <> '' then
-            if not HumChrDB.Add(HumRecord) then nCode:=2;
-        end else nCode:= 3;
+             if not HumChrDB.Add(HumRecord) then   nCode:= 2;  
+
+         end else nCode:= 3;
       end;
     finally
       HumChrDB.Close;
     end;
+    
+  //新建人物角色
+   if nCode = -1 then begin
+        if NewChrData(sChrName,Str_ToInt(sSex,0),Str_ToInt(sJob,0),Str_ToInt(sHair,0)) then begin     //创建人物，加入人物传奇信息数据
+           nCode:= 1;   //创建成功
+        end else begin
+          nCode:=4;
+        end;
+     
+//    end else begin
+//
+//        //问题所在：删除人物要加条件。如果人物已经在，且没被禁用，则不能删除 。否则会把正常使用的人物被删除  Modified By lzx 2020/2/17
+//        FrmDBSrv.DelHum(sChrName);
+//        nCode:=4;
 
-    if nCode = -1 then begin
-      if NewChrData(sChrName,Str_ToInt(sSex,0),Str_ToInt(sJob,0),Str_ToInt(sHair,0)) then
-        nCode:= 1;
-    end else begin
-      FrmDBSrv.DelHum(sChrName);
-      nCode:=4;
     end;
-  end;
+
+
+  end;   //if1
+
   if nCode = 1 then begin
-    Msg:=MakeDefaultMsg(SM_NEWCHR_SUCCESS,0,0,0,0);
+    Msg:=MakeDefaultMsg(SM_NEWCHR_SUCCESS,0,0,0,0);   //创建人物角色成功
   end else begin
-    Msg:=MakeDefaultMsg(SM_NEWCHR_FAIL,nCode,0,0,0);
+    Msg:=MakeDefaultMsg(SM_NEWCHR_FAIL,nCode,0,0,0);   //创建人物角色失败
   end;
   sMsg:=EncodeMessage(Msg);
   SendUserSocket(UserInfo.Socket,UserInfo.sConnID,sMsg);
 end;
+
 //004A440C
 function TFrmUserSoc.SelectChr(sData: String;
   var UserInfo: pTUserInfo): Boolean;

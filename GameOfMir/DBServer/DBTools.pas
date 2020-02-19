@@ -16,7 +16,6 @@ type
     GridHumDBInfo: TStringGrid;
     TabSheet2: TTabSheet;
     ButtonStartRebuild: TButton;
-    LabelProcess: TLabel;
     TimerShowInfo: TTimer;
     GroupBox3: TGroupBox;
     CheckBoxDelDenyChr: TCheckBox;
@@ -24,6 +23,7 @@ type
     CheckBoxDelAllSkill: TCheckBox;
     CheckBoxDelBonusAbil: TCheckBox;
     CheckBoxDelLevel: TCheckBox;
+    LabelProcess: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ButtonStartRebuildClick(Sender: TObject);
     procedure TimerShowInfoTimer(Sender: TObject);

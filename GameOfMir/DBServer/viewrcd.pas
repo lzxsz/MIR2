@@ -11,18 +11,17 @@ type
     TabbedNotebook1: TTabbedNotebook;
     HumanGrid: TStringGrid;
     BagItemGrid: TStringGrid;
-    UseMagicGrid: TStringGrid;
     SaveItemGrid: TStringGrid;
     procedure FormCreate(Sender : TObject);
   private
     procedure sub_49A0C0();
     procedure sub_49A9DC();
     procedure sub_49AA84();
-    procedure sub_49AB10();
+//    procedure sub_49AB10();
     procedure ShowBagItem(nIndex:Integer;sName:String;Item:TUserItem);
 
     procedure ShowBagItems();
-    procedure ShowUseMagic();
+//    procedure ShowUseMagic();
     procedure ShowSaveItem();
     procedure ShowHumanInfo();
     { Private declarations }
@@ -51,7 +50,7 @@ begin
   sub_49A0C0();
   sub_49A9DC();
   sub_49AA84();
-  sub_49AB10();
+//  sub_49AB10();  //取消技能显示
 end;
 
 procedure TFrmFDBViewer.ShowHumData();
@@ -59,7 +58,7 @@ procedure TFrmFDBViewer.ShowHumData();
 begin
   if HumanGrid.Visible then    ShowHumanInfo();
   if BagItemGrid.Visible then  ShowBagItems();
-  if UseMagicGrid.Visible then ShowUseMagic();
+//  if UseMagicGrid.Visible then ShowUseMagic();   //取消技能显示
   if SaveItemGrid.Visible then ShowSaveItem();
 end;
 
@@ -96,7 +95,7 @@ begin
   HumanGrid.Cells[2,5]:='MaxHP';
   HumanGrid.Cells[3,5]:='MP';
   HumanGrid.Cells[4,5]:='MaxMP';
-  HumanGrid.Cells[5,5]:='Reserved2';
+  HumanGrid.Cells[5,5]:='Reserved3';
   HumanGrid.Cells[6,5]:='当前经验';
   HumanGrid.Cells[7,5]:='升级经验';
   HumanGrid.Cells[8,5]:='PK点数';
@@ -104,8 +103,12 @@ begin
   HumanGrid.Cells[10,5]:='登录帐号';
   HumanGrid.Cells[11,5]:='最后登录时间';
 
-  HumanGrid.Cells[0,7]:='配偶';
-  HumanGrid.Cells[1,7]:='师徒';
+//取消结婚、师徒功能
+//  HumanGrid.Cells[0,7]:='配偶';
+//  HumanGrid.Cells[1,7]:='师徒';
+
+  HumanGrid.Cells[0,7]:='Reserved4';
+  HumanGrid.Cells[1,7]:='Reserved5';
   HumanGrid.Cells[2,7]:='仓库密码';
   HumanGrid.Cells[3,7]:='声望点';
   HumanGrid.Cells[4,7]:='';
@@ -145,12 +148,13 @@ begin
   SaveItemGrid.Cells[2,0]:='持久';
 end;
 
-procedure TFrmFDBViewer.sub_49AB10();
-begin
-  UseMagicGrid.Cells[0,0]:='技能名称';
-  UseMagicGrid.Cells[1,0]:='快捷键';
-  UseMagicGrid.Cells[2,0]:='修练状态';
-end;
+//取消技能显示
+//procedure TFrmFDBViewer.sub_49AB10();
+//begin
+//  UseMagicGrid.Cells[0,0]:='技能名称';
+//  UseMagicGrid.Cells[1,0]:='快捷键';
+//  UseMagicGrid.Cells[2,0]:='修练状态';
+//end;
 
 procedure TFrmFDBViewer.ShowBagItem(nIndex:Integer;sName:String;Item:TUserItem);
 begin
@@ -184,9 +188,10 @@ begin
   HumanGrid.Cells[7,2]:=IntToStr(HumData.btSex);
   HumanGrid.Cells[8,2]:=IntToStr(HumData.btHair);
   HumanGrid.Cells[9,2]:=IntToStr(HumData.nGold);
-  
+
+//取消结婚、师徒功能  
 //  HumanGrid.Cells[10,2]:=HumData.sDearName;
-//  HumanGrid.Cells[11,2]:=HumData.sHomeMap;
+  HumanGrid.Cells[11,2]:=HumData.sHomeMap;
 
   HumanGrid.Cells[0,4]:=IntToStr(HumData.wHomeX);
   HumanGrid.Cells[1,4]:=IntToStr(HumData.wHomeY);
@@ -214,6 +219,7 @@ begin
   HumanGrid.Cells[10,6]:=HumData.sAccount;
   HumanGrid.Cells[11,6]:=DateTimeToStr(ChrRecord.Header.dCreateDate);
 
+//取消结婚、师徒功能
 //  HumanGrid.Cells[0,8]:=HumData.sDearName;
 //  HumanGrid.Cells[1,8]:=HumData.sMasterName;
 
@@ -242,28 +248,29 @@ begin
   ShowBagItem(8,'戒指左',ChrRecord.Data.HumItems[7]);
   ShowBagItem(9,'戒指右',ChrRecord.Data.HumItems[8]);
   for i:= Low(ChrRecord.Data.BagItems) to High(ChrRecord.Data.BagItems) do begin
-    ShowBagItem(i + 9,IntToStr(i + 1),ChrRecord.Data.BagItems[i]);
+    ShowBagItem(i + 10,IntToStr(i + 1),ChrRecord.Data.BagItems[i]);
   end;
 end;
 
-procedure TFrmFDBViewer.ShowUseMagic();
-//0x0049B4D8
-var
-  i,ii:Integer;
-begin
-  for i:= 1 to UseMagicGrid.RowCount - 1 do begin
-    for ii:= 0 to UseMagicGrid.ColCount - 1 do begin
-      UseMagicGrid.Cells[ii,i]:='';
-    end;
-  end;
- { for I := Low(ChrRecord.Data.Magic) to High(ChrRecord.Data.Magic) do begin
-   // if ChrRecord.Data.Magic[i].wMagIdx <= 0 then break;
-    UseMagicGrid.Cells[0,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].wMagIdx);
-//    UseMagicGrid.Cells[1,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].bt06);
-    UseMagicGrid.Cells[1,i+ 1]:=Chr(ChrRecord.Data.Magic[i].btKey);
-    UseMagicGrid.Cells[2,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].nTranPoint);
-  //end;   }
-end;
+//取消技能显示
+//procedure TFrmFDBViewer.ShowUseMagic();
+////0x0049B4D8
+//var
+//  i,ii:Integer;
+//begin
+//  for i:= 1 to UseMagicGrid.RowCount - 1 do begin
+//    for ii:= 0 to UseMagicGrid.ColCount - 1 do begin
+//      UseMagicGrid.Cells[ii,i]:='';
+//    end;
+//  end;
+// { for I := Low(ChrRecord.Data.Magic) to High(ChrRecord.Data.Magic) do begin
+//   // if ChrRecord.Data.Magic[i].wMagIdx <= 0 then break;
+//    UseMagicGrid.Cells[0,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].wMagIdx);
+////    UseMagicGrid.Cells[1,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].bt06);
+//    UseMagicGrid.Cells[1,i+ 1]:=Chr(ChrRecord.Data.Magic[i].btKey);
+//    UseMagicGrid.Cells[2,i+ 1]:=IntToStr(ChrRecord.Data.Magic[i].nTranPoint);
+//  //end;   }
+//end;
 
 procedure TFrmFDBViewer.ShowSaveItem();
 //0x0049B628

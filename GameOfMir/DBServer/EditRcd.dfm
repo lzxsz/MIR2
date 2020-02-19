@@ -1,6 +1,6 @@
 object frmEditRcd: TfrmEditRcd
-  Left = 212
-  Top = 220
+  Left = 768
+  Top = 242
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #32534#36753#20154#29289#25968#25454
@@ -22,8 +22,8 @@ object frmEditRcd: TfrmEditRcd
     Top = 8
     Width = 433
     Height = 265
-    ActivePage = TabSheet3
-    TabIndex = 2
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #26222#36890
@@ -53,20 +53,6 @@ object frmEditRcd: TfrmEditRcd
           Width = 54
           Height = 12
           Caption = #20179#24211#23494#30721':'
-        end
-        object Label4: TLabel
-          Left = 8
-          Top = 116
-          Width = 54
-          Height = 12
-          Caption = #37197#20598#21517#31216':'
-        end
-        object Label5: TLabel
-          Left = 8
-          Top = 140
-          Width = 54
-          Height = 12
-          Caption = #24072#24466#21517#31216':'
         end
         object Label11: TLabel
           Left = 8
@@ -107,7 +93,7 @@ object frmEditRcd: TfrmEditRcd
           Left = 64
           Top = 40
           Width = 97
-          Height = 23
+          Height = 20
           Color = cl3DLight
           ReadOnly = True
           TabOrder = 0
@@ -116,7 +102,7 @@ object frmEditRcd: TfrmEditRcd
           Left = 64
           Top = 64
           Width = 97
-          Height = 23
+          Height = 20
           Color = cl3DLight
           ReadOnly = True
           TabOrder = 1
@@ -125,51 +111,35 @@ object frmEditRcd: TfrmEditRcd
           Left = 64
           Top = 88
           Width = 97
-          Height = 23
+          Height = 20
           TabOrder = 2
-          OnChange = EditPasswordChange
-        end
-        object EditDearName: TEdit
-          Left = 64
-          Top = 112
-          Width = 97
-          Height = 23
-          TabOrder = 3
-          OnChange = EditPasswordChange
-        end
-        object EditMasterName: TEdit
-          Left = 64
-          Top = 136
-          Width = 97
-          Height = 23
-          TabOrder = 4
           OnChange = EditPasswordChange
         end
         object EditIdx: TEdit
           Left = 64
           Top = 16
           Width = 97
-          Height = 23
+          Height = 20
           Color = cl3DLight
           ReadOnly = True
-          TabOrder = 5
+          TabOrder = 3
         end
         object EditCurMap: TEdit
           Left = 224
           Top = 16
           Width = 97
-          Height = 23
-          TabOrder = 6
+          Height = 20
+          TabOrder = 4
           OnChange = EditPasswordChange
         end
         object EditCurX: TSpinEdit
           Left = 224
           Top = 40
           Width = 49
-          Height = 24
+          Height = 21
           MaxValue = 0
           MinValue = 0
-          TabOrder = 7
+          TabOrder = 5
           Value = 0
           OnChange = EditPasswordChange
         end
@@ -177,10 +147,10 @@ object frmEditRcd: TfrmEditRcd
           Left = 272
           Top = 40
           Width = 49
-          Height = 24
+          Height = 21
           MaxValue = 0
           MinValue = 0
-          TabOrder = 8
+          TabOrder = 6
           Value = 0
           OnChange = EditPasswordChange
         end
@@ -188,18 +158,18 @@ object frmEditRcd: TfrmEditRcd
           Left = 224
           Top = 64
           Width = 97
-          Height = 23
-          TabOrder = 9
+          Height = 20
+          TabOrder = 7
           OnClick = EditPasswordChange
         end
         object EditHomeX: TSpinEdit
           Left = 224
           Top = 88
           Width = 49
-          Height = 24
+          Height = 21
           MaxValue = 0
           MinValue = 0
-          TabOrder = 10
+          TabOrder = 8
           Value = 0
           OnChange = EditPasswordChange
         end
@@ -207,21 +177,12 @@ object frmEditRcd: TfrmEditRcd
           Left = 272
           Top = 88
           Width = 49
-          Height = 24
+          Height = 21
           MaxValue = 0
           MinValue = 0
-          TabOrder = 11
+          TabOrder = 9
           Value = 0
           OnChange = EditPasswordChange
-        end
-        object CheckBoxIsMaster: TCheckBox
-          Left = 64
-          Top = 160
-          Width = 57
-          Height = 17
-          Caption = #24072#29238
-          TabOrder = 12
-          OnClick = EditPasswordChange
         end
       end
     end

@@ -4,14 +4,18 @@ interface
 uses
   Windows,Classes,SysUtils,Forms,MudUtil,Grobal2;
 ResourceString
-  sDBHeaderDesc     = '网络游戏数据库文件 2005/04/20';
-  sDBIdxHeaderDesc  = '网络游戏数据库索引文件 2005/04/20';
+  //sDBHeaderDesc     = '网络游戏数据库文件 2005/04/20';
+  //sDBIdxHeaderDesc  = '网络游戏数据库索引文件 2005/04/20';
 
   //sDBHeaderDesc     = '⒌L游戏数据库文件 2008/02/10';
   //sDBIdxHeaderDesc  = '⒌L游戏数据库索引文件 2008/02/10';
 
+   sDBHeaderDesc     = 'MIR2 DB File 2002/05/22';
+   sDBIdxHeaderDesc  = 'MIR2 DB Index File 2002/05/22';
+
 type
-  TDBHeader = record
+{
+   TDBHeader = record
     sDesc       :String[35]; //0x00
     n24         :Integer;    //0x24
     n28         :Integer;    //0x28
@@ -35,6 +39,7 @@ type
     dUpdateDate :TDateTime;  //0x74
   end;
   pTDBHeader = ^TDBHeader;
+  
   TIdxHeader = record
     sDesc       :String[40]; //0x00
     n2C         :Integer;    //0x2C
@@ -57,26 +62,88 @@ type
     nLastIndex  :Integer;    //0x70
     dUpdateDate :TDateTime;  //0x74
   end;
+}
 
-  pTHumInfo = ^THumInfo;
-  TIdxRecord = record
-    sChrName    :String[15];
-    nIndex      :Integer;
+  //Delphi的Record默认是4字节对齐的，访速度快。Packed Record 字节不对齐，访速度慢。
+  //Delphi的String数组实际占用大小是定义长度加1，即会在前面增加1个字节，保存该字符串的长度。所以String定义的长度要大于4的单数。
+  //如：sDesc : String[36] 如字节不对齐实际占37(36+1)字节。如字节对齐占40字节，37 mod 4 =1 多出一字节，所以后面要补全3个字节对齐。
+  //故，sDesc : String[35] 如字节不对齐实际占37(35+1)字节。如字节对齐占36字节。36 mod 4 =0 刚好字节对齐。
+  //
+  //注意：结构中的TDateTime是Double类型长度为8个字节，它需要8字节的对齐。
+  //数据库文件头类 (字节对齐128 Byte)
+  //TDBHeader =  Packed record    // 用于测试结构实际大小和是否对齐
+    TDBHeader =  record
+    sDesc       :String[39]; //0x00    40 Byte   数组实际大小是定义值(39)加1
+    n28         :Integer;    //0x28    4  Byte
+    n2C         :Integer;    //0x2C
+    n30         :Integer;    //0x30
+    n34         :Integer;    //0x34
+    n38         :Integer;    //0x38
+    n3C         :Integer;    //0x3C
+    n40         :Integer;    //0x40
+    n44         :Integer;    //0x44
+    n48         :Integer;    //0x48
+    n4C         :Integer;    //0x4C
+    n50         :Integer;    //0x50
+    n54         :Integer;    //0x54
+    n58         :Integer;    //0x58
+    nLastIndex  :Integer;    //0x5C
+    dLastDate   :TDateTime;  //0x60    8 Byte
+    nHumCount   :Integer;    //0x68  
+    n6C         :Integer;    //0x6C
+    n70         :Integer;    //0x70
+    n74         :Integer;    //0x74
+    dUpdateDate :TDateTime;  //0x78    8 Byte
   end;
-  pTIdxRecord = ^TIdxRecord;
+  pTDBHeader = ^TDBHeader;
 
+  //数据库索引文件头类 (字节128 Byte)
+  //TIdxHeader =  Packed record       // 用于测试结构实际大小和是否对齐
+   TIdxHeader =  record
+    sDesc       :String[39]; //0x00    40 Byte  数组实际大小是定义值(39)加1
+    n28         :Integer;    //0x28    4  Byte
+    n2C         :Integer;    //0x2C
+    n30         :Integer;    //0x30
+    n34         :Integer;    //0x34
+    n38         :Integer;    //0x38
+    n3C         :Integer;    //0x3C
+    n40         :Integer;    //0x40
+    n44         :Integer;    //0x44
+    n48         :Integer;    //0x48
+    n4C         :Integer;    //0x4C
+    n50         :Integer;    //0x50
+    n54         :Integer;    //0x54
+    n58         :Integer;    //0x58
+    n5C         :Integer;    //0x5C
+    n60         :Integer;    //0x60
+    nQuickCount :Integer;    //0x64    人物数量（含正常和禁用人物）
+    nHumCount   :Integer;    //0x68    人物总共数量
+    nDeleteCount:Integer;    //0x6C    人物删除数量，指人物信息被消毁的数量
+    nLastIndex  :Integer;    //0x70
+    n74         :Integer;    //0x74
+    dUpdateDate :TDateTime;  //0x78    8 Byte
+  end;
 
+  //人物信息
+  pTHumInfo = ^THumInfo;
+  TIdxRecord =  record
+    sChrName    :String[15];    //人物名称
+    nIndex      :Integer;       //人物索引号
+  end;                                            
+  pTIdxRecord = ^TIdxRecord;                       
+
+  //人物数据库文件类
   TFileHumDB = class
     n4               :Integer;      //0x04
     m_nFileHandle    :Integer;      //0x08
     n0C              :Integer;      //0x0C
     m_OnChange       :TNotifyEvent;
 
-    m_boChanged      :Boolean;      //0x18
-    m_Header         :TDBHeader;    //0x1C
-    m_QuickList      :TQuickList;   //0x98
-    m_QuickIDList    :TQuickIDList; //0x9C
-    m_DeletedList    :TList;        //0xA0 已被删除的记录号
+    m_boChanged      :Boolean;      //0x18  是否已经已经改变
+    m_Header         :TDBHeader;    //0x1C  文件头
+    m_QuickList      :TQuickList;   //0x98 人物角色列表,包含正常人物和被禁用人物
+    m_QuickIDList    :TQuickIDList; //0x9C 人物角色索引列表,与m_QuickList中人物对应
+    m_DeletedList    :TList;        //0xA0 已被删除的记录，这里的删除记录是指被消毁的记录，不是指禁用的记录。
     m_sDBFileName    :String;       //0xA4
   private
     procedure LoadQuickList;
@@ -104,8 +171,10 @@ type
     function  UpdateBy(nIndex:Integer;var HumDBRecord:THumInfo):Boolean;
 
   end;
+
+  //数据库文件基类
   TFileDB = class
-    n4          :Integer;        //0x4
+    n4            :Integer;        //0x4
     m_nFileHandle :Integer;        //0x08
     nC            :Integer;
     m_OnChange    :TNotifyEvent;   //0x10
@@ -143,8 +212,8 @@ type
     function  Delete(nIndex:Integer):Boolean;overload;
   end;
 var
-  HumChrDB              :TFileHumDB;
-  HumDataDB             :TFileDB;
+  HumChrDB              :TFileHumDB;  //人物名称文件 Hum.DB
+  HumDataDB             :TFileDB;     //人物数据文件 Mir.DB
 implementation
 
 uses DBShare, HUtil32;
@@ -186,6 +255,8 @@ var
   ChrNameList  :TStringList;
   DBHeader     :TDBHeader;
   DBRecord     :THumInfo;
+  RecordHeader:TRecordHeader;
+  n10  :Integer;
 begin
   n4:=0;
   m_QuickList.Clear;
@@ -204,13 +275,22 @@ begin
         n4ADB04:=DBHeader.nHumCount;
         for nIndex:=0 to DBHeader.nHumCount - 1 do begin
           Inc(n4ADAFC);
-          if FileRead(m_nFileHandle,DBRecord,SizeOf(THumInfo)) <> SizeOf(THumInfo) then begin
-            break;
+
+         if FileRead(m_nFileHandle ,DBRecord, SizeOf(THumInfo)) <> SizeOf(THumInfo) then begin
+               break;
           end;
-          if not DBRecord.Header.boDeleted then begin
-            m_QuickList.AddObject(DBRecord.Header.sName,TObject(nRecordIndex));
+
+         //加载没有被删除的人物, 禁用的人物允许加载
+         if not DBRecord.Header.boDeleted then begin    // Modified by lzx 2020/2/18 3:31:10
+            m_QuickList.AddObject(DBRecord.Header.sName, TObject(nRecordIndex));
             AccountList.AddObject(DBRecord.sAccount,TObject(DBRecord.Header.nSelectID));
             ChrNameList.AddObject(DBRecord.sChrName,TObject(nRecordIndex));
+
+            m_QuickIDList.AddRecord(DBRecord.sAccount,
+                          DBRecord.Header.sName,
+                          nRecordIndex,
+                          DBRecord.Header.nSelectID);
+
             Inc(n4ADB00);
           end else begin //0x0048BC04
             m_DeletedList.Add(TObject(nIndex));
@@ -227,14 +307,18 @@ begin
   finally
     Close();
   end;
-  for nIndex:=0 to AccountList.Count -1 do begin
-    m_QuickIDList.AddRecord(AccountList.Strings[nIndex],
-                          ChrNameList.Strings[nIndex],
-                          Integer(ChrNameList.Objects[nIndex]),
-                          Integer(AccountList.Objects[nIndex]));
-    if (nIndex mod 100) = 0 then
-      Application.ProcessMessages;
-  end;
+
+//这段代有问题加入列表的nRecordIndex 不对，现将代码加放到上面
+//  for nIndex:=0 to AccountList.Count -1 do begin
+//    m_QuickIDList.AddRecord(AccountList.Strings[nIndex],
+//                          ChrNameList.Strings[nIndex],
+//                          Integer(ChrNameList.Objects[nIndex]),
+//                          Integer(AccountList.Objects[nIndex]));
+//    if (nIndex mod 100) = 0 then
+//      Application.ProcessMessages;
+//  end;
+
+
   //0x0048BCF4
   AccountList.Free;
   ChrNameList.Free;
@@ -250,6 +334,7 @@ begin
   UnLock();
 end;
 
+//创建Hum.DB文件
 function TFileHumDB.Open: Boolean;//0x0048B928
 begin
   Lock();
@@ -266,6 +351,7 @@ begin
       m_Header.sDesc:= sDBHeaderDesc;
       m_Header.nHumCount:=0;
       m_Header.n6C:=0;
+
       FileWrite(m_nFileHandle,m_Header,SizeOf(TDBHeader));
     end;
   end;
@@ -303,6 +389,7 @@ begin
   else Result:= -1;
 end;
 
+//获取人物记录信息
 function TFileHumDB.GetRecord(n08: Integer;
   var HumDBRecord: THumInfo): Boolean;
 //0x0048BEEC
@@ -312,6 +399,7 @@ begin
     FileSeek(m_nFileHandle,-SizeOf(THumInfo) * n08 + SizeOf(TDBHeader),1);
     n4:=n08;
     Result:=True;
+
   end else Result:=False;
 end;
 
@@ -354,24 +442,33 @@ begin
   Result:=ChrList.Count;
 end;
 
+//计算帐号的人物数量
 function TFileHumDB.ChrCountOfAccount(sAccount: String): Integer;//0x0048C5B0
 var
   ChrList:TList;
-  I,n18:Integer;
+  HumIndex, I,n18:Integer;
   HumDBRecord: THumInfo;
 begin
   n18:=0;
   ChrList:=nil;
   m_QuickIDList.GetChrList(sAccount,ChrList);
   if ChrList <> nil then begin
+
+    //OutMainMessage(Format('Count %d ',[ChrList.Count]));
+    
     for I:= 0 to ChrList.Count - 1 do begin
       if GetBy(pTQuickID(ChrList.Items[I]).nIndex,HumDBRecord) and
-         not HumDBRecord.boDeleted then Inc(n18);
+           not HumDBRecord.boDeleted then Inc(n18);
+
+       //For debug lzx 2020/2/18
+      //HumIndex := pTQuickID(ChrList.Items[I]).nIndex;
+      //OutMainMessage(Format('I:%d %d %s %s',[I, HumIndex , HumDBRecord.sChrName, BoolToStr(HumDBRecord.boDeleted)]));
     end;
   end;
   Result:=n18;  
 end;
 
+//向人物数据库增加人物角色
 function TFileHumDB.Add(HumRecord: THumInfo): Boolean;//0x0048C1F4
 var
   Header:TDBHeader;
@@ -379,6 +476,8 @@ var
 begin
   if m_QuickList.GetIndex(HumRecord.Header.sName) >= 0 then Result:=False
   else begin
+    //人物名称不在列表
+    
     Header:=m_Header;
     if m_DeletedList.Count > 0 then begin
       nIndex:=Integer(m_DeletedList.Items[0]);
@@ -398,6 +497,7 @@ begin
   end;
 end;
 
+//更新记录。如果创建的人物角色在数据库中存在，则将该条记录设为可用，否则在库中增加一条新记录
 function TFileHumDB.UpdateRecord(nIndex: Integer; HumRecord: THumInfo;
   boNew: Boolean): Boolean;//0x0048BF5C
 var
@@ -407,15 +507,22 @@ begin
   nPosion:=nIndex * SizeOf(THumInfo) + SizeOf(TDBHeader);
   if FileSeek(m_nFileHandle,nPosion,0) = nPosion then begin
     n10:=FileSeek(m_nFileHandle,0,1);
+
     if boNew and
        (FileRead(m_nFileHandle,HumRcd,SizeOf(THumInfo)) = SizeOf(THumInfo)) and
-       (not HumRcd.Header.boDeleted) and (HumRcd.Header.sName <> '') then Result:=True
-    else begin
+       //(not HumRcd.Header.boDeleted) and (HumRcd.Header.sName <> '') then  begin
+       (not HumRcd.Header.boDeleted) and (CompareText(HumRcd.Header.sName, HumRecord.sChrName) =0) then
+    begin
+        //查询人物数据库，如果角色名已经存在，且没有删除，则返回True
+        Result := True ;
+    end else begin
+
       HumRecord.Header.boDeleted:=False;
       HumRecord.Header.dCreateDate:=Now();
       m_Header.dUpdateDate:=Now();
+
       FileSeek(m_nFileHandle,0,0);
-      FileWrite(m_nFileHandle,m_Header,SizeOf(TDBHeader));
+      FileWrite(m_nFileHandle,m_Header,SizeOf(TDBHeader));  //写文件头 128 Byte
       FileSeek(m_nFileHandle,n10,0);
       FileWrite(m_nFileHandle,HumRecord,SizeOf(THumInfo));
       FileSeek(m_nFileHandle,-SizeOf(THumInfo),1);
@@ -426,6 +533,7 @@ begin
   end else Result:=False;
 end;
 
+//删除记录
 function TFileHumDB.Delete(sName: String): Boolean;//0x0048BDE0
 var
   n10:integer;
@@ -437,23 +545,31 @@ begin
   n10:=m_QuickList.GetIndex(sName);
   if n10 < 0 then exit;
   Get(n10,HumRecord);
+  
   if DeleteRecord(Integer(m_QuickList.Objects[n10])) then begin
-    m_QuickList.Delete(n10);
+    m_QuickList.Delete(n10); //从角色名称列表中删除人物名称
+
     Result:=True;
   end;
+
   n14:=m_QuickIDList.GetChrList(HumRecord.sAccount,ChrNameList);
   if n14 >= 0 then begin
-    m_QuickIDList.DelRecord(n14,HumRecord.sChrName);
+    m_QuickIDList.DelRecord(n14,HumRecord.sChrName);   //从角色ID列表中删角色ID
   end;
 
 end;
 
+
+{
+//这个是原来删除记录的函数，这个函数原来的语句有错误
 function TFileHumDB.DeleteRecord(nIndex: Integer): Boolean;//0x0048BD58
 var
   HumRcdHeader:TRecordHeader;
 begin
+  //FillChar(HumRcdHeader,SizeOf(TRecordHeader),$FF);   //For Debug
   Result:=False;
-  if FileSeek(m_nFileHandle,nIndex * SizeOf(THumInfo) + SizeOf(TDBHeader),0) = -1 then exit;
+  //if FileSeek(m_nFileHandle,nIndex * SizeOf(THumInfo) + SizeOf(TDBHeader),0) = -1 then exit;   //原来的这个语句----错误在TRecordHeader结构的数据块位置对准
+  if FileSeek(m_nFileHandle,nIndex * SizeOf(THumInfo) + SizeOf(TDBHeader) + SizeOf(THumInfo)- SizeOf(TRecordHeader) ,0) = -1 then exit;  //这修正后的语句。建议对THumInfo结构的数据块进行覆盖删除。见下面的修正函数
   HumRcdHeader.boDeleted:=True;
   HumRcdHeader.dCreateDate:=Now();
   FileWrite(m_nFileHandle,HumRcdHeader,SizeOf(TRecordHeader));
@@ -461,6 +577,34 @@ begin
   m_boChanged:=True;
   Result:=True;
 end;
+}
+
+//DeleteRecord的修正函数
+//修正：人物记录删除时对数据文件的数据进行覆盖时，位置定位错误。
+function TFileHumDB.DeleteRecord(nIndex: Integer): Boolean;//0x0048BD58
+var
+  nPosion:Integer;
+  HumInfo:  THumInfo;
+begin
+
+   Result:=False;
+   FillChar(HumInfo,SizeOf(THumInfo),$FF);
+
+   if FileSeek(m_nFileHandle,nIndex * SizeOf(THumInfo) + SizeOf(TDBHeader) ,0) = -1 then exit;
+
+   //HumInfo.boSelected:=False;           //没被选择
+   //HumInfo.boDeleted:=True;             //设置人物记录禁止标记
+   
+   HumInfo.Header.boDeleted:=True;      //设置人物记录删除标记
+   HumInfo.Header.dCreateDate:=Now();   //删除日期
+   FileWrite(m_nFileHandle,HumInfo,SizeOf(THumInfo));
+
+   m_DeletedList.Add(Pointer(nIndex));
+   m_boChanged:=True;
+   Result:=True;
+
+end;
+
 
 function TFileHumDB.Update(nIndex: Integer;var HumDBRecord: THumInfo): Boolean;//0x0048C14C
 begin
@@ -480,8 +624,7 @@ end;
 
 { TFileDB }
 
-
-
+//创建数据文件
 constructor TFileDB.Create(sFileName: String);//0x0048A0F4
 begin
   n4            := 0;
@@ -679,6 +822,7 @@ begin
   end else Result:=False;
 end;
 
+//从快速列表中查询人物是否存在
 function TFileDB.Index(sName: String): Integer;//0x0048B534
 begin
   Result:=m_QuickList.GetIndex(sName);
@@ -808,6 +952,7 @@ begin
   end;
 end;
 
+//删除文件记录（实质修改人物信息记录头）
 function TFileDB.DeleteRecord(nIndex: Integer): Boolean;//0x0048AD8C
 var
   ChrRecordHeader:TRecordHeader;
@@ -816,10 +961,12 @@ begin
   if FileSeek(m_nFileHandle,nIndex * SizeOf(THumDataInfo) + SizeOf(TDBHeader),0) = -1 then exit;
   m_nLastIndex                :=nIndex;
   m_dUpdateTime               :=Now();
-  ChrRecordHeader.boDeleted   :=True;
+  ChrRecordHeader.boDeleted   :=True;  //人物删除标记设为真
   ChrRecordHeader.dCreateDate :=Now();
   FileWrite(m_nFileHandle,ChrRecordHeader,SizeOf(TRecordHeader));
   m_DeletedList.Add(Pointer(nIndex));
+
+  //文件头
   m_Header.nLastIndex           :=m_nLastIndex;
   m_Header.dLastDate            :=m_dUpdateTime;
   m_Header.dUpdateDate          :=Now();
@@ -873,6 +1020,7 @@ begin
   Result:=m_QuickList.Count;
 end;
 
+//人库文件中删人物
 function TFileDB.Delete(sChrName: String): Boolean;//0x0048AEB4
 var
   n10:Integer;
@@ -887,7 +1035,7 @@ begin
 end;
 
 
-
+//保存Mir.DB.idx索引文件
 procedure TFileDB.SaveIndex;//0x0048A83C
 var
   IdxHeader      :TIdxHeader;
@@ -903,6 +1051,7 @@ begin
   IdxHeader.nDeleteCount := m_DeletedList.Count;
   IdxHeader.nLastIndex   := m_nLastIndex;
   IdxHeader.dUpdateDate  := m_dUpdateTime;
+
   if FileExists(m_sIdxFileName) then
     nIdxFileHandle:=FileOpen(m_sIdxFileName,fmOpenReadWrite or fmShareDenyNone)
   else nIdxFileHandle:=FileCreate(m_sIdxFileName);

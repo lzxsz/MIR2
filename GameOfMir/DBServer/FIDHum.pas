@@ -13,12 +13,10 @@ type
     Edit2: TEdit;
     Label3: TLabel;
     EdChrName: TEdit;
-    Label4: TLabel;
     Label5: TLabel;
     BtnCreateChr: TSpeedButton;
     BtnEraseChr: TSpeedButton;
     BtnChrNameSearch: TSpeedButton;
-    IdGrid: TStringGrid;
     ChrGrid: TStringGrid;
     BtnSelAll: TSpeedButton;
     CbShowDelChr: TCheckBox;
@@ -26,12 +24,13 @@ type
     BtnRevival: TSpeedButton;
     SpeedButton1: TSpeedButton;
     Button1: TButton;
-    Label2: TLabel;
-    EdUserId: TEdit;
     BtnDeleteChrAllInfo: TSpeedButton;
     SpeedButton2: TSpeedButton;
     LabelCount: TLabel;
     SpeedButtonEditData: TSpeedButton;
+    EditUserId: TEdit;
+    lbl1: TLabel;
+    BtnListUserIdAllChr: TSpeedButton;
     procedure FormCreate(Sender : TObject);
     procedure BtnChrNameSearchClick(Sender : TObject);
     procedure BtnSelAllClick(Sender : TObject);
@@ -47,8 +46,10 @@ type
     procedure SpeedButton2Click(Sender : TObject);
     procedure RefChrGrid(n08:Integer;HumDBRecord:THumInfo);
     procedure EdChrNameKeyPress(Sender: TObject; var Key: Char);
-    procedure EdUserIdKeyPress(Sender: TObject; var Key: Char);
+    //procedure EdUserIdKeyPress(Sender: TObject; var Key: Char);
     procedure SpeedButtonEditDataClick(Sender: TObject);
+    procedure BtnListUserIdAllChrClick(Sender: TObject);
+    procedure EditUserIdKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -69,14 +70,14 @@ procedure TFrmIDHum.FormCreate(Sender : TObject);
 begin
   Edit1.Text:='';
   Edit2.Text:='';
-  IdGrid.Cells[0,0]:='登录帐号';
-  IdGrid.Cells[1,0]:='密码';
-  IdGrid.Cells[2,0]:='用户名称';
-  IdGrid.Cells[3,0]:='ResiRegi';
-  IdGrid.Cells[4,0]:='Tran';
-  IdGrid.Cells[5,0]:='Secretwd';
-  IdGrid.Cells[6,0]:='Adress(cont)';
-  IdGrid.Cells[7,0]:='备注';
+  //IdGrid.Cells[0,0]:='登录帐号';
+  //IdGrid.Cells[1,0]:='密码';
+  //IdGrid.Cells[2,0]:='用户名称';
+  //IdGrid.Cells[3,0]:='ResiRegi';
+  //IdGrid.Cells[4,0]:='Tran';
+  //IdGrid.Cells[5,0]:='Secretwd';
+  //IdGrid.Cells[6,0]:='Adress(cont)';
+  //IdGrid.Cells[7,0]:='备注';
 
   ChrGrid.Cells[0,0]:='索引号';
   ChrGrid.Cells[1,0]:='人物名称';
@@ -85,8 +86,10 @@ begin
   ChrGrid.Cells[4,0]:='禁用时间';
   ChrGrid.Cells[5,0]:='操作计数';
   ChrGrid.Cells[6,0]:='选择编号';
+
 end;
 
+{
 procedure TFrmIDHum.EdUserIdKeyPress(Sender: TObject; var Key: Char);
 //0x0049FF58
 var
@@ -121,6 +124,49 @@ begin
     end;
   end;
 end;
+}
+
+//帐号输入框回车键事件
+procedure TFrmIDHum.EditUserIdKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then begin
+    Key:=#0;
+    BtnListUserIdAllChrClick(Sender);
+  end;
+end;
+
+//列出登录帐号的所有人物
+procedure TFrmIDHum.BtnListUserIdAllChrClick(Sender: TObject);
+var
+  sAccount:String;
+  ChrList:TStringList;
+  i,nIndex:Integer;
+  HumDBRecord:THumInfo;
+begin
+      sAccount:=EditUserId.Text;
+      ChrGrid.RowCount:=1;
+      if sAccount <> '' then begin
+        ChrList:=TStringList.Create;
+        try
+          if HumChrDB.OpenEx then begin
+            HumChrDB.FindByAccount(sAccount,ChrList);
+            for i:=0 to ChrList.Count -1 do begin
+              nIndex:=pTQuickID(ChrList.Objects[i]).nIndex;
+              if nIndex >= 0 then begin
+                HumChrDB.GetBy(nIndex,HumDBRecord);
+                if CbShowDelChr.Checked then RefChrGrid(nIndex,HumDBRecord)
+                else if not HumDBRecord.boDeleted then
+                  RefChrGrid(nIndex,HumDBRecord);
+              end;
+            end;
+          end;
+        finally
+          HumChrDB.Close;
+        end;
+        ChrList.Free;
+      end;
+end;
+
 
 procedure TFrmIDHum.EdChrNameKeyPress(Sender: TObject; var Key: Char);
 //0x004A025C
@@ -131,6 +177,7 @@ begin
   end;
 end;
 
+//查找
 procedure TFrmIDHum.BtnChrNameSearchClick(Sender : TObject);
 var
   s64:String;
@@ -139,12 +186,14 @@ var
 begin
   s64:=EdChrName.Text;
   ChrGrid.RowCount:=1;
+  if Trim(s64) ='' then exit;  //名字不能为空                   
+  
   try
     if HumChrDB.OpenEx then begin
       n08:=HumChrDB.Index(s64);
       if n08 >= 0 then begin
         nIndex:=HumChrDB.Get(n08,HumDBRecord);
-        if nIndex >= 0 then begin
+        if (nIndex >= 0) then begin
           if CbShowDelChr.Checked then RefChrGrid(nIndex,HumDBRecord)
           else if not HumDBRecord.boDeleted then
             RefChrGrid(nIndex,HumDBRecord);
@@ -187,6 +236,7 @@ end;
 
 procedure TFrmIDHum.BtnEraseChrClick(Sender : TObject);//004A04DC
 var
+  nIndex:Integer;
   sChrName:String;
 begin
   sChrName:=EdChrName.Text;
@@ -194,7 +244,8 @@ begin
   if MessageDlg('是否确认删除人物 ' + sChrName + ' ？',mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
     try
       if HumChrDB.Open then begin
-        HumChrDB.Delete(sChrName);
+           HumChrDB.Delete(sChrName);
+           MessageDlg(sChrName + ' 人物已删除',mtWarning, [mbYes], 0);
       end;
     finally
       HumChrDB.Close;
@@ -247,6 +298,7 @@ begin
   end;
 end;
 
+//删除人物
 procedure TFrmIDHum.BtnDeleteChrClick(Sender : TObject);
 var
   sChrName:String;
@@ -259,11 +311,15 @@ begin
     try
       if HumChrDB.Open then begin
         nIndex:=HumChrDB.Index(sChrName);
-        HumChrDB.Get(nIndex,HumRecord);
-        HumRecord.boDeleted:=True;
-        HumRecord.dModDate:=Now();
-        Inc(HumRecord.btCount);
-        HumChrDB.Update(nIndex,HumRecord);
+        if nIndex >= 0 then begin
+          HumChrDB.Get(nIndex,HumRecord);
+          HumRecord.boDeleted:=True;
+          HumRecord.dModDate:=Now();
+          Inc(HumRecord.btCount);
+          HumChrDB.Update(nIndex,HumRecord);
+        end else begin
+          MessageDlg(sChrName + ' 人物不存在',mtWarning, [mbYes], 0);
+        end;
       end;
     finally
       HumChrDB.Close;
@@ -271,6 +327,7 @@ begin
   end;
 end;
 
+//启用人物
 procedure TFrmIDHum.BtnRevivalClick(Sender : TObject);
 //0x004A0D28
 var
@@ -284,10 +341,15 @@ begin
     try
       if HumChrDB.Open then begin
         nIndex:=HumChrDB.Index(sChrName);
-        HumChrDB.Get(nIndex,HumRecord);
-        HumRecord.boDeleted:=False;
-        Inc(HumRecord.btCount);
-        HumChrDB.Update(nIndex,HumRecord);
+        if nIndex >= 0 then begin
+          HumChrDB.Get(nIndex,HumRecord);
+          HumRecord.boDeleted:=False;
+          Inc(HumRecord.btCount);
+          HumChrDB.Update(nIndex,HumRecord);
+        end else begin
+          MessageDlg(sChrName + ' 人物不存在',mtWarning, [mbYes], 0);
+        end;
+
       end;
     finally
       HumChrDB.Close;
@@ -300,22 +362,29 @@ begin
   FrmFDBExplore.Show;
 end;
 
+//创建人物角色
 procedure TFrmIDHum.BtnCreateChrClick(Sender : TObject);
 var
   nCheckCode:Integer;
   HumRecord:THumInfo;
 begin
   if not FrmCreateChr.IncputChrInfo then exit;
+
+  FillChar(HumRecord,SizeOf(THumInfo),#0);
   nCheckCode:=0;
   try
     if HumChrDB.Open then begin
-      if HumChrDB.ChrCountOfAccount(FrmCreateChr.sUserId) < 2 then begin
-        HumRecord.Header.nSelectID :=FrmCreateChr.nSelectID;
+      if HumChrDB.ChrCountOfAccount(FrmCreateChr.sUserId) < 2 then begin //帐号字符长度必需大于2
+
         HumRecord.sChrName         :=FrmCreateChr.sChrName;
         HumRecord.sAccount         :=FrmCreateChr.sUserId;
-        HumRecord.boDeleted        :=False;
+        HumRecord.boDeleted        :=False;                                                                 
         HumRecord.btCount          :=0;
+
+        HumRecord.Header.nSelectID :=FrmCreateChr.nSelectID;
         HumRecord.Header.sName     :=FrmCreateChr.sChrName;
+        HumRecord.Header.sAccount  :=FrmCreateChr.sUserId;
+        
         if HumRecord.Header.sName <> '' then begin
           if not HumChrDB.Add(HumRecord) then nCheckCode:=2;
         end;          
@@ -324,31 +393,40 @@ begin
   finally
     HumChrDB.Close;
   end;
-  if nCheckCode = 0 then ShowMessage('人物创建成功...')
+  if nCheckCode = 0 then ShowMessage('人物创建成功')
   else ShowMessage('人物创建失败！！！')
 end;
 
+//删除人物及人物数据
 procedure TFrmIDHum.BtnDeleteChrAllInfoClick(Sender : TObject);//0x004A0610
 var
   sChrName:String;
+  nIndex:Integer;
 begin
   sChrName:=EdChrName.Text;
   if sChrName = '' then exit;
   if MessageDlg('是否确认删除人物 ' + sChrName + ' 及人物数据？',mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
+
     try
       if HumChrDB.Open then begin
-        HumChrDB.Delete(sChrName);
+        HumChrDB.Delete(sChrName);  //删除人物名称
       end;
     finally
       HumChrDB.Close;
     end;
+    
     try
-      if HumDataDB.Open then HumDataDB.Delete(sChrName);        
+      if HumDataDB.Open then begin
+         HumDataDB.Delete(sChrName);   //删除人物数据
+        end;
     finally
       HumDataDB.Close;
     end;
+     MessageDlg(sChrName + ' 人物及数据已删除',mtWarning, [mbYes], 0);
+
   end;
 end;
+
 
 procedure TFrmIDHum.SpeedButton2Click(Sender : TObject);//0x004A0B64
 var
