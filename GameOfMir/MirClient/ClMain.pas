@@ -3793,6 +3793,7 @@ begin
              2: FrmDlg.DMessageDlg ('[错误] 创建角色名称已被其他人使用!', [mbOk]);
              3: FrmDlg.DMessageDlg ('[错误] 您只能创建二个游戏角色!', [mbOk]);
              4: FrmDlg.DMessageDlg ('[错误] 创建角色时出现错误！ 错误代码 = 4', [mbOk]);
+
              else FrmDlg.DMessageDlg ('[错误] 创建角色时出现未知错误！', [mbOk]);
            end;
          end;
