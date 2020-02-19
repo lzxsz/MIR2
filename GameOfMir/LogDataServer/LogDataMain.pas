@@ -128,10 +128,11 @@ begin
     CreateDirectoryA(PChar(sLogDir),nil);
   end;
   sLogFile:=sLogDir + '\Log-' + IntToString(Hour) + 'h' + IntToString((Min div 10) * 2) + 'm.txt';
+  Memo1.Text := sLogFile;  //显示文件名
 
    try
     AssignFile(F,sLogFile);
-    if not FileExists(sLogFile) then Rewrite(F)
+    if not FileExists(sLogFile) then Rewrite(F)                                          
     else Append(F);
     
     for i:= 0 to LogMsgList.Count - 1 do begin
@@ -140,8 +141,7 @@ begin
     end;
 
     LogMsgList.Clear;
-    
-    Memo1.Text := sLogFile;  //重设文件名
+
   finally
     CloseFile(F);
   end;
