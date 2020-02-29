@@ -1547,17 +1547,17 @@ type
   pTMonInfo=^TMonInfo;
   TMonInfo=record
     ItemList:TList;
-    sName:String;
-    btRace:Byte;
-    btRaceImg:byte;
-    wAppr:word;
-    wLevel:word;
-    btLifeAttrib:byte;
-    wCoolEye:word;
-    dwExp:dword;
-    wHP,wMP:word;
-    wAC,wMAC,wDC,wMaxDC,wMC,wSC:Word;
-    wSpeed,wHitPoint,wWalkSpeed,wWalkStep,wWalkWait,wAttackSpeed:Word;
+    sName:String;      //怪物名称
+    btRace:Byte;       //行动模式及死亡时的效果代码
+    btRaceImg:byte;    //攻击模式代码
+    wAppr:word;        //怪物形象代码
+    wLevel:word;       //怪物等
+    btLifeAttrib:byte; //是否属不死系 0-否，1-是[不死系不可招，死系可召]
+    wCoolEye:word;     //怪物的感知范围，并和等级有关(反隐形范围)
+    dwExp:dword;       //怪物的经验值
+    wHP,wMP:word;      //HP怪物生命,MP怪物魔法
+    wAC,wMAC,wDC,wMaxDC,wMC,wSC:Word;  //AC 怪物防御力,MAC 魔法防御力,DC 攻击力,DCMAX 攻击力上限,MC 魔法攻击力,SC 道士精神力,
+    wSpeed,wHitPoint,wWalkSpeed,wWalkStep,wWalkWait,wAttackSpeed:Word;  //SPEED 速度,HIT 攻击命中率,Walk-SPD 行走速度间隔,WalkStep 行走步伐,WalkWait 行走等待时间,ATTACR-SPD 攻击速度间隔
     wAntiPush:Word;
     boAggro,boTame:Boolean;
   end;

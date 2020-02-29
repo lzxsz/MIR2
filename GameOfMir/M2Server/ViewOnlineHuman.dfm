@@ -1,11 +1,11 @@
 object frmViewOnlineHuman: TfrmViewOnlineHuman
-  Left = 276
-  Top = 257
+  Left = 274
+  Top = 230
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #22312#32447#20154#29289
   ClientHeight = 262
-  ClientWidth = 854
+  ClientWidth = 864
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -28,7 +28,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
   object PanelStatus: TPanel
     Left = 0
     Top = 0
-    Width = 854
+    Width = 864
     Height = 217
     Align = alTop
     Caption = #27491#22312#35835#21462#25968#25454'...'
@@ -36,13 +36,13 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
     object GridHuman: TStringGrid
       Left = 1
       Top = 1
-      Width = 852
+      Width = 862
       Height = 215
       Align = alClient
       ColCount = 14
       DefaultRowHeight = 18
       FixedCols = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing]
       TabOrder = 0
       OnDblClick = GridHumanDblClick
       ColWidths = (
@@ -56,7 +56,7 @@ object frmViewOnlineHuman: TfrmViewOnlineHuman
         74
         89
         32
-        138
+        150
         59
         55
         57)

@@ -2115,8 +2115,8 @@ begin
       31: actor := TCatMon.Create;                //角蝇
       32: actor := TScorpionMon.Create;           //蝎子
 
-      33: actor := TCentipedeKingMon.Create;      //触龙神
-      34: actor := TBigHeartMon.Create;           //赤月恶魔
+      33: actor := TCentipedeKingMon.Create;      //触龙神（蜈蚣王）
+      34: actor := TBigHeartMon.Create;           //赤月恶魔（大心脏）
       35: actor := TSpiderHouseMon.Create;        //幻影蜘蛛
       36: actor := TExplosionSpider.Create;       //月魔蜘蛛
       37: actor := TFlyingSpider.Create;          //

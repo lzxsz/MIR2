@@ -359,8 +359,8 @@ var
   g_boDealEnd               :Boolean;
   g_sDealWho                :String;  //交易对方名字
   g_MouseItem               :TClientItem;
-  g_MouseStateItem          :TClientItem;
-  g_MouseUserStateItem      :TClientItem; //泅犁 付快胶啊 啊府虐绊 乐绰 酒捞袍
+  g_MouseStateItem          :TClientItem;  //本人光标信息
+  g_MouseUserStateItem      :TClientItem;  //他人光标信息
 
   g_boItemMoving            :Boolean;  //正在移动物品
   g_MovingItem              :TMovingItem;
