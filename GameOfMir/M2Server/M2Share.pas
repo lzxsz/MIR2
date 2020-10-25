@@ -10982,7 +10982,8 @@ begin
     slIPData := TStringList.Create;
     QQWry.GetIPDataByIPRecordID(IPRecordID, slIPData);
     QQWry.Destroy;
-    IP := (Format('%s %s', [slIPData[2], slIPData[3]]));
+    //IP := (Format('%s %s', [slIPData[2], slIPData[3]]));  //地区: 本机地址 网络: CZ88.NET
+    IP := (Format('%s', [slIPData[2]]));
     slIPData.Free;
 
   except
