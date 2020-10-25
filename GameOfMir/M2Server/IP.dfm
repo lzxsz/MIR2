@@ -1,8 +1,8 @@
 object FormIP: TFormIP
-  Left = 511
-  Top = 350
-  Width = 290
-  Height = 227
+  Left = 535
+  Top = 237
+  Width = 331
+  Height = 229
   Caption = #22320#21306#26597#35810
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -34,14 +34,14 @@ object FormIP: TFormIP
   object Memo1: TMemo
     Left = 8
     Top = 8
-    Width = 260
+    Width = 300
     Height = 129
     TabOrder = 0
   end
   object Edit1: TEdit
     Left = 8
     Top = 144
-    Width = 180
+    Width = 217
     Height = 20
     Font.Charset = GB2312_CHARSET
     Font.Color = clWindowText
@@ -53,7 +53,7 @@ object FormIP: TFormIP
     Text = '127.0.0.1'
   end
   object Buttonip: TButton
-    Left = 199
+    Left = 239
     Top = 141
     Width = 69
     Height = 25

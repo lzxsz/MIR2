@@ -2118,8 +2118,8 @@ begin
       33: actor := TCentipedeKingMon.Create;      //触龙神（蜈蚣王）
       34: actor := TBigHeartMon.Create;           //赤月恶魔（大心脏）
       35: actor := TSpiderHouseMon.Create;        //幻影蜘蛛
-      36: actor := TExplosionSpider.Create;       //月魔蜘蛛
-      37: actor := TFlyingSpider.Create;          //
+      36: actor := TExplosionSpider.Create;       //爆炸蜘蛛
+      37: actor := TFlyingSpider.Create;          //月魔蜘蛛
 
       40: actor := TZombiLighting.Create;         //僵尸1
       41: actor := TZombiDigOut.Create;           //僵尸2
@@ -2136,8 +2136,8 @@ begin
 
       52: actor := TGasKuDeGi.Create;             //楔蛾
       53: actor := TGasKuDeGi.Create;             //粪虫
-      54: actor := TSmallElfMonster.Create;       //神兽
-      55: actor := TWarriorElfMonster.Create;     //神兽1 (战斗形象)
+      54: actor := TSmallElfMonster.Create;       //神兽（小）
+      55: actor := TWarriorElfMonster.Create;     //神兽1（大，战斗形象)
 
       60: actor := TElectronicScolpionMon.Create;
       61: actor := TBossPigMon.Create;
@@ -2177,7 +2177,7 @@ begin
       m_nRx        := m_nCurrX;
       m_nRy        := m_nCurrY;
       m_btDir      := cdir;
-      m_nFeature   := cfeature;
+      m_nFeature   := cfeature;                      //特征
       m_btRace     := RACEfeature(cfeature);         //changefeature啊 乐阑锭父
       m_btHair     := HAIRfeature(cfeature);         //函版等促.
       m_btDress    := DRESSfeature(cfeature);

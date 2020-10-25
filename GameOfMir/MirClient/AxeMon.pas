@@ -16,8 +16,8 @@ const
    KUDEGIGASBASE = 1445;
    COWMONFIREBASE = 1800;
    COWMONLIGHTBASE = 1900;
-   ZOMBILIGHTINGBASE = 350;
-   ZOMBIDIEBASE = 340;
+   ZOMBILIGHTINGBASE = 350;  //僵尸电光基址
+   ZOMBIDIEBASE = 340;       //僵尸基址
    ZOMBILIGHTINGEXPBASE = 520;
    SCULPTUREFIREBASE = 1680;
    MOTHPOISONGASBASE = 3590;
@@ -83,7 +83,7 @@ type
    public
    end;
 
-
+   //楔蛾、洞蛆、粪虫
    TGasKuDeGi = class (TActor)//Size 0x274
    protected
       AttackEffectSurface :TDirectDrawSurface;    //0x250
@@ -105,6 +105,7 @@ type
       procedure DrawEff (dsurface: TDirectDrawSurface; dx, dy: integer); override;
    end;
 
+   //火牛脸怪
    TFireCowFaceMon = class (TGasKuDeGi)
    public
       function   Light: integer; override;
@@ -146,6 +147,7 @@ type
       procedure Run; override;
    end;
 
+   //祖玛教主
    TSculptureKingMon = class (TSculptureMon)
    public
    end;
@@ -169,7 +171,7 @@ type
       procedure LoadSurface; override;
    end;
    
-   //BOSS猪怪(深绿色) ，在Mon19
+   //BOSS猪怪（虹魔猪卫，深绿色) ，在Mon19
    TBossPigMon = class (TGasKuDeGi)//0x3d
    protected
    public
@@ -184,7 +186,7 @@ type
       //procedure LoadSurface; override;   //lzx modified 2019-11-10
    end;
 
-   //骷髅王,  在Mon20
+   //骷髅王（黄泉教主）,  在Mon20
    TSkeletonKingMon = class (TGasKuDeGi)//0x3f
    protected
    public

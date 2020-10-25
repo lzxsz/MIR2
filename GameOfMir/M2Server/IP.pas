@@ -72,8 +72,12 @@ begin
       slIPData := TStringList.Create;
       QQWry.GetIPDataByIPRecordID(IPRecordID, slIPData);
       QQWry.Destroy;
-      Memo1.Lines.Add(Format('ID: %d IP: %s - %s 地区: %s 网络: %s',
-        [IPRecordID, slIPData[0], slIPData[1], slIPData[2], slIPData[3]]));
+      //Memo1.Lines.Add(Format('ID: %d IP: %s - %s 地区: %s 网络: %s',
+      //  [IPRecordID, slIPData[0], slIPData[1], slIPData[2], slIPData[3]]));  //ID: 119581 IP: 127.0.0.1 - 127.0.0.1 地区: 本机地址 网络: CZ88.NET
+
+      Memo1.Lines.Add(Format('ID: %d IP: %s - %s 地区: %s',
+        [IPRecordID, slIPData[0], slIPData[1], slIPData[2]]));
+
       slIPData.Free;
     except
       on E: Exception do
