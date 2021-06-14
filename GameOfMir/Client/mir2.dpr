@@ -23,14 +23,14 @@ uses
   AxeMon in 'AxeMon.pas',
   clEvent in 'clEvent.pas',
   HUtil32 in 'HUtil32.pas',
-  Grobal2 in '..\Common\Grobal2.pas',
   MShare in 'MShare.pas',
   DlgConfig in 'DlgConfig.pas' {frmDlgConfig},
   SDK in '..\SDK\SDK.pas',
   Mpeg in 'Mpeg.pas',
   wmutil in 'wmUtil.pas',
   gShare in 'GShare.pas',
-  EDcode in '..\Common\EDcode.pas';
+  EDcode in '..\Common\EDcode.pas',
+  grobal2 in 'Grobal2.pas';
 
 {$R *.RES}
 

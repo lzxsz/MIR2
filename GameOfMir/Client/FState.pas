@@ -3675,13 +3675,15 @@ begin
             //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 24, IntToStr(g_MySelf.m_Abil.MaxWeight));
          end;
       end;
+
       //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 355)){755}, SCREENHEIGHT - 15, IntToStr(g_nMyHungryState));
+
       //¼¢¶ö³Ì¶È
       if g_nMyHungryState in [1..4] then begin
         d := g_WMainImages.Images[16 + g_nMyHungryState-1];
-        if d <> nil then begin
+         if d <> nil then begin
           dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 354)){754}, 553, d.ClientRect, d, TRUE);
-        end;
+       end;
 
       end;
 

@@ -8608,6 +8608,10 @@ begin
     Config.WriteInteger('Setup', 'ItemNumberEx', g_Config.nItemNumberEx);
   g_Config.nItemNumberEx := Config.ReadInteger('Setup', 'ItemNumberEx', g_Config.nItemNumberEx);
 
+//------------------------------------
+{
+  //取消客户端软件版本校验 2021-6-7
+  //读取要校验的客户端文件名
   if Config.ReadString('Setup', 'ClientFile1', '') = '' then
     Config.WriteString('Setup', 'ClientFile1', g_Config.sClientFile1);
   g_Config.sClientFile1 := Config.ReadString('Setup', 'ClientFile1', g_Config.sClientFile1);
@@ -8619,6 +8623,8 @@ begin
   if Config.ReadString('Setup', 'ClientFile3', '') = '' then
     Config.WriteString('Setup', 'ClientFile3', g_Config.sClientFile3);
   g_Config.sClientFile3 := Config.ReadString('Setup', 'ClientFile3', g_Config.sClientFile3);
+}
+//------------------------------------
 
   if Config.ReadInteger('Setup', 'MonUpLvNeedKillBase', -1) < 0 then
     Config.WriteInteger('Setup', 'MonUpLvNeedKillBase', g_Config.nMonUpLvNeedKillBase);

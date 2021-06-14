@@ -87,3 +87,15 @@ ProductVersion=1.5.0 (20020522)
 Comments=
 [Excluded Packages]
 D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlSearchPath]
+Count=1
+Item0=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Component\DirectX;D:\GameOfMir\Component\JSocket;D:\GameOfMir\Component\lib;D:\GameOfMir\Component\VCLZip.Pro.v3.05.b1.FS.D7;D:\GameOfMir\Component\加密控件;D:\GameOfMir\Component\加密控件\Ciphers;D:\GameOfMir\Component\加密控件\Dcr32;D:\GameOfMir\Component\加密控件\Hashes;C:\Documents and Settings\Administrator\桌面\Source\Common;D:\GameOfMir\MirClient
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=..\Build\Client
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=D:\Legend of Mir 1.5

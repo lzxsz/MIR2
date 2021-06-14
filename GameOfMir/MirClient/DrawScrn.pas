@@ -279,7 +279,7 @@ begin
 
    if CurrentScene = PlayScene then begin
       with MSurface do begin
-         //赣府困俊 眉仿 钎矫 秦具 窍绰 巴甸
+         //
          with PlayScene do begin
             for k:=0 to m_ActorList.Count-1 do begin  //画出每一个人物的状态
                actor := m_ActorList[k];

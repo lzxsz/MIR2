@@ -548,10 +548,13 @@ begin
       exit;
      end;
 
-    if not LoadClientFile then begin
-      Close;
-      exit;
-    end;
+    //------------------------------------
+    //取消客户端软件版本校验 2021-6-7
+    // if not LoadClientFile then begin
+    //  Close;
+    //  exit;
+    // end;
+     //------------------------------------
 
     // FrmDB.Query.ConnectionString:=g_sADODBString;
     FrmDB.Query.DatabaseName := sDBName;
@@ -827,6 +830,8 @@ begin
     end;      
   end;
 end;
+
+//读取客端校验文件，并计算出校验码
 function TFrmMain.LoadClientFile():Boolean;
 begin
   MemoLog.Lines.Add('读取客服端版本信息..');
@@ -1069,7 +1074,12 @@ try
   LogUDP.RemoteHost:=g_Config.sLogServerAddr;
   LogUDP.RemotePort:=g_Config.nLogServerPort;
   LoadServerTable();
-  LoadClientFile();
+
+  //------------------------------------
+  //取消客户端软件版本校验 2021-6-7
+  //LoadClientFile();
+  //------------------------------------
+
 finally
 
 end;

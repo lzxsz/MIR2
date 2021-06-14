@@ -27,8 +27,8 @@ package MirGame;
 requires
   vcl,
   rtl,
-  DelphiX_for7,
-  Jacky;
+  Jacky,
+  DelphiX60;
 
 contains
   WIL in 'WIL.pas',

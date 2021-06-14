@@ -5603,10 +5603,15 @@ begin
         SendMapDescription();
 
         SendGoldInfo(True);
-          //SendDefMessage(SM_GAMEGOLDNAME,m_nGameGold,LoWord(m_nGamePoint),HiWord(m_nGamePoint),0,g_Config.sGameGoldName + #13 + g_Config.sGamePointName);
+        //SendDefMessage(SM_GAMEGOLDNAME,m_nGameGold,LoWord(m_nGamePoint),HiWord(m_nGamePoint),0,g_Config.sGameGoldName + #13 + g_Config.sGamePointName);
 
-        m_DefMsg := MakeDefaultMsg(SM_VERSION_FAIL, g_Config.nClientFile1_CRC, LoWord(g_Config.nClientFile2_CRC), HiWord(g_Config.nClientFile2_CRC), 0);
-        SendSocket(@m_DefMsg, EncodeBuffer(@g_Config.nClientFile3_CRC, SizeOf(Integer)));
+        //------------------------------------
+        //取消客户端软件版本校验 2021-6-7
+        //向客户端发送客户端文件校验数据
+        //m_DefMsg := MakeDefaultMsg(SM_VERSION_FAIL, g_Config.nClientFile1_CRC, LoWord(g_Config.nClientFile2_CRC), HiWord(g_Config.nClientFile2_CRC), 0);
+        //SendSocket(@m_DefMsg, EncodeBuffer(@g_Config.nClientFile3_CRC, SizeOf(Integer)));
+        //------------------------------------
+
       end;
     RM_HEAR,
       RM_WHISPER,

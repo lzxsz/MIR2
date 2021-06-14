@@ -89,14 +89,13 @@ Comments=
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=7
+Count=6
 Item0=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Component\DirectX;D:\GameOfMir\Component\JSocket;D:\GameOfMir\Component\lib;D:\GameOfMir\Component\VCLZip.Pro.v3.05.b1.FS.D7;D:\GameOfMir\Component\加密控件;D:\GameOfMir\Component\加密控件\Ciphers;D:\GameOfMir\Component\加密控件\Dcr32;D:\GameOfMir\Component\加密控件\Hashes;C:\Documents and Settings\Administrator\桌面\Source\Common
-Item1=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Component\DirectX;D:\GameOfMir\Component\JSocket;D:\GameOfMir\Component\lib;D:\GameOfMir\Component\VCLZip.Pro.v3.05.b1.FS.D7;D:\GameOfMir\Component\加密控件;D:\GameOfMir\Component\加密控件\Ciphers;D:\GameOfMir\Component\加密控件\Dcr32;D:\GameOfMir\Component\加密控件\Hashes;C:\Documents and Settings\Administrator\桌面\Source\Common;D:\GameOfMir\Client
-Item2=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Component\DirectX;D:\GameOfMir\Component\JSocket;D:\GameOfMir\Component\lib;D:\GameOfMir\Component\VCLZip.Pro.v3.05.b1.FS.D7;D:\GameOfMir\Component\加密控件;D:\GameOfMir\Component\加密控件\Ciphers;D:\GameOfMir\Component\加密控件\Dcr32;D:\GameOfMir\Component\加密控件\Hashes
-Item3=$(DELPHI)\Lib\Debug;..\Common\;..\SDK\
-Item4=$(DELPHI)\Lib\Debug;..\Source\Common\;..\Source\SDK\
-Item5=$(DELPHI)\Lib\Debug
-Item6=D:\DevMir\mir3;D:\Jacky\DirectX
+Item1=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Component\DirectX;D:\GameOfMir\Component\JSocket;D:\GameOfMir\Component\lib;D:\GameOfMir\Component\VCLZip.Pro.v3.05.b1.FS.D7;D:\GameOfMir\Component\加密控件;D:\GameOfMir\Component\加密控件\Ciphers;D:\GameOfMir\Component\加密控件\Dcr32;D:\GameOfMir\Component\加密控件\Hashes
+Item2=$(DELPHI)\Lib\Debug;..\Common\;..\SDK\
+Item3=$(DELPHI)\Lib\Debug;..\Source\Common\;..\Source\SDK\
+Item4=$(DELPHI)\Lib\Debug
+Item5=D:\DevMir\mir3;D:\Jacky\DirectX
 [HistoryLists\hlUnitOutputDirectory]
 Count=6
 Item0=..\Build\Client

@@ -58,8 +58,7 @@ contains
   colli3DX in 'Colli3DX.pas',
   turbopixels in 'TurboPixels.pas',
   DXCommon in 'DXCommon.pas',
-  DXSpriteEdit in 'DXSpriteEdit.pas' {DelphiXSpriteEditForm} ,
-  DXMidiEdit in 'DXMidiEdit.pas' {DelphiXMidiEditForm}
-;
+  DXSpriteEdit in 'DXSpriteEdit.pas' {DelphiXSpriteEditForm},
+  DXMidiEdit in 'DXMidiEdit.pas' {DelphiXMidiEditForm};
 
 end.

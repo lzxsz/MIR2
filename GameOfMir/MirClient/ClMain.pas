@@ -3000,7 +3000,6 @@ begin
       if str = '/hungry' then begin
          Inc(g_nMyHungryState);
          if g_nMyHungryState > 4 then g_nMyHungryState:=1;
-           
          exit;
       end;
       if str = '/hint screen' then begin

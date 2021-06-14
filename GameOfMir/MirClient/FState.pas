@@ -3818,15 +3818,18 @@ begin
             //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 24, IntToStr(g_MySelf.m_Abil.MaxWeight));
          end;
       end;
-      
-      //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 355)){755}, SCREENHEIGHT - 15, IntToStr(g_nMyHungryState));  //饥饿数值
-      //饥饿程度
+
+      //g_nMyHungryState := 3;
+      //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 355)){755}, SCREENHEIGHT - 15, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在正下方
+
+       //PomiTextOut(dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 370)) {755}, SCREENHEIGHT - 60, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在右上角
+
+       //饥饿程度
       if g_nMyHungryState in [1..4] then begin
         d := g_WMainImages.Images[16 + g_nMyHungryState-1];
         if d <> nil then begin
           dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 354)){754}, 553, d.ClientRect, d, TRUE);    //饥饿状态图标
         end;
-
       end;
 
    end;

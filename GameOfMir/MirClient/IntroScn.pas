@@ -257,31 +257,39 @@ var
 begin
    inherited Create (stLogin);
 
-   //登录--用户、密码
+   //----------------------------登录----------------------------------------
+   //登录--用户名、密码
    //登陆ID输入框
-   m_EdId := TEdit.Create (FrmMain.Owner);
+   m_EdId := TEdit.Create (FrmMain.Owner);    //用户帐号输入框
    with m_EdId do begin
       Parent := FrmMain;
       Color  := clBlack;
       Font.Color := clWhite;
       Font.Size := 10;
-      MaxLength := 10;
+      MaxLength := 14;                   //2021-6-6
       BorderStyle := bsNone;
       OnKeyPress := EdLoginIdKeyPress;
       Visible := FALSE;
       Tag := 10;
    end;
+
    //密码输入框
    m_EdPasswd := TEdit.Create (FrmMain.Owner);
    with m_EdPasswd do begin
-      Parent := FrmMain; Color  := clBlack; Font.Size := 10; MaxLength := 10; Font.Color := clWhite;
-      BorderStyle := bsNone; PasswordChar := '*';
-      OnKeyPress := EdLoginPasswdKeyPress; Visible := FALSE;
+      Parent := FrmMain;
+      Color  := clBlack;
+      Font.Size := 10;
+      MaxLength := 10;
+      Font.Color := clWhite;
+      BorderStyle := bsNone;
+      PasswordChar := '*';
+      OnKeyPress := EdLoginPasswdKeyPress;
+      Visible := FALSE;
       Tag := 10;
    end;
 
-
-    //登录--新用户输入 对话框
+   //------------------------------------------------------------------------
+   //登录--新用户输入 对话框
    //登陆提示
    nx := SCREENWIDTH  div 2 - 320 {192}{79};    //减去对话框图片宽的1/2 
    ny := SCREENHEIGHT div 2 - 237 {146}{64};   //减去对话框图片高的1/2
@@ -450,7 +458,7 @@ begin
    nx := SCREENWIDTH div 2 - 210 {192}{192};    //减去对话框图片宽的1/2
    ny := SCREENHEIGHT div 2 - 150 {146}{150};   //减去对话框图片高的1/2
    m_EdChgId := TEdit.Create (FrmMain.Owner);
-   with m_EdChgId do begin                      //用户名
+   with m_EdChgId do begin                      //登录--修改密码--用户名
       Parent := FrmMain;
       Height := 16; //13;
       Width  := 137; //104;
@@ -524,6 +532,7 @@ begin
    inherited Destroy;
 end;
 
+//------------------------------------------------------------------------
 //登陆，用户帐号与密码输入框，位置、大小设定
 procedure TLoginScene.OpenScene;
 var
