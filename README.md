@@ -1,5 +1,6 @@
 # MIR2
-Legend of Mir. Mir2 project includes server and client for version 1.5 Delphi6 tools are needed to develop this project.
+Legend of Mir. Mir2 project includes Server and Client, Delphi6 tools are needed to develop this project. 
+The Mir2 Client of Data Need Version 1.5 or 1.76.
 
 # Project Path
 The project working directory in D: disk.
@@ -9,19 +10,13 @@ D:\GameOfMir
 1.Install Delphi6. Note: this project needs to be compiled in Delphi version 6.0.
 
 2.Install JSocket Component.
-Copy JSocket to Delphi6 lib directory.
-D:\Program Files (x86)\Borland\Delphi6\Lib\JSocket
-
-Run Delphi6 -> Component -> Install Component... -> Install Component Dialog -> Into existing package -> Click Unit file name [Browse] button select Jsocket.pas.
-Path: D:\Program Files (x86)\Borland\Delphi6\Lib\JSocket\Jsocket.pas
+cd D:\GameOfMir\Component\JSocket
+Double click Jacky.dpk, Open Package dialog, Install this component.
 
 3.Install DelphiX for Delphi6
-Copy DelphiX to Delphi6 lib directory.
-D:\Program Files (x86)\Borland\Delphi6\Lib\DelphiX
-
-Double click DelphiX60.dpk, So Install this component.
-Path: D:\Program Files (x86)\Borland\Delphi6\Lib\DelphiX\Source\DelphiX60.dpk
+cd D:\GameOfMir\Component\DelphiX\Source
+Double click DelphiX60.dpk, Open Package dialog, Install this component.
 
 4.Install TWMImage Component.
-Run Delphi6 -> Component -> Install Component... -> Install Component Dialog -> Into existing package -> Click Unit file name [Browse] button select WIL.pas
-Path: D:\GameOfMir\Client\WIL.pas
+cd D:\GameOfMir\MirClient
+Double click MirGame.dpk, Open Package dialog, Install this component.
