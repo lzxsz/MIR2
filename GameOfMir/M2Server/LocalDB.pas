@@ -1182,6 +1182,7 @@ begin
   begin
     LoadList := TStringList.Create;
     LoadList.LoadFromFile(sFileName);
+
     i := 0;
     while (True) do
     begin
@@ -1253,13 +1254,24 @@ begin
 
       end; //00486B5B
     end; //00486B67
+
     //00486B67
-    New(MonGenInfo);
-    MonGenInfo.sMapName := '';
-    MonGenInfo.sMonName := '';
-    MonGenInfo.CertList := TList.Create;
-    MonGenInfo.Envir := nil;
-    UserEngine.m_MonGenList.Add(MonGenInfo);
+    //
+    //lzx2022 - modified by davy 2022-5-1
+    //如果怪物列表为空， 则插入一个空的怪物对象作为结束，否则服务端引擎启动时会报异常。
+    //这里加了条件处理，当有怪物数量为0时，在[刷物配置]的[刷怪列表]中就不会多出一个空行。
+    //如果怪物数量为0，则[刷怪列表]显示怪物名为NULL
+    if 0 = LoadList.Count  then
+    begin
+      New(MonGenInfo);
+      MonGenInfo.sMapName := '';
+      MonGenInfo.sMonName := 'NULL';
+      MonGenInfo.nX:=0;
+      MonGenInfo.nY:=0;
+      MonGenInfo.CertList := TList.Create;
+      MonGenInfo.Envir := nil;
+      UserEngine.m_MonGenList.Add(MonGenInfo);
+    end;
 
     LoadList.Free;
     Result := 1;
