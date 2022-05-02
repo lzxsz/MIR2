@@ -3074,7 +3074,7 @@ begin
                d := g_WMainImages.Images[112]; //lv  技能等级图标
                if d <> nil then
                   dsurface.Draw (bbx + 85, bby+62+15+m*37, d.ClientRect, d, TRUE);
-                  
+
                d := g_WMainImages.Images[111]; //exp   技能经验图标
                if d <> nil then
                   dsurface.Draw (bbx + 85 + 26, bby+62+15+m*37, d.ClientRect, d, TRUE);
@@ -3089,7 +3089,7 @@ begin
                   m := i - magtop;
                   if not (pm.Level in [0..3]) then pm.Level := 0; //魔法最多3级
                   TextOut (bbx + 85, bby + 62 + m*37, pm.Def.sMagicName); //魔法技能名称
-                  
+
                   if pm.Level in [0..3] then trainlv := pm.Level
                   else trainlv := 0;
                   TextOut (bbx + 85 + 18, bby + 62 + 15 + m*37, IntToStr(pm.Level)); //魔法技能等级值
@@ -3105,11 +3105,11 @@ begin
          end;
       end;
 
-     //--------------------------------------------------------- 
+     //---------------------------------------------------------
      //原本打开，本代码为显示人物身上所带物品信息，显示位置为人物下方。
      //此代码打开后，则光标提示功能需要关闭。参见函数TFrmDlg.DSWWeaponMouseMove()。
      //恢复原来版本的显示方式。modified by lzx 2019-12-18
-      if g_MouseStateItem.S.Name <> '' then begin                                                                       
+      if g_MouseStateItem.S.Name <> '' then begin
          g_MouseItem := g_MouseStateItem;
          GetMouseItemInfo (iname, d1, d2, d3, useable);
          if iname <> '' then begin
@@ -3138,13 +3138,20 @@ begin
          SetBkMode (Handle, TRANSPARENT);
          Font.Color := g_MySelf.m_nNameColor;
          //角色名称
-         TextOut (SurfaceX(Left + 122 - TextWidth(FrmMain.CharName) div 2),
-                  SurfaceY(Top + 22), g_MySelf.m_sUserName);
+         //TextOut (SurfaceX(Left + 122 - TextWidth(FrmMain.CharName) div 2), SurfaceY(Top + 22), g_MySelf.m_sUserName);
+
+         //77 为左边的距离，90是文字显示区域宽度
+         TextOut (SurfaceX(Left + 77 + (90 - TextWidth(FrmMain.CharName)) div 2), SurfaceY(Top + 22), g_MySelf.m_sUserName);
+
          if StatePage = 0 then begin
             Font.Color := clSilver;
             //行会 和 职位
-            TextOut (SurfaceX(Left + 65), SurfaceY(Top + 55),
-                     g_sGuildName + ' ' + g_sGuildRankName);
+            //TextOut (SurfaceX(Left + 65), SurfaceY(Top + 55), g_sGuildName + ' ' + g_sGuildRankName);
+
+            iname := g_sGuildName + ' ' + g_sGuildRankName;
+            //40是左边外框边到内框边的距离。168是内框宽度
+            TextOut (SurfaceX(Left + 40 + (168 - TextWidth(iname)) div 2), SurfaceY(Top + 55), iname);  //行会名 + 行会级别名
+
          end;
          Release;
       end;
@@ -6150,12 +6157,19 @@ begin
          SetBkMode (Handle, TRANSPARENT);
          Font.Color := UserState1.NameColor;
          //角色名称
-         TextOut (SurfaceX(Left + 122 - TextWidth(UserState1.UserName) div 2),
-                  SurfaceY(Top + 22), UserState1.UserName);
+         //TextOut (SurfaceX(Left + 122 - TextWidth(UserState1.UserName) div 2), SurfaceY(Top + 22), UserState1.UserName);
+
+         //77 为左边的距离，90是文字显示区域宽度
+         TextOut (SurfaceX(Left + 77 + (90 - TextWidth(UserState1.UserName)) div 2), SurfaceY(Top + 22), UserState1.UserName);
+
          Font.Color := clSilver;
          //行会 和 职位
-         TextOut (SurfaceX(Left + 65), SurfaceY(Top + 55),
-                  UserState1.GuildName + ' ' + UserState1.GuildRankName);
+         //TextOut (SurfaceX(Left + 65), SurfaceY(Top + 55), UserState1.GuildName + ' ' + UserState1.GuildRankName);
+
+         iname := UserState1.GuildName + ' ' + UserState1.GuildRankName;
+         //40是左边外框边到内框边的距离。168是内框宽度
+         TextOut (SurfaceX(Left + 40 + (168 - TextWidth(iname)) div 2), SurfaceY(Top + 55), iname);  //行会名 + 行会级别
+
          Release;
       end;
 

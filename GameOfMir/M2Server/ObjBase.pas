@@ -163,7 +163,7 @@ type
     m_btSlaveMakeLevel: Byte; //0x299  召唤等级
     m_SlaveList: TList; //0x29C  下属列表
     bt2A0: Byte; //0x2A0
-    m_boSlaveRelax: Boolean; //0x2A0  宝宝攻击状态(休息/攻击)(Byte)
+    m_boSlaveRelax: Boolean; //0x2A0  宝宝攻击状态(true:休息/false:攻击)(Byte)
     m_btAttatckMode: Byte; //0x2A1  下属攻击状态
     m_btNameColor: Byte; //0x2A2  人物名字的颜色(Byte)
     m_nLight: Integer; //0x2A4  亮度
@@ -10947,13 +10947,14 @@ begin
   end;
 end;
 
+//改变宠物的攻击状态（休息/攻击）
 procedure TPlayObject.CmdChangeSalveStatus;
 begin
   if m_SlaveList.Count > 0 then
   begin
     m_boSlaveRelax := not m_boSlaveRelax;
-    if m_boSlaveRelax then SysMsg(sPetRest, c_Green, t_Hint)
-    else SysMsg(sPetAttack, c_Green, t_Hint)
+    if m_boSlaveRelax then SysMsg(sPetRest, c_Green, t_Hint) //休息
+    else SysMsg(sPetAttack, c_Green, t_Hint) //攻击
   end;
 end;
 
@@ -25791,10 +25792,14 @@ except
   end;
 end;
 end;
-
 }
 
-//新式的 获取显示名字的函数
+
+
+//新式的 获取显示名字的函数 ,显示公会名+角色名
+//该函数会用新的内容,如行会名称替换 g_sHumanShowName 中的格式内容。
+//所以使用该函数前，需要对g_sHumanShowName变量预先设定格式内容格式。
+{
 function TPlayObject.GetShowName: string;
 var
   sShowName: string;
@@ -25821,12 +25826,13 @@ begin
     if m_MyGuild <> nil then
     begin
       Castle := g_CastleManager.IsCastleMember(Self);
-    {
-    if UserCastle.IsMasterGuild(TGuild(m_MyGuild)) then begin
-      sGuildName:=AnsiReplaceText(g_sCastleGuildName,'%castlename',UserCastle.m_sName);
-      sGuildName:=AnsiReplaceText(sGuildName,'%guildname',TGuild(m_MyGuild).sGuildName);
-      sGuildName:=AnsiReplaceText(sGuildName,'%rankname',m_sGuildRankName);
-      }
+
+//    if UserCastle.IsMasterGuild(TGuild(m_MyGuild)) then begin
+//      sGuildName:=AnsiReplaceText(g_sCastleGuildName,'%castlename',UserCastle.m_sName);
+//      sGuildName:=AnsiReplaceText(sGuildName,'%guildname',TGuild(m_MyGuild).sGuildName);
+//      sGuildName:=AnsiReplaceText(sGuildName,'%rankname',m_sGuildRankName);
+//
+
       if Castle <> nil then
       begin
         sGuildName := AnsiReplaceText(g_sCastleGuildName, '%castlename', Castle.m_sName);
@@ -25844,6 +25850,8 @@ begin
         end;
       end;
     end;
+
+    //显示等级名
     if not g_Config.boShowRankLevelName then
     begin
       if m_btReLevel > 0 then
@@ -25863,32 +25871,32 @@ begin
     end;
 
 //取消夫妻 和 师徒 关系的名称显示
-{
-    if m_sMasterName <> '' then
-    begin
-      if m_boMaster then
-      begin
-      //sMasterName:= m_sMasterName + '的师傅';
-        sMasterName := Format(g_sMasterName, [m_sMasterName]);
-      end else
-      begin
-      //sMasterName:= m_sMasterName + '的徒弟';
-        sMasterName := Format(g_sNoMasterName, [m_sMasterName]);
-      end;
-    end;
-    if m_sDearName <> '' then
-    begin
-      if m_btGender = gMan then
-      begin
-      //sDearName:= m_sDearName + '的老公';
-        sDearName := Format(g_sManDearName, [m_sDearName]);
-      end else
-      begin
-        sDearName := Format(g_sWoManDearName, [m_sDearName]); // + '的老婆';
-      end;
-    end;
-}
+//
+//    if m_sMasterName <> '' then
+//    begin
+//      if m_boMaster then
+//      begin
+//      //sMasterName:= m_sMasterName + '的师傅';
+//        sMasterName := Format(g_sMasterName, [m_sMasterName]);
+//      end else
+//      begin
+//      //sMasterName:= m_sMasterName + '的徒弟';
+//        sMasterName := Format(g_sNoMasterName, [m_sMasterName]);
+//      end;
+//    end;
+//    if m_sDearName <> '' then
+//    begin
+//     if m_btGender = gMan then
+//      begin
+//      //sDearName:= m_sDearName + '的老公';
+//        sDearName := Format(g_sManDearName, [m_sDearName]);
+//      end else
+//      begin
+//        sDearName := Format(g_sWoManDearName, [m_sDearName]); // + '的老婆';
+//      end;
+//    end;
 
+    //名字上加入 公会关系
     sShowName := AnsiReplaceText(g_sHumanShowName, '%chrname', sCharName);
     sShowName := AnsiReplaceText(sShowName, '%guildname', sGuildName);
 
@@ -25905,6 +25913,25 @@ begin
     end;
   end;
 end;
+}
+
+
+//取消在角色名上增加任何信息   lzx2022 - Modified by davy 2022-5-3
+function TPlayObject.GetShowName: string;
+var
+  //sShowName: string;
+  sCharName: string;
+begin
+
+   sCharName := m_sCharName;
+
+  //sShowName := AnsiReplaceText(g_sHumanShowName, '%chrname', sCharName);
+  g_sHumanShowName := sCharName;
+
+   Result :=  sCharName;
+  //Result := sShowName;
+end;
+
 
 function TPlayObject.CheckItemsNeed(StdItem: TItem): Boolean;
 var

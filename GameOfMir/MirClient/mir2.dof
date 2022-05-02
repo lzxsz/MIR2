@@ -41,7 +41,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Legend of Mir 1.5
+OutputDir=..\Build\MirClient
 UnitOutputDir=..\Build\Client
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -85,8 +85,6 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.5.0 (20020522)
 Comments=
-[Excluded Packages]
-D:\PROGRA~1\Borland\Delphi6\Projects\Bpl\DelphiX60.bpl=DelphiX - DirectX components for Delphi
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -97,5 +95,6 @@ Item0=D:\GameOfMir\Common;D:\GameOfMir\Component\black\Sources;D:\GameOfMir\Comp
 Count=1
 Item0=..\Build\Client
 [HistoryLists\hlOutputDirectorry]
-Count=1
-Item0=D:\Legend of Mir 1.5
+Count=2
+Item0=..\Build\MirClient
+Item1=D:\Legend of Mir 1.5
