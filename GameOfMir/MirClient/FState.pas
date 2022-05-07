@@ -1365,7 +1365,7 @@ begin
 
    {-----------------------------------------------------------}
 
-   //商人对话框
+   //商人对话框(NPC对话信息框)
    d := g_WMainImages.Images[384];
    if d <> nil then begin
       DMerchantDlg.Left := 0;
@@ -2011,9 +2011,6 @@ begin
 end;
 
 
-
-
-
 {------------------------------------------------------------------------}
 
 ////显示通用对话框
@@ -2431,7 +2428,6 @@ end;
 
 //新帐号
 
-
 procedure TFrmDlg.DLoginNewDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -2729,7 +2725,6 @@ end;
 {------------------------------------------------------------------------}
 //创建帐号相关
 
-
 procedure TFrmDlg.DNewAccountOkClick(Sender: TObject; X, Y: Integer);
 begin
    LoginScene.NewAccountOk;
@@ -2778,11 +2773,8 @@ begin
 end;
 
 
-
-
 {------------------------------------------------------------------------}
 //某腐磐 急琶
-
 
 procedure TFrmDlg.DscSelect1DirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
@@ -4972,7 +4964,7 @@ begin
 end;
 
 
-//筐体相关
+//框体相关。在NPC对话框中显示文字信息
 
 procedure TFrmDlg.DMerchantDlgDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
@@ -4988,13 +4980,13 @@ begin
       if d <> nil then
          dsurface.Draw (SurfaceX(Left), SurfaceY(Top), d.ClientRect, d, TRUE);
       SetBkMode (dsurface.Canvas.Handle, TRANSPARENT);
-      lx := 30;    //对话筐字体位置
-      ly := 30;
+      lx := 25;  //30  //文字左边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
+      ly := 18;  //30  //文字顶边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
       str := MDlgStr;
       drawcenter := FALSE;
       while TRUE do begin
          if str = '' then break;
-         str := GetValidStr3 (str, data, ['\']);
+         str := GetValidStr3 (str, data, ['\']);     //换行符号
          if data <> '' then begin
             sx := 0;
             fdata := '';
@@ -5014,7 +5006,7 @@ begin
                      drawcenter := FALSE;
                      continue;
                   end;
-                  cmdparam := GetValidStr3 (cmdstr, cmdstr, ['/']); //cmdparam : 努腐 登菌阑 锭 静烙
+                  cmdparam := GetValidStr3 (cmdstr, cmdstr, ['/']); //cmdparam :  命令参数
                end else begin
                   DMenuDlg.Visible := FALSE;
                   DSellDlg.Visible := FALSE;
