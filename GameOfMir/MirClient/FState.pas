@@ -4980,8 +4980,8 @@ begin
       if d <> nil then
          dsurface.Draw (SurfaceX(Left), SurfaceY(Top), d.ClientRect, d, TRUE);
       SetBkMode (dsurface.Canvas.Handle, TRANSPARENT);
-      lx := 25;  //30  //文字左边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
-      ly := 18;  //30  //文字顶边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
+      lx := 30;         //文字左边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
+      ly := 18;  //30;  //文字顶边距（相对对话框位置）  lzx2022 - Modified by davy 2022-5-7
       str := MDlgStr;
       drawcenter := FALSE;
       while TRUE do begin
