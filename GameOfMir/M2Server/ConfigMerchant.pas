@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Spin,ObjNpc;
+  Dialogs, StdCtrls, Spin,ObjNpc, StrUtils, SDK;
 
 type
   TfrmConfigMerchant = class(TForm)
@@ -51,7 +51,7 @@ type
     Label11: TLabel;
     EditMoveTime: TSpinEdit;
     ButtonClearTempData: TButton;
-    ButtonViewData: TButton;
+    ButtonRecover: TButton;
     procedure ListBoxMerChantClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonSaveClick(Sender: TObject);
@@ -81,16 +81,33 @@ type
     procedure CheckBoxAutoMoveClick(Sender: TObject);
     procedure EditMoveTimeChange(Sender: TObject);
     procedure ButtonClearTempDataClick(Sender: TObject);
+    procedure ListBoxMerChantDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
+    procedure ListBoxMerChantMeasureItem(Control: TWinControl;
+      Index: Integer; var Height: Integer);
+    procedure ButtonRecoverClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     SelMerchant:TMerchant;
+    RecoverMerchantList: TGList; //初始NPC数据份，用于恢复修改，lzxsz2022 - Add by davy 2022-5-22
+
     boOpened:Boolean;
     boModValued:Boolean;
+    bIsNpcChanged:Boolean;
+    
     procedure ModValue();
     procedure uModValue();
     procedure RefListBoxMerChant();
     procedure ClearMerchantData();
     procedure LoadScriptFile();
     procedure ChangeScriptAllowAction();
+
+    //ListBox记录修改标记 lzxsz2022 -  Add  ydavy b2022-5-22
+    procedure SetModifiedTag(ItemIndex: Integer);
+    procedure DelModifiedTag(ItemIndex: Integer);
+    function IsModifiedTag(ItemIndex: Integer):Boolean;
+    function BackupRecoverMerchant(): Integer;
+
     { Private declarations }
   public
     procedure Open();
@@ -102,34 +119,129 @@ var
 
 implementation
 
-uses UsrEngn, M2Share;
+uses UsrEngn, M2Share, LocalDB;
 
 {$R *.dfm}
 
 { TfrmConfigMerchant }
+//设置修改标记。自定义：在最后加个回车符作为修改标记
+procedure TfrmConfigMerchant.SetModifiedTag(ItemIndex: Integer);
+begin
+  if(ItemIndex >=0) then
+  begin
+     if (IsModifiedTag(ItemIndex) = False) then
+     begin
+        ListBoxMerChant.Items.Strings[ItemIndex] :=  ListBoxMerChant.Items.Strings[ItemIndex] + #13;  //#13加回车符
+     end;
+     
+     bIsNpcChanged := True;
+  end;
+end; 
+
+//删除修改标记
+procedure TfrmConfigMerchant.DelModifiedTag(ItemIndex: Integer);
+var
+   strItemText : String;
+begin
+  if(ItemIndex >=0) then
+  begin
+     if (IsModifiedTag(ItemIndex) = True) then
+     begin
+        strItemText := ListBoxMerChant.Items.Strings[ItemIndex];
+        ListBoxMerChant.Items.Strings[ItemIndex] := LeftStr(strItemText,Length(strItemText)-1);
+     end;
+  end;
+end;
+
+//是否有修改标记
+function TfrmConfigMerchant.IsModifiedTag(ItemIndex: Integer):Boolean;
+var
+   TagChar : String;
+begin
+  if(ItemIndex >=0) then
+    begin
+      TagChar :=  RightStr(ListBoxMerChant.Items.Strings[ItemIndex],1);
+      if ( TagChar = #13 ) then
+       begin
+         result := True;  //#13加回车符
+         Exit;  //类似于Return
+       end
+   end;
+
+   result := False;
+end;
+
 procedure TfrmConfigMerchant.ModValue;
 begin
-  ButtonSave.Enabled:=True;
+  if(bIsNpcChanged = True) then
+  begin
+     ButtonSave.Enabled:=True;
+     ButtonRecover.Enabled:=True;
+  end;
+
   ButtonScriptSave.Enabled:=True;
 end;
 
 procedure TfrmConfigMerchant.uModValue;
 begin
-  ButtonSave.Enabled:=False;
+  if(bIsNpcChanged = False) then
+  begin
+    ButtonSave.Enabled:=False;
+    ButtonRecover.Enabled:=False;
+  end;
+
   ButtonScriptSave.Enabled:=False;
 end;
 
+//备份NPC用于恢复的数据。用于放弃修改，恢复原来数据。lzx2022 - Add By 2022-5-22
+function TfrmConfigMerchant.BackupRecoverMerchant(): Integer;
+var
+  Merchant: TMerchant;
+  tMerchantNPC : TMerchant;
+  I: Integer;
+begin
+
+     RecoverMerchantList := TGList.Create;
+
+     for I := 0 to UserEngine.m_MerchantList.Count - 1 do begin
+       Merchant := TMerchant.Create;
+       tMerchantNPC:=TMerchant(UserEngine.m_MerchantList.Items[I]);
+
+       Merchant.m_sScript   := Copy(tMerchantNPC.m_sScript, 0, Length(tMerchantNPC.m_sScript));
+       Merchant.m_sMapName  := Copy(tMerchantNPC.m_sMapName, 0, Length(tMerchantNPC.m_sMapName));
+       Merchant.m_nCurrX    := tMerchantNPC.m_nCurrX;
+       Merchant.m_nCurrY    := tMerchantNPC.m_nCurrY;
+       Merchant.m_sCharName := Copy(tMerchantNPC.m_sCharName, 0, Length(tMerchantNPC.m_sCharName));
+       Merchant.m_nFlag     := tMerchantNPC.m_nFlag;
+       Merchant.m_wAppr     := tMerchantNPC.m_wAppr;
+       Merchant.m_boCastle  := tMerchantNPC.m_boCastle;
+
+       RecoverMerchantList.Add(Merchant);
+     end;
+   Result := 1;
+end;
+
+
+//对话框打开时自动调用该函数
 procedure TfrmConfigMerchant.Open;
+var
+  Merchant: TMerchant;
+  I: Integer;
 begin
   boOpened:=False;
   uModValue();
   CheckBoxDenyRefStatus.Checked:=False;
+
   SelMerchant:=nil;
-  RefListBoxMerChant;
+  RefListBoxMerChant;  //初始NPC化列表
+
+  //备份恢复的NPC数据，用于恢复修改。lzx2022 - Add By 2022-5-22
+  BackupRecoverMerchant();
 
   boOpened:=True;
   ShowModal;
 end;
+
 
 procedure TfrmConfigMerchant.ButtonClearTempDataClick(Sender: TObject);
 begin
@@ -138,7 +250,10 @@ begin
   end;
 end;
 
-procedure TfrmConfigMerchant.ButtonSaveClick(Sender: TObject);
+{
+ //该保存事件会重写原的NCP配置文件，而不是只修改相应的记录。故弃用，改用新的。
+ //lzxsz2022 - modified by davy 2022-5-21
+procedure TfrmConfigMerchant.ButtonSaveClick_old(Sender: TObject);
 var
   I:Integer;
   SaveList:TStringList;
@@ -153,13 +268,21 @@ begin
   try
     for I := 0 to UserEngine.m_MerchantList.Count - 1 do begin
       Merchant:=TMerchant(UserEngine.m_MerchantList.Items[I]);
-      if Merchant.m_sMapName = '0' then Continue;
-        
-      if Merchant.m_boCastle then sIsCastle:='1'
-      else sIsCastle:='0';
-      if Merchant.m_boCanMove then sCanMove:='1'
-      else sCanMove:='0';
-        
+       // if Merchant.m_sMapName = '0' then Continue;  //??? 这是BUG所在。这里跳过了0号地图的NCP，是错误的。 modified 2022-05-19
+
+       //NCP列表的首一条记录是QFunction NCP，故跳过。
+       //QFunction	0	0	0	QFunction	0	0	0	0	0
+       if Merchant.m_sCharName = 'QFunction' then Continue;   //lzxsz2022 - Modifyed by davy 2022-05-19
+
+    //lzxsz - Modified by davy 2022-5-20 
+    //取消PNC自动移动设置,这个设置可能会扰乱服务端正常工作。
+    //  if Merchant.m_boCastle then sIsCastle:='1'
+    //  else sIsCastle:='0';
+    //  if Merchant.m_boCanMove then sCanMove:='1'
+    // else sCanMove:='0';
+
+      //#N 表示十进制N表示的Ascii 字符。#9表示tab键。
+      //#10表示换行。#13表示回车。#32 表示空格
       SaveList.Add(Merchant.m_sScript + #9 +
                    Merchant.m_sMapName + #9 +
                    IntToStr(Merchant.m_nCurrX) + #9 +
@@ -167,9 +290,10 @@ begin
                    Merchant.m_sCharName + #9 +
                    IntToStr(Merchant.m_nFlag) + #9 +
                    IntToStr(Merchant.m_wAppr) + #9 +
-                   sIsCastle + #9 +
-                   sCanMove + #9 +
-                   IntToStr(Merchant.m_dwMoveTime)
+                   sIsCastle // + #9+
+                   
+               //    sCanMove + #9 +
+               //    IntToStr(Merchant.m_dwMoveTime)
                    )
     end;
     SaveList.SaveToFile(sMerchantFile);
@@ -177,8 +301,219 @@ begin
     UserEngine.m_MerchantList.UnLock;
   end;
   SaveList.Free;
-  uModValue();  
+  uModValue();
 end;
+}
+
+
+//删除重复的分隔符，如果分隔符之间空格是隔开，则视为分隔符重复，会被删除空格和后面的分隔符
+Function DelSameDelimiter(Ch : Char; S : String) : String;
+ Var
+  I : Integer;
+  len : Integer;
+begin
+ I := 1;
+ len := Length(S);
+ 
+ While I <= len do
+  begin
+    If (S[I] = CH) and ((S[I+1] = CH) or (S[I+1] = ' ')) then
+     begin
+         //如果分隔符后面字符是相同的分隔符或是空格，删除后和分隔符或空格，
+         Delete(S, I+1, 1);
+     end //记住这里不能加分号
+    Else         
+      begin
+         I := I + 1;
+      end; //这里要加分号
+  end;
+ result := S;
+end;
+
+function GetLstBoxIndex(LstBox: TListBox): Integer;
+begin
+  Result:=-1;
+  Result:=LstBox.ItemIndex;
+end;
+
+//该保存事件不会重写原的NCP配置文件，仅修改相应的记录。
+//本函数取消CPN移动的设置项(sCanMove)，该设置可能会造成游戏中NCP位置混乱。
+// lzxsz2022 - add by davy 2022-5-21
+procedure TfrmConfigMerchant.ButtonSaveClick(Sender: TObject);
+var
+  I,N:Integer;
+  SaveList:TStringList;
+  Merchant:TMerchant;
+  sMerchantFile:String;
+  //sCanMove:String;
+  sLine:String;
+  sFirst:String;
+  AttributeList :TStrings;
+
+  sScript   : String;
+  sMapName  : String;
+  sNpcName  : String;
+  sNpcCurrX : String;
+  sNpcCurrY : String;
+  sFlag     : String;
+  sAppr     : String;
+  sIsCastle : String;
+
+  sSelNpcOldName : String;
+  sIniNpcName    : String;
+ // nSelIdx : Integer;
+  sSelItemText : String;
+begin
+
+  sMerchantFile:=g_Config.sEnvirDir + 'Merchant.txt';
+  SaveList:=TStringList.Create;          //NPC文本对象
+  SaveList.LoadFromFile(sMerchantFile);
+  
+  AttributeList := TStringList.Create;   //NPC属性列表
+
+  UserEngine.m_MerchantList.Lock;
+  try
+
+  for N := 0 to ListBoxMerChant.Items.Count -1 do  //for1
+  begin
+    if(IsModifiedTag(N) = False) then      //if1
+      begin
+        continue;
+      end
+    else
+     begin
+       SelMerchant := TMerchant(ListBoxMerChant.Items.Objects[N]);
+       sScript     := SelMerchant.m_sScript;            //0
+       sMapName    := SelMerchant.m_sMapName;           //1
+       sNpcCurrX   := IntToStr(SelMerchant.m_nCurrX);   //2
+       sNpcCurrY   := IntToStr(SelMerchant.m_nCurrY);   //3
+       sNpcName    := SelMerchant.m_sCharName;          //4
+       sFlag       := IntToStr(SelMerchant.m_nFlag);    //5 方向
+       sAppr       := IntToStr(SelMerchant.m_wAppr);    //6
+
+       If SelMerchant.m_boCastle = True then  sIsCastle := '1' //7
+       else    sIsCastle := '0';
+
+       //获取原来未修改前，NPC的名称
+       sSelItemText :=  ListBoxMerChant.Items.Strings[N];
+       sSelNpcOldName := Trim(LeftStr(sSelItemText,Pos('-', sSelItemText)-1));  //截取NCP名称
+   
+    end; //if1
+ 
+    //从配置文件中找出要修改的NCP,并进行修改保存
+
+     for I := 0 to SaveList.Count -1 do     //for2
+     begin
+
+       sLine := SaveList[I];
+       sLine := Trim(sLine);
+       sFirst := LeftStr(sLine,1);
+
+       if (sLine <> '') and (sFirst <> ';')    then    //if2
+       begin
+
+          sLine := DelSameDelimiter(#9,sLine);    //删除重复的分隔符
+          AttributeList.Delimiter := #9;          //TAB 字符, 水平制表符
+          AttributeList.DelimitedText := sLine;
+          sIniNpcName := Trim(AttributeList[4]);  //配置文件中的NCP名称
+
+          if (sIniNpcName = sSelNpcOldName)        and   //[4]
+             (Trim(AttributeList[0]) = sScript)    and
+             (Trim(AttributeList[1]) = sMapName)   and
+             (Trim(AttributeList[2]) = sNpcCurrX)  and
+             (Trim(AttributeList[3]) = sNpcCurrY)  and
+             (Trim(AttributeList[5]) = sFlag)      and
+             (Trim(AttributeList[6]) = sAppr)      and
+             (Trim(AttributeList[7]) = sIsCastle)
+          then
+          begin
+             AttributeList[0] := sScript;
+             AttributeList[1] := sMapName;
+             AttributeList[2] := sNpcCurrX;
+             AttributeList[3] := sNpcCurrY;
+             AttributeList[4] := sNpcName;
+
+             AttributeList[5] := sFlag;
+             AttributeList[6] := sAppr;
+             AttributeList[7] := sIsCastle;
+
+             //Copy(SaveList[I],0 ,Length(AttributeList.DelimitedText));
+             SaveList[I] := AttributeList.DelimitedText;
+             break;
+          end;
+      end;   //if2
+   end;  //for2
+ end;  //for1
+    
+    //将NCP配置的修改保存到文件中
+    SaveList.SaveToFile(sMerchantFile);
+
+    //刷新NPC列表
+    ListBoxMerChant.Clear;
+    SelMerchant:=nil;    
+    RefListBoxMerChant;
+
+    //设置记录改变标记为无改变
+    bIsNpcChanged := False;
+
+   finally
+     UserEngine.m_MerchantList.UnLock;
+   end;
+
+    SaveList.Free;
+    AttributeList.Free;
+  
+  uModValue();
+
+
+end;
+
+//恢复NCP的修改。仅在保存之前进行。lzxsz2022 - Add By davy 2022-5-22
+procedure TfrmConfigMerchant.ButtonRecoverClick(Sender: TObject);
+var
+  I, N : Integer;
+  Merchant:TMerchant;
+  OldMerchant:TMerchant;
+  OldItemIndex:Integer;
+begin
+
+  OldItemIndex :=  ListBoxMerChant.ItemIndex;
+  ListBoxMerChant.Clear;   //重要
+  SelMerchant:=nil;
+
+  UserEngine.m_MerchantList.Lock;
+  try
+    for I := 0 to RecoverMerchantList.Count - 1 do begin
+      OldMerchant:=TMerchant(RecoverMerchantList.Items[I]);
+      Merchant:=TMerchant(UserEngine.m_MerchantList.Items[I]);
+
+      Merchant.m_sScript   := Copy(OldMerchant.m_sScript, 0, Length(OldMerchant.m_sScript));
+      Merchant.m_sMapName  := Copy(OldMerchant.m_sMapName, 0, Length(OldMerchant.m_sMapName));
+      Merchant.m_nCurrX    := OldMerchant.m_nCurrX;
+      Merchant.m_nCurrY    := OldMerchant.m_nCurrY;
+      Merchant.m_sCharName := Copy(OldMerchant.m_sCharName, 0, Length(OldMerchant.m_sCharName));
+      Merchant.m_nFlag     := OldMerchant.m_nFlag;
+      Merchant.m_wAppr     := OldMerchant.m_wAppr;
+      Merchant.m_boCastle  := OldMerchant.m_boCastle;
+
+      if  (Merchant.m_nCurrX = 0) and (Merchant.m_nCurrY = 0) then Continue;
+        
+      ListBoxMerChant.Items.AddObject(Merchant.m_sCharName + ' - ' + Merchant.m_sMapName + ' (' + IntToStr(Merchant.m_nCurrX) + ':' + IntToStr(Merchant.m_nCurrY) + ')',Merchant );
+    end;   //for
+  finally
+    UserEngine.m_MerchantList.UnLock;
+  end;
+
+  ListBoxMerChant.SetFocus; //设置焦点
+  ListBoxMerChant.Selected[OldItemIndex]:=True ;  //设置选择项高亮
+  ListBoxMerChantClick(Sender); //调用点击事件
+    
+  //设置记录改变标记为无改变
+  bIsNpcChanged := False;
+  uModValue();
+
+end;
+
 
 procedure TfrmConfigMerchant.ClearMerchantData;
 var
@@ -205,7 +540,9 @@ begin
   try
     for I := 0 to UserEngine.m_MerchantList.Count - 1 do begin
       Merchant:=TMerchant(UserEngine.m_MerchantList.Items[I]);
-      if (Merchant.m_sMapName = '0') and (Merchant.m_nCurrX = 0) and (Merchant.m_nCurrY = 0) then Continue;
+      //if (Merchant.m_sMapName = '0') and (Merchant.m_nCurrX = 0) and (Merchant.m_nCurrY = 0) then Continue;  //Bug 在依排除了0号地图。0号地图是存在的（0号是比奇省）
+      if (Merchant.m_nCurrX = 0) and (Merchant.m_nCurrY = 0) then Continue;    //lzxsz2022 - Mydified by Davy 2022-5-22
+
       ListBoxMerChant.Items.AddObject(Merchant.m_sCharName + ' - ' + Merchant.m_sMapName + ' (' + IntToStr(Merchant.m_nCurrX) + ':' + IntToStr(Merchant.m_nCurrY) + ')',Merchant );
     end;
   finally
@@ -223,7 +560,7 @@ begin
   boOpened:=False;
   nSelIndex:=ListBoxMerChant.ItemIndex;
   if nSelIndex < 0 then exit;
-  SelMerchant:=TMerchant(ListBoxMerChant.Items.Objects[nSelIndex]);
+  SelMerchant:=TMerchant(ListBoxMerChant.Items.Objects[nSelIndex]);  //选择的NPC
   EditScriptName.Text:=SelMerchant.m_sScript;
   EditMapName.Text:=SelMerchant.m_sMapName;
   EditMapDesc.Text:=SelMerchant.m_PEnvir.sMapDesc;
@@ -233,8 +570,8 @@ begin
   ComboBoxDir.ItemIndex:=SelMerchant.m_nFlag;
   EditImageIdx.Value:=SelMerchant.m_wAppr;
   CheckBoxOfCastle.Checked:=SelMerchant.m_boCastle;
-  CheckBoxAutoMove.Checked:=SelMerchant.m_boCanMove;
-  EditMoveTime.Value:=SelMerchant.m_dwMoveTime;
+  //CheckBoxAutoMove.Checked:=SelMerchant.m_boCanMove;
+  //EditMoveTime.Value:=SelMerchant.m_dwMoveTime;
   
   CheckBoxBuy.Checked:=SelMerchant.m_boBuy;
   CheckBoxSell.Checked:=SelMerchant.m_boSell;
@@ -246,7 +583,6 @@ begin
   CheckBoxS_repair.Checked:=SelMerchant.m_boS_repair;
   CheckBoxMakedrug.Checked:=SelMerchant.m_boMakeDrug;
   CheckBoxSendMsg.Checked:=SelMerchant.m_boSendmsg;
-
 
   EditPriceRate.Value:=SelMerchant.m_nPriceRate;
   MemoScript.Clear;
@@ -269,6 +605,7 @@ begin
   ComboBoxDir.Items.Add('5');
   ComboBoxDir.Items.Add('6');
   ComboBoxDir.Items.Add('7');
+
 end;
 
 
@@ -279,76 +616,92 @@ begin
   end;
 end;
 
+//修改NPC的X坐标
 procedure TfrmConfigMerchant.EditXChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_nCurrX:=EditX.Value;
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC的Y坐标
 procedure TfrmConfigMerchant.EditYChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_nCurrY:=EditY.Value;
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC显示名称
 procedure TfrmConfigMerchant.EditShowNameChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_sCharName:=Trim(EditShowName.Text);
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC外形
 procedure TfrmConfigMerchant.EditImageIdxChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_wAppr:=EditImageIdx.Value;
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC脚本
 procedure TfrmConfigMerchant.EditScriptNameChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_sScript:=Trim(EditScriptName.Text);
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC地图
 procedure TfrmConfigMerchant.EditMapNameChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_sMapName:=Trim(EditMapName.Text);
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC方向
 procedure TfrmConfigMerchant.ComboBoxDirChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_nFlag:=ComboBoxDir.ItemIndex;
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
+//修改NPC是否属于城堡
 procedure TfrmConfigMerchant.CheckBoxOfCastleClick(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   SelMerchant.m_boCastle:=CheckBoxOfCastle.Checked;
+  SetModifiedTag(ListBoxMerChant.ItemIndex); //设置修改标记，lzxsz2022 - Modified By Davy 2022-5-22
   ModValue();
 end;
 
-
+//取消NCP移动的设置。lzxsz-2022 Modifyed By Davy 2022-5-22
 procedure TfrmConfigMerchant.CheckBoxAutoMoveClick(Sender: TObject);
 begin
-  if not boOpened or (SelMerchant =nil) then exit;
-  SelMerchant.m_boCanMove:=CheckBoxAutoMove.Checked;
-  ModValue();
+  //if not boOpened or (SelMerchant =nil) then exit;
+  //SelMerchant.m_boCanMove:=CheckBoxAutoMove.Checked;
+  //ModValue();
 end;
 
-
+//取消NCP移动时间间隔的设置。lzxsz-2022 Modifyed By Davy 2022-5-22
 procedure TfrmConfigMerchant.EditMoveTimeChange(Sender: TObject);
 begin
-  if not boOpened or (SelMerchant =nil) then exit;
-  SelMerchant.m_dwMoveTime:=EditMoveTime.Value;
-  ModValue();
+ // if not boOpened or (SelMerchant =nil) then exit;
+ // SelMerchant.m_dwMoveTime:=EditMoveTime.Value;
+ // ModValue();
 end;
 
 procedure TfrmConfigMerchant.LoadScriptFile;
@@ -533,16 +886,59 @@ begin
   ButtonReLoadNpc.Enabled:=False;
 end;
 
-
-
 procedure TfrmConfigMerchant.MemoScriptChange(Sender: TObject);
 begin
   if not boOpened or (SelMerchant =nil) then exit;
   ModValue();
 end;
 
+//改变文本显示颜色
+procedure TfrmConfigMerchant.ListBoxMerChantDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+begin
 
+   if (Index >=0) then
+   begin
+     if (IsModifiedTag(Index) = True) then
+     begin
+         ListBoxMerChant.Canvas.Font.Color := clRed;
+         ListBoxMerChant.Canvas.Font.Size :=10;
+         ListBoxMerChant.Canvas.TextRect(Rect, Rect.Left, Rect.Top, ListBoxMerChant.Items[Index]);
+     end
+   else
+       ListBoxMerChant.Canvas.Font.Color := clBlack;
+       ListBoxMerChant.Canvas.Font.Size :=10;      
+       ListBoxMerChant.Canvas.TextRect(Rect, Rect.Left, Rect.Top, ListBoxMerChant.Items[Index]);
+    end;
 
+end;
 
+procedure TfrmConfigMerchant.ListBoxMerChantMeasureItem(
+  Control: TWinControl; Index: Integer; var Height: Integer);
+begin
+     Height :=16;  //ListBox 行高
+end;
+
+ 
+//关闭窗口事件
+procedure TfrmConfigMerchant.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+var
+  Result : Integer;
+begin
+
+    if( bIsNpcChanged = True) then
+    begin
+       Result := Application.MessageBox('有修NCP数据被修改，是否保存退出吗？','警告',MB_ICONWARNING+MB_YesNo);
+       if Result = IDYES then
+        begin
+           ButtonScriptSaveClick(Sender);
+        end
+       else
+         begin
+          ButtonRecoverClick(Sender);
+        end;
+    end;
+end;
 
 end.

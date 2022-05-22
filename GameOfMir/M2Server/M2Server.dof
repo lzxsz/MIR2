@@ -103,7 +103,7 @@ Item3=F:\Mir2\m2server\Units\
 Item4=.\Build\M2Server\
 [HistoryLists\hlOutputDirectorry]
 Count=15
-Item0=..\MirServer
+Item0=..\MirServer\
 Item1=D:\Mirserver\Mir200
 Item2=D:\GameOfMir\MirServer
 Item3=..\..\Release\M2server\

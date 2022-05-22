@@ -1088,7 +1088,8 @@ end;
 function TFrmDB.LoadMerchant(): Integer;
 var
   sFileName, sLineText, sScript, sMapName, sX, sY, sName, sFlag, sAppr,
-    sIsCalste, sCanMove, sMoveTime: string;
+  sIsCalste: string;
+  //sCanMove, sMoveTime: string;
   tMerchantList: TStringList;
   tMerchantNPC: TMerchant;
   i: Integer;
@@ -1113,8 +1114,10 @@ begin
         sLineText := GetValidStr3(sLineText, sFlag, [' ', #9]);
         sLineText := GetValidStr3(sLineText, sAppr, [' ', #9]);
         sLineText := GetValidStr3(sLineText, sIsCalste, [' ', #9]);
-        sLineText := GetValidStr3(sLineText, sCanMove, [' ', #9]);
-        sLineText := GetValidStr3(sLineText, sMoveTime, [' ', #9]);
+
+        //取消交易NPC移动功能。 lzx2022 - Modified by Davy 2022-5-22
+        //sLineText := GetValidStr3(sLineText, sCanMove, [' ', #9]);
+        //sLineText := GetValidStr3(sLineText, sMoveTime, [' ', #9]);
 
         if (sScript <> '') and (sMapName <> '') and (sAppr <> '') then
         begin
@@ -1126,12 +1129,16 @@ begin
           tMerchantNPC.m_sCharName := sName;
           tMerchantNPC.m_nFlag := Str_ToInt(sFlag, 0);
           tMerchantNPC.m_wAppr := Str_ToInt(sAppr, 0);
-          tMerchantNPC.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
           if Str_ToInt(sIsCalste, 0) <> 0 then
             tMerchantNPC.m_boCastle := True;
-          if (Str_ToInt(sCanMove, 0) <> 0) and (tMerchantNPC.m_dwMoveTime > 0)
-            then
-            tMerchantNPC.m_boCanMove := True;
+
+          //取消交易NPC移动功能。 lzx2022 - Modified by Davy 2022-5-22
+          //tMerchantNPC.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
+
+          // if (Str_ToInt(sCanMove, 0) <> 0) and (tMerchantNPC.m_dwMoveTime > 0)
+          //   then
+          //   tMerchantNPC.m_boCanMove := True;
+
           UserEngine.AddMerchant(tMerchantNPC); //00487B4D
         end;
       end;
@@ -3338,7 +3345,8 @@ procedure TFrmDB.ReLoadMerchants; //00487BD8
 var
   i, ii, nX, nY: Integer;
   sLineText, sFileName, sScript, sMapName, sX, sY, sCharName, sFlag, sAppr,
-    sCastle, sCanMove, sMoveTime: string;
+  sCastle : string;
+  //sCanMove, sMoveTime: string;
   Merchant: TMerchant;
   LoadList: TStringList;
   boNewNpc: Boolean;
@@ -3370,8 +3378,11 @@ begin
         sLineText := GetValidStr3(sLineText, sFlag, [' ', #9]);
         sLineText := GetValidStr3(sLineText, sAppr, [' ', #9]);
         sLineText := GetValidStr3(sLineText, sCastle, [' ', #9]);
-        sLineText := GetValidStr3(sLineText, sCanMove, [' ', #9]);
-        sLineText := GetValidStr3(sLineText, sMoveTime, [' ', #9]);
+
+        //取消交易NCP移动功能。 lzx2022 - Modified by Davy 2022-5-22
+        // sLineText := GetValidStr3(sLineText, sCanMove, [' ', #9]);
+        // sLineText := GetValidStr3(sLineText, sMoveTime, [' ', #9]);
+
         nX := Str_ToInt(sX, 0);
         nY := Str_ToInt(sY, 0);
         boNewNpc := True;
@@ -3387,15 +3398,19 @@ begin
             Merchant.m_sCharName := sCharName;
             Merchant.m_nFlag := Str_ToInt(sFlag, 0);
             Merchant.m_wAppr := Str_ToInt(sAppr, 0);
-            Merchant.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
+            
             if Str_ToInt(sCastle, 0) <> 1 then
               Merchant.m_boCastle := True
             else
               Merchant.m_boCastle := False;
 
-            if (Str_ToInt(sCanMove, 0) <> 0) and (Merchant.m_dwMoveTime > 0)
-              then
-              Merchant.m_boCanMove := True;
+            //取消交易NCP移动功能。  lzx2022 - Modified by Davy 2022-5-22
+            // Merchant.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
+
+            //if (Str_ToInt(sCanMove, 0) <> 0) and (Merchant.m_dwMoveTime > 0)
+            //  then
+            //  Merchant.m_boCanMove := True;
+
             Break;
           end;
         end;
@@ -3412,14 +3427,19 @@ begin
             Merchant.m_sCharName := sCharName;
             Merchant.m_nFlag := Str_ToInt(sFlag, 0);
             Merchant.m_wAppr := Str_ToInt(sAppr, 0);
-            Merchant.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
+
             if Str_ToInt(sCastle, 0) <> 1 then
               Merchant.m_boCastle := True
             else
               Merchant.m_boCastle := False;
-            if (Str_ToInt(sCanMove, 0) <> 0) and (Merchant.m_dwMoveTime > 0)
-              then
-              Merchant.m_boCanMove := True;
+
+            //取消交易NCP移动功能。  lzx2022 - Modified by Davy 2022-5-22
+            // Merchant.m_dwMoveTime := Str_ToInt(sMoveTime, 0);
+            
+            // if (Str_ToInt(sCanMove, 0) <> 0) and (Merchant.m_dwMoveTime > 0)
+            //   then
+            //   Merchant.m_boCanMove := True;
+
             UserEngine.m_MerchantList.Add(Merchant);
             Merchant.Initialize;
           end

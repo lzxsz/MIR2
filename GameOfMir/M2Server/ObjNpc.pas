@@ -2534,6 +2534,7 @@ begin
   inherited;
 
 end;
+
 //清除临时文件，包括交易库存，价格表
 procedure TMerchant.ClearData;
 var
