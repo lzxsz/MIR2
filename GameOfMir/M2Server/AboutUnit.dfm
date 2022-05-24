@@ -110,7 +110,7 @@ object FrmAbout: TFrmAbout
       Top = 36
       Width = 96
       Height = 12
-      Caption = '1.5.0 (20020522)'
+      Caption = '1.5.1 (20020522)'
     end
     object Label10: TLabel
       Left = 71

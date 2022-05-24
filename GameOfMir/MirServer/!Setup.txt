@@ -81,7 +81,7 @@ PayMentPointName=充值点
 CreditPoint=声望
 
 [Setup]
-ItemNumber=455724349
+ItemNumber=458377360
 HomeMap=0
 HomeX=289
 HomeY=618
@@ -91,7 +91,7 @@ HomeY=618
 ;ClientFile2 =mir.2
 ;ClientFile3 =mir.3
 
-ItemNumberEx=1073760784
+ItemNumberEx=1073760794
 
 ;红名回城地图
 RedHomeMap=3

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Spin,ObjNpc, StrUtils, SDK;
+  Dialogs, StdCtrls, Spin,ObjNpc, StrUtils, SDK, HUtil32;
 
 type
   TfrmConfigMerchant = class(TForm)
@@ -336,31 +336,35 @@ begin
   Result:=LstBox.ItemIndex;
 end;
 
+{
 //该保存事件不会重写原的NCP配置文件，仅修改相应的记录。
 //本函数取消CPN移动的设置项(sCanMove)，该设置可能会造成游戏中NCP位置混乱。
 // lzxsz2022 - add by davy 2022-5-21
-procedure TfrmConfigMerchant.ButtonSaveClick(Sender: TObject);
+procedure TfrmConfigMerchant.ButtonSaveClick_old(Sender: TObject);
 var
   I,N:Integer;
   SaveList:TStringList;
   Merchant:TMerchant;
   sMerchantFile:String;
   //sCanMove:String;
-  sLine:String;
+
+  sLineText:String;
   sFirst:String;
   AttributeList :TStrings;
 
-  sScript   : String;
-  sMapName  : String;
-  sNpcName  : String;
-  sNpcCurrX : String;
-  sNpcCurrY : String;
-  sFlag     : String;
-  sAppr     : String;
-  sIsCastle : String;
+  //修改参数 ,原参数
+  sScript,   sOldScript   : String;
+  sMapName,  sOldMapName  : String;
+  sNpcName,  sOldNpcName  : String;
+  sNpcCurrX, sOldNpcCurrX : String;
+  sNpcCurrY, sOldNpcCurrY : String;
+  sFlag,     sOldFlag     : String;
+  sAppr,     sOldAppr     : String;
+  sIsCastle, sOldIsCastle : String;
 
-  sSelNpcOldName : String;
-  sIniNpcName    : String;
+  sSelNpcName : String;      //ListBox选中的NPC名称
+  
+ // sFileNpcName   : String;     //文件中的NPC名称
  // nSelIdx : Integer;
   sSelItemText : String;
 begin
@@ -396,7 +400,7 @@ begin
 
        //获取原来未修改前，NPC的名称
        sSelItemText :=  ListBoxMerChant.Items.Strings[N];
-       sSelNpcOldName := Trim(LeftStr(sSelItemText,Pos('-', sSelItemText)-1));  //截取NCP名称
+       sSelNpcName := Trim(LeftStr(sSelItemText,Pos('-', sSelItemText)-1));  //截取NCP名称
    
     end; //if1
  
@@ -405,26 +409,37 @@ begin
      for I := 0 to SaveList.Count -1 do     //for2
      begin
 
-       sLine := SaveList[I];
-       sLine := Trim(sLine);
-       sFirst := LeftStr(sLine,1);
+      // sLine := SaveList[I];
+      // sLine := Trim(sLine);
+      // sFirst := LeftStr(sLine,1);
 
-       if (sLine <> '') and (sFirst <> ';')    then    //if2
+      sLineText := Trim(SaveList[I]);
+      
+      if (sLineText <> '') and (sLineText[1] <> ';') then     //if2
        begin
+         sLineText := GetValidStr3(sLineText, sOldScript, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldMapName, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcCurrX, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcCurrY, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcName, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldFlag, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldAppr, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sIsCastle, [' ', #9]);
 
-          sLine := DelSameDelimiter(#9,sLine);    //删除重复的分隔符
-          AttributeList.Delimiter := #9;          //TAB 字符, 水平制表符
-          AttributeList.DelimitedText := sLine;
-          sIniNpcName := Trim(AttributeList[4]);  //配置文件中的NCP名称
+         // sLine := DelSameDelimiter(#9,sLine);    //删除重复的分隔符
+         // AttributeList.Delimiter := #9;          //TAB 字符, 水平制表符
+         // AttributeList.DelimitedText := sLine;
 
-          if (sIniNpcName = sSelNpcOldName)        and   //[4]
-             (Trim(AttributeList[0]) = sScript)    and
-             (Trim(AttributeList[1]) = sMapName)   and
-             (Trim(AttributeList[2]) = sNpcCurrX)  and
-             (Trim(AttributeList[3]) = sNpcCurrY)  and
-             (Trim(AttributeList[5]) = sFlag)      and
-             (Trim(AttributeList[6]) = sAppr)      and
-             (Trim(AttributeList[7]) = sIsCastle)
+         // sFileNpcName := Trim(AttributeList[4]);  //配置文件中的NCP名称
+
+          if (sOldNpcName = sSelNpcName)        and   //[4]
+             (sOldScript = sScript)    and
+             (sOldMapName = sMapName)   and
+             (sOldNpcCurrX = sNpcCurrX)  and
+             (sOldNpcCurrY = sNpcCurrY)  and
+             (sOldFlag = sFlag)      and
+             (sOldAppr = sAppr)      and
+             (sIsCastle = sIsCastle)
           then
           begin
              AttributeList[0] := sScript;
@@ -450,7 +465,7 @@ begin
 
     //刷新NPC列表
     ListBoxMerChant.Clear;
-    SelMerchant:=nil;    
+    SelMerchant:=nil;
     RefListBoxMerChant;
 
     //设置记录改变标记为无改变
@@ -462,11 +477,143 @@ begin
 
     SaveList.Free;
     AttributeList.Free;
-  
+
   uModValue();
 
 
 end;
+
+}
+
+//该保存事件不会重写原的NCP配置文件，仅修改相应的记录。
+//本函数取消CPN移动的设置(sCanMove)。
+procedure TfrmConfigMerchant.ButtonSaveClick(Sender: TObject);
+var
+  I,N:Integer;
+  SaveList:TStringList;
+  Merchant:TMerchant;
+  sMerchantFile:String;
+  //sCanMove:String;
+
+  sLineText:String;
+  sFirst:String;
+  AttributeList :TStrings;
+
+  //原参数 （来源配置文件）
+  sOldScript   : String;
+  sOldMapName  : String;
+  sOldNpcName  : String;
+  sOldNpcCurrX : String;
+  sOldNpcCurrY : String;
+
+  //对比参数 （来源配置文件ListBox文本）
+  sComNpcName : String;      //ListBox文本的NPC名称
+  sComNpcCurrX : String;     //ListBox文本的NPC坐标X
+  sComNpcCurrY : String;     //ListBox文本的NPC坐标X
+  sComMapName   :  String;   //ListBox文本的NPC地图名
+  
+  sSelIsCastle :  String;    //修改参数是否属城堡
+
+  post1, post2, post3 : Integer;
+    
+   sSelItemText : String;
+   OldItemIndex : Integer;
+begin
+
+  sMerchantFile:=g_Config.sEnvirDir + 'Merchant.txt';
+  SaveList:=TStringList.Create;          //NPC文本对象
+  SaveList.LoadFromFile(sMerchantFile);
+
+  OldItemIndex :=  ListBoxMerChant.ItemIndex;
+  
+  UserEngine.m_MerchantList.Lock;
+  try
+
+    //从配置文件中找出要修改的NCP,并进行修改保存
+     N:=0;
+     for I := 0 to SaveList.Count -1 do     //for2
+     begin
+
+      sLineText := Trim(SaveList[I]);
+      
+      if (sLineText <> '') and (sLineText[1] <> ';') then     //if2
+       begin
+         sLineText := GetValidStr3(sLineText, sOldScript, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldMapName, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcCurrX, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcCurrY, [' ', #9]);
+         sLineText := GetValidStr3(sLineText, sOldNpcName, [' ', #9]);
+
+        //从ListBox文本，获取比较参数（原来未修改的参数）
+        sSelItemText :=  ListBoxMerChant.Items.Strings[N];
+        //格式：名称 - 地图 (x:y)
+        post1 := Pos('-', sSelItemText);        
+        sComNpcName := Trim(LeftStr(sSelItemText,post1 - 1));  //NCP名称
+
+        post2 := Pos('(', sSelItemText);
+        sComMapName := Trim(MidStr(sSelItemText,post1+1, post2-post1-1));  //地图名称
+        
+        post1 := post2;
+        post2 := Pos(':', sSelItemText);
+        sComNpcCurrX := Trim(MidStr(sSelItemText,post1+1, post2-post1-1));  //X坐标
+
+        post1 := post2;
+        post2 := Pos(')', sSelItemText);
+        sComNpcCurrY := Trim(MidStr(sSelItemText,post1+1, post2-post1-1));  //Y坐标
+
+        if (sOldNpcName  = sComNpcName)   and
+           (sOldMapName  = sComMapName)   and
+           (sOldNpcCurrX = sComNpcCurrX) and
+           (sOldNpcCurrY = sComNpcCurrY)
+          then
+          begin
+
+        SelMerchant := TMerchant(ListBoxMerChant.Items.Objects[N]);
+
+        if (SelMerchant.m_boCastle = true) then  sSelIsCastle := '1'
+        else     sSelIsCastle := '0';
+        
+        SaveList[I] :=  SelMerchant.m_sScript + #9 +
+                        SelMerchant.m_sMapName + #9 +
+                        IntToStr(SelMerchant.m_nCurrX) + #9 +
+                        IntToStr(SelMerchant.m_nCurrY) + #9 +
+                        SelMerchant.m_sCharName + #9 +
+                        IntToStr(SelMerchant.m_nFlag) + #9 +
+                        IntToStr(SelMerchant.m_wAppr) + #9 +
+                        sSelIsCastle;
+
+           Inc(N);   //计数加1
+          end;
+      end;   //if2
+   end;  //for2
+
+   //将NCP配置的修改保存到文件中
+   SaveList.SaveToFile(sMerchantFile);
+   BackupRecoverMerchant();  //重新备份数据
+
+  //刷新NPC列表
+    ListBoxMerChant.Clear;
+    SelMerchant:=nil;
+    RefListBoxMerChant; //刷新
+
+    ListBoxMerChant.SetFocus; //设置焦点
+    ListBoxMerChant.Selected[OldItemIndex]:=True ;  //设置选择项高亮
+    ListBoxMerChantClick(Sender); //调用点击事件
+
+    //设置记录改变标记为无改变
+    bIsNpcChanged := False;
+
+   finally
+     UserEngine.m_MerchantList.UnLock;
+   end;
+
+   SaveList.Free;
+
+  uModValue();
+
+end;
+
+
 
 //恢复NCP的修改。仅在保存之前进行。lzxsz2022 - Add By davy 2022-5-22
 procedure TfrmConfigMerchant.ButtonRecoverClick(Sender: TObject);
@@ -930,13 +1077,10 @@ begin
     if( bIsNpcChanged = True) then
     begin
        Result := Application.MessageBox('有修NCP数据被修改，是否保存退出吗？','警告',MB_ICONWARNING+MB_YesNo);
-       if Result = IDYES then
-        begin
-           ButtonScriptSaveClick(Sender);
-        end
-       else
-         begin
-          ButtonRecoverClick(Sender);
+       if Result = IDYES then  begin
+           ButtonScriptSaveClick(Sender);   //保存
+        end   else  begin
+            ButtonRecoverClick(Sender);     //恢复
         end;
     end;
 end;
