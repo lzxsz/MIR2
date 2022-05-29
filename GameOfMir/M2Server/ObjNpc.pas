@@ -278,11 +278,11 @@ type
     procedure SendCustemMsg(PlayObject: TPlayObject; sMsg: string); virtual;
   end;
   TMerchant = class(TNormNpc)    //0x594
-    m_sScript: string;           //0x568
+    m_sScript: string;           //0x568  脚本名称
     n56C: Integer;
     m_nPriceRate: Integer;       //0x570   物品价格倍率 默认为 100%
     bo574: Boolean;
-    m_boCastle: Boolean;         //0x575
+    m_boCastle: Boolean;         //0x575  是否属于城堡
     dwRefillGoodsTick: LongWord; //0x578
     dwClearExpreUpgradeTick: LongWord; //0x57C
     m_ItemTypeList: TList;       //0x580  NPC买卖物品类型列表，脚本中前面的 +1 +30 之类的

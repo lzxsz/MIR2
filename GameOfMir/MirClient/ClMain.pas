@@ -431,6 +431,7 @@ begin
    Result := CallNextHookEx(g_ToolMenuHook, Code, WParam, Longint(@Msg));
 end;
 
+//场景创建
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
   flname, str: string;
@@ -528,7 +529,7 @@ begin
    SelectChrScene := TSelectChrScene.Create;
    //玩场景
    PlayScene := TPlayScene.Create;
-   //登录布告
+   //登录布告 (如提示：健康游戏忠告，公告信息使用通用竖式大对话框，见TFrmDlg.DMessageDlg)
    LoginNoticeScene := TLoginNotice.Create;
    //地图
    Map              := TMap.Create;
@@ -932,7 +933,7 @@ begin
       WMon17Img.DDraw := DxDraw.DDraw;
       WMon18Img.DDraw := DxDraw.DDraw;
 
-//     WMon19Img.DDraw := DxDraw.DDraw;
+//      WMon19Img.DDraw := DxDraw.DDraw;
 //      WMon20Img.DDraw := DxDraw.DDraw;
 //      WMon21Img.DDraw := DxDraw.DDraw;
 //      WMon22Img.DDraw := DxDraw.DDraw;
@@ -994,15 +995,15 @@ begin
       WMon18Img.Initialize;
 
 //     WMon19Img.Initialize;
-//      WMon20Img.Initialize;
+//     WMon20Img.Initialize;
 //     WMon21Img.Initialize;
-//      WMon22Img.Initialize;
-//      WMon23Img.Initialize;
-//      WMon24Img.Initialize;
-//      WMon25Img.Initialize;
-//      WMon26Img.Initialize;
-//      WMon27Img.Initialize;
-//      WMon28Img.Initialize;
+//     WMon22Img.Initialize;
+//     WMon23Img.Initialize;
+//     WMon24Img.Initialize;
+//     WMon25Img.Initialize;
+//     WMon26Img.Initialize;
+//     WMon27Img.Initialize;
+//     WMon28Img.Initialize;
 
 //      WNpcImg.Initialize;
       WEffectImg.Initialize;
@@ -2735,6 +2736,7 @@ begin
    PlayScene.CleanObjects;
 end;
 
+//SOCKET通信连接
 procedure TfrmMain.CSocketConnect(Sender: TObject;
   Socket: TCustomWinSocket);
 var
@@ -2745,7 +2747,7 @@ begin
 // FrmDlg.DMessageDlg (CSocket.Socket.RemoteAddress+':'+inttostr(CSocket.Socket.RemotePort)+'\连接', [mbOk]);
    g_boServerConnected := TRUE;
    if g_ConnectionStep = cnsLogin then begin
-      if OneClickMode = toKornetWorld then begin  //内齿岿靛甫 版蜡秦辑 霸烙俊 立加
+      if OneClickMode = toKornetWorld then begin  //
          FillChar (packet, 256, #0);
          str := 'KwGwMGS';             StrPCopy (strbuf, str);  Move (strbuf, (@packet[0])^, Length(str));
          str := 'CONNECT';             StrPCopy (strbuf, str);  Move (strbuf, (@packet[8])^, Length(str));
@@ -3486,6 +3488,7 @@ begin
 }
 end;
 
+//检测是否为组成员
 function TfrmMain.IsGroupMember (uname: string): Boolean;
 var
    i: integer;
@@ -3813,7 +3816,7 @@ begin
            FrmDlg.DMessageDlg ('[错误] 删除角色失败，请联系管理员. Email: 18382915@qq.com', [mbOk]);
          end;
          SM_STARTPLAY: begin
-           ClientGetStartPlay (body);
+           ClientGetStartPlay (body);   //客户端获到开始游戏的通知
            exit;
          end;
          SM_STARTFAIL: begin
@@ -4727,7 +4730,7 @@ begin
          end;
 
       SM_SENDNOTICE: begin
-        ClientGetSendNotice (body);    //登录注意提示
+        ClientGetSendNotice (body);    //显示登录公告信息（如：健康游戏忠告）对话框 , lzx2022
       end;
       SM_GROUPMODECHANGED:
          begin
@@ -5174,6 +5177,7 @@ begin
    //2004/05/17
 end;
 
+//客户端获取开始游戏的通知
 procedure TfrmMain.ClientGetStartPlay (body: string);
 var
    str, addr, sport: string;
@@ -5183,7 +5187,7 @@ begin
    g_nRunServerPort:=Str_ToInt (sport, 0);
 
    if not BoOneClick then begin
-      CSocket.Active := FALSE;  //肺弊牢俊 楷搬等 家南 摧澜
+      CSocket.Active := FALSE;  //
       CSocket.Host:='';
       CSocket.Port:=0;
       WaitAndPass (500); //0.5秒的等待
@@ -5201,8 +5205,8 @@ begin
          CSocket.Socket.SendText ('$R' + addr + '/' + sport + '%');
 
       g_ConnectionStep := cnsPlay;
-      ClearBag;  //啊规 檬扁拳
-      DScreen.ClearChatBoard; //盲泼芒 檬扁拳
+      ClearBag;  //
+      DScreen.ClearChatBoard; //
       DScreen.ChangeScene (stLoginNotice);     //登录注意提示
 
       WaitAndPass (500); //0.5秒的等待
@@ -5210,6 +5214,7 @@ begin
    end;
 end;
 
+//重新连接
 procedure TfrmMain.ClientGetReconnect (body: string);
 var
    str, addr, sport: string;
@@ -5781,6 +5786,7 @@ begin
    end;
 end;
 
+//客户端获得发送的公告信息
 procedure TfrmMain.ClientGetSendNotice (body: string);
 var
    data, msgstr: string;
@@ -5794,7 +5800,8 @@ begin
       msgstr := msgstr + data + '\';
    end;
    FrmDlg.DialogSize := 2;
-   if FrmDlg.DMessageDlg (msgstr, [mbOk]) = mrOk then begin
+   
+   if FrmDlg.DMessageDlg (msgstr, [mbOk]) = mrOk then begin    //显示提示信息话对话框, lzx2022
      SendClientMessage (CM_LOGINNOTICEOK, 0, 0, 0, CLIENTTYPE);
    end;
 end;
@@ -5934,6 +5941,7 @@ begin
       FrmDlg.GuildStrs.Add (members);
 end;
 
+//这个定时器检测列表中的人物是为组的成员
 procedure TfrmMain.MinTimerTimer(Sender: TObject);
 var
    i: integer;
@@ -5941,6 +5949,7 @@ var
 begin
    with PlayScene do
       for i:=0 to m_ActorList.Count-1 do begin
+         //检测角色列表中的人物是否为组成员。即是否与玩家同属一组
          if IsGroupMember (TActor (m_ActorList[i]).m_sUserName) then begin
             TActor (m_ActorList[i]).m_boGrouped := TRUE;
          end else

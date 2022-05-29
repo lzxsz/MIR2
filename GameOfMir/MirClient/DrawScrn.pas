@@ -123,20 +123,30 @@ begin
       CurrentScene.MouseDown (Button, Shift, X, Y);
 end;
 
+//变改场景
 procedure TDrawScreen.ChangeScene (scenetype: TSceneType);
 begin
    if CurrentScene <> nil then
       CurrentScene.CloseScene;
    case scenetype of
-      stIntro:  CurrentScene := IntroScene;
-      stLogin:  CurrentScene := LoginScene;
-      stSelectCountry:  ;
-      stSelectChr: CurrentScene := SelectChrScene;
-      stNewChr:     ;
-      stLoading:    ;
-      stLoginNotice: CurrentScene := LoginNoticeScene;
-      stPlayGame: CurrentScene := PlayScene;
+      stIntro:
+              CurrentScene := IntroScene;       //前奏
+      stLogin:
+              CurrentScene := LoginScene;       //登录
+      stSelectCountry:
+              ; //Nothing
+      stSelectChr:
+              CurrentScene := SelectChrScene;   //选角色
+      stNewChr:
+              ; //Nothing
+      stLoading:
+              ; //Nothing 
+      stLoginNotice:
+              CurrentScene := LoginNoticeScene; //公告提示
+      stPlayGame:
+              CurrentScene := PlayScene;        //游戏场景
    end;
+
    if CurrentScene <> nil then
       CurrentScene.OpenScene;
 end;
@@ -238,6 +248,7 @@ begin
 end;
 
 
+//绘制场景
 procedure TDrawScreen.DrawScreen (MSurface: TDirectDrawSurface);
    procedure NameTextOut (surface: TDirectDrawSurface; x, y, fcolor, bcolor: integer; namestr: string);
    var
@@ -277,6 +288,7 @@ begin
 
    if g_MySelf = nil then exit;
 
+   //游戏场景
    if CurrentScene = PlayScene then begin
       with MSurface do begin
          //
@@ -372,13 +384,12 @@ begin
          //                  IntToStr(Myself.ShiftX) + ',' + IntToStr(Myself.ShiftY));
 
          //System Message
-         //甘狼 惑怕 钎矫 (烙矫 钎矫)
+         //
          if (g_nAreaStateValue and $04) <> 0 then begin
             BoldTextOut (MSurface, 0, 0, clWhite, clBlack, '攻城区域');
          end;
 
          Canvas.Release;
-
 
          //显示地图状态，16种：0000000000000000 从右到左，为1表示：战斗、安全、上面的那种状态 (当前只有这几种状态)
          k := 0;

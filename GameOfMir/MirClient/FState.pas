@@ -748,10 +748,12 @@ begin
       DMsgDlg.Left := (SCREENWIDTH - d.Width) div 2;
       DMsgDlg.Top := (SCREENHEIGHT - d.Height) div 2;
    end;
-   DMsgDlgOk.SetImgIndex (g_WMainImages, 361);
+
+   DMsgDlgOk.SetImgIndex (g_WMainImages, 361); 
    DMsgDlgYes.SetImgIndex (g_WMainImages, 363);
    DMsgDlgCancel.SetImgIndex (g_WMainImages, 365);
    DMsgDlgNo.SetImgIndex (g_WMainImages, 367);
+   
    DMsgDlgOk.Top := 126;
    DMsgDlgYes.Top := 126;
    DMsgDlgCancel.Top := 126;
@@ -1636,7 +1638,6 @@ begin
    DGEClose.Left := 584;
    DGEClose.Top := 6;
 
-
    {-----------------------------------------------------------}
    //属性调整对话框
    DAdjustAbility.SetImgIndex (g_WMainImages, 226);
@@ -2106,17 +2107,17 @@ begin
                ly := 126;
             end;
          end;
-      2:  //大对话框（竖）
+      2:  //大对话框（竖） 
          begin
             d := g_WMainImages.Images[380];
             if d <> nil then begin
                DMsgDlg.SetImgIndex (g_WMainImages, 380);
                DMsgDlg.Left := (SCREENWIDTH - d.Width) div 2;
                DMsgDlg.Top := (SCREENHEIGHT - d.Height) div 2;
-               msglx := 23;
-               msgly := 20;
-               lx := 105;
-               ly := 305;
+               msglx := 23;       //信息内容左边x坐标
+               msgly := 20;       //信息左边y坐标
+               lx := 90;  //105;  /信息框左边x坐标， 会影响确定按钮的横向位置 ,lzx2022 - Modified  by Davy  2022-5-29
+               ly := 305;         //信息框左边y坐标                                          
             end;
          end;
    end;
@@ -2129,6 +2130,7 @@ begin
    DMsgDlgNo.Visible := FALSE;
    DMsgDlg.Left := (SCREENWIDTH - DMsgDlg.Width) div 2;
    DMsgDlg.Top := (SCREENHEIGHT - DMsgDlg.Height) div 2;
+   
    //调整按钮
    for I := 0 to m_nDiceCount - 1 do begin
      m_Dice[I].n67C:=0;
@@ -2155,12 +2157,15 @@ begin
       DMsgDlgYes.Visible := TRUE;
       lx := lx - 110;
    end;
+
+   //确定按钮
    if (mbOk in DlgButtons) or (lx = XBase) then begin
       DMsgDlgOk.Left := lx;
       DMsgDlgOk.Top := ly;
       DMsgDlgOk.Visible := TRUE;
       lx := lx - 110;
    end;
+
    HideAllControls;
    DMsgDlg.ShowModal;
    if mbAbort in DlgButtons then begin
@@ -2173,6 +2178,7 @@ begin
          Top  := (SCREENHEIGHT - EdDlgEdit.Height) div 2 - 10;
       end;
    end;
+   
    Result := mrOk;
 
    while TRUE do begin
@@ -2763,8 +2769,7 @@ end;
 
 
 {------------------------------------------------------------------------}
-////Chg pw 冠胶
-
+//
 
 procedure TFrmDlg.DChgpwOkClick(Sender: TObject; X, Y: Integer);
 begin
@@ -2774,7 +2779,7 @@ end;
 
 
 {------------------------------------------------------------------------}
-//某腐磐 急琶
+//
 
 procedure TFrmDlg.DscSelect1DirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
@@ -2794,7 +2799,7 @@ procedure TFrmDlg.DscSelect1Click(Sender: TObject; X, Y: Integer);
 begin
    if Sender = DscSelect1 then SelectChrScene.SelChrSelect1Click;
    if Sender = DscSelect2 then SelectChrScene.SelChrSelect2Click;
-   if Sender = DscStart then SelectChrScene.SelChrStartClick;
+   if Sender = DscStart then SelectChrScene.SelChrStartClick;         //开始
    if Sender = DscNewChr then SelectChrScene.SelChrNewChrClick;
    if Sender = DscEraseChr then SelectChrScene.SelChrEraseChrClick;
    if Sender = DscCredits then SelectChrScene.SelChrCreditsClick;
@@ -2802,11 +2807,8 @@ begin
 end;
 
 
-
-
 {------------------------------------------------------------------------}
 //人物选择相关
-
 
 procedure TFrmDlg.DccCloseDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
@@ -5467,6 +5469,8 @@ begin
    curkey := MagKeyCurKey;
 end;
 
+
+//魔法快捷键设置对话框
 procedure TFrmDlg.DKeySelDlgDirectPaint(Sender: TObject;
   dsurface: TDirectDrawSurface);
 var
@@ -5485,7 +5489,7 @@ begin
          Release;
       end;
 
-      //画[确定]按钮图标
+     //画[确定]按钮图标
       d_ok := WLib.Images[361];  //确定按钮
       if d <> nil then
          dsurface.Draw (SurfaceX(Left) + 220, SurfaceY(Top) + 129, d_ok.ClientRect, d_ok, TRUE);
@@ -5588,7 +5592,7 @@ begin
       if GetTickCount > g_dwQueryMsgTick then begin
          g_dwQueryMsgTick := GetTickCount + 3000;
          FrmMain.SendWantMiniMap;
-         g_nViewMinMapLv:=1;
+         g_nViewMinMapLv:=1;     //0为不显示，1为透明显示，2为清析显示
       end;
    end else begin
      if g_nViewMinMapLv >= 2 then begin

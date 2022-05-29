@@ -21595,23 +21595,27 @@ begin
   end;
 end;
 
+//退出组
 procedure TBaseObject.LeaveGroup; //004C3B70
 resourcestring
-  sExitGropMsg = '%s is out from group.';
+   //sExitGropMsg = '%s is out from group.';
+     sExitGropMsg = '%s 已退出小组';   //lzx2022 - modified by davy 2022-5-29
 begin
   SendGroupText(Format(sExitGropMsg, [m_sCharName]));
   m_GroupOwner := nil;
   SendMsg(Self, RM_GROUPCANCEL, 0, 0, 0, 0, '');
 end;
 
+//解散组
 function TPlayObject.CancelGroup: Boolean; //004C397C
 resourcestring
-  sCanceGrop = 'Your group is disorganized.';
+  //sCancelGrop = 'Your group is disorganized.';
+    sCancelGrop = '你的小组已解散';   //lzx2022 - modified by davy 2022-5-29
 begin
   Result := True;
   if m_GroupMembers.Count <= 1 then
   begin
-    SendGroupText(sCanceGrop);
+    SendGroupText(sCancelGrop);
     m_GroupMembers.Clear;
     m_GroupOwner := nil;
     Result := False;

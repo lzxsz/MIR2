@@ -849,7 +849,7 @@ begin
 
                   TargeTBaseObject.RefShowName();
 
-                  TargeTBaseObject.m_boNoTame := True;
+                  TargeTBaseObject.m_boNoTame := True;            //设置怪物驯服
                   BaseObject.m_SlaveList.Add(TargeTBaseObject);   //诱惑怪物成功
                   
                 end else begin //004925F2

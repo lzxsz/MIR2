@@ -7,7 +7,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   DXDraws, DXClass, DirectX, IntroScn, Grobal2, CliUtil, HUtil32,
   Actor, HerbActor, AxeMon, SoundUtil, ClEvent, Wil,
-  StdCtrls, clFunc, magiceff, extctrls, MShare, Share;
+  StdCtrls, clFunc, magiceff, extctrls, MShare, Share, StrUtils;
 
 
 const
@@ -481,7 +481,7 @@ end;
  //场景开始
 procedure TPlayScene.OpenScene;
 begin
-   g_WMainImages.ClearCache;  //肺弊牢 捞固瘤 某矫甫 瘤款促.
+   g_WMainImages.ClearCache;  //
    FrmDlg.ViewBottomBox (TRUE);
    //EdChat.Visible := TRUE;
    //EdChat.SetFocus;
@@ -791,6 +791,11 @@ begin
 end;
 
 {-----------------------------------------------------------------------}
+//改进内容：
+//  1.小地图玩家人物角色的光点闪烁（白色），其他人物、NPC、怪物不闪烁
+//  2.小地图法师和道士的宠物，用不同的颜色显示光点
+//  3.小地图小组成员，用不同的颜色显示光点
+//lzx2022 - Modifyed 2022-5-28
 
 procedure TPlayScene.DrawMiniMap (surface: TDirectDrawSurface);
 var
@@ -801,12 +806,21 @@ var
   actor:TActor;
   x,y:integer;
   btColor:Byte;
+
+  post1, post2 : Integer;
+  
+  actorName : string;
+  masterName : string;
 begin
+
   if GetTickCount > m_dwBlinkTime + 300 then begin
-    m_dwBlinkTime := GetTickCount;
-    m_boViewBlink := not m_boViewBlink;
+     m_dwBlinkTime := GetTickCount;
+     m_boViewBlink := not m_boViewBlink;   //闪烁
   end;
+
+  //加载小地图资源
   if g_nMiniMapIndex < 0 then exit; //Jacky
+
   d := g_WMMapImages.Images[g_nMiniMapIndex];
   if d = nil then exit;
   mx := (g_MySelf.m_nCurrX*48) div 32;
@@ -816,33 +830,85 @@ begin
   rc.Right := _MIN(d.ClientRect.Right, rc.Left + 120);
   rc.Bottom := _MIN(d.ClientRect.Bottom, rc.Top + 120);
 
+  //绘小地图
   if g_nViewMinMapLv = 1 then
-    DrawBlendEx (surface, (SCREENWIDTH-120), 0, d, rc.Left, rc.Top, 120, 120, 0)
+     DrawBlendEx (surface, (SCREENWIDTH-120), 0, d, rc.Left, rc.Top, 120, 120, 0)
   else surface.Draw ((SCREENWIDTH-120), 0, rc, d, FALSE);
-     //雷达
-  if not m_boViewBlink then exit;
-  mx := (SCREENWIDTH-120) + (g_MySelf.m_nCurrX * 48) div 32 - rc.Left;
-  my := (g_MySelf.m_nCurrY * 32) div 32 - rc.Top;
-  surface.Pixels[mx, my] := 255;
 
-  for nx:=g_MySelf.m_nCurrX - 10  to g_MySelf.m_nCurrX + 10 do begin
-    for ny:=g_MySelf.m_nCurrY - 10 to g_MySelf.m_nCurrY + 10 do begin
+  //雷达 （光点）
+  //绘制人物、NPC、怪物在小地图上的光点
+  //lzx2022 - Modifyed by Davy 2022-5-28
+  //
+  //1.搜索自身角色周围的NPC和怪物，并画出光点
+  //修改：将半径10个点的搜索范围改为20个点。 lzx2022 - Modified by Davy 2022-5-29 
+  for nx:=g_MySelf.m_nCurrX - 20  to g_MySelf.m_nCurrX + 20 do begin    //for1
+    for ny:=g_MySelf.m_nCurrY - 20 to g_MySelf.m_nCurrY + 20 do begin   //for2
       actor := FindActorXY(nx,ny);
-      if (actor <> nil) and (actor <> g_MySelf) and (not actor.m_boDeath) then begin
+
+      if (actor <> nil) and (actor <> g_MySelf) and (not actor.m_boDeath) then begin  //if
         mx := (SCREENWIDTH-120) + (actor.m_nCurrX * 48) div 32 - rc.Left;
         my := (actor.m_nCurrY * 32) div 32 - rc.Top;
 
-        case actor.m_btRace of    //
-          50,45,12: btColor:=218;
-          0: btColor:=255;
-          else btColor:=249;
+        case actor.m_btRace of       //种族0是人类
+          50,45,12: btColor:= 218;   //218绿色, NPC光点
+          0:        btColor:= 255;   //255白色
+          else      btColor:= 249;   //249红色
         end;    // case
-        for x:=0 to 1 do
-          for y:=0 to 1 do
-            surface.Pixels[mx+x, my+y] := btColor
-      end;
-    end;
+
+        actorName := actor.m_sUserName;
+
+        post1 := Pos('(', actorName);
+        post2 := Pos(')', actorName);
+        
+        masterName := Trim(MidStr(actorName ,post1+1, post2-post1-1));  //地图名称
+
+        //在小地图显示法师和道士宠物的光点
+        //职业 0:武士  1:法师  2:道士
+        if CompareText(g_MySelf.m_sUserName, masterName) = 0 then begin
+           if g_MySelf.m_btJob = 1 then  begin        //法师
+                btColor:=  252;  //252蓝色
+            end
+            else if g_MySelf.m_btJob = 2 then  begin  //道士
+                 btColor:= 252; //252蓝色
+            end;
+        end;
+
+        //For Debug
+       //BoldTextOut (surface,100, 100, 255, 218, masterName);
+
+        //在小地图显示显示同组人物人光点
+        if actor.m_boGrouped = True then   begin
+             btColor:= 251;   //251黄色, 253紫色，
+        end;
+        
+        //注：m_boGrouped变量的数值，在 时器函数TfrmMain.MinTimerTimer()中维护
+
+        //在小地图上画NPC、怪物和其他人物的光点，不闪烁，（2个象素的宽高）
+        for x:=0 to 2 do begin
+            for y:=0 to 2 do   begin
+               surface.Pixels[mx+x, my+y] := btColor;
+            end;
+         end;
+
+       end; //if
+     end; //for2
+  end;  //for1
+
+  //2.以闪烁的方式画人物在小地图上的光点
+  if not m_boViewBlink then
+  begin
+     mx := (SCREENWIDTH-120) + (g_MySelf.m_nCurrX * 48) div 32 - rc.Left;
+     my := (g_MySelf.m_nCurrY * 32) div 32 - rc.Top;
+     // surface.Pixels[mx, my] := 255;   //这个只一个象素点
+
+     //在小地图画玩家角色的光点，闪烁（2个象素的宽高）
+     for x:=0 to 2 do begin
+        for y:=0 to 2 do   begin
+        surface.Pixels[mx+x, my+y] := 255; //btColor
+       end;
+    end; //计算人物从标
   end;
+
 end;
 
 
@@ -1426,7 +1492,8 @@ end;
 
 {-------------------------------------------------------}
 //在攻击目标上绘魔法特效 ,当人物使出魔法时，在目标上爆炸时出现的特效。（不是人发出魔法时自己身体上出现的特效）
-//cx, cy, tx, ty : 
+
+//cx, cy, tx, ty : 地图座标 cx, cy ; 物标自身坐标tx, ty
 procedure TPlayScene.NewMagic (aowner: TActor;
                                magid, magnumb{Effect}, cx, cy, tx, ty, targetcode: integer;
                                mtype: TMagicType; //EffectType
@@ -1444,8 +1511,8 @@ begin
       for i:=0 to m_EffectList.Count-1 do
          if TMagicEff(m_EffectList[i]).ServerMagicId = magid then
             exit; //
-   ScreenXYfromMCXY (cx, cy, scx, scy);
-   ScreenXYfromMCXY (tx, ty, sctx, scty);
+   ScreenXYfromMCXY (cx, cy, scx, scy);     //地图座标 cx, cy 转换成scx, scy 屏幕座标
+   ScreenXYfromMCXY (tx, ty, sctx, scty);   //物标自身坐标tx, ty 转换成sctx, scty 屏幕座标
    if magnumb > 0 then GetEffectBase (magnumb-1, 0, wimg, effnum)  //magnumb{Effect}
    else effnum := -magnumb;
    target := FindActor (targetcode);
@@ -1473,7 +1540,7 @@ begin
               meff := TMagicEff.Create (magid, effnum, scx, scy, g_MySelf.m_nTargetX +260 , g_MySelf.m_nTargetY - 55, mtype, Recusion, anitime); //292,350 magid
               meff.ImgLib := g_WChrSelImages; //
               meff.MagExplosionBase:=4;
-              meff.TargetActor := nil; //target;
+              meff.TargetActor := nil; //target;  //这里目标设为空，该特效用在人物身上
               meff.NextFrameTime := 80;
               meff.ExplosionFrame := 14;
             end;
@@ -1483,10 +1550,10 @@ begin
             meff.MagExplosionBase := 1564; //1570;  //1560~1569帧是人物使用该魔法时自己身体上出现的特效果，1570~1579是目标上出现的特效
             meff.TargetActor := target;
             meff.NextFrameTime := 60;  //80;
-            meff.ExplosionFrame := 16;         //爆炸帧的数量
+            meff.ExplosionFrame := 16;      //爆炸帧的数量
           end;
     
-          21: begin //爆裂火焰         赎
+          21: begin //爆裂火焰
             meff := TMagicEff.Create (magid, effnum, scx, scy, sctx, scty, mtype, Recusion, anitime);
             meff.MagExplosionBase := 1660;     //爆炸起始帧的地址
             meff.TargetActor := nil; //target;
@@ -2132,7 +2199,7 @@ begin
       48: actor := TSculptureMon.Create;          //
       49: actor := TSculptureKingMon.Create;      //祖玛教主
 
-      50: actor := TNpcActor.Create;
+      50: actor := TNpcActor.Create;              //NPC
 
       52: actor := TGasKuDeGi.Create;             //楔蛾
       53: actor := TGasKuDeGi.Create;             //粪虫
@@ -2304,10 +2371,6 @@ end;
 
 {------------------------- Msg -------------------------}
 
-
-//皋技瘤甫 滚欺傅窍绰 捞蜡绰 ?
-//某腐磐狼 皋技瘤 滚欺俊 皋技瘤啊 巢酒 乐绰 惑怕俊辑
-//促澜 皋技瘤啊 贸府登搁 救登扁 锭巩烙.
 procedure TPlayScene.SendMsg (ident, chrid, x, y, cdir, feature, state: integer; str: string);
 var
    actor: TActor;

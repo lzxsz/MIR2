@@ -599,7 +599,7 @@ begin
       m_sLoginId := LowerCase(m_EdId.Text);
       m_sLoginPasswd := m_EdPasswd.Text;
       if (m_sLoginId <> '') and (m_sLoginPasswd <> '') then begin
-         //拌沥栏肺 肺弊牢 茄促.
+         //
          FrmMain.SendLogin (m_sLoginId, m_sLoginPasswd);
          m_EdId.Text := '';
          m_EdPasswd.Text := '';
@@ -1027,7 +1027,7 @@ procedure TLoginScene.UpdateAccountInfos (ue: TUserEntry);
 begin
    m_NewIdRetryUE := ue;
    FillChar (m_NewIdRetryAdd, sizeof(TUserEntryAdd), #0);
-   m_boUpdateAccountMode := TRUE; //扁粮俊 乐绰 沥焊甫 犁涝仿窍绰 版快
+   m_boUpdateAccountMode := TRUE; //
    NewIdRetry (TRUE);
    FrmDlg.NewAccountTitle := '(请完成帐户信息的所有必需的领域...)';
 end;
@@ -1128,7 +1128,7 @@ begin
       ua.sBirthday := m_EdBirthDay.Text;
       ua.sMobilePhone := m_EdMobPhone.Text;
 
-      m_NewIdRetryUE := ue;    //犁矫档锭 荤侩
+      m_NewIdRetryUE := ue;    //
       m_NewIdRetryUE.sAccount := '';
       m_NewIdRetryUE.sPassword := '';
       m_NewIdRetryAdd := ua;
@@ -1261,6 +1261,7 @@ begin
    end;
 end;
 
+//开始游戏-按钮事件函数
 procedure TSelectChrScene.SelChrStartClick;
 var
    chrname: string;
@@ -1273,11 +1274,12 @@ begin
          g_boDoFastFadeOut := TRUE;
          g_nFadeIndex := 29;
       end;
-      FrmMain.SendSelChr (chrname);
+      FrmMain.SendSelChr (chrname);  //发送选择的角色名
    end else
       FrmDlg.DMessageDlg ('一开始你应该创建一个新角色。\，如果你选择了<创建角色>你就可以建立一个新角色了 .', [mbOk]);
 end;
 
+//创建新角色-按钮事件函数
 procedure TSelectChrScene.SelChrNewChrClick;
 begin
    if not ChrArr[0].Valid or not ChrArr[1].Valid then begin
@@ -1287,7 +1289,7 @@ begin
       FrmDlg.DMessageDlg ('每个账号只能创建两个角色！！！', [mbOk]);
 end;
 
-//删除角色对话框
+//删除角色对话框-按钮事件函数
 procedure TSelectChrScene.SelChrEraseChrClick;
 var
    n: integer;
@@ -1410,7 +1412,7 @@ begin
       shair := IntToStr(1 + Random(5)); //////****IntToStr(ChrArr[NewIndex].UserChr.Hair);
       sjob  := IntToStr(ChrArr[NewIndex].UserChr.Job);
       ssex  := IntToStr(ChrArr[NewIndex].UserChr.Sex);
-      FrmMain.SendNewChr (FrmMain.LoginId, chrname, shair, sjob, ssex); //货 某腐磐甫 父电促.
+      FrmMain.SendNewChr (FrmMain.LoginId, chrname, shair, sjob, ssex); //
    end;
 end;
 

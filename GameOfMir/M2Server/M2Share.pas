@@ -3144,12 +3144,12 @@ var
 //  g_sNotWinLotteryMsg             :String = '等下次机会吧!';
 
   g_sWeaptonMakeLuck              :String = '武器被加幸运了...';
-  g_sWeaptonNotMakeLuck           :String = '无效.';
-  g_sTheWeaponIsCursed            :String = '你的武器被诅咒了.';
-  g_sCanotTakeOffItem             :String = '无法取下物品.';
-  g_sJoinGroup                    :String = '%s 已加入小组.';
-  g_sTryModeCanotUseStorage       :String = '试玩模式不可以使用仓库功能.';
-  g_sCanotGetItems                :String = '无法携带更多的东西.';
+  g_sWeaptonNotMakeLuck           :String = '无效';
+  g_sTheWeaponIsCursed            :String = '你的武器被诅咒了';
+  g_sCanotTakeOffItem             :String = '无法取下物品';
+  g_sJoinGroup                    :String = '%s 已加入小组';
+  g_sTryModeCanotUseStorage       :String = '试玩模式不可以使用仓库功能';
+  g_sCanotGetItems                :String = '无法携带更多的东西';
 
 //  g_sEnableDearRecall             :String = '[允许夫妻传送]';
 //  g_sDisableDearRecall            :String = '[禁止夫妻传送]';

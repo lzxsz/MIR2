@@ -138,8 +138,8 @@ const
   CM_DEALEND            = 1030;     //交易完毕
   CM_USERSTORAGEITEM    = 1031;     //用户存储物品
   CM_USERTAKEBACKSTORAGEITEM = 1032;  //从仓库取回物品
-  CM_WANTMINIMAP        = 1033;
-  CM_USERMAKEDRUGITEM   = 1034;   //制作毒药物品
+  CM_WANTMINIMAP        = 1033;       //画小地图
+  CM_USERMAKEDRUGITEM   = 1034;    //制作毒药物品
   CM_OPENGUILDDLG       = 1035;    //打开行会窗口
   CM_GUILDHOME          = 1036;    //行会主页
   CM_GUILDMEMBERLIST    = 1037;    //行会成员列表
