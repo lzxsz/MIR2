@@ -1,6 +1,6 @@
 # MIR2
 Legend of Mir. Mir2 project includes Server and Client, Delphi6 tools are needed to develop this project. 
-The Mir2 Client of Data Need Version 1.5 or 1.76.
+The Mir2 Client of Data Need Version 1.5 or 1.7.6.
 
 # Project Path
 The project working directory in D: disk.
