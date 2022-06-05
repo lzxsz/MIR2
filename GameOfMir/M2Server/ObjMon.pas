@@ -484,13 +484,16 @@ begin
               end;
             end; //004A92A5
           end; //004A92A5 if m_TargetCret = nil then begin
+
+          //如果怪物非休息状态，且地图与主人不同，或坐标与主人相差大于20，则瞬时移动 
           if (not m_Master.m_boSlaveRelax) and
             ((m_PEnvir <> m_Master.m_PEnvir) or
             (abs(m_nCurrX - m_Master.m_nCurrX) > 20) or
             (abs(m_nCurrY - m_Master.m_nCurrY) > 20)) then
           begin
-            SpaceMove(m_Master.m_PEnvir.sMapName, m_nTargetX, m_nTargetY, 1);
+            SpaceMove(m_Master.m_PEnvir.sMapName, m_nTargetX, m_nTargetY, 1);  //瞬时移动
           end; // 004A937E
+
         end; // 004A937E if m_Master <> nil then begin
       end else
       begin //004A9344
@@ -502,8 +505,12 @@ begin
       end; //004A937E
       if (m_Master <> nil) and m_Master.m_boSlaveRelax then
       begin
+        // inherited就是调用祖先类的函数，如果不带参数就是默认调用同名函数
+        // 如果带参数则表明子类中的函数个数可能比祖先类要多取其中的几个参数传过去
+        
         inherited;
         Exit;
+        
       end; //004A93A6
       if m_nTargetX <> -1 then
       begin

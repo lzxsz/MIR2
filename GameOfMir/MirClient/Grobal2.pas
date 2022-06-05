@@ -756,10 +756,10 @@ type
     tLoginGate1,tSelGate,tSelGate1,tRunGate,tRunGate1,tRunGate2,
     tRunGate3,tRunGate4,tRunGate5,tRunGate6,tRunGate7);
 
+  //人物角色信息记录头
   TRecordHeader = packed record
      sAccount:String[16];
      sName:String[20];
-
      nSelectID:integer;
      dCreateDate:TDateTime;
      boDeleted:boolean;
@@ -767,6 +767,7 @@ type
      CreateDate:TDateTime;
   end;
 
+  //帐号--角色信息记录
   THumInfo = record
      boDeleted:Boolean;
      boSelected:Boolean;
@@ -877,8 +878,8 @@ type
     szTakeItem: array[0..54] of TUSERITEM;
     Magic12: array[0..19] of TMagic;
     KeepGoods: array[0..49] of TUSERITEM;
-
     }
+    
   pTHumData=^THumData;
   THumData = packed record       //3164
     sChrName        :String[ActorNameLen];
@@ -921,7 +922,6 @@ type
     btEE            :Byte;
     btEF            :Byte;
 
-
     sAccount        :String[16];
     boLockLogon     :Boolean;
 
@@ -937,7 +937,6 @@ type
 
     btMarryCount    :Byte;
 
-
     HumItems        :THumItems;
     BagItems        :TBagItems;
     Magic           :THumMagic;
@@ -949,13 +948,15 @@ type
     Data:THumData;
   end;
 
-  pTQuickID=^TQuickID;
-  TQuickID=record
-    nSelectID:integer;
-    sAccount:String[16];
-    nIndex:integer;
-    sChrName:String[20];
-  end;
+// BUG: 与MudUtil中写义的结构同名，但字段错位，故删除此定义,否则MudUtil::GetChrList返回数据错误
+// lzx2022 - Modified by Davy 2022-6-4
+//  pTQuickID=^TQuickID;
+//  TQuickID=record
+//    nSelectID:integer;
+//    sAccount:String[16];
+//    nIndex:integer;
+//    sChrName:String[20];
+//  end;
 
   pTGlobaSessionInfo=^TGlobaSessionInfo;
   TGlobaSessionInfo=record
@@ -981,7 +982,6 @@ type
      UserEntry:TUserEntry;
      UserEntryAdd:TUserEntryAdd;
   end;
-
 
   pTConnInfo=^TConnInfo;
   TConnInfo=record
@@ -1238,7 +1238,6 @@ Const
   RM_41                = 9041;
   RM_TWINHIT           = 9042;
   RM_43                = 9043;
-
 
 
   OS_EVENTOBJECT       = 1;
@@ -1656,9 +1655,6 @@ type
   TMsgProc=procedure (Msg:PChar;nMsgLen:Integer;nMode:Integer);stdcall;
   TFindProc=function(sProcName:Pchar;len:Integer):Pointer;
   TSetProc=function (ProcAddr:Pointer;ProcName:PChar;len:integer):Boolean;
-
-
-
 
   TSpitMap=array [0..7] of array[0..4,0..4] of integer;
 
@@ -2564,7 +2560,6 @@ type
     sSayMsg:String;
   end;
 
-  
 
   TVarType=(vNone,VInteger,VString);
   pTDynamicVar=^TDynamicVar;

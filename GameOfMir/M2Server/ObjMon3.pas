@@ -714,7 +714,7 @@ begin
             (abs(m_nCurrY - m_Master.m_nCurrY) > 20)) then
           begin
            //  sysmsg('recalling to my master',c_red,t_hint);
-            SpaceMove(m_Master.m_PEnvir.sMapName, m_nTargetX, m_nTargetY, 1);
+            SpaceMove(m_Master.m_PEnvir.sMapName, m_nTargetX, m_nTargetY, 1);  //Ë²Ï¢ÒÆ¶¯
           end; // 004A937E
         end; // 004A937E if m_Master <> nil then begin
       end else

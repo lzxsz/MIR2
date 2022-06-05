@@ -59,8 +59,8 @@ type
   end;
 
   TBaseObject = class
-    m_sMapName: string[MapNameLen]; //0x04
-    m_sCharName: string[ActorNameLen]; //0x15
+    m_sMapName: string[MapNameLen]; //0x04  地图名
+    m_sCharName: string[ActorNameLen]; //0x15 角色名
     m_nCurrX: Integer; //0x24  人物所在座标X(4字节)
     m_nCurrY: Integer; //0x28  人物所在座标Y(4字节)
     m_btDirection: Byte; //0x2C  人物所在方向(1字节)
@@ -4335,6 +4335,7 @@ begin
   Result := True;
 end;
 
+//瞬息移动
 procedure TBaseObject.SpaceMove(sMap: string; nX, nY: Integer; nInt: Integer); //004BCD1C
   function GetRandXY(Envir: TEnvirnoment; var nX: Integer; var nY: Integer): Boolean;
   var
@@ -4374,7 +4375,7 @@ var
   bo21: Boolean;
   PlayObject: TPlayObject;
 begin
-  Envir := g_MapManager.FindMap(sMap);
+  Envir := g_MapManager.FindMap(sMap);  //获取地图对象
   if Envir <> nil then
   begin
     if nServerIndex = Envir.nServerIndex then
@@ -4384,7 +4385,7 @@ begin
       nOldY := m_nCurrY;
       bo21 := False;
 
-      m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_MOVINGOBJECT, Self);
+      m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_MOVINGOBJECT, Self);  //从地图删除移动对象
       m_VisibleHumanList.Clear;
       for i := 0 to m_VisibleItems.Count - 1 do
       begin
@@ -4408,7 +4409,7 @@ begin
         SendMsg(Self, RM_CHANGEMAP, 0, 0, 0, 0, m_sMapName);
         if nInt = 1 then
         begin
-          SendRefMsg(RM_SPACEMOVE_SHOW2, m_btDirection, m_nCurrX, m_nCurrY, 0, '');
+          SendRefMsg(RM_SPACEMOVE_SHOW2, m_btDirection, m_nCurrX, m_nCurrY, 0, '');  //发送刷新信息
         end else SendRefMsg(RM_SPACEMOVE_SHOW, m_btDirection, m_nCurrX, m_nCurrY, 0, '');
         m_dwMapMoveTick := GetTickCount();
         m_bo316 := True;
@@ -4442,6 +4443,7 @@ begin
     end;
   end;
 end;
+
 procedure TPlayObject.RefUserState(); //004D6870
 var
   n8: Integer;

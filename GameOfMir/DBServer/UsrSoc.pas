@@ -723,7 +723,7 @@ end;
 //创建人物角色
 //向客户端返回的信息代码
 // 0: [错误] 输入的角色名称包含非法字符!
-// 2: [错误] 创建角色名称已被其他人使用!
+// 2: [错误] 创建的角色名称已被使用!
 // 3: [错误] 您只能创建二个游戏角色!
 // 4: [错误] 创建角色时出现错误！ 错误代码 = 4
 
@@ -786,13 +786,15 @@ begin
        (sChrName[i] = '[') or
        (sChrName[i] = '{') or
        (sChrName[i] = ']') or
-       (sChrName[i] = '}') then nCode:=0;
+       (sChrName[i] = '}') then nCode:=0;    // 0: [错误] 输入的角色名称包含非法字符!
   end;
 
   if nCode = -1 then begin     //if1
   try
     HumDataDB.Lock;
-    if HumDataDB.Index(sChrName) >= 0 then nCode:=2;   //从查询人物在使用列表是否存，如果存在则设置nCode标记为2
+    nIndex := HumDataDB.Index(sChrName);
+    if nIndex >= 0 then nCode:=2;   //从查询人物在使用列表是否存，如果存在则设置nCode标记为2. 2: [错误] 创建角色名称已被其他人使用!
+     
   finally
     HumDataDB.UnLock;
   end;
@@ -810,20 +812,25 @@ begin
           HumRecord.Header.nSelectID := UserInfo.nSelGateID;
 
           if HumRecord.Header.sName <> '' then
-             if not HumChrDB.Add(HumRecord) then   nCode:= 2;  
+             if not HumChrDB.Add(HumRecord) then   nCode:= 2;  //2: [错误] 创建角色名称已被其他人使用!
 
-         end else nCode:= 3;
+         end else
+           begin
+             nCode:= 3;   //3: [错误] 您只能创建二个游戏角色!
+
+           end;
+
       end;
     finally
       HumChrDB.Close;
     end;
-    
+
   //新建人物角色
    if nCode = -1 then begin
         if NewChrData(sChrName,Str_ToInt(sSex,0),Str_ToInt(sJob,0),Str_ToInt(sHair,0)) then begin     //创建人物，加入人物传奇信息数据
-           nCode:= 1;   //创建成功
+           nCode:= 1;   //1: 创建成功
         end else begin
-          nCode:=4;
+          nCode:=4;     //4: [错误] 创建角色时出现错误！ 错误代码 = 4
         end;
      
 //    end else begin
@@ -833,7 +840,6 @@ begin
 //        nCode:=4;
 
     end;
-
 
   end;   //if1
 

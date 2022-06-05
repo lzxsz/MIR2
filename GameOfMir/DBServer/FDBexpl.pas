@@ -23,6 +23,7 @@ type
     CkLv1: TCheckBox;
     CkLv7: TCheckBox;
     CkLv14: TCheckBox;
+    BtnSearch: TButton;
 
     procedure ListBox1Click(Sender : TObject);
     procedure BtnDelClick(Sender : TObject);
@@ -36,11 +37,17 @@ type
     procedure BtnCopyNewClick(Sender : TObject);
     procedure EdFindKeyPress(Sender: TObject; var Key: Char);
     procedure FormDestroy(Sender: TObject);
+    procedure BtnSearchClick(Sender: TObject);
+
+
   private
 //    nClearIndex:Integer; //0x324
 //    nClearCount:Integer;//0x328
+
     SList_320:TStringList;
     function ClearHumanItem(var ChrRecord: THumDataInfo):Boolean;
+    procedure SearchHumData();
+
     { Private declarations }
   public
     { Public declarations }
@@ -57,13 +64,11 @@ uses HumDB, newchr, UsrSoc, frmcpyrcd, DBSMain, DBShare;
 
 {$R *.DFM}
 
-procedure TFrmFDBExplore.EdFindKeyPress(Sender: TObject; var Key: Char);
-//0x004A55F4
+procedure TFrmFDBExplore.SearchHumData();
 var
   I: Integer;
   sChrName:String;
 begin
-  if Key <> #13 then exit;
   sChrName:=Trim(EdFind.Text);
   if sChrName = ''  then exit;
   ListBox1.Clear;
@@ -80,6 +85,14 @@ begin
     HumDataDB.Close;
   end;
 end;
+
+procedure TFrmFDBExplore.EdFindKeyPress(Sender: TObject; var Key: Char);
+//0x004A55F4
+begin
+  if Key <> #13 then exit;
+   SearchHumData();
+end;
+
 
 procedure TFrmFDBExplore.ListBox1Click(Sender : TObject);
 //0x004A5790
@@ -348,6 +361,11 @@ end;
 procedure TFrmFDBExplore.FormDestroy(Sender: TObject);
 begin
   SList_320.Free;
+end;
+
+procedure TFrmFDBExplore.BtnSearchClick(Sender: TObject);
+begin
+    SearchHumData();
 end;
 
 end.

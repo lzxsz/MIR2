@@ -234,6 +234,7 @@ begin
   ChrList.Free;
 end;
 
+//删除人物，消除角色数据
 procedure TFrmIDHum.BtnEraseChrClick(Sender : TObject);//004A04DC
 var
   nIndex:Integer;
@@ -298,7 +299,7 @@ begin
   end;
 end;
 
-//删除人物
+//禁用人物，非消除数据
 procedure TFrmIDHum.BtnDeleteChrClick(Sender : TObject);
 var
   sChrName:String;
@@ -397,7 +398,7 @@ begin
   else ShowMessage('人物创建失败！！！')
 end;
 
-//删除人物及人物数据
+//删除人物及人物数据 （消除数据）
 procedure TFrmIDHum.BtnDeleteChrAllInfoClick(Sender : TObject);//0x004A0610
 var
   sChrName:String;
@@ -417,7 +418,7 @@ begin
     
     try
       if HumDataDB.Open then begin
-         HumDataDB.Delete(sChrName);   //删除人物数据
+         HumDataDB.Delete(sChrName);   //删除人物条目
         end;
     finally
       HumDataDB.Close;

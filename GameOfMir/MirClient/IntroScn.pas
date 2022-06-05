@@ -1276,33 +1276,48 @@ begin
       end;
       FrmMain.SendSelChr (chrname);  //发送选择的角色名
    end else
-      FrmDlg.DMessageDlg ('一开始你应该创建一个新角色。\，如果你选择了<创建角色>你就可以建立一个新角色了 .', [mbOk]);
+      FrmDlg.DMessageDlg ('开始时你应该创建一个新角色。\请选择＜创建人物＞来创建新角色。', [mbOk]);
 end;
 
 //创建新角色-按钮事件函数
 procedure TSelectChrScene.SelChrNewChrClick;
+var
+   txt, txt2: string;
 begin
-   if not ChrArr[0].Valid or not ChrArr[1].Valid then begin
-      if not ChrArr[0].Valid then MakeNewChar (0)
+    //如果第1个角色([0])和第二个角色([1])无效
+   if ((not ChrArr[0].Valid) or (not ChrArr[1].Valid)) then
+    begin
+      if (not ChrArr[0].Valid) then MakeNewChar (0)
       else MakeNewChar (1);
-   end else
+   end  else
+   begin
       FrmDlg.DMessageDlg ('每个账号只能创建两个角色！！！', [mbOk]);
+   end;
+   
 end;
 
 //删除角色对话框-按钮事件函数
 procedure TSelectChrScene.SelChrEraseChrClick;
 var
    n: integer;
+   ret: integer;
 begin
    n := 0;
    if ChrArr[0].Valid and ChrArr[0].Selected then n := 0;
    if ChrArr[1].Valid and ChrArr[1].Selected then n := 1;
+
    if (ChrArr[n].Valid) and (not ChrArr[n].FreezeState) and (ChrArr[n].UserChr.Name <> '') then begin
+
       //删除角色.
-      if mrYes = FrmDlg.DMessageDlg ('"' + ChrArr[n].UserChr.Name + '" 删除角色是不可以恢复的.\' +
-                                                                    '一段时间内，你将不可以使用相同的角色名字.\' +
-                                                                    '你真的想删除角色吗?', [mbYes, mbNo, mbCancel]) then
+      ret := FrmDlg.DMessageDlg ( '"' + ChrArr[n].UserChr.Name +
+                                 '" 删除角色是不可以恢复的.\' +
+                                 '一段时间内，你将不可以使用相同的角色名字.\' +
+                                 '你真的想删除角色吗?', [mbYes, mbNo, mbCancel]
+                                );
+
+      if mrYes = ret then begin
          FrmMain.SendDelChr (ChrArr[n].UserChr.Name);
+      end;
    end;
 end;
 
@@ -1372,7 +1387,7 @@ begin
 
 end;
 
-
+//选择角色
 procedure TSelectChrScene.SelectChr (index: integer);
 begin
    ChrArr[index].Selected := TRUE;

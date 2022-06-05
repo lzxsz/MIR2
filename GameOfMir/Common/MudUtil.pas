@@ -4,6 +4,7 @@ interface
 uses
   Windows,Classes,SysUtils;
 type
+
   TQuickID = record
     sAccount    :String[16];  //0x00
     sChrName    :String[20];  //0x15
@@ -159,6 +160,7 @@ begin
     
 end;
 
+//通过帐号查找关联的角色
 function TQuickIDList.GetChrList(sAccount: String;
   var ChrNameList: TList): Integer;
 //0x0045BB28
@@ -183,7 +185,7 @@ begin
         if CompareStr(sAccount,Self.Strings[nLow]) = 0 then n24:=nLow;
         break;
       end else begin
-        n20:=CompareStr(sAccount,Self.Strings[nMed]);
+        n20:=CompareStr(sAccount,Self.Strings[nMed]); //比较帐号是否相同
         if n20 > 0 then begin
           nLow:=nMed;
           nMed:=(nHigh-nLow) div 2 + nLow;

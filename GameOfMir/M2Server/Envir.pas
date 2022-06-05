@@ -7,7 +7,6 @@ uses
 type
   TEnvirnoment = class;
 
-
   pTOSObject = ^TOSObject;
   TOSObject = record
     btType: Byte;
@@ -45,11 +44,11 @@ type
   TEnvirnoment = class
     Header: TMapHeader;
 
-    sMapName: string; //0x4
-    sMapDesc: string;
+    sMapName: string;  //0x4 地图ID（比如比奇地图为0）
+    sMapDesc: string;  //返回地图名称，比如比奇、白日门
     MapCellArray: array of TMapCellinfo; //0x0C
-    nMinMap: Integer; //0x10
-    nServerIndex: Integer; //0x14
+    nMinMap: Integer;  //0x10
+    nServerIndex: Integer;  //0x14
     nRequestLevel: Integer; //0x18 进入本地图所需等级
 
     Flag: TMapFlag;
@@ -602,6 +601,7 @@ begin
   end;
 end;
 
+//从地图中删除移动对象
 function TEnvirnoment.DeleteFromMap(nX, nY: Integer; btType: Byte;
   pRemoveObject: TObject): Integer; //004B6710
 var
@@ -615,25 +615,27 @@ resourcestring
 begin
   Result := -1;
   try
-    if GetMapCellInfo(nX, nY, MapCellInfo) then
+    if GetMapCellInfo(nX, nY, MapCellInfo) then   //获取地图单元信息
     begin
       if MapCellInfo <> nil then
       begin
         try
-          if MapCellInfo.ObjList <> nil then
+          if MapCellInfo.ObjList <> nil then   //if1
           begin
             n18 := 0;
-            while (True) do
+            while (True) do   //while
             begin
               if MapCellInfo.ObjList.Count <= n18 then Break;
+
               OSObject := MapCellInfo.ObjList.Items[n18];
               if OSObject <> nil then
               begin
-                if (OSObject.btType = btType) and (OSObject.CellObj = pRemoveObject) then
+                if (OSObject.btType = btType) and (OSObject.CellObj = pRemoveObject) then 
                 begin
                   MapCellInfo.ObjList.Delete(n18);
                   Dispose(OSObject);
-                  Result := 1;
+                  Result := 1;     //lzx2022 - modified by Davy 2022-6-3
+                  
                   //减地图人物怪物计数
                   if (btType = OS_MOVINGOBJECT) and (not TBaseObject(pRemoveObject).m_boDelFormMaped) then
                   begin
@@ -642,19 +644,29 @@ begin
                     DelObjectCount(pRemoveObject);
                   end;
 
-                  if MapCellInfo.ObjList.Count > 0 then Continue;
-                  MapCellInfo.ObjList.Free;
-                  MapCellInfo.ObjList := nil;
-                  Break;
-                  {//Jacky 处理防止内存泄露 有待换上
+                  //--------------------------------------------------------------------------
+                  // 错误：BUG 所在！！！ 这让道士的宠物在瞬息移动时，出现宠物在屏幕不能消除
+                  // lzx2022 - Modified by Davy 2022-06-03
+                  //
+                  // if MapCellInfo.ObjList.Count > 0 then Continue;
+                  // MapCellInfo.ObjList.Free;
+                  // MapCellInfo.ObjList := nil;
+                  // Break;
+                  //--------------------------------------------------------------------------
+
+                  //Jacky 处理防止内存泄露 有待换上. 由Davy 代换上此段代码 2022-06-03
                   if MapCellInfo.ObjList.Count <= 0 then begin
                     MapCellInfo.ObjList.Free;
                     MapCellInfo.ObjList:=nil;
                   end;
+
                   break;
-                  }
+                  //--------------------------------------------------------------------------
+
+
+
                 end
-              end else
+              end else    //if1
               begin
                 MapCellInfo.ObjList.Delete(n18);
                 if MapCellInfo.ObjList.Count > 0 then Continue;
@@ -663,7 +675,7 @@ begin
                 Break;
               end;
               Inc(n18);
-            end;
+            end;    //while end
           end else
           begin
             Result := -2;
@@ -672,7 +684,7 @@ begin
           OSObject := nil;
           MainOutMessage(Format(sExceptionMsg1, [btType]));
         end;
-      end else Result := -3;
+      end else Result := -3;    //if1
     end else Result := 0;
   except
     MainOutMessage(Format(sExceptionMsg2, [btType]));

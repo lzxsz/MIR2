@@ -759,28 +759,30 @@ type
     tLoginGate1,tSelGate,tSelGate1,tRunGate,tRunGate1,tRunGate2,
     tRunGate3,tRunGate4,tRunGate5,tRunGate6,tRunGate7);
 
-  //人物信息记录头
+  //人物角色信息记录头
   TRecordHeader = packed record
-     sAccount:String[16];     //登录帐号
-     sName:String[20];        //人物名称
-     nSelectID:integer;
-     dCreateDate:TDateTime;   //记录删除日期
-     boDeleted:boolean;       //记录是否被删除，为真时人物数信息被消毁，注意与THumInfo.boDeleted的区别
+     sAccount:String[16];        //登录帐号
+     sName:String[20];           //人物名称
+     nSelectID:integer;          //是否已经选择
+     dCreateDate:TDateTime;      //记录删除日期
+     boDeleted:boolean;          //记录是否被删除，为真时人物数信息被消毁，注意与THumInfo.boDeleted的区别
      UpdateDate:TDateTime;
      CreateDate:TDateTime;
   end;
+  
 
-  //人物角色信息记录
+  //帐号--角色信息记录
   THumInfo =  record
-     boDeleted:Boolean;     //是否被禁用，为真时人物数信息是不被消毁的，当客户删除人物时数据库服务端会将人物设为禁用
-     boSelected:Boolean;    //是否已经选择
-     sAccount:String[10];   //登录帐号
-     dModDate:TDateTime;
-     sChrName:String[20];   //人物名称
-     btCount:Byte;
+     boDeleted:Boolean;     // 是否被禁用，为真时人物数信息是不被消毁的，当客户删除人物时数据库服务端会将人物设为禁用
+     boSelected:Boolean;    // 是否已经选择
+     sAccount:String[10];   // 登录帐号
+     dModDate:TDateTime;    // 修改时间
+     sChrName:String[20];   // 人物名称
+     btCount:Byte;          //
      Header:TRecordHeader;
   end;
 
+  
   //用户物品
   pTUserItem=^TUserItem;
   TUserItem=record                         //=24
@@ -955,13 +957,15 @@ type
     Data:THumData;
   end;
 
-  pTQuickID=^TQuickID;
-  TQuickID=record
-    nSelectID:integer;
-    sAccount:String[16];
-    nIndex:integer;
-    sChrName:String[20];
-  end;
+// BUG: 与MudUtil中写义的结构同名，但字段错位，故删除此定义,否则MudUtil::GetChrList返回数据错误
+// lzx2022 - Modified by Davy 2022-6-4
+//  pTQuickID=^TQuickID;
+//  TQuickID=record
+//    nSelectID:integer;
+//    sAccount:String[16];
+//    nIndex:integer;
+//    sChrName:String[20];
+//  end;
 
   pTGlobaSessionInfo=^TGlobaSessionInfo;
   TGlobaSessionInfo=record
