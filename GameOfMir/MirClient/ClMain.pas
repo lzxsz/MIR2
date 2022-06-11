@@ -25,13 +25,22 @@ const
    WeaponImageDir = '.\Graphics\Weapon\';
    HumImageDir = '.\Graphics\Human\';
 
-type
+ type
+    TTextFormat=(tfAnsi,tfUnicode,tfUnicodeBigEndian,tfUtf8);
+ const
+    TextFormatFlag:array[tfAnsi..tfUtf8] of word=($0000,$FFFE,$FEFF,$EFBB);
+    
+ type
   TKornetWorld = record
     CPIPcode:  string;
     SVCcode:   string;
     LoginID:   string;
     CheckSum:  string;
   end;
+
+ // type
+    //   TTextFormat=(tfAnsi,tfUnicode,tfUnicodeBigEndian,tfUtf8);
+ //  end;
 
   TOneClickMode = (toNone, toKornetWorld);
 
@@ -292,16 +301,42 @@ type
     function  GetWWeaponImg(Weapon,m_btSex,nFrame:Integer;var ax,ay:integer): TDirectDrawSurface;
     function  GetWHumImg(Dress,m_btSex,nFrame:Integer;var ax,ay:integer): TDirectDrawSurface;
     procedure ProcessCommand(sData:String);
+    
   end;
-  
-//  function IsDebug():Boolean;
-//  function IsDebugA():Boolean;
+
+   //  function IsDebug():Boolean;
+   //  function IsDebugA():Boolean;
 
   function  CheckMirProgram: Boolean;
   procedure PomiTextOut (dsurface: TDirectDrawSurface; x, y: integer; str: string);
   procedure WaitAndPass (msec: longword);
   function  GetRGB (c256: byte): integer;
   procedure DebugOutStr (msg: string);
+
+    //-----------------------------------------------------------------------------------
+    //lzx2022 - Add By Davy 2022-6-10
+    //删除UTF-8 BOM文本文件的BOM标记，转文件格式为UTF-8
+    function DelBomFromUtf8File(filename:string):boolean;
+   
+    function CheckNoBOM_UTF8( pText: TFileStream; length:LongInt) : boolean;
+    procedure SaveUTF8(f: string; s: string; b: boolean = true);
+    function LoadUTF8(f: string; b: boolean = true): string;
+
+    procedure SaveUnicode(f: string; s: string; b: boolean = true);   //保存数据
+    function LoadUnicode(f: string; b: boolean = true): string;
+
+    function WordLoHiExchange(w:Word):Word;register;
+    function LoadUnicodeBigEndian(f: string; b: boolean = true): string;
+    function GetTextType(const FileName: string): String;
+
+    procedure SaveAnsiFile(desFile:string; srcFile:string; tfType:string);
+    procedure SaveUnicodeFile(desFile:string; srcFile:string; tfType:string);
+    
+    procedure SaveToAnsiFile(filename:string; tfType:string);
+    procedure SaveToUnicodeFile(filename:string; tfType:string);
+  //-----------------------------------------------------------------------------------
+
+
 
 var
   nLeft            :integer = 10;
@@ -339,6 +374,475 @@ uses
 {$R *.DFM}
 var
   ShowMsgActor:TActor;
+
+//-----------------------------------------------------------------------------------
+//修正客户端读UTF-8和UTF-8无BOM格式的配置文件出错的BUG
+//客户端使用TIniFile类读写配置文件,TIniFile类支持ANSI和Unicode格式。
+//当配置文件的文本格式为UTF-8、UTF-8无BOM和Unicode Big Endian 格式时，则将其转为 ANSI格式
+
+//lzx2022 - Add By Davy 2022-6-11
+{
+ 无 BOM 检测 UTF-8
+ UCS-4 range (hex.)    UTF-8 octet sequence (binary)
+ 0000 0000-0000 007F   0xxxxxxx
+ 0000 0080-0000 07FF   110xxxxx 10xxxxxx                             // 110     表示 2个字节，一个UTF-8
+ 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx                    // 1110    表示3个字节，一个UTF-8
+ 0001 0000-001F FFFF   11110xxx 10xxxxxx 10xxxxxx 10xxxxxx           // 11110   表示4个,字节一个 UTF-8
+ 0020 0000-03FF FFFF   111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx  // 111110  表示5个字节,一个 UTF-8
+ 0400 0000-7FFF FFFF   1111110x 10xxxxxx ... 10xxxxxx                // 1111110 表示 6个字节 ,一个 UTF-8
+}
+
+//检查UTF8文件是否为带BOM
+function CheckNoBOM_UTF8( pText: TFileStream; length:LongInt) : boolean;
+var
+    i : Integer;
+    nBytes : DWORD;
+    chr : Byte;
+    bAllAscii : boolean;
+begin
+   chr := 0;
+   nBytes := 0;
+   bAllAscii := true;
+
+   pText.Seek(0,0);
+  
+ // all chars
+ for i := 0 to length -1  do
+  begin
+        pText.Read(chr,1);
+        if ((chr and $80) <> 0) then  bAllAscii := FALSE;// 0xxxxxxx
+
+        if (nBytes = 0) then
+         begin
+           // check 1st
+           if (chr >= $80) then
+            begin
+                if ((chr >= $FC) and (chr <= $FD))  then  nBytes := 6
+                else if (chr >= $F8)           then  nBytes := 5
+                else if (chr >= $F0)           then  nBytes := 4
+                else if (chr >= $E0)           then  nBytes := 3
+                else if (chr >= $C0)           then  nBytes := 2
+                else
+                begin
+                  result :=  false;
+                  exit;
+                end;
+
+                nBytes := nBytes -1;
+            end;
+         end
+        else
+        begin
+          // 10xxxxxx
+            if ((chr and $C0) <> $80) then
+             begin
+               result := false;  // not 10xxxxxx
+               exit;
+             end;
+            
+            nBytes := nBytes -1; // next "10xxxxxx"
+        end;
+    end;
+
+    // more "10xxxxxx" than nBytes
+    if (nBytes > 0) then
+      begin
+         result := false;
+         exit;
+      end;
+
+    // all bytes is ascii
+    if (bAllAscii) then
+      begin
+          result := false;
+          exit;
+      end;
+
+     result := true;
+end;
+
+//保存为UTF-8文件
+// f: string;            -- 文件名
+// s: string;            -- 数据
+// b: boolean = true     -- 是否带UTF-8 BOM (Byte Order Mark)标记头字节
+procedure SaveUTF8(f: string; s: string; b: boolean = true);
+var
+  ms: TMemoryStream;
+  hs: string;     //头标记字节
+begin
+  if s = '' then
+    exit;
+  ms := TMemoryStream.Create;
+  if b then
+  begin
+    hs := #$EF#$BB#$BF;
+    ms.Write(hs[1], 3);
+  end;
+  s := AnsiToUtf8(s);
+  ms.Write(s[1], Length(s));
+  ms.Position := 0;
+  ms.SaveToFile(f);
+  ms.Free;
+end;
+
+//加载为UTF-8文件
+// f: string;            -- 文件名
+// b: boolean = true     -- 是否带UTF-8 BOM (Byte Order Mark)标记头字节
+function LoadUTF8(f: string; b: boolean = true): string;
+var
+  ms: TMemoryStream;
+  s, hs: string;
+begin
+  Result := '';
+  if not FileExists(f) then
+    exit;
+  ms := TMemoryStream.Create;
+  ms.LoadFromFile(f);
+  if b then
+  begin
+    SetLength(hs, 3);
+    ms.Read(hs[1], 3);
+    if hs <> #$EF#$BB#$BF then
+    begin
+      ms.Free;
+      exit;
+    end;
+    SetLength(s, ms.Size - 3);
+    ms.Read(s[1], ms.Size - 3);
+  end
+  else
+  begin
+    SetLength(s, ms.Size);
+    ms.Read(s[1], ms.Size);
+  end;
+  Result := Utf8ToAnsi(s);
+  ms.Free;
+end;
+
+//保存为Unicode文件
+// f: string;            -- 文件名
+// s: string;            -- 数据
+// b: boolean = true     -- 是否带Unicode BOM (Byte Order Mark)标记头字节
+procedure SaveUnicode(f: string; s: string; b: boolean = true);
+var
+  ms: TMemoryStream;
+  hs: string;    //头标记字节
+  ws: WideString;
+begin
+  if s = '' then
+    exit;
+  ms := TMemoryStream.Create;
+  if b then
+  begin
+    hs := #$FF#$FE;
+    ms.Write(hs[1], 2);
+  end;
+  ws := WideString(s);
+  ms.Write(ws[1], Length(ws) * 2);
+  ms.Position := 0;
+  ms.SaveToFile(f);
+  ms.Free;
+end;
+
+//加载Unide 文件
+// f: string;            -- 文件名
+// b: boolean = true     -- 是否带Unicode BOM (Byte Order Mark)标记头字节
+function LoadUnicode(f: string; b: boolean = true): string;
+var
+  ms: TMemoryStream;
+  hs: string;       //头标记字节
+  ws: WideString;
+
+begin
+  Result := '';
+  if not FileExists(f) then
+    exit;
+  ms := TMemoryStream.Create;
+  ms.LoadFromFile(f);
+  if b then
+  begin
+    SetLength(hs, 2);
+    ms.Read(hs[1], 2);
+    if hs <> #$FF#$FE then
+    begin
+      ms.Free;
+      exit;
+    end;
+    SetLength(ws, (ms.Size - 2) div 2);
+    ms.Read(ws[1], ms.Size - 2);
+  end
+  else
+  begin
+    SetLength(ws, ms.Size div 2);
+    ms.Read(ws[1], ms.Size);
+  end;
+  Result := AnsiString(ws);
+  ms.Free;
+end;
+
+//Word字的高字节与低字节互换
+function WordLoHiExchange(w:Word):Word;register;
+asm
+  XCHG AL, AH
+end;
+
+//加载Unide Big Endian (Unide大端)文件
+// f: string;            -- 文件名
+// b: boolean = true     -- 是否带Unicode BOM (Byte Order Mark)标记头字节
+function LoadUnicodeBigEndian(f: string; b: boolean = true): string;
+var
+  ms: TMemoryStream;
+  hs: string;
+  ws: WideString;
+  I, nLen: Integer;
+  wd : Word;
+  wc : WideChar;
+  b1, b2 : Byte;
+begin
+  Result := '';
+  if not FileExists(f) then
+    exit;
+  ms := TMemoryStream.Create;
+  ms.LoadFromFile(f);
+  if b then
+  begin
+    SetLength(hs, 2);
+    ms.Read(hs[1], 2);
+    if hs <> #$FE#$FF then
+    begin
+      ms.Free;
+      exit;
+    end;
+    nLen :=  (ms.Size - 2) div 2;
+    SetLength(ws, (ms.Size - 2) div 2);
+    ms.Read(ws[1], ms.Size - 2);
+  end
+  else
+  begin
+    nLen :=  ms.Size div 2;
+    SetLength(ws, ms.Size div 2);
+    ms.Read(ws[1], ms.Size);
+  end;
+
+  for I :=0 to nLen  do
+  begin
+    //将宽字中的高低字节互换
+    wc := ws[I];
+    wd := Word(wc);
+    wd := WordLoHiExchange( wd );
+    wc := WideChar( wd );
+    ws[I] := wc;
+  end;
+
+  Result := AnsiString(ws);
+  ms.Free;
+end;
+
+//加载Ansi文件
+function LoadAnsi(f: string): string;
+var
+  ms: TMemoryStream;
+  hs: string;
+begin
+  Result := '';
+  if not FileExists(f) then
+    exit;
+  ms := TMemoryStream.Create;
+  ms.LoadFromFile(f);
+  SetLength(hs, ms.Size);
+  ms.Read(hs[1], ms.Size);
+
+  Result := hs;
+  ms.Free;
+end;
+
+//获取文本文件类型
+function GetTextType(const FileName: string): String;
+var
+  w: Word;
+  b: Byte;
+  fsm : TFileStream;
+  isUtf8NoBOM : Boolean;
+begin
+
+  if FileName ='' then exit;
+  if Not FileExists(FileName) then  exit;
+  
+  fsm := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  with fsm do
+    try
+      Read(w,2);
+      w:=WordLoHiExchange(w);//因为是以Word数据类型读取，故高低字节互换
+      if w = TextFormatFlag[tfUnicode] then
+        Result := 'tfUnicode'
+
+      else if w = TextFormatFlag[tfUnicodeBigEndian] then
+        Result:= 'tfUnicodeBigEndian'
+
+      else if w = TextFormatFlag[tfUtf8] then
+         begin
+           //UTF-8格式：前面三个标记字节是：EF BB BF 第三个字节BF为BOM标记。
+           //UTF-8无BOM格式：前面是无三个标记字节，与Ansi格式一样。
+           //UTF-8无BOM格式与Ansi格式是通过和80H位与来识别
+           Read(b,1);//这里要注意一下，UFT-8必须要跳过三个字节。 0xBF
+           Result := 'tfUtf8'
+         end
+      else
+       begin
+         isUtf8NoBOM :=  CheckNoBOM_utf8(fsm , fsm.Size);
+          if ( isUtf8NoBOM = true)  then
+             Result := 'tfUtf8NoBom'
+         else
+             Result := 'tfAnsi';
+      end;
+    finally
+      Free;
+    end;
+end;
+
+//保存为ANSI文件，保存为另命名文件
+//desFile:string;    -- 目标文件名
+//srcFile:string     -- 源文件
+//tfType:string      -- 文件格式类型
+procedure SaveAnsiFile(desFile:string; srcFile:string; tfType:string);
+var
+  ms:TMemoryStream;
+  s:String;
+begin
+
+  if srcFile = '' then exit;
+  if (tfType = 'tfAnsi')  then exit;
+  if Not FileExists(srcFile) then  exit;
+
+  ms:=TMemoryStream.Create;
+
+  if (tfType = 'tfUtf8') then
+     s:= LoadUTF8(srcFile)
+  else if (tfType = 'tfUtf8NoBom') then
+     s:= LoadUTF8(srcFile, false)
+  else if  (tfType = 'tfUnicode') then
+    s:= LoadUnicode(srcFile)
+  else if  (tfType = 'tfUnicodeBigEndian') then
+     s:= LoadUnicodeBigEndian(srcFile)
+   else
+      s:= LoadAnsi(srcFile) ;
+      
+  ms.Write(s[1],Length(s));
+  ms.Position:=0;
+  ms.SaveToFile(desFile);
+  ms.Free;
+end;
+
+//保存为ANSI文件，替换原文件
+//filename:string;   -- 文件名
+//tfType:string      -- 文件格式类型
+procedure SaveToAnsiFile(filename:string; tfType:string);
+var
+  filename_tmp: string;
+begin
+   if (tfType = 'tfAnsi')  then exit;
+     if Not FileExists(FileName) then  exit;
+     
+    filename_tmp := filename+'tmp';
+    SaveAnsiFile(filename_tmp, filename, tfType);
+    deletefile(filename);
+    movefile(pchar(filename_tmp),pchar(filename));
+end;
+
+
+//保存为Unicode文件
+//desFile:string;       -- 目标文件名
+//srcFile:string        -- 源文件
+procedure SaveUnicodeFile(desFile:string; srcFile:string; tfType:string);
+var
+  ms:TMemoryStream;
+  s:String;
+begin
+
+  if srcFile = '' then exit;
+  if (tfType = 'tfUnicode')  then exit;
+  if Not FileExists(srcFile) then  exit;
+
+  if (tfType = 'tfUtf8') then
+     s:= LoadUTF8(srcFile)
+  else if (tfType = 'tfUtf8NoBom') then
+     s:= LoadUTF8(srcFile, false)
+  else if  (tfType = 'tfUnicode') then
+    s:= LoadUnicode(srcFile)
+  else if  (tfType = 'tfUnicodeBigEndian') then
+     s:= LoadUnicodeBigEndian(srcFile)
+  else
+      s:= LoadAnsi(srcFile) ;
+
+   SaveUnicode(desFile, s);
+end;
+
+
+//保存为Unicode文件
+// filename:string;  -- 文件名
+// tfType:string     -- 当前的文件格式类型
+procedure SaveToUnicodeFile(filename:string; tfType:string);
+var
+  filename_tmp: string;
+begin
+   if (tfType = 'tfUnicode')  then exit;
+   if Not FileExists(FileName) then  exit;
+
+    filename_tmp := filename+'tmp';
+    SaveUnicodeFile(filename_tmp, filename, tfType);
+    deletefile(filename);
+    movefile(pchar(filename_tmp),pchar(filename));
+end;
+
+
+// 过程名:    DelBomFromUtf8File 判断并删除utf8文本文件中的前三个字节BOM
+// 参数:      filename:string   1.文件名
+// 返回值:    boolean   是否删除
+function DelBomFromUtf8File(filename:string):boolean;
+const
+   UTF8_FLAG=$EFBB;
+var
+  fsRead,fsWrite:TFileStream;
+  w:word;
+  b:byte;
+  filename_tmp:string;
+  len:integer;
+
+function WordLoHiExchange(w: Word): Word; register;
+asm
+   XCHG AL, AH
+end;
+begin
+  result:=false;
+  if(fileexists(filename)=false)then exit;
+  fsRead:=TFileStream.Create(filename, fmOpenRead or fmShareDenyNone); // or fmOpenWrite
+try
+  fsRead.Seek(0, soFromBeginning);
+  fsRead.Read(w,2);
+  w:= WordLoHiExchange(w);
+  if w=UTF8_FLAG then
+  begin
+    fsRead.Read(b,1);
+    len:=fsRead.Size-fsRead.Position;
+    filename_tmp:=filename+'tmp';
+    fsWrite:=TFileStream.Create(filename_tmp, fmCreate);
+    fsWrite.CopyFrom(fsRead, len);
+    fsWrite.Free;
+    result:=true;
+  end;
+finally
+  fsRead.Free;
+  if(result)then
+  begin
+    deletefile(filename);
+    movefile(pchar(filename_tmp),pchar(filename));
+  end;
+ end;
+end;
+
+//--------------------------------------------------------------------------
+
+
 
 function  CheckMirProgram: Boolean;
 var
@@ -431,16 +935,21 @@ begin
    Result := CallNextHookEx(g_ToolMenuHook, Code, WParam, Longint(@Msg));
 end;
 
+
+//-----------------------------------------------------------------------------
+
 //场景创建
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
   flname, str: string;
   ini: TIniFile;
   FtpConf:TIniFile;
+  iniFileName : string;
+  sTextType  : string;
+  iniFileExist : boolean;
 begin
   ini := nil;
   FtpConf := nil;
-
 
   g_AutoPickupList :=TList.Create;
   g_ShowItemList   :=TGList.Create;
@@ -450,22 +959,51 @@ begin
   g_DXDraw:=DXDraw;
   //初始化随机种子
    Randomize;
-   //读取mir.ini配置文件
-   ini := TIniFile.Create ('.\Lmir.ini');
-   if ini <> nil then begin
-      if EnglishVersion then begin
-         g_sServerAddr := ini.ReadString ('Setup', 'ServerAddr', g_sServerAddr);
-         g_nServerPort := ini.ReadInteger ('Setup', 'ServerPort', g_nServerPort);
-         LocalLanguage := imOpen;
-      end;
 
-      g_boFullScreen := ini.ReadBool ('Setup', 'FullScreen', g_boFullScreen);
-      g_sCurFontName := ini.ReadString ('Setup', 'FontName', g_sCurFontName);
-      g_sMainParam1:=Ini.ReadString('Setup', 'Param1', '');
-      g_sMainParam2:=Ini.ReadString('Setup', 'Param2', '');
-      ini.Free;
-   end;
-   FtpConf:=TIniFile.Create('.\Lmir.ini');
+   //----------------------------------------------------------------
+   //修正配置文件为Utf8、Utf8NoBom、UnicodeBigEndian时读写错误
+   //lzx2022 - Add By Davy 2022-6-11
+
+   iniFileName := '.\Lmir.ini';
+
+   //检查配置文件是否存在
+   if Not FileExists(iniFileName) then     iniFileExist := false
+   else                                    iniFileExist := true;
+
+   //当配置文件存在时，读取配置项
+   if( iniFileExist = true ) then  //if1
+     begin
+       sTextType := GetTextType(iniFileName);
+
+       //TIniFile 仅支持ANSI 和 Unicode 格式文本
+       if ((sTextType = 'tfUtf8') or (sTextType = 'tfUtf8NoBom') or (sTextType = 'tfUnicodeBigEndian')) then
+        begin
+          //SaveToAnsiFile(iniFileName, sTextType);    //转为ANSI格式文本文件
+          SaveToUnicodeFile(iniFileName, sTextType);   //转为Unicode格式文本文件
+        end;
+
+     //----------------------------------------------------------------
+
+      //读取mir.ini配置文件
+      ini := TIniFile.Create (iniFileName);
+      if ini <> nil then begin
+       if EnglishVersion then begin
+          g_sServerAddr := ini.ReadString ('Setup', 'ServerAddr', g_sServerAddr);
+          g_nServerPort := ini.ReadInteger ('Setup', 'ServerPort', g_nServerPort);
+          LocalLanguage := imOpen;
+       end;
+
+       g_boFullScreen := ini.ReadBool ('Setup', 'FullScreen', g_boFullScreen);
+       g_sCurFontName := ini.ReadString ('Setup', 'FontName', g_sCurFontName);
+
+       g_sMainParam1:=Ini.ReadString('Setup', 'Param1', '');
+       g_sMainParam2:=Ini.ReadString('Setup', 'Param2', '');
+
+       ini.Free;
+     end;
+     FtpConf:=TIniFile.Create(iniFileName);
+   end;   //if1 end
+
 
 {$IF CLIENTTYPE = RMCLIENT} //检查如果客户端的标识不正确,则控制权限
     g_sLogoText:=RMCLIENTTITLE;
@@ -486,6 +1024,7 @@ begin
    ItemImageList:=TList.Create;
    WeaponImageList:=TList.Create;
    HumImageList:=TList.Create;
+
    //Delphi声音
    g_DXSound:=TDXSound.Create(Self);
    //初始化
@@ -944,7 +1483,7 @@ begin
 //      WMon27Img.DDraw := DxDraw.DDraw;
 //      WMon28Img.DDraw := DxDraw.DDraw;
 
-//      WNpcImg.DDraw := DxDraw.DDraw;
+//    WNpcImg.DDraw := DxDraw.DDraw;
       WEffectImg.DDraw := DxDraw.DDraw;
 //      WTiles.Initialize;
       {
@@ -1035,6 +1574,7 @@ begin
          //frmMain.BorderStyle := bsSingle;
       end;
 
+
       g_ImgMixSurface := TDirectDrawSurface.Create (frmMain.DxDraw.DDraw);
       g_ImgMixSurface.SystemMemory := TRUE;
       g_ImgMixSurface.SetSize (300, 350);
@@ -1043,6 +1583,7 @@ begin
       g_MiniMapSurface.SetSize (540, 360);
       //DxDraw.Surface.SystemMemory := TRUE;
    end;
+
 
 end;
 
@@ -1056,7 +1597,6 @@ begin
    //Savebags ('.\Data\' + ServerName + '.' + CharName + '.itm', @ItemArr);
    //DxTimer.Enabled := FALSE;
 end;
-
 
 {------------------------------------------------------------}
 
@@ -2654,8 +3194,6 @@ try
    end;
    g_MagicList.Clear;
 
-
-
    g_boItemMoving := FALSE;
    g_WaitingUseItem.Item.S.Name := '';
    g_EatingItem.S.name := '';
@@ -2757,7 +3295,8 @@ begin
          str := KornetWorld.CheckSum;  StrPCopy (strbuf, str);  Move (strbuf, (@packet[64])^, Length(str));
          Socket.SendBuf (packet, 256);
       end;
-      DScreen.ChangeScene (stLogin);
+
+       DScreen.ChangeScene (stLogin); //改为登录场景
 {$IF USECURSOR = DEFAULTCURSOR}
       DxDraw.Cursor:=crDefault;
 {$IFEND}
@@ -2788,9 +3327,14 @@ procedure TfrmMain.CSocketDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
    g_boServerConnected := FALSE;
-   if (g_ConnectionStep = cnsLogin) and not g_boSendLogin then begin
-     FrmDlg.DMessageDlg ('网络连接异常,程序将退出', [mbOk]);
-     Close;
+
+   //lzx2022 - Modified By Davy  2022-6-11
+   if (g_ConnectionStep = cnsLogin) and not g_boSendLogin then
+     begin
+      FrmDlg.DMessageDlg ('网络连接异常，程序将退出  \ \'  +
+                        '请检查配置的服务器地址是否正确' , [mbOk]);
+                        
+      Close;
    end;
    if g_SoftClosed then begin
 //      PlayScene.MemoLog.Lines.Add('CSocketDisconnect - tcSoftClose');

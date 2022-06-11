@@ -1664,6 +1664,7 @@ end;
 procedure TfrmMain.TimerStartGameTimer(Sender: TObject);
 var
   nRetCode:Integer;
+  sMsg : string;    //lzx2022 - Add by Davy 2022-6-11
 begin
   if DBServer.boGetStart then begin
     case DBServer.btStartStatus of    //
@@ -1673,13 +1674,17 @@ begin
         DBServer.btStartStatus:=2;    //1
           DBServer.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,DBServer.ProcessInfo.dwProcessId);
         end else begin
-         DBServer.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          DBServer.btStartStatus:=9;
+          //ShowMessage(IntToStr(nRetCode));  //lzx2022 - Modified By Davy 2022-6-11
+          
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [DBServer.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-//        DBServer.btStartStatus:=2;
+      //   DBServer.btStartStatus:=2;
       exit;
       end;
     end;
@@ -1693,12 +1698,16 @@ begin
           LoginServer.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,LoginServer.ProcessInfo.dwProcessId);
         end else begin
           LoginServer.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+          
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [LoginServer.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-  //      LoginServer.btStartStatus:=2;
+      //    LoginServer.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1713,12 +1722,16 @@ begin
           LogServer.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,LogServer.ProcessInfo.dwProcessId);
         end else begin
           LogServer.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [LogServer.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-  //      LogServer.btStartStatus:=2;
+      //    LogServer.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1733,18 +1746,20 @@ begin
           M2Server.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,M2Server.ProcessInfo.dwProcessId);
         end else begin
           M2Server.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+          
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [M2Server.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-   //     M2Server.btStartStatus:=2;
+      //    M2Server.btStartStatus:=2;
         exit;
       end;
     end;
   end;
-
-
 
   if RunGate.boGetStart then begin
     case RunGate.btStartStatus of    //
@@ -1756,17 +1771,20 @@ begin
           RunGate.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate.ProcessInfo.dwProcessId);
         end else begin
           RunGate.btStartStatus:=1;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
- //       RunGate.btStartStatus:=2;
+      //    RunGate.btStartStatus:=2;
        exit;
       end;
     end;
   end;
-
 
   if RunGate1.boGetStart then begin
     case RunGate1.btStartStatus of    //
@@ -1778,12 +1796,16 @@ begin
           RunGate1.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate1.ProcessInfo.dwProcessId);
         end else begin
           RunGate1.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate1.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-   //     RunGate1.btStartStatus:=2;
+       //    RunGate1.btStartStatus:=2;
        exit;
       end;
     end;
@@ -1799,12 +1821,16 @@ begin
           RunGate2.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate2.ProcessInfo.dwProcessId);
         end else begin
           RunGate2.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate2.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
- //       RunGate2.btStartStatus:=2;
+       //   RunGate2.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1820,12 +1846,16 @@ begin
           RunGate3.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate3.ProcessInfo.dwProcessId);
         end else begin
           RunGate3.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+           //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate3.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-  //      RunGate3.btStartStatus:=2;
+      //    RunGate3.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1841,12 +1871,16 @@ begin
           RunGate4.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate4.ProcessInfo.dwProcessId);
         end else begin
           RunGate4.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate4.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-   //     RunGate4.btStartStatus:=2;
+      //    RunGate4.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1862,12 +1896,16 @@ begin
           RunGate5.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate5.ProcessInfo.dwProcessId);
         end else begin
           RunGate5.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate5.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
- //       RunGate5.btStartStatus:=2;
+      //    RunGate5.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1883,12 +1921,16 @@ begin
           RunGate6.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate6.ProcessInfo.dwProcessId);
         end else begin
           RunGate6.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate6.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
- //       RunGate6.btStartStatus:=2;
+       //   RunGate6.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1904,12 +1946,16 @@ begin
           RunGate7.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,RunGate7.ProcessInfo.dwProcessId);
         end else begin
           RunGate7.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [RunGate7.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
- //       RunGate7.btStartStatus:=2;
+      //    RunGate7.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1925,12 +1971,16 @@ begin
           SelGate.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,SelGate.ProcessInfo.dwProcessId);
         end else begin
           SelGate.btStartStatus:=1;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [SelGate.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-     //  SelGate.btStartStatus:=2;
+      //  SelGate.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1946,12 +1996,16 @@ begin
           SelGate1.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,SelGate1.ProcessInfo.dwProcessId);
         end else begin
          SelGate1.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+         // ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [SelGate1.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
       1: begin  //如果状态为1 则还没启动完成
-   //     SelGate1.btStartStatus:=2;
+     //   SelGate1.btStartStatus:=2;
         exit;
       end;
     end;
@@ -1966,7 +2020,11 @@ begin
           LoginGate.ProcessHandle:=OpenProcess(PROCESS_ALL_ACCESS,False,LoginGate.ProcessInfo.dwProcessId);
         end else begin
         LoginGate.btStartStatus:=9;
-          ShowMessage(IntToStr(nRetCode));
+          //ShowMessage(IntToStr(nRetCode));
+
+          //lzx2022  - Modified By Davy
+          sMsg:=format('启动 %s 程序错误，请检查该程序是否存在。返回错误码：%d', [LoginGate.sProgramFile, nRetCode]);
+          ShowMessage(sMsg);
         end;
         exit;
       end;
