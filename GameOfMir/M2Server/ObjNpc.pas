@@ -3422,8 +3422,6 @@ end;
 
 //取消 结婚 和 师徒 功能
 {
-
-
 procedure TNormNpc.ActionOfMarry(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
 var
@@ -3554,6 +3552,7 @@ begin
     Exit;
   end;
 end;
+
 procedure TNormNpc.ActionOfMaster(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
 var
@@ -3636,7 +3635,6 @@ begin
   end;
 
 end;
-
 }
 
 //取消 师徒和 结婚 的相关功能
@@ -8274,6 +8272,9 @@ var
               ScriptActionError(PlayObject, '', QuestActionInfo, sRECALLMAP);
             end;
           end;
+
+//取消赌博转移房间指令   lzx2022 - delete by Davy 2022-6-12
+{
         nADDBATCH: List1C.AddObject(QuestActionInfo.sParam1, TObject(n18));
         nBATCHDELAY: n18 := QuestActionInfo.nParam1 * 1000;
         nBATCHMOVE:
@@ -8284,6 +8285,10 @@ var
               Inc(n20, Integer(List1C.Objects[ii]));
             end;
           end;
+ }
+
+//取消赌博掷骰子指令  lzx2022 - delete by Davy 2022-6-12
+{
         nPLAYDICE:
           begin //0049E209
             PlayObject.m_sPlayDiceLabel := QuestActionInfo.sParam2;
@@ -8296,6 +8301,8 @@ var
               QuestActionInfo.sParam2);
             bo11 := True;
           end;
+}
+
         nADDNAMELIST: AddList(PlayObject.m_sCharName, m_sPath + QuestActionInfo.sParam1);
         nDELNAMELIST: DelList(PlayObject.m_sCharName, m_sPath + QuestActionInfo.sParam1);
         nADDGUILDLIST: if PlayObject.m_MyGuild <> nil then AddList(TGUild(PlayObject.m_MyGuild).sGuildName, m_sPath + QuestActionInfo.sParam1);

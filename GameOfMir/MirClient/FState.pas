@@ -529,10 +529,12 @@ type
     }
    //  m_Dicea:array[0..35] of Integer;
 
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+{
     m_nDiceCount:Integer;
     m_boPlayDice:Boolean;
     m_Dice:array[0..9] of TDiceInfo;
-
+}
     MerchantName: string;
     MerchantFace: integer;
     MDlgStr: string;
@@ -629,8 +631,11 @@ begin
    StatePage := 0;
    DlgTemp := TList.Create;
    DialogSize := 1; 
-   m_nDiceCount:=0;
-   m_boPlayDice:=False;
+
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12   
+//   m_nDiceCount:=0;
+//   m_boPlayDice:=False;
+
    magcur := 0;
    magtop := 0;
    MDlgPoints := TList.Create;
@@ -2021,11 +2026,16 @@ var
   I: Integer;
    lx, ly: integer;
    d: TDirectDrawSurface;
+
+//取消赌博掷骰子显示对话框  lzx2022 - delete by Davy 2022-6-12
+{
   procedure ShowDice();
   var
     I: Integer;
     bo05:Boolean;
+
   begin
+
     if m_nDiceCount = 1 then begin
       if m_Dice[0].n67C < 20 then begin
         if GetTickCount - m_Dice[0].dwPlayTick > 100 then begin
@@ -2069,8 +2079,10 @@ var
     if bo05 then begin
       DMsgDlg.Visible:=False;
     end;
-      
+
   end;
+}
+
 begin
    if DConfigDlg.Visible  then begin //打开提示框时关闭选项框
      DOptionClick();
@@ -2128,7 +2140,9 @@ begin
    DMsgDlgNo.Visible := FALSE;
    DMsgDlg.Left := (SCREENWIDTH - DMsgDlg.Width) div 2;
    DMsgDlg.Top := (SCREENHEIGHT - DMsgDlg.Height) div 2;
-   
+
+//取消赌博掷骰子显示对话框内容  lzx2022 - delete by Davy 2022-6-12
+{
    //调整按钮
    for I := 0 to m_nDiceCount - 1 do begin
      m_Dice[I].n67C:=0;
@@ -2136,6 +2150,7 @@ begin
      m_Dice[I].nPlayPoint:=1;
      m_Dice[I].dwPlayTick:=GetTickCount();
    end;
+}
 
    if mbCancel in DlgButtons then begin
       DMsgDlgCancel.Left := lx;
@@ -2185,7 +2200,9 @@ begin
       FrmMain.ProcOnIdle;
       Application.ProcessMessages;
 
-      if m_nDiceCount > 0 then begin
+//取消赌博掷骰子显示骰子对话框  lzx2022 - delete by Davy 2022-6-12
+{
+     if m_nDiceCount > 0 then begin
         m_boPlayDice:=True;
 
         for I := 0 to m_nDiceCount - 1 do begin
@@ -2194,11 +2211,13 @@ begin
         end;
 
         ShowDice();
-
       end;
+}
 
       if Application.Terminated then exit;
-   end;
+
+  end;
+
    
    EdDlgEdit.Visible := FALSE;
    RestoreHideControls;
@@ -2207,8 +2226,11 @@ begin
    ViewDlgEdit := FALSE;
    Result := DMsgDlg.DialogResult;
    DialogSize := 1; //
-   m_nDiceCount:=0;
-   m_boPlayDice:=False;
+
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+//   m_nDiceCount:=0;
+//   m_boPlayDice:=False;
+
 end;
 
 procedure TFrmDlg.DMsgDlgOkClick(Sender: TObject; X, Y: Integer);
@@ -2396,6 +2418,8 @@ begin
       if d <> nil then
          dsurface.Draw (SurfaceX(Left), SurfaceY(Top), d.ClientRect, d, TRUE);
 
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+{
       if m_boPlayDice then begin
         for I := 0 to m_nDiceCount - 1 do begin
           d:=g_WBagItemImages.GetCachedImage(m_Dice[I].nPlayPoint + 376 - 1,nX,nY);
@@ -2404,7 +2428,8 @@ begin
           end;
         end;
       end;
-      
+}
+     
       SetBkMode (dsurface.Canvas.Handle, TRANSPARENT);
       ly := msgly;
       str := MsgText;

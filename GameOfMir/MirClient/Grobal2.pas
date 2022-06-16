@@ -902,9 +902,13 @@ type
     btCreditPoint   :Byte;            //声望
     btReLevel       :Byte;
 
-    sMasterName     :String[ActorNameLen];
-    boMaster        :Boolean;
-    sDearName       :String[ActorNameLen];
+    // 取消结婚 和师徒系统的相关数据
+    // 传奇1.50没有结婚和师徒系统， 1.70版出现结婚和师徒系统
+    // sMasterName     :String[ActorNameLen];
+    // boMaster        :Boolean;
+    // sDearName       :String[ActorNameLen];
+    // btMarryCount    :Byte; // 结婚次数
+
     sStoragePwd     :String[10];
 
     nGameGold       :Integer;
@@ -935,7 +939,7 @@ type
     QuestUnit       :TQuestUnit;
     QuestFlag       :TQuestFlag;
 
-    btMarryCount    :Byte;
+//    btMarryCount    :Byte;       //移到前面，一起删除 2022-6-14
 
     HumItems        :THumItems;
     BagItems        :TBagItems;
@@ -1052,7 +1056,9 @@ Const
   CM_QUERYUSERSET = 3040;
 
   //Damian
-  SM_PLAYDICE    = 8001;
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+//  SM_PLAYDICE    = 8001;
+
   SM_PASSWORDSTATUS = 8002;
   SM_NEEDPASSWORD = 8003; 
   SM_GETREGINFO = 8004;
@@ -1180,8 +1186,8 @@ Const
   RM_CHANGEFACE        = 10415;
   RM_PASSWORD          = 10416;
 
-  RM_PLAYDICE          = 10500;
-
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+//  RM_PLAYDICE          = 10500;
 
   RM_HEAR              = 11001;
   RM_WHISPER           = 11002;
@@ -2409,7 +2415,10 @@ type
     NPCSCRIPT,
     RECALLMOB,
     LUCKYPOINT,
-    LOTTERYTICKET,
+
+//取消彩票功能
+//    LOTTERYTICKET,
+
     RELOADGUILD,
     RELOADLINENOTICE,
     RELOADABUSE,

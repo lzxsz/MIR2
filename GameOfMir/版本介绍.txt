@@ -27,3 +27,11 @@
 21.客户端 修正读UTF-8编码的文本配置文件出现异常的错误。
 22.客户端 完全配置文件编码格式的支持。目前支持ANSI和Unicode格式。UTF-8会自动转换为Unicode格式。
 23.服务端 完善游戏中心启动相关程序，却无法找到该程序时的错误提示信息。
+24.服务端 取消引擎中与赌博相关的功能和脚本指令（如：掷骰子指令（BATCHDELAY），
+          移动赌博房间指令（BATCHDELAY、ADDBATCH、BATCHMOVE）
+25.服务端 取消引擎中与结婚相关的功能和脚本指令（MARRY、UNMARRY、GETMARRY、DELMARRY、
+          CHECKMARRY、CHECKPOSEMARRY、CHECKMARRYCOUNT、GETMARRIED）
+26.服务端 取消引擎中与师徒相关的功能和脚本指令（MASTER、UNMASTER、GETMASTER、DELMASTER、CHECKMASTER、CHECKPOSEMASTER、
+          CHECKISMASTER、CHECKPOSEISMASTER、HAVEMASTER、POSEHAVEMASTER）
+27.服务端 取消引擎中与彩票相关的功能。
+28.客户端 取消与赌博相关的功能显示，如掷骰子对话框的显示。

@@ -2185,6 +2185,7 @@ var
       Goto L001;
     end;
 
+    //检查当前对面人物的性别
     if sCmd = sSC_CHECKPOSEGENDER then begin
       nCMDCode:=nSC_CHECKPOSEGENDER;
       Goto L001;
@@ -2200,7 +2201,7 @@ var
       Goto L001;
     end;
 
-//取消 "师徒" 和 "结婚" 系统的相关查询功能    
+//取消 "师徒" 和 "结婚" 系统的相关查询功能
 {
     if sCmd = sSC_CHECKMARRY then begin
       nCMDCode:=nSC_CHECKMARRY;
@@ -2535,6 +2536,9 @@ var
       nCMDCode:=nRECALLMAP;
       Goto L001;
     end;
+
+//取消赌博掷骰子指令、取消赌博移房间指令 lzx2022 - delete by Davy 2022-6-12
+{
     if sCmd = sADDBATCH then begin
       nCMDCode:=nADDBATCH;
       Goto L001;
@@ -2551,6 +2555,8 @@ var
       nCMDCode:=nPLAYDICE;
       Goto L001;
     end;
+}
+
     if sCmd = sGOQUEST then begin
       nCMDCode:=nGOQUEST;
       Goto L001;

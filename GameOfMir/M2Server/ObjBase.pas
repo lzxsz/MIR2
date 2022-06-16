@@ -627,7 +627,10 @@ type
     m_nVal: array[0..9] of Integer; //0x634 - 658
     m_nMval: array[0..99] of Integer;
     m_DyVal: array[0..9] of Integer; //0x65C - 680
-    m_sPlayDiceLabel: string;
+
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+//    m_sPlayDiceLabel: string;
+
     m_boTimeRecall: Boolean; //0x684
     m_dwTimeRecallTick: LongWord; //0x688
     m_sMoveMap: string; //0x68C
@@ -6324,6 +6327,9 @@ begin
           0,
           '');
       end;
+
+//取消赌博掷骰子指令   lzx2022 - delete by Davy 2022-6-12
+{
     RM_PLAYDICE:
       begin //10500 004D9FFF
         MessageBodyWL.lParam1 := ProcessMsg.nParam1;
@@ -6337,6 +6343,8 @@ begin
           0);
         SendSocket(@m_DefMsg, EncodeBuffer(@MessageBodyWL, SizeOf(TMessageBodyWL)) + EncodeString(ProcessMsg.sMsg));
       end;
+}
+
     RM_PASSWORDSTATUS:
       begin
         m_DefMsg := MakeDefaultMsg(SM_PASSWORDSTATUS,
@@ -25379,13 +25387,19 @@ begin
       Break;
     end;
   end;
+
+//取消赌博掷骰子指令内容  lzx2022 - delete by Davy 2022-6-12
+{
   if CompareText(sLabel, m_sPlayDiceLabel) = 0 then
   begin
     m_sPlayDiceLabel := '';
     Result := True;
     Exit;
   end;
+}
+
 end;
+
 
 procedure TPlayObject.RecalcAbilitys;
 begin

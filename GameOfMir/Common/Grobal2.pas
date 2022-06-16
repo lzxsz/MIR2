@@ -1062,7 +1062,9 @@ Const
   CM_QUERYUSERSET = 3040;
 
   //Damian
-  SM_PLAYDICE    = 8001;
+//取消赌博掷骰子指令  lzx2022 - delete by Davy 2022-6-12
+//  SM_PLAYDICE    = 8001;
+
   SM_PASSWORDSTATUS = 8002;
   SM_NEEDPASSWORD = 8003; 
   SM_GETREGINFO = 8004;
@@ -1192,7 +1194,8 @@ Const
   RM_CHANGEFACE        = 10415;
   RM_PASSWORD          = 10416;
 
-  RM_PLAYDICE          = 10500;
+//取消赌博掷骰子指令  lzx2022 - delete by Davy 2022-6-12
+//  RM_PLAYDICE          = 10500;
 
 
   RM_HEAR              = 11001;

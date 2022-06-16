@@ -5528,7 +5528,9 @@ begin
       SM_DONATE_FAIL: begin
         FrmDlg.LastestClickTime:=GetTickCount;
       end;
-
+      
+//取消赌博掷骰子指令  lzx2022 - delete by Davy 2022-6-12
+{
       SM_PLAYDICE: begin
         Body2:=Copy(Body,GetCodeMsgSize(sizeof(TMessageBodyWL)*4/3) + 1, Length(body));
         DecodeBuffer(body,@wl,SizeOf(TMessageBodyWL));
@@ -5550,6 +5552,8 @@ begin
         FrmDlg.DMessageDlg('',[]);
         SendMerchantDlgSelect(Msg.Recog,data);
       end;
+}
+      
       SM_NEEDPASSWORD: begin
         ClientGetNeedPassword(Body);
       end;

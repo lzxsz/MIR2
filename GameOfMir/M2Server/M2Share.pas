@@ -208,7 +208,7 @@ const
 
   sCHECKITEM = 'CHECKITEM';
   nCHECKITEM = 20;
-  sCHECKITEMW = 'CHECKITEMW';
+  sCHECKITEMW = 'CHECKITEMW';    //检测当前人物是否佩带指定物品
   nCHECKITEMW = 21;
   sCHECKGOLD = 'CHECKGOLD';
   nCHECKGOLD = 22;
@@ -511,7 +511,7 @@ const
   nTAKE = 2;
   sSC_GIVE = 'GIVE';
   nSC_GIVE = 3;
-  sTAKEW = 'TAKEW';
+  sTAKEW = 'TAKEW';     //可以取走身上装备的物品
   nTAKEW = 4;
   sCLOSE = 'CLOSE';
   nCLOSE = 5;
@@ -582,6 +582,9 @@ const
   nEXCHANGEMAP = 51;
   sRECALLMAP = 'RECALLMAP';
   nRECALLMAP = 52;
+
+//取消赌博掷骰子指令、取消赌博移房间指令  lzx2022 - delete by Davy 2022-6-12
+{
   sADDBATCH = 'ADDBATCH';
   nADDBATCH = 53;
   sBATCHDELAY = 'BATCHDELAY';
@@ -590,6 +593,8 @@ const
   nBATCHMOVE = 55;
   sPLAYDICE = 'PLAYDICE';
   nPLAYDICE = 56;
+}
+
   sSC_PASTEMAP = 'PASTEMAP';
   sSC_LOADGEN = 'LOADGEN';
 
@@ -751,8 +756,11 @@ const
   nSC_SAVEVALUE = 176;
   sSC_SAVELOG = 'SAVELOG';
   nSC_SAVELOG = 177;
-  sSC_GETMARRIED = 'GETMARRIED';
-  nSC_GETMARRIED = 178;
+
+// 取消结婚系统的相关指令  2022-6-14
+//  sSC_GETMARRIED = 'GETMARRIED';
+//  nSC_GETMARRIED = 178;
+
   sSC_DIVORCE = 'DIVORCE';
   nSC_DIVORCE = 189;
   sSC_CAPTURESAYING = 'CAPTURESAYING';
