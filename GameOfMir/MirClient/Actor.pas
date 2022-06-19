@@ -3904,9 +3904,8 @@ begin
         end;
       end;//0x0047D41D
 
-
       //显示魔法盾时效果   人物是否有一个气泡罩着
-      if m_nState and $00100000{STATE_BUBBLEDEFENCEUP} <> 0 then begin  //林贱狼阜
+      if m_nState and $00100000{STATE_BUBBLEDEFENCEUP} <> 0 then begin
          if (m_nCurrentAction = SM_STRUCK) and (m_nCurBubbleStruck < 3) then
             idx := MAGBUBBLESTRUCKBASE + m_nCurBubbleStruck
          else
@@ -3914,9 +3913,9 @@ begin
          d := g_WMagicImages.GetCachedImage (idx, ax, ay);
          if d <> nil then
             DrawBlend (dsurface,
-                             dx + ax + m_nShiftX,
-                             dy + ay + m_nShiftY,
-                             d, 1);
+                       dx + ax + m_nShiftX,
+                       dy + ay + m_nShiftY,
+                       d, 1);
       end;
    end;
 

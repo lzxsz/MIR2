@@ -4157,12 +4157,14 @@ begin
               STATE_DEFENCEUP:
                 begin
                   boNeedRecalc := True;
-                  SysMsg('Defense strength is back to normal.', c_Green, t_Hint);
+                  SysMsg('防御力恢复正常', c_Green, t_Hint);
+                  //SysMsg('Defense strength is back to normal.', c_Green, t_Hint);    //Modified by Davy 2022-6-19
                 end;
               STATE_MAGDEFENCEUP:
                 begin
                   boNeedRecalc := True;
-                  SysMsg('Magical defense strength is back to normal.', c_Green, t_Hint);
+                  SysMsg('魔法防御力恢复正常', c_Green, t_Hint);
+                  //SysMsg('Magical defense strength is back to normal.', c_Green, t_Hint);     //Modified by Davy 2022-6-19
                 end;
               STATE_BUBBLEDEFENCEUP:
                 begin

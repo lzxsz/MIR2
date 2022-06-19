@@ -4233,10 +4233,12 @@ begin
                   else
                      line3 := line3 + '攻击速度-' + IntToStr(HiWord(g_MouseItem.S.MAC)) + ' ';
                end;
+
                if LoWord(g_MouseItem.S.AC) > 0 then
                   line3 := line3 + '幸运+' + IntToStr(LoWord(g_MouseItem.S.AC)) + ' ';
                if LoWord(g_MouseItem.S.MAC) > 0 then
                   line3 := line3 + '诅咒+' + IntToStr(LoWord(g_MouseItem.S.MAC)) + ' ';
+
                case g_MouseItem.S.Need of
                  {
 (10)Stock 是否为库存品

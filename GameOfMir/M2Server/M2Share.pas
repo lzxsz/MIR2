@@ -7793,20 +7793,23 @@ begin
   else g_sNotWinLotteryMsg := LoadString;
 }
 
-  LoadString := StringConf.ReadString('String', 'WeaptonMakeLuck', '');
+  //--------------------
+  //喝祝福油时的提示
+  LoadString := StringConf.ReadString('String', 'WeaptonMakeLuck', '');   //武器被加幸运了...
   if LoadString = '' then
     StringConf.WriteString('String', 'WeaptonMakeLuck', g_sWeaptonMakeLuck)
   else g_sWeaptonMakeLuck := LoadString;
 
-  LoadString := StringConf.ReadString('String', 'WeaptonNotMakeLuck', '');
+  LoadString := StringConf.ReadString('String', 'WeaptonNotMakeLuck', ''); //无效！！！
   if LoadString = '' then
     StringConf.WriteString('String', 'WeaptonNotMakeLuck', g_sWeaptonNotMakeLuck)
   else g_sWeaptonNotMakeLuck := LoadString;
 
   LoadString := StringConf.ReadString('String', 'TheWeaponIsCursed', '');
   if LoadString = '' then
-    StringConf.WriteString('String', 'TheWeaponIsCursed', g_sTheWeaponIsCursed)
+    StringConf.WriteString('String', 'TheWeaponIsCursed', g_sTheWeaponIsCursed)   //你的武器被诅咒了！！！
   else g_sTheWeaponIsCursed := LoadString;
+  //--------------------
 
   LoadString := StringConf.ReadString('String', 'CanotTakeOffItem', '');
   if LoadString = '' then
