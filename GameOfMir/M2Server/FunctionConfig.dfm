@@ -1163,18 +1163,18 @@ object frmFunctionConfig: TfrmFunctionConfig
           Caption = #19971':'
         end
         object Label83: TLabel
-          Left = 11
+          Left = 7
           Top = 189
-          Width = 18
+          Width = 30
           Height = 12
-          Caption = #20843':'
+          Caption = #22522#25968':'
         end
         object Label84: TLabel
-          Left = 11
+          Left = 6
           Top = 213
-          Width = 18
+          Width = 30
           Height = 12
-          Caption = #20061':'
+          Caption = #20493#29575':'
         end
         object EditMonUpgradeKillCount1: TSpinEdit
           Left = 40
