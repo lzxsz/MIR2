@@ -77,7 +77,7 @@ object FrmMain: TFrmMain
     ParentFont = False
     TabOrder = 2
     object LbUserCount: TLabel
-      Left = 370
+      Left = 357
       Top = 40
       Width = 18
       Height = 12
@@ -90,7 +90,7 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object LbTimeCount: TLabel
-      Left = 370
+      Left = 357
       Top = 56
       Width = 18
       Height = 12
@@ -103,7 +103,7 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object LbRunTime: TLabel
-      Left = 370
+      Left = 357
       Top = 24
       Width = 18
       Height = 12

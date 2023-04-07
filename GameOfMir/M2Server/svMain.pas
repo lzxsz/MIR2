@@ -155,6 +155,8 @@ type
   procedure ChangeCaptionText(Msg:PChar;nLen:Integer);stdcall;
   procedure UserEngineThread(ThreadInfo:pTThreadInfo);stdcall;
   procedure ProcessGameRun();
+  //计算机的开机时间
+  function WindowsUpTime():string;
 
 var
   FrmMain: TFrmMain;
@@ -425,9 +427,9 @@ begin
                       IntToStr(wMinute) + ':' +
                       IntToStr(wSecond) + sSrvType;{ +
                       IntToStr(g_dwEngineRunTime) + g_sProcessName + '-' + g_sOldProcessName;}
-  LbUserCount.Caption:= '[' + IntToStr(UserEngine.MonsterCount) + ']  ' +
+  LbUserCount.Caption:= '[' + IntToStr(UserEngine.MonsterCount) + '] ' +
                         IntToStr(UserEngine.OnlinePlayObject) + '/' +
-                        IntToStr(UserEngine.PlayObjectCount) + '[' +
+                        IntToStr(UserEngine.PlayObjectCount) + ' [' +
                         IntToStr(UserEngine.LoadPlayCount) + '/' +
                         IntToStr(UserEngine.m_PlayObjectFreeList.Count) + ']';
   {
@@ -465,10 +467,14 @@ begin
   
   MemStatus.Caption:='[内存: ' + IntToStr(ROUND(AllocMemSize / 1024)) + 'KB]' + ' [内存块数: ' + IntToStr(AllocMemCount)+ ']';
 
-  tTimeCount:=GetTickCount() / (24 * 60 * 60 * 1000);
-  if tTimeCount >= 36 then LbTimeCount.Font.Color:=clBlue
-  else LbTimeCount.Font.Color:=clMaroon;
-  LbTimeCount.Caption:='[本机:' + CurrToStr(tTimeCount) + '天]';
+  //tTimeCount := GetTickCount() / (24 * 60 * 60 * 1000);
+  //if tTimeCount >= 36 then LbTimeCount.Font.Color:=clBlue
+  //else LbTimeCount.Font.Color:=clMaroon;
+  //LbTimeCount.Caption:='[本机:' + CurrToStr(tTimeCount) + '天]';
+
+  LbTimeCount.Caption := '[本机:' + WindowsUpTime() + '秒]';
+
+
   {
   //004E5B78
   for i:= Low(RunSocket.GateList) to High(RunSocket.GateList) do begin
@@ -1824,8 +1830,6 @@ begin
   frmCastleManage.Free;
 end;
 
-
-
 procedure TFrmMain.MENU_TOOLS_GAMESHOPClick(Sender: TObject);
 begin
   frmConfigGameShop:=TfrmConfigGameShop.Create(Owner);
@@ -1834,6 +1838,37 @@ begin
   frmConfigGameShop.Open();
   frmConfigGameShop.Free;
 end;
+
+//计算机的开机时间
+function WindowsUpTime():string;
+  function MSecToTime(mSec: Integer): string;
+  const
+    secondTicks = 1000;
+    minuteTicks = 1000 * 60;
+    hourTicks = 1000 * 60 * 60;
+    dayTicks = 1000 * 60 * 60 * 24;
+  var
+    D, H, M, S: string;
+    ZD, ZH, ZM, ZS: Integer;
+  begin
+    ZD := mSec div dayTicks;     //天
+    Dec(mSec, ZD * dayTicks);
+    ZH := mSec div hourTicks;     //时
+    Dec(mSec, ZH * hourTicks);
+    ZM := mSec div minuteTicks;   //分
+    Dec(mSec, ZM * minuteTicks);
+    ZS := mSec div secondTicks;   //秒
+    D := IntToStr(ZD) ;
+    H := IntToStr(ZH) ;
+    M := IntToStr(ZM) ;
+    S := IntToStr(ZS) ;
+    Result := D + '.' + H + ':' + M + ':' + S;   //天.时:分:秒
+    //Result := D + '.' + H + ':' + M ;          //天.时:分
+  end;
+begin
+  Result := MSecToTime(GetTickCount) ;
+end;
+
 
 initialization
 begin

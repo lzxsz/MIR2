@@ -1734,7 +1734,7 @@ begin
     if m_PEnvir.DeleteFromMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem)) = 1 then
     begin
       New(UserItem);
-      
+
       UserItem^ := MapItem.UserItem;   //地图物品 
 
       StdItem := UserEngine.GetStdItem(MapItem.UserItem.wIndex); //获取标准物品
@@ -1764,8 +1764,13 @@ begin
           PlayObject.SendAddItem(UserItem);
         end;
         Result := True;
-      end else
+      end
+      else
       begin
+        //捡物品时，如果人物负重超重，则提示无法携带更多的东西。modified by lzx 2023-04-08, lzx20230408
+        if IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) = false then  //人物负重超重
+           SysMsg(g_sCanotGetItems {'无法携带更多的东西！！！'}, c_Red, t_Hint); //提示：无法携带更多的东西
+
         Dispose(UserItem);
         m_PEnvir.AddToMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem));
       end;
@@ -2077,7 +2082,7 @@ begin
 end;
 
 
-
+//发送添加物品
 procedure TPlayObject.SendAddItem(UserItem: pTUserItem); //004D0824
 var
   Item: TItem;
@@ -2133,6 +2138,8 @@ begin
     SendSocket(@m_DefMsg, EncodeBuffer(@ClientItem, SizeOf(TClientItem)));
   end;
 end;
+
+
 function TBaseObject.IsGroupMember(Target: TBaseObject): Boolean; //004C3908
 var
   i: Integer;
@@ -6363,8 +6370,8 @@ begin
     end;
   end;
   //inherited;
-
 end;
+
 procedure TPlayObject.Run(); //004D68D0
 var
   tObjCount: Integer;
@@ -8808,8 +8815,8 @@ begin
       begin //挖矿
         if GetFrontPosition(n14, n18) and not m_PEnvir.CanWalk(n14, n18, False) then
         begin //sub_004B2790
-          StdItem := UserEngine.GetStdItem(m_UseItems[U_WEAPON].wIndex);
-          if (StdItem <> nil) and (StdItem.Shape = 19) then
+          StdItem := UserEngine.GetStdItem(m_UseItems[U_WEAPON].wIndex);  //获取武器
+          if (StdItem <> nil) and (StdItem.Shape = 19) then   //Shape = 19 表示武器是 鹤嘴锄
           begin
             if PileStones(n14, n18) then SendSocket(nil, '=DIG');
             Dec(m_nHealthTick, 30);
@@ -9803,10 +9810,6 @@ begin
 end;
 
 
-
-
-
-
 procedure TPlayObject.ClientClickNPC(NPC: Integer); //004DBA10
 var
   NormNpc: TNormNpc;
@@ -9832,6 +9835,7 @@ begin
 end;
 
 //004C4DB8
+//将物品放入背包
 function TBaseObject.AddItemToBag(UserItem: pTUserItem): Boolean;
 begin
   Result := False;
@@ -20423,6 +20427,7 @@ begin
     end;
   end;
 end;
+
 procedure TBaseObject.MonsterSayMsg(AttackBaseObject: TBaseObject; MonStatus: TMonStatus);
 var
   i: Integer;
@@ -20465,6 +20470,7 @@ begin
     end;
   end;
 end;
+
 procedure TBaseObject.SendGroupText(sMsg: string); //004BB1CC
 var
   i: Integer;
@@ -20480,8 +20486,6 @@ begin
     end;
   end;
 end;
-
-
 
 procedure TBaseObject.MakeGhost(); //004BB300
 begin
@@ -20627,6 +20631,7 @@ begin
     MainOutMessage(sExceptionMsg);
   end;
 end;
+
 procedure TBaseObject.ScatterGolds(GoldOfCreat: TBaseObject); //004BB63C
 var
   i, nGold: Integer;
