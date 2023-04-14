@@ -77,10 +77,11 @@ object FrmMain: TFrmMain
     ParentFont = False
     TabOrder = 2
     object LbUserCount: TLabel
-      Left = 357
-      Top = 40
+      Left = 458
+      Top = 21
       Width = 18
       Height = 12
+      Alignment = taRightJustify
       Caption = '...'
       Font.Charset = ANSI_CHARSET
       Font.Color = clOlive
@@ -90,7 +91,7 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object LbTimeCount: TLabel
-      Left = 357
+      Left = 365
       Top = 56
       Width = 18
       Height = 12
@@ -103,8 +104,8 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object LbRunTime: TLabel
-      Left = 357
-      Top = 24
+      Left = 365
+      Top = 38
       Width = 18
       Height = 12
       Caption = '...'
@@ -116,8 +117,8 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object Label20: TLabel
-      Left = 4
-      Top = 56
+      Left = 5
+      Top = 58
       Width = 18
       Height = 12
       Caption = '...'
@@ -129,7 +130,7 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object Label2: TLabel
-      Left = 4
+      Left = 5
       Top = 40
       Width = 18
       Height = 12
@@ -142,7 +143,7 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 4
+      Left = 5
       Top = 24
       Width = 18
       Height = 12
@@ -157,8 +158,8 @@ object FrmMain: TFrmMain
       ParentFont = False
     end
     object MemStatus: TLabel
-      Left = 453
-      Top = 8
+      Left = 458
+      Top = 4
       Width = 18
       Height = 12
       Alignment = taRightJustify
@@ -172,8 +173,8 @@ object FrmMain: TFrmMain
       Transparent = True
     end
     object Label5: TLabel
-      Left = 4
-      Top = 8
+      Left = 5
+      Top = 6
       Width = 18
       Height = 12
       Caption = '...'

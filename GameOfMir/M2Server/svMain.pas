@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,IP,
   Dialogs, NMUDP, JSocket, ExtCtrls, Buttons, StdCtrls, IniFiles, M2Share,
   Grobal2, SDK, HUtil32, RunSock, Envir, ItmUnit, Magic, NoticeM, Guild, Event,
-  Castle,  FrnEngn, UsrEngn, MudUtil, SyncObjs, Menus, ComCtrls, Grids, MD5Unit;
+  Castle,  FrnEngn, UsrEngn, MudUtil, SyncObjs, Menus, ComCtrls, Grids, MD5Unit,
+  StrUtils;
 
 type
   TFrmMain = class(TForm)
@@ -155,12 +156,19 @@ type
   procedure ChangeCaptionText(Msg:PChar;nLen:Integer);stdcall;
   procedure UserEngineThread(ThreadInfo:pTThreadInfo);stdcall;
   procedure ProcessGameRun();
+
+  //lzx20230410
   //计算机的开机时间
   function WindowsUpTime():string;
+  //应用程序的运行时间
+  function AppUpTime(mAppTickCount: Int64):string;
 
 var
   FrmMain: TFrmMain;
   g_GateSocket: TServerSocket;
+  g_dwAppRunDay: LongWord;    // Add by linzx, lzx20230410
+  g_dwAppStartTick: LongWord; // Add by linzx, lzx20230410
+
 implementation
 uses
   LocalDB, InterServerMsg, InterMsgClient, IdSrvClient, FSrvValue,
@@ -347,17 +355,24 @@ var
   boWriteLog :Boolean;
   i          :Integer;
   nRow       :Integer;
+  wDay       :Word;
   wHour      :Word;
   wMinute    :Word;
   wSecond    :Word;
   tSecond    :Integer;
   sSrvType   :String;
+  tTickCount :Int64;
   tTimeCount :Currency;
   GateInfo   :pTGateInfo;
 //  sGate,tGate      :String;
   LogFile :TextFile;
   MemoryStream:TMemoryStream;
   s28:String;
+  sDayTime :String;
+  nPost    :Integer;
+  sDay     :String;
+  sDateTime:String;
+
 begin
 //  Caption:=sCaption + ' [' + sCaptionExtText + ']';
   Caption:= format('%s - %s',[g_sTitleName,sCaption]);
@@ -416,18 +431,47 @@ begin
       sSrvType:='[ ]';
     end;
   end;
+
+   //增加运行天数的计算。 Modifyed linzx 2023-04-10, lzx20230410
+
   //检查线程 运行时间
   //g_dwEngineRunTime:=GetTickCount - g_dwEngineTick;
 
-  tSecond:=(GetTickCount() - g_dwStartTick) div 1000;
-  wHour:=tSecond div 3600;
-  wMinute:=(tSecond div 60) mod 60;
-  wSecond:=tSecond mod 60;
-  LbRunTime.Caption:='[运行:'+ IntToStr(wHour) + ':' +
-                      IntToStr(wMinute) + ':' +
-                      IntToStr(wSecond) + sSrvType;{ +
-                      IntToStr(g_dwEngineRunTime) + g_sProcessName + '-' + g_sOldProcessName;}
-  LbUserCount.Caption:= '[' + IntToStr(UserEngine.MonsterCount) + '] ' +
+
+  // tSecond:=(GetTickCount() - g_dwStartTick) div 1000;   //总时间：秒
+  // wHour:=(tSecond div 3600) ;
+  // wHour:=tSecond div 3600;
+  // wMinute:=(tSecond div 60) mod 60;  //分
+  // wSecond:=tSecond mod 60;   //秒
+
+  // LbRunTime.Caption:='[运行: ' + IntToStr(wDay) + '.' +
+  //                     IntToStr(wHour) + ':' +
+  //                     IntToStr(wMinute) + ':' +
+  //                     IntToStr(wSecond) + sSrvType;{ +
+  //                     IntToStr(g_dwEngineRunTime) + g_sProcessName + '-' + g_sOldProcessName;}
+
+  //计算引擎程序运行的时间。格式: 天.时:分:秒
+  //1天的毫秒数是:24*3600*1000 = 86400 * 1000
+  // tTickCount := (GetTickCount() - g_dwAppStartTick) + (86400*1000)*20; //For test. 时间：20天
+
+  tTickCount := (GetTickCount() - g_dwAppStartTick);  //App运行总时间（毫秒）
+
+  sDayTime := AppUpTime(tTickCount);
+  nPost :=  pos('.',sDayTime);
+  sDay  := LeftStr(sDayTime, nPost-1);
+  sDateTime := MidStr(sDayTime, nPost+1, Length(sDayTime) - nPost);
+
+  //如果大于或等于1天，则重新设置APP开始时间，避免GetTickCount()数值超界后发生复位，而从0开始计算
+  if (StrToInt(sDay) >= 1) then
+  begin
+     g_dwAppRunDay := g_dwAppRunDay + StrToInt(sDay);
+     g_dwAppStartTick := GetTickCount();
+  end;
+  
+  LbRunTime.Caption:='[运行：' + IntToStr(g_dwAppRunDay) + '.' + sDateTime + ']' ;
+
+  //刷怪数和人物上线数
+  LbUserCount.Caption:= '[怪数：' + IntToStr(UserEngine.MonsterCount) + '] ' +
                         IntToStr(UserEngine.OnlinePlayObject) + '/' +
                         IntToStr(UserEngine.PlayObjectCount) + ' [' +
                         IntToStr(UserEngine.LoadPlayCount) + '/' +
@@ -464,15 +508,16 @@ begin
   }
   Label20.Caption:= format('刷新怪物:%d/%d/%d 处理怪物:%d/%d/%d 角色处理:%d/%d',[g_nMonGenTime,g_nMonGenTimeMin,g_nMonGenTimeMax,g_nMonProcTime,g_nMonProcTimeMin,g_nMonProcTimeMax,g_nBaseObjTimeMin,g_nBaseObjTimeMax]);
 
+  MemStatus.Caption:='[内存：' + IntToStr(ROUND(AllocMemSize / 1024)) + 'KB]' + ' [内存块数：' + IntToStr(AllocMemCount)+ ']';
+
+  //电脑开机总时间
+  tTimeCount := GetTickCount() / (24 * 60 * 60 * 1000);
   
-  MemStatus.Caption:='[内存: ' + IntToStr(ROUND(AllocMemSize / 1024)) + 'KB]' + ' [内存块数: ' + IntToStr(AllocMemCount)+ ']';
+  if tTimeCount >= 36 then LbTimeCount.Font.Color:=clBlue  //蓝色
+  else LbTimeCount.Font.Color:=clMaroon;     //紫褐色
 
-  //tTimeCount := GetTickCount() / (24 * 60 * 60 * 1000);
-  //if tTimeCount >= 36 then LbTimeCount.Font.Color:=clBlue
-  //else LbTimeCount.Font.Color:=clMaroon;
-  //LbTimeCount.Caption:='[本机:' + CurrToStr(tTimeCount) + '天]';
-
-  LbTimeCount.Caption := '[本机:' + WindowsUpTime() + '秒]';
+  //LbTimeCount.Caption:='[本机:' + CurrToStr(tTimeCount) + '天]';  //Modified by linzx 2023-04-20
+   LbTimeCount.Caption := '[本机：' + WindowsUpTime() + ']';
 
 
   {
@@ -1305,6 +1350,9 @@ begin
   Application.OnException := OnProgramException;
   dwRunDBTimeMax        := GetTickCount();
   g_dwStartTick         := GetTickCount();
+  g_dwAppRunDay         := 0;
+  g_dwAppStartTick      := GetTickCount();
+
   Timer1.Enabled      := True;
 //  StartTimer.Enabled  := True;
 
@@ -1839,9 +1887,10 @@ begin
   frmConfigGameShop.Free;
 end;
 
+
 //计算机的开机时间
 function WindowsUpTime():string;
-  function MSecToTime(mSec: Integer): string;
+  function MSecToTime(mSec: Int64): string;
   const
     secondTicks = 1000;
     minuteTicks = 1000 * 60;
@@ -1862,11 +1911,42 @@ function WindowsUpTime():string;
     H := IntToStr(ZH) ;
     M := IntToStr(ZM) ;
     S := IntToStr(ZS) ;
-    Result := D + '.' + H + ':' + M + ':' + S;   //天.时:分:秒
-    //Result := D + '.' + H + ':' + M ;          //天.时:分
+
+    Result := D + '.' + H + ':' + M + ':' + S;   //返回值：天.时:分:秒
   end;
 begin
   Result := MSecToTime(GetTickCount) ;
+end;
+
+//应用程序的运行时间
+//参数 mAppTickCount 是APP开始启动时间（毫秒）
+function AppUpTime(mAppTickCount: Int64):string;
+  function MSecToTime(mSec: Int64): string;
+  const
+    secondTicks = 1000;
+    minuteTicks = 1000 * 60;
+    hourTicks = 1000 * 60 * 60;
+    dayTicks = 1000 * 60 * 60 * 24;
+  var
+    D, H, M, S: string;
+    ZD, ZH, ZM, ZS: Integer;
+  begin
+    ZD := mSec div dayTicks;     //天
+    Dec(mSec, ZD * dayTicks);
+    ZH := mSec div hourTicks;     //时
+    Dec(mSec, ZH * hourTicks);
+    ZM := mSec div minuteTicks;   //分
+    Dec(mSec, ZM * minuteTicks);
+    ZS := mSec div secondTicks;   //秒
+    D := IntToStr(ZD) ;
+    H := IntToStr(ZH) ;
+    M := IntToStr(ZM) ;
+    S := IntToStr(ZS) ;
+
+    Result := D + '.' + H + ':' + M + ':' + S;   //返回值：天.时:分:秒
+  end;
+begin
+  Result := MSecToTime(mAppTickCount) ;
 end;
 
 
