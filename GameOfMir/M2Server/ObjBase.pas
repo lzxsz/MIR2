@@ -1768,13 +1768,16 @@ begin
       else
       begin
         //捡物品时，如果人物负重超重，则提示无法携带更多的东西。modified by lzx 2023-04-08, lzx20230408
-        if IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) = false then  //人物负重超重
-           SysMsg(g_sCanotGetItems {'无法携带更多的东西！！！'}, c_Red, t_Hint); //提示：无法携带更多的东西
-
+        SysMsg(g_sCanotGetItems {'无法携带更多的东西'}, c_Red, t_Hint); //背包负重超重。 提示：无法携带更多的东西
+ 
         Dispose(UserItem);
         m_PEnvir.AddToMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem));
       end;
     end;
+  end
+  else
+  begin
+    SysMsg(g_sCanotGetItems {无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
   end;
 end;
 
@@ -8739,6 +8742,7 @@ begin
   end;
 end;
 
+//角色打击位置的事件响变应函数
 function TPlayObject.ClientHitXY(wIdent: Word; nX, nY, nDir: Integer; boLateDelivery: Boolean; var dwDelayTime: LongWord): Boolean; //004CB7F8
 var
   n14, n18: Integer;
@@ -8818,7 +8822,16 @@ begin
           StdItem := UserEngine.GetStdItem(m_UseItems[U_WEAPON].wIndex);  //获取武器
           if (StdItem <> nil) and (StdItem.Shape = 19) then   //Shape = 19 表示武器是 鹤嘴锄
           begin
-            if PileStones(n14, n18) then SendSocket(nil, '=DIG');
+
+           //如果角色所打击的目标是矿区场景中的石头，说明角色是在挖矿，发通知客户端，当前为挖矿状态。
+           if PileStones(n14, n18)  then
+              begin
+                SendSocket(nil, '=DIG');   //通知客户端，当前为挖矿状态
+
+                if not IsEnoughBag then //检查背包是否已满  lzx20230415
+                    SysMsg(g_sCanotGetItems {无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
+              end;
+             
             Dec(m_nHealthTick, 30);
             Dec(m_nSpellTick, 50);
             m_nSpellTick := _MAX(0, m_nSpellTick);
@@ -8826,6 +8839,7 @@ begin
             Dec(m_nPerSpell, 2);
             Exit;
           end;
+
         end;
       end;
       if wIdent = CM_HIT then AttackDir(nil, 0, nDir);
@@ -21856,7 +21870,8 @@ begin
 
   end;
 end;
-
+                  
+//挖取矿石
 function TPlayObject.PileStones(nX, nY: Integer): Boolean; //004CB64C
 var
   Event: TEvent;
@@ -24326,6 +24341,7 @@ begin
   Result := True;
 end;
 
+//制造矿石
 procedure TPlayObject.MakeMine; //004CB3AC
   function RandomDrua(): Integer;
   begin
