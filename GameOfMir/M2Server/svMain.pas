@@ -471,7 +471,7 @@ begin
   LbRunTime.Caption:='[运行：' + IntToStr(g_dwAppRunDay) + '.' + sDateTime + ']' ;
 
   //刷怪数和人物上线数
-  LbUserCount.Caption:= '[怪数：' + IntToStr(UserEngine.MonsterCount) + '] ' +
+  LbUserCount.Caption:= '[刷怪：' + IntToStr(UserEngine.MonsterCount) + '] 在线：' +
                         IntToStr(UserEngine.OnlinePlayObject) + '/' +
                         IntToStr(UserEngine.PlayObjectCount) + ' [' +
                         IntToStr(UserEngine.LoadPlayCount) + '/' +

@@ -1689,6 +1689,7 @@ var
   MapItem: pTMapItem;
   StdItem: TItem;
   PlayObject: TPlayObject;
+  nStdItemWeight : Integer;
 begin
   Result := False;
   if m_boDealing then Exit;
@@ -1737,9 +1738,10 @@ begin
 
       UserItem^ := MapItem.UserItem;   //地图物品 
 
-      StdItem := UserEngine.GetStdItem(MapItem.UserItem.wIndex); //获取标准物品
+      StdItem := UserEngine.GetStdItem(MapItem.UserItem.wIndex);  //获取标准物品
+      nStdItemWeight := UserEngine.GetStdItemWeight(UserItem.wIndex); //标准物品重量
 
-      if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then  //人物负重是否允许
+      if (StdItem <> nil) and IsAddWeightAvailable(UserEngine.GetStdItemWeight(UserItem.wIndex)) then  //检查是否超重
       begin
         AddItemToBag(UserItem); //将物品放入背包
         SendMsg(Self, RM_ITEMHIDE, 0, Integer(MapItem), m_nCurrX, m_nCurrY, '');   //地面物品隐藏
@@ -1768,8 +1770,8 @@ begin
       else
       begin
         //捡物品时，如果人物负重超重，则提示无法携带更多的东西。modified by lzx 2023-04-08, lzx20230408
-        SysMsg(g_sCanotGetItems {'无法携带更多的东西'}, c_Red, t_Hint); //背包负重超重。 提示：无法携带更多的东西
- 
+        SysMsg('物品太重，无法携带！超重：' + IntToStr(m_WAbil.Weight + nStdItemWeight - m_WAbil.MaxWeight) , c_Red, t_Hint); //背包负重超重。
+
         Dispose(UserItem);
         m_PEnvir.AddToMap(m_nCurrX, m_nCurrY, OS_ITEMOBJECT, TObject(MapItem));
       end;
@@ -1777,7 +1779,8 @@ begin
   end
   else
   begin
-    SysMsg(g_sCanotGetItems {无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
+    SysMsg('背包已满！' + g_sCanotGetItems {背包已满，无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
+
   end;
 end;
 
@@ -2070,6 +2073,7 @@ begin
   end;
 end;
 
+//背包是否有空
 function TPlayObject.IsEnoughBag: Boolean; //004C4990
 begin
   Result := False;
@@ -2077,6 +2081,7 @@ begin
     Result := True;
 end;
 
+//增加的重量是否允许
 function TPlayObject.IsAddWeightAvailable(nWeight: Integer): Boolean; //004C4A78
 begin
   Result := False;
@@ -8829,7 +8834,8 @@ begin
                 SendSocket(nil, '=DIG');   //通知客户端，当前为挖矿状态
 
                 if not IsEnoughBag then //检查背包是否已满  lzx20230415
-                    SysMsg(g_sCanotGetItems {无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
+                    SysMsg('背包已满！' + g_sCanotGetItems {背包已满，无法携带更多的东西}, c_Red, t_Hint);    //你的背包已满了，无法再携带任何物品了！！！
+
               end;
              
             Dec(m_nHealthTick, 30);
