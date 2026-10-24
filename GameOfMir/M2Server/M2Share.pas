@@ -502,6 +502,10 @@ const
   nSC_CHECKMAGICLVL = 207;
   sSC_CHECKGROUPCLASS = 'CHECKGROUPCLASS';
   nSC_CHECKGROUPCLASS = 208;
+  nSC_CHECKITEMCOUNT = 209;
+  nSC_CHECKSKILL = 210;
+  nSC_CHECKKILLMOBNAME = 211;
+  nSC_CHECKCASTLESTATE = 212;
 
 
 //Action
@@ -1027,6 +1031,9 @@ const
   nSC_GROUPMOVEMAP = 372;
   sSC_SAVESLAVES = 'SAVESLAVES';
   nSC_SAVESLAVES = 373;
+  nSC_TAKECOUNT = 374;
+  nSC_REFSHOWNAME = 375;
+  nSC_CHANGEHUMABILITY = 376;
 
 
   sSL_SENDMSG = '@@sendmsg';
@@ -1176,6 +1183,7 @@ function CheckUserItems(nIdx: Integer; StdItem: TItem): Boolean;
 function GetItemNumber(): Integer;
 function GetItemNumberEx(): Integer;
 function sub_4B2F80(nDir, nRage: Integer): Byte;
+function ScriptStringIndex(const Name: string): Integer;
 function GetValNameNo(sText: string): Integer;
 function IsAccessory(nIndex: Integer): Boolean;
 function GetMakeItemInfo(sItemName: string): TStringList;
@@ -3652,6 +3660,17 @@ function sub_4B2F80(nDir, nRage: Integer): Byte;
 begin
   Result := (nDir + nRage) mod 8;
 end;
+function ScriptStringIndex(const Name: string): Integer;
+var Suffix: string;
+begin
+  Result := -1;
+  if (Length(Name) < 2) or (UpCase(Name[1]) <> 'S') then Exit;
+  Suffix := Copy(Name, 2, MaxInt);
+  if not IsStringNumber(Suffix) then Exit;
+  Result := Str_ToInt(Suffix, -1);
+  if Result < 0 then Result := -1;
+end;
+
 function GetValNameNo(sText: string): Integer; //0049ABF0
 var
   nValNo: Integer;

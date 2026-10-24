@@ -70,6 +70,13 @@ function  GetFlyDirection16 (sx, sy, ttx, tty: integer): Integer;
 function  PrivDir (ndir: integer): integer;
 function  NextDir (ndir: integer): integer;
 procedure BoldTextOut (surface: TDirectDrawSurface; x, y, fcolor, bcolor: integer; str: string);
+function NextScriptLink(var Source, Prefix, Link: string): Boolean;
+function NextScriptText(const Source: string; var Offset: Integer;
+  var Text: string; var ColorIndex: Integer): Boolean;
+function ScriptTextWidth(Canvas: TCanvas; const Text: string): Integer;
+function ScriptTextOut(Surface: TDirectDrawSurface; const Origin: TPoint;
+  const Text: string; DefaultColor: TColor): Integer;
+
 function  GetTakeOnPosition (smode: integer): integer;
 function  IsKeyPressed (key: byte): Boolean;
 
@@ -603,6 +610,131 @@ begin
    else Result := ndir+1;
 end;
 //着重显示文字（以bcolor色加文字边框）,效果如镂空
+function NextScriptLink(var Source, Prefix, Link: string): Boolean;
+var
+  I, J: Integer;
+begin
+  Result := False;
+  Prefix := '';
+  Link := '';
+  I := 1;
+  while I <= Length(Source) do begin
+    if Byte(Source[I]) >= 128 then begin
+      Inc(I, 2);
+      Continue;
+    end;
+    if Source[I] = '<' then begin
+      J := I + 1;
+      while J <= Length(Source) do begin
+        if Byte(Source[J]) >= 128 then Inc(J, 2)
+        else if Source[J] = '>' then Break
+        else Inc(J);
+      end;
+      if J <= Length(Source) then begin
+        // Unexpanded server variables are text, never clickable menu links.
+        if (J > I + 1) and (Source[I + 1] = '$') then begin
+          I := J + 1;
+          Continue;
+        end;
+        Prefix := Copy(Source, 1, I - 1);
+        Link := Copy(Source, I + 1, J - I - 1);
+        Source := Copy(Source, J + 1, MaxInt);
+        Result := True;
+        Exit;
+      end;
+    end;
+    Inc(I);
+  end;
+end;
+
+function NextScriptText(const Source: string; var Offset: Integer;
+  var Text: string; var ColorIndex: Integer): Boolean;
+var
+  I, J, K, Marker, Value: Integer;
+  Closing: Char;
+  Block, Number: string;
+  ValidNumber: Boolean;
+begin
+  Result := Offset <= Length(Source);
+  Text := '';
+  ColorIndex := -1;
+  if not Result then Exit;
+  I := Offset;
+  while I <= Length(Source) do begin
+    // Skip the trail byte of an ANSI Chinese character.
+    if Byte(Source[I]) >= 128 then begin
+      Inc(I, 2);
+      Continue;
+    end;
+    if Source[I] in ['{', '['] then begin
+      if Source[I] = '{' then Closing := '}' else Closing := ']';
+      J := I + 1;
+      while J <= Length(Source) do begin
+        if Byte(Source[J]) >= 128 then Inc(J, 2)
+        else if Source[J] = Closing then Break
+        else Inc(J);
+      end;
+      if J <= Length(Source) then begin
+        Block := Copy(Source, I + 1, J - I - 1);
+        Marker := Pos('=FCO=', UpperCase(Block));
+        if Marker > 0 then begin
+          Number := Copy(Block, Marker + 5, MaxInt);
+          ValidNumber := Number <> '';
+          for K := 1 to Length(Number) do
+            if not (Number[K] in ['0'..'9']) then ValidNumber := False;
+          if ValidNumber and TryStrToInt(Number, Value) then begin
+            if (Value >= 0) and (Value <= 255) then begin
+              if I > Offset then begin
+                Text := Copy(Source, Offset, I - Offset);
+                Offset := I;
+              end else begin
+                Text := Copy(Block, 1, Marker - 1);
+                ColorIndex := Value;
+                Offset := J + 1;
+              end;
+              Exit;
+            end;
+          end;
+        end;
+      end;
+    end;
+    Inc(I);
+  end;
+  Text := Copy(Source, Offset, MaxInt);
+  Offset := Length(Source) + 1;
+end;
+
+function ScriptTextWidth(Canvas: TCanvas; const Text: string): Integer;
+var
+  Offset, ColorIndex: Integer;
+  Part, VisibleText: string;
+begin
+  Offset := 1;
+  VisibleText := '';
+  while NextScriptText(Text, Offset, Part, ColorIndex) do
+    VisibleText := VisibleText + Part;
+  Result := Canvas.TextWidth(VisibleText);
+end;
+
+function ScriptTextOut(Surface: TDirectDrawSurface; const Origin: TPoint;
+  const Text: string; DefaultColor: TColor): Integer;
+var
+  Offset, ColorIndex: Integer;
+  Part: string;
+  Color: TColor;
+begin
+  Result := 0;
+  Offset := 1;
+  while NextScriptText(Text, Offset, Part, ColorIndex) do begin
+    Color := DefaultColor;
+    if ColorIndex >= 0 then Color := GetRGB(Byte(ColorIndex));
+    if Part <> '' then begin
+      BoldTextOut(Surface, Origin.X + Result, Origin.Y, Color, clBlack, Part);
+      Inc(Result, Surface.Canvas.TextWidth(Part));
+    end;
+  end;
+end;
+
 procedure BoldTextOut (surface: TDirectDrawSurface; x, y, fcolor, bcolor: integer; str: string);
 begin
    with surface do begin

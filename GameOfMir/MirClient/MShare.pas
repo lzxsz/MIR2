@@ -426,7 +426,7 @@ var
   g_boParalyCanHit       :Boolean  = False;//麻痹是否可以攻击
   g_boParalyCanSpell     :Boolean  = False;//麻痹是否可以魔法
 
-  g_boShowRedHPLable     :Boolean  = False; // True; //显示血条     saharah
+  g_boShowRedHPLable     :Boolean  = True; //显示血条     saharah
   g_boShowHPNumber       :Boolean  = False; // True; //显示血量数字
   g_boShowJobLevel       :Boolean  = True; //显示职业等级
   g_boDuraAlert          :Boolean  = True; //物品持久警告
@@ -470,17 +470,17 @@ var
                             DBotPlusAbil:(Image:140;Left:219 + 30*4; Top:104;Width:0;Height:0);
                             DBotFriend  :(Image:530;Left:219 + 30*5; Top:104;Width:0;Height:0);
                             DBotMemo    :(Image:532;
-                                          Left:SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 353)){753};
+                                          Left:753{753};
                                           Top:204;
                                           Width:0;
                                           Height:0);
                             DBotExit    :(Image:138;
-                                          Left:SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 160)){560};
+                                          Left:560{560};
                                           Top:104;
                                           Width:0;
                                           Height:0);
                             DBotLogout  :(Image:136;
-                                          Left:SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 160)) - 30{560};//Left:560 - 30;
+                                          Left:560 - 30{560};//Left:560 - 30;
                                           Top:104;
                                           Width:0;
                                           Height:0);

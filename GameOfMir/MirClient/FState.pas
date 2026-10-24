@@ -1272,13 +1272,9 @@ begin
    {-----------------------------------------------------------}
 
    //主控面板
-{$IF SWH = SWH800}
    d := g_WMainImages.Images[BOTTOMBOARD800];
-{$ELSEIF SWH = SWH1024}
-   d := g_WMainImages.Images[BOTTOMBOARD1024];
-{$IFEND}
    if d <> nil then begin
-      DBottom.Left := 0;
+      DBottom.Left := HUDLEFT;
       DBottom.Top  := SCREENHEIGHT - d.Height;
       DBottom.Width := d.Width;
       DBottom.Height := d.Height;
@@ -1288,16 +1284,16 @@ begin
 
    //功能按钮
    DMyState.SetImgIndex (g_WMainImages, 8);
-   DMyState.Left := SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 243)){643};
+   DMyState.Left := 643{643};
    DMyState.Top := 61;
    DMyBag.SetImgIndex (g_WMainImages, 9);
-   DMyBag.Left := SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 282)){682};
+   DMyBag.Left := 682{682};
    DMyBag.Top := 41;
    DMyMagic.SetImgIndex (g_WMainImages, 10);
-   DMyMagic.Left := SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 322)){722};
+   DMyMagic.Left := 722{722};
    DMyMagic.Top := 21;
    DOption.SetImgIndex (g_WMainImages, 11);
-   DOption.Left := SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 364)){764};
+   DOption.Left := 764{764};
    DOption.Top := 11;
 
    {-----------------------------------------------------------}
@@ -1338,7 +1334,7 @@ begin
    {-----------------------------------------------------------}
 
    //Belt 快捷栏
-   DBelt1.Left := SCREENWIDTH div 2 - 115;//285;
+   DBelt1.Left := 285;//285;
    DBelt1.Width := 32;
    DBelt1.Top := 59;
    DBelt1.Height := 29;
@@ -1999,7 +1995,7 @@ var
    str: string;
 begin
    //当鼠标点在底部状态栏的消息上时
-   if (X >= 208) and (X <= 308+374) and (Y >= SCREENHEIGHT-130) and (Y <= SCREENHEIGHT-130 + 12*9) then begin
+   if (X >= HUDLEFT + 208) and (X <= HUDLEFT + 308+374) and (Y >= SCREENHEIGHT-130) and (Y <= SCREENHEIGHT-130 + 12*9) then begin
       n := DScreen.ChatBoardTop + (Y - (SCREENHEIGHT-130)) div 12;
       if (n < DScreen.ChatStrs.Count) then begin
          if not PlayScene.EdChat.Visible then begin
@@ -3734,11 +3730,7 @@ var
   chatInfoRect:TRect;  //聊天信息显示区域 （调试用）
 begin
 
-{$IF SWH = SWH800}
-  d:=g_WMainImages.Images[BOTTOMBOARD800];
-{$ELSEIF SWH = SWH1024}
-  d:=g_WMainImages.Images[BOTTOMBOARD1024];
-{$IFEND}
+   d := g_WMainImages.Images[BOTTOMBOARD800];
   if d <> nil then
     dsurface.Draw (DBottom.Left, DBottom.Top, d.ClientRect, d, TRUE);
   btop := 0;
@@ -3747,14 +3739,14 @@ begin
        rc := Rect (Left, Top, Right, Top+120);
     btop := SCREENHEIGHT - d.height;
     //上半部透明
-    dsurface.Draw (0,
+    dsurface.Draw (HUDLEFT,
                    btop,
                    rc,
                    d, TRUE);
     with d.ClientRect do
       rc := Rect (Left, Top+120, Right, Bottom);
       //下半部不透明
-    dsurface.Draw (0,
+    dsurface.Draw (HUDLEFT,
                    btop + 120,
                    rc,
                    d, FALSE);
@@ -3768,7 +3760,7 @@ begin
       3: d := g_WMainImages.Images[14];  //晚上
    end;
    if d <> nil then
-     dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 348)){748}, 79+DBottom.Top, d.ClientRect, d, FALSE);
+     dsurface.Draw (HUDLEFT + 748{748}, 79+DBottom.Top, d.ClientRect, d, FALSE);
 
    if g_MySelf <> nil then begin
       //显示HP及MP 图形
@@ -3778,14 +3770,14 @@ begin
             if d <> nil then begin
                rc := d.ClientRect;
                rc.Right := d.ClientRect.Right - 2;
-               dsurface.Draw (38, btop+90, rc, d, FALSE);
+               dsurface.Draw (HUDLEFT + 38, btop+90, rc, d, FALSE);
             end;
             d := g_WMainImages.Images[6];
             if d <> nil then begin
                rc := d.ClientRect;
                rc.Right := d.ClientRect.Right - 2;
                rc.Top := Round(rc.Bottom / g_MySelf.m_Abil.MaxHP * (g_MySelf.m_Abil.MaxHP - g_MySelf.m_Abil.HP));
-               dsurface.Draw (38, btop+90+rc.Top, rc, d, FALSE);
+               dsurface.Draw (HUDLEFT + 38, btop+90+rc.Top, rc, d, FALSE);
             end;
          end else begin
             d := g_WMainImages.Images[4];
@@ -3794,20 +3786,20 @@ begin
                rc := d.ClientRect;
                rc.Right := d.ClientRect.Right div 2 - 1;
                rc.Top := Round(rc.Bottom / g_MySelf.m_Abil.MaxHP * (g_MySelf.m_Abil.MaxHP - g_MySelf.m_Abil.HP));
-               dsurface.Draw (40, btop+91+rc.Top, rc, d, FALSE);
+               dsurface.Draw (HUDLEFT + 40, btop+91+rc.Top, rc, d, FALSE);
                //MP 图形
                rc := d.ClientRect;
                rc.Left := d.ClientRect.Right div 2 + 1;
                rc.Right := d.ClientRect.Right - 1;
                rc.Top := Round(rc.Bottom / g_MySelf.m_Abil.MaxMP * (g_MySelf.m_Abil.MaxMP - g_MySelf.m_Abil.MP));
-               dsurface.Draw (40 + rc.Left, btop+91+rc.Top, rc, d, FALSE);
+               dsurface.Draw (HUDLEFT + 40 + rc.Left, btop+91+rc.Top, rc, d, FALSE);
             end;
          end;
       end;
 
       //等级
       with dsurface.Canvas do begin
-        PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 104, IntToStr(g_MySelf.m_Abil.Level));
+        PomiTextOut (dsurface, HUDLEFT + 660{660}, SCREENHEIGHT - 104, IntToStr(g_MySelf.m_Abil.Level));
       end;
       //
       if (g_MySelf.m_Abil.MaxExp > 0) and (g_MySelf.m_Abil.MaxWeight > 0) then begin
@@ -3823,9 +3815,9 @@ begin
             dsurface.Draw (666, 527, rc, d, FALSE);
             PomiTextOut (dsurface, 660, 528, IntToStr(Myself.Abil.Exp));
             }
-            dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 266)){666}, SCREENHEIGHT - 73, rc, d, FALSE);
-            //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 72, FloatToStrFixFmt (100 * g_MySelf.m_Abil.Exp / g_MySelf.m_Abil.MaxExp, 3, 2) + '%');
-            //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 57, IntToStr(g_MySelf.m_Abil.MaxExp));
+            dsurface.Draw (HUDLEFT + 666{666}, SCREENHEIGHT - 73, rc, d, FALSE);
+            //PomiTextOut (dsurface, HUDLEFT + 660{660}, SCREENHEIGHT - 72, FloatToStrFixFmt (100 * g_MySelf.m_Abil.Exp / g_MySelf.m_Abil.MaxExp, 3, 2) + '%');
+            //PomiTextOut (dsurface, HUDLEFT + 660{660}, SCREENHEIGHT - 57, IntToStr(g_MySelf.m_Abil.MaxExp));
 
             //背包重量条
             rc := d.ClientRect;
@@ -3837,29 +3829,29 @@ begin
             dsurface.Draw (666, 560, rc, d, FALSE);
             PomiTextOut (dsurface, 660, 561, IntToStr(Myself.Abil.Weight));
             }
-            dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 266)){666}, SCREENHEIGHT - 40, rc, d, FALSE);
-            //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 39, IntToStr(g_MySelf.m_Abil.Weight) + '/' + IntToStr(g_MySelf.m_Abil.MaxWeight));
-            //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 260)){660}, SCREENHEIGHT - 24, IntToStr(g_MySelf.m_Abil.MaxWeight));
+            dsurface.Draw (HUDLEFT + 666{666}, SCREENHEIGHT - 40, rc, d, FALSE);
+            //PomiTextOut (dsurface, HUDLEFT + 660{660}, SCREENHEIGHT - 39, IntToStr(g_MySelf.m_Abil.Weight) + '/' + IntToStr(g_MySelf.m_Abil.MaxWeight));
+            //PomiTextOut (dsurface, HUDLEFT + 660{660}, SCREENHEIGHT - 24, IntToStr(g_MySelf.m_Abil.MaxWeight));
          end;
       end;
 
       //g_nMyHungryState := 3;
-      //PomiTextOut (dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 355)){755}, SCREENHEIGHT - 15, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在正下方
+      //PomiTextOut (dsurface, HUDLEFT + 755{755}, SCREENHEIGHT - 15, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在正下方
 
-       //PomiTextOut(dsurface, SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 370)) {755}, SCREENHEIGHT - 60, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在右上角
+       //PomiTextOut(dsurface, HUDLEFT + 770 {755}, SCREENHEIGHT - 60, IntToStr(g_nMyHungryState));  //饥饿数值, 显示在右上角
 
        //饥饿程度
       if g_nMyHungryState in [1..4] then begin
         d := g_WMainImages.Images[16 + g_nMyHungryState-1];
         if d <> nil then begin
-          dsurface.Draw (SCREENWIDTH div 2 + (SCREENWIDTH div 2 - (400 - 354)){754}, 553, d.ClientRect, d, TRUE);    //饥饿状态图标
+          dsurface.Draw (HUDLEFT + 754{754}, SCREENHEIGHT - 47, d.ClientRect, d, TRUE);    //饥饿状态图标
         end;
       end;
 
    end;
 
    //显示聊天框文字
-   sx := 209 ;
+   sx := HUDLEFT + 209;
    sy := SCREENHEIGHT - 128;
 
    // chatInfoRect.Left   :=sx;
@@ -3898,11 +3890,7 @@ var
    d: TDirectDrawSurface;
 begin
 
-{$IF SWH = SWH800}
    d := g_WMainImages.Images[BOTTOMBOARD800];
-{$ELSEIF SWH = SWH1024}
-   d := g_WMainImages.Images[BOTTOMBOARD1024];
-{$IFEND}
    if d <> nil then begin
       if d.Pixels[X, Y] > 0 then IsRealArea := TRUE
       else IsRealArea := FALSE;
@@ -5017,11 +5005,7 @@ begin
          if data <> '' then begin
             sx := 0;
             fdata := '';
-            while (pos('<', data) > 0) and (pos('>', data) > 0) and (data <> '') do begin
-               if data[1] <> '<' then begin
-                  data := '<' + GetValidStr3 (data, fdata, ['<']);
-               end;
-               data := ArrestStringEx (data, '<', '>', cmdstr);
+            while NextScriptLink(data, fdata, cmdstr) do begin
 
                //fdata + cmdstr + data
                if cmdstr <> '' then begin
@@ -5040,26 +5024,27 @@ begin
                end;
 
                if fdata <> '' then begin
-                  BoldTextOut (dsurface, SurfaceX(Left+lx+sx), SurfaceY(Top+ly), clWhite, clBlack, fdata);
-                  sx := sx + dsurface.Canvas.TextWidth(fdata);
+                  sx := sx + ScriptTextOut(dsurface,
+                    Point(SurfaceX(Left+lx+sx), SurfaceY(Top+ly)), fdata, clWhite);
                end;
                if cmdstr <> '' then begin
                   if RequireAddPoints then begin
                      new (pcp);
-                     pcp.rc := Rect (lx+sx, ly, lx+sx + dsurface.Canvas.TextWidth(cmdstr), ly + 14);
+                     pcp.rc := Rect (lx+sx, ly, lx+sx + ScriptTextWidth(dsurface.Canvas, cmdstr), ly + 14);
                      pcp.RStr := cmdparam;
                      MDlgPoints.Add (pcp);
                   end;
                   dsurface.Canvas.Font.Style := dsurface.Canvas.Font.Style + [fsUnderline];
                   if SelectMenuStr = cmdparam then
-                     BoldTextOut (dsurface, SurfaceX(Left+lx+sx), SurfaceY(Top+ly), clRed, clBlack, cmdstr)
-                  else BoldTextOut (dsurface, SurfaceX(Left+lx+sx), SurfaceY(Top+ly), clYellow, clBlack, cmdstr);
-                  sx := sx + dsurface.Canvas.TextWidth(cmdstr);
+                     sx := sx + ScriptTextOut(dsurface,
+                       Point(SurfaceX(Left+lx+sx), SurfaceY(Top+ly)), cmdstr, clRed)
+                  else sx := sx + ScriptTextOut(dsurface,
+                       Point(SurfaceX(Left+lx+sx), SurfaceY(Top+ly)), cmdstr, clYellow);
                   dsurface.Canvas.Font.Style := dsurface.Canvas.Font.Style - [fsUnderline];
                end;
             end;
             if data <> '' then
-               BoldTextOut (dsurface, SurfaceX(Left+lx+sx), SurfaceY(Top+ly), clWhite, clBlack, data);
+               ScriptTextOut(dsurface, Point(SurfaceX(Left+lx+sx), SurfaceY(Top+ly)), data, clWhite);
          end;
          ly := ly + 16;  //数值各开地方
       end;

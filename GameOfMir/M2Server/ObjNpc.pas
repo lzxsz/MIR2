@@ -4,6 +4,10 @@ interface
 uses
   Windows, Classes, SysUtils, StrUtils, ObjBase, Grobal2, SDK, IniFiles ;
 type
+  TCampPoint = record
+    MapName: string;
+    X, Y: Integer;
+  end;
   TUpgradeInfo = record //0x40
     sUserName: string[ActorNameLen]; //0x00
     UserItem: TUserItem; //0x10
@@ -59,6 +63,7 @@ type
     nParam5: Integer;
     sParam6: string;
     nParam6: Integer;
+    boNegate: Boolean;
   end;
   pTQuestConditionInfo = ^TQuestConditionInfo;
   TSayingProcedure = record //0x14
@@ -67,6 +72,7 @@ type
     sSayMsg: string; //0x08
     ElseActionList: TList; //0x0C
     sElseSayMsg: string; //0x10
+    boInvalid: Boolean;
   end;
   pTSayingProcedure = ^TSayingProcedure;
   TSayingRecord = record //0x08
@@ -240,6 +246,7 @@ type
     function ConditionOfCheckInMapRange(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsAttackGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsDefenseGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
+    function ConditionOfCheckCastleState(QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckCastleDoorStatus(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsAttackAllyGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
     function ConditionOfCheckIsDefenseAllyGuild(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
@@ -260,6 +267,10 @@ type
     function ConditionOfCheckGroupClass(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
 
     function GetDynamicVarList(PlayObject: TPlayObject; sType: string; var sName: string): TList;
+    function ReadCampPoint(PlayObject: TPlayObject; var Point: TCampPoint): Boolean;
+    function SaveCampPoint(PlayObject: TPlayObject): Boolean;
+    procedure RecallCampPoint(PlayObject: TPlayObject);
+
   public
     constructor Create(); override;
     destructor Destroy; override;
@@ -3353,12 +3364,23 @@ begin
     PlayObject.GameGoldChanged;
 end;
 
+function PlainScriptChatText(const Text: string): string;
+begin
+  // The installed scripts use rich-chat controls from a different engine.
+  // This client uses the message's protocol colors instead of inline styles.
+  Result := AnsiReplaceText(Text, '#6FFFF/8', '');
+  Result := AnsiReplaceText(Result, '#5', '');
+  Result := AnsiReplaceText(Result, '#6', '');
+  Result := AnsiReplaceText(Result, '#7', '');
+end;
+
 procedure TNormNpc.ActionOfLineMsg(PlayObject: TPlayObject;
   QuestActionInfo: pTQuestActionInfo);
 var
   sMsg: string;
 begin
-  sMsg := GetLineVariableText(PlayObject, QuestActionInfo.sParam2);
+  // Clean the script template before expanding player names or other values.
+  sMsg := GetLineVariableText(PlayObject, PlainScriptChatText(QuestActionInfo.sParam2));
   sMsg := AnsiReplaceText(sMsg, '%s', PlayObject.m_sCharName);
   sMsg := AnsiReplaceText(sMsg, '%d', m_sCharName);
   case QuestActionInfo.nParam1 of
@@ -4987,6 +5009,42 @@ begin
   end;
 end;
 
+function TNormNpc.ConditionOfCheckCastleState(QuestConditionInfo: pTQuestConditionInfo): Boolean;
+var
+  Castle: TUserCastle;
+  Defense: TBaseObject;
+  Index: Integer;
+  RequireFullHealth: Boolean;
+begin
+  Result := False;
+  if m_Castle = nil then Exit;
+  Castle := TUserCastle(m_Castle);
+  Defense := nil;
+  Index := QuestConditionInfo.nParam2;
+  RequireFullHealth := True;
+  if QuestConditionInfo.sParam1 = 'DOOR' then Defense := Castle.m_MainDoor.BaseObject
+  else if QuestConditionInfo.sParam1 = 'WALL' then begin
+    case Index of
+      1: Defense := Castle.m_LeftWall.BaseObject;
+      2: Defense := Castle.m_CenterWall.BaseObject;
+      3: Defense := Castle.m_RightWall.BaseObject;
+    end;
+  end else if QuestConditionInfo.sParam1 = 'ARCHER' then begin
+    if (Index >= Low(Castle.m_Archer)) and (Index <= High(Castle.m_Archer)) then
+      Defense := Castle.m_Archer[Index].BaseObject;
+    RequireFullHealth := False;
+  end else if QuestConditionInfo.sParam1 = 'GUARD' then begin
+    if (Index >= Low(Castle.m_Guard)) and (Index <= High(Castle.m_Guard)) then
+      Defense := Castle.m_Guard[Index].BaseObject;
+    RequireFullHealth := False;
+  end;
+  if (Defense = nil) or Defense.m_boDeath or Defense.m_boGhost then Exit;
+  Result := Defense.m_WAbil.HP > 0;
+  if RequireFullHealth then
+    Result := Result and (Defense.m_WAbil.MaxHP > 0) and
+      (Defense.m_WAbil.HP >= Defense.m_WAbil.MaxHP);
+end;
+
 function TNormNpc.ConditionOfCheckCastleDoorStatus(PlayObject: TPlayObject;
   QuestConditionInfo: pTQuestConditionInfo): Boolean;
 var
@@ -5580,6 +5638,13 @@ begin
   end;
 end;
 
+function ScriptThreshold(Value, Required: Integer; const OperatorText: string): Boolean;
+begin
+  Result := False;
+  if OperatorText = '?' then Result := Value >= Required
+  else if OperatorText = '<' then Result := Value < Required;
+end;
+
 function TNormNpc.ConditionOfCheckMagicLvl(PlayObject: TPlayObject; QuestConditionInfo: pTQuestConditionInfo): Boolean;
 var
   i: Integer;
@@ -5671,6 +5736,80 @@ begin
   inherited;
 end;
 
+function CampPointSection(PlayObject: TPlayObject): string;
+var
+  I: Integer;
+begin
+  // Hex keeps character names out of INI syntax and filesystem paths.
+  Result := 'Character_';
+  for I := 1 to Length(PlayObject.m_sCharName) do
+    Result := Result + IntToHex(Byte(PlayObject.m_sCharName[I]), 2);
+end;
+
+function TNormNpc.ReadCampPoint(PlayObject: TPlayObject;
+  var Point: TCampPoint): Boolean;
+var
+  Ini: TIniFile;
+  Data, Part: string;
+  Map: TEnvirnoment;
+begin
+  Result := False;
+  Point.MapName := '';
+  Point.X := -1;
+  Point.Y := -1;
+  Ini := TIniFile.Create(g_Config.sEnvirDir + 'CampPoints.ini');
+  try
+    Data := Ini.ReadString(CampPointSection(PlayObject), 'Point', '');
+  finally
+    Ini.Free;
+  end;
+  if Data = '' then Exit;
+  Data := GetValidStr3(Data, Point.MapName, [',']);
+  Data := GetValidStr3(Data, Part, [',']);
+  if not TryStrToInt(Part, Point.X) then Exit;
+  if not TryStrToInt(Data, Point.Y) then Exit;
+  Map := g_MapManager.FindMap(Point.MapName);
+  if Map = nil then Exit;
+  Result := Map.CanWalk(Point.X, Point.Y, True);
+end;
+
+function TNormNpc.SaveCampPoint(PlayObject: TPlayObject): Boolean;
+var
+  Ini: TIniFile;
+  Data: string;
+begin
+  Result := False;
+  if PlayObject.m_PEnvir = nil then Exit;
+  if not PlayObject.m_PEnvir.CanWalk(PlayObject.m_nCurrX,
+    PlayObject.m_nCurrY, True) then Exit;
+  Data := PlayObject.m_PEnvir.sMapName + ',' +
+    IntToStr(PlayObject.m_nCurrX) + ',' + IntToStr(PlayObject.m_nCurrY);
+  Ini := TIniFile.Create(g_Config.sEnvirDir + 'CampPoints.ini');
+  try
+    try
+      // One key stores the entire point, so a partial update cannot mix coordinates.
+      Ini.WriteString(CampPointSection(PlayObject), 'Point', Data);
+      Result := True;
+    except
+      on E: Exception do MainOutMessage('Save camp point: ' + E.Message);
+    end;
+  finally
+    Ini.Free;
+  end;
+end;
+
+procedure TNormNpc.RecallCampPoint(PlayObject: TPlayObject);
+var
+  Point: TCampPoint;
+begin
+  if not ReadCampPoint(PlayObject, Point) then begin
+    PlayObject.SysMsg('请先在老兵处设置营地。', c_Red, t_Hint);
+    Exit;
+  end;
+  PlayObject.SendRefMsg(RM_SPACEMOVE_FIRE, 0, 0, 0, 0, '');
+  PlayObject.SpaceMove(Point.MapName, Point.X, Point.Y, 0);
+end;
+
 procedure TNormNpc.ExeAction(PlayObject: TPlayObject; sParam1, sParam2,
   sParam3: string; nParam1, nParam2, nParam3: Integer);
 var
@@ -5678,6 +5817,14 @@ var
   dwInt: LongWord;
   BaseObject: TBaseObject;
 begin
+  if CompareText(sParam1, 'SETCAMP') = 0 then begin
+    if SaveCampPoint(PlayObject) then
+      PlayObject.SysMsg('营地已设置为' + PlayObject.m_PEnvir.sMapDesc + ' (' +
+        IntToStr(PlayObject.m_nCurrX) + ',' + IntToStr(PlayObject.m_nCurrY) + ')。',
+        c_Green, t_Hint)
+    else PlayObject.SysMsg('营地保存失败，请重试。', c_Red, t_Hint);
+    Exit;
+  end;
   //================================================
   //更改人物当前经验值
   //EXEACTION CHANGEEXP 0 经验数  设置为指定经验值
@@ -5872,7 +6019,28 @@ var
   nSecond: Integer;
   DynamicVar: pTDynamicVar;
   boFoundVar: Boolean;
+  CampPoint: TCampPoint;
+  CampMap: TEnvirnoment;
 begin
+  if sVariable = '$SELFNAME' then begin
+    // NPC world names may contain dialogue line separators. Keep this value inline.
+    sMsg := sub_49ADB8(sMsg, '<$SELFNAME>', AnsiReplaceText(m_sCharName, '\', ' '));
+    Exit;
+  end;
+  if (sVariable = '$STR(B92)') or (sVariable = '$STR(B93)') or
+     (sVariable = '$STR(C92)') or (sVariable = '$STR(C93)') then begin
+    sText := '未设置';
+    if ReadCampPoint(PlayObject, CampPoint) then begin
+      if sVariable = '$STR(B92)' then begin
+        CampMap := g_MapManager.FindMap(CampPoint.MapName);
+        sText := CampMap.sMapDesc;
+      end else if sVariable = '$STR(B93)' then sText := CampPoint.MapName
+      else if sVariable = '$STR(C92)' then sText := IntToStr(CampPoint.X)
+      else sText := IntToStr(CampPoint.Y);
+    end;
+    sMsg := sub_49ADB8(sMsg, '<' + sVariable + '>', sText);
+    Exit;
+  end;
 //全局信息
   if sVariable = '$SERVERNAME' then
   begin
@@ -6774,6 +6942,10 @@ begin
   if CompareLStr(sVariable, '$STR(', Length('$STR(')) then
   begin
     ArrestStringEx(sVariable, '(', ')', s14);
+    if ScriptStringIndex(s14) >= 0 then begin
+      sMsg := sub_49ADB8(sMsg, '<' + sVariable + '>', PlayObject.GetScriptString(s14));
+      Exit;
+    end;
     n18 := GetValNameNo(s14);
     if n18 >= 0 then
     begin
@@ -6807,7 +6979,7 @@ procedure TNormNpc.GotoLable(PlayObject: TPlayObject; sLabel: string; boExtJmp: 
 var
   i, ii, III: Integer;
   List1C: TStringList;
-  bo11: Boolean;
+  bo11, HasNativeKillLabel: Boolean;
   n18: Integer;
   n20: Integer;
   sSENDMSG: string;
@@ -6974,6 +7146,7 @@ var
     Hour, Min, Sec, MSec: Word;
     Envir: TEnvirnoment;
     StdItem: TItem;
+    UserMagic: pTUserMagic;
   begin
     Result := True;
     for i := 0 to ConditionList.Count - 1 do
@@ -7071,6 +7244,27 @@ var
           end;
         nCHECKBBCOUNT: if PlayObject.m_SlaveList.Count < QuestConditionInfo.nParam1 then Result := False;
         nCHECKCREDITPOINT: ;
+        nSC_CHECKCASTLESTATE: Result := ConditionOfCheckCastleState(QuestConditionInfo);
+        nSC_CHECKKILLMOBNAME:
+          Result := (PlayObject.m_sScriptKilledMob <> '') and
+            (CompareText(PlayObject.m_sScriptKilledMob, QuestConditionInfo.sParam1) = 0);
+        nSC_CHECKITEMCOUNT:
+          begin
+            PlayObject.QuestCheckItem(QuestConditionInfo.sParam1, n1C, nMaxDura, nDura);
+            Result := ScriptThreshold(n1C, QuestConditionInfo.nParam3, QuestConditionInfo.sParam2);
+          end;
+        nSC_CHECKSKILL:
+          begin
+            n1C := -1; // An unlearned skill must not satisfy '? 0'.
+            for n18 := 0 to PlayObject.m_MagicList.Count - 1 do begin
+              UserMagic := PlayObject.m_MagicList.Items[n18];
+              if CompareText(UserMagic.MagicInfo.sMagicName, QuestConditionInfo.sParam1) = 0 then begin
+                n1C := UserMagic.btLevel;
+                Break;
+              end;
+            end;
+            Result := ScriptThreshold(n1C, QuestConditionInfo.nParam3, QuestConditionInfo.sParam2);
+          end;
         nCHECKITEM:
           begin
             UserItem := PlayObject.QuestCheckItem(QuestConditionInfo.sParam1, n1C, nMaxDura, nDura);
@@ -7364,6 +7558,7 @@ var
         nSC_CHECKMAGICLVL: if not ConditionOfCheckMagicLvl(PlayObject, QuestConditionInfo) then Result := False;
         nSC_CHECKGROUPCLASS: if not ConditionOfCheckGroupClass(PlayObject, QuestConditionInfo) then Result := False;
       end;
+      if QuestConditionInfo.boNegate then Result := not Result;
       if not Result then Break;
     end;
   end;
@@ -7765,6 +7960,23 @@ var
             n2C := Str_ToInt(QuestActionInfo.sParam2, 0);
             PlayObject.SetQuestFlagStatus(n28, n2C);
           end;
+        nSC_CHANGEHUMABILITY:
+          PlayObject.ChangeScriptAbility(QuestActionInfo.nParam1, QuestActionInfo.nParam3);
+        nSC_DELAYGOTO:
+          PlayObject.ScheduleScriptDelay(Self, QuestActionInfo.sParam2,
+            QuestActionInfo.sParam3, QuestActionInfo.nParam1);
+        nSC_CLEARDELAYGOTO: PlayObject.ClearScriptDelay(QuestActionInfo.sParam1);
+        nSC_REFSHOWNAME: PlayObject.RefShowName;
+        nSC_TAKECOUNT:
+          begin
+            PlayObject.QuestCheckItem(QuestActionInfo.sParam1, n14, n1C, n28);
+            if n14 < QuestActionInfo.nParam2 then begin
+              PlayObject.SysMsg('材料不足，操作已停止。', c_Red, t_Hint);
+              Result := False;
+              Exit;
+            end;
+            TakeItem(QuestActionInfo.sParam1, QuestActionInfo.nParam2);
+          end;
         nTAKE: TakeItem(QuestActionInfo.sParam1, QuestActionInfo.nParam2);
         //nGIVE: GiveItem(QuestActionInfo.sParam1,QuestActionInfo.nParam2);
         nSC_GIVE: ActionOfGiveItem(PlayObject, QuestActionInfo);
@@ -7833,8 +8045,14 @@ var
           end;
         nMAPMOVE:
           begin
-            PlayObject.SendRefMsg(RM_SPACEMOVE_FIRE, 0, 0, 0, 0, '');
-            PlayObject.SpaceMove(QuestActionInfo.sParam1, QuestActionInfo.nParam2, QuestActionInfo.nParam3, 0);
+            if (QuestActionInfo.sParam1 = '<$STR(B93)>') and
+               (QuestActionInfo.sParam2 = '<$STR(C92)>') and
+               (QuestActionInfo.sParam3 = '<$STR(C93)>') then
+              RecallCampPoint(PlayObject)
+            else begin
+              PlayObject.SendRefMsg(RM_SPACEMOVE_FIRE, 0, 0, 0, 0, '');
+              PlayObject.SpaceMove(QuestActionInfo.sParam1, QuestActionInfo.nParam2, QuestActionInfo.nParam3, 0);
+            end;
             bo11 := True;
           end;
         nMAP:
@@ -7875,6 +8093,11 @@ var
           end;
         nMOV:
           begin
+            if ScriptStringIndex(QuestActionInfo.sParam1) >= 0 then begin
+              PlayObject.SetScriptString(QuestActionInfo.sParam1,
+                GetLineVariableText(PlayObject, QuestActionInfo.sParam2));
+              Continue;
+            end;
             n14 := GetValNameNo(QuestActionInfo.sParam1);
             if n14 >= 0 then
             begin
@@ -8508,6 +8731,14 @@ begin //0049E584
   //跳转到指定示签，执行
   if (Script <> nil) then
   begin
+    if CompareText(sLabel, '@OnKillMob') = 0 then begin
+      HasNativeKillLabel := False;
+      for ii := 0 to Script.RecordList.Count - 1 do begin
+        SayingRecord := Script.RecordList.Items[ii];
+        if CompareText(SayingRecord.sLabel, '@OnKillMob') = 0 then HasNativeKillLabel := True;
+      end;
+      if not HasNativeKillLabel then sLabel := '@KillMonster';
+    end;
     for ii := 0 to Script.RecordList.Count - 1 do
     begin
       SayingRecord := Script.RecordList.Items[ii];
@@ -8518,6 +8749,11 @@ begin //0049E584
         for III := 0 to SayingRecord.ProcedureList.Count - 1 do
         begin
           SayingProcedure := SayingRecord.ProcedureList.Items[III];
+          // Do not run a partially loaded branch or continue to a later reward.
+          if SayingProcedure.boInvalid then begin
+            PlayObject.SysMsg('此功能脚本尚未兼容，操作已停止。', c_Red, t_Hint);
+            Break;
+          end;
           bo11 := False;
           if QuestCheckCondition(SayingProcedure.ConditionList) then
           begin

@@ -12,8 +12,6 @@ uses
 
 const
 //µØÍ¼ºÍÎïÆ·ÄÏÕ¾µÄµØ·½
-   MAPSURFACEWIDTH = 800;
-   MAPSURFACEHEIGHT = 445;
 
    LONGHEIGHT_IMAGE = 35;
    FLASHBASE = 410;
@@ -146,7 +144,7 @@ type
      m_MapSurface    :TDirectDrawSurface;
      m_ObjSurface    :TDirectDrawSurface; //0x0C
 
-     m_FogScreen     :array[0..MAPSURFACEHEIGHT, 0..MAPSURFACEWIDTH] of byte;
+     m_FogScreen     :array[0..MAXSCREENHEIGHT, 0..MAXSCREENWIDTH] of byte;
      m_PFogScreen    :PByte;
      m_nFogWidth     :Integer;
      m_nFogHeight    :Integer;
@@ -273,10 +271,10 @@ begin
       Visible := FALSE;
       MaxLength := 70;
       Ctl3D := FALSE;
-      Left   := 208;
+      Left   := HUDLEFT + 208;
       Top    := SCREENHEIGHT - 19;
       Height := 12;
-      Width  := (SCREENWIDTH div 2 - 207) * 2{387};
+      Width  := 386;
       Color := clSilver;
    end;
 
@@ -1082,17 +1080,11 @@ begin
 
    try
    with Map.m_ClientRect do begin
-{$IF SWH = SWH800}
-      Left   := g_MySelf.m_nRx - 9;
-      Top    := g_MySelf.m_nRy - 9;
-      Right  := g_MySelf.m_nRx + 9;                         // ¿À¸¥ÂÊ Â¥Åõ¸® ±×¸²
-      Bottom := g_MySelf.m_nRy + 8;
-{$ELSEIF SWH = SWH1024}
-      Left   := g_MySelf.m_nRx - 12;
-      Top    := g_MySelf.m_nRy - 12;
-      Right  := g_MySelf.m_nRx + 12;                         //
-      Bottom := g_MySelf.m_nRy + 15;
-{$IFEND}
+      Left := g_MySelf.m_nRx - (SCREENWIDTH div 2 + UNITX*2 - AAX - 14) div UNITX;
+      Top := g_MySelf.m_nRy - ((SCREENHEIGHT - 155) div 2 + UNITY*3) div UNITY;
+      Right := Left + (SCREENWIDTH + UNITX - 1) div UNITX + 4;
+      Bottom := Top + (SCREENHEIGHT + UNITY - 1) div UNITY + 4;
+
    end;
    Map.UpdateMapPos (g_MySelf.m_nRx, g_MySelf.m_nRy);
 
@@ -1846,26 +1838,18 @@ end; }
 procedure TPlayScene.ScreenXYfromMCXY (cx, cy: integer; var sx, sy: integer);
 begin
    if g_MySelf = nil then exit;
-{$IF SWH = SWH800}
-     sx := (cx-g_MySelf.m_nRx)*UNITX + 364 + UNITX div 2 - g_MySelf.m_nShiftX;
-     sy := (cy-g_MySelf.m_nRy)*UNITY + 192 + UNITY div 2 - g_MySelf.m_nShiftY;
-{$ELSEIF SWH = SWH1024}
-     sx := (cx-g_MySelf.m_nRx)*UNITX + 485{364} + UNITX div 2 - g_MySelf.m_nShiftX;
-     sy := (cy-g_MySelf.m_nRy)*UNITY + 270{192} + UNITY div 2 - g_MySelf.m_nShiftY;
-{$IFEND}
+   sx := (cx - Map.m_ClientRect.Left)*UNITX + m_nDefXX + UNITX div 2;
+   sy := (cy - Map.m_ClientRect.Top - 1)*UNITY + m_nDefYY + UNITY div 2;
+
 end;
 
 //ÆÁÄ»×ù±ê mx, my×ª»»³Éccx, ccyµØÍ¼×ù±ê
 procedure TPlayScene.CXYfromMouseXY (mx, my: integer; var ccx, ccy: integer);
 begin
    if g_MySelf = nil then exit;
-{$IF SWH = SWH800}
-   ccx := Round((mx - 364 + g_MySelf.m_nShiftX - UNITX) / UNITX) + g_MySelf.m_nRx;
-   ccy := Round((my - 192 + g_MySelf.m_nShiftY - UNITY) / UNITY) + g_MySelf.m_nRy;
-{$ELSEIF SWH = SWH1024}
-   ccx := Round((mx - 485{364}  + g_MySelf.m_nShiftX - UNITX) / UNITX) + g_MySelf.m_nRx;
-   ccy := Round((my - 270{192} + g_MySelf.m_nShiftY - UNITY) / UNITY) + g_MySelf.m_nRy;
-{$IFEND}
+   ccx := (mx - m_nDefXX) div UNITX + Map.m_ClientRect.Left;
+   ccy := (my - m_nDefYY) div UNITY + Map.m_ClientRect.Top + 1;
+
 end;
 
 //È­¸éÁÂÇ¥·Î Ä³¸¯ÅÍ, ÇÈ¼¿ ´ÜÀ§·Î ¼±ÅÃ..

@@ -866,7 +866,7 @@ begin
   IniGameConf.WriteString('Setup','ServerName',g_sGameName);
   IniGameConf.WriteString('Setup','ServerAddr',g_sDBServer_Config_ServerAddr);
   IniGameConf.WriteInteger('Setup','ServerPort',g_nDBServer_Config_ServerPort);
-  IniGameConf.WriteString('Setup','MapFile',g_sDBServer_Config_MapFile);
+  IniGameConf.WriteString('Setup','MapFile',g_sGameDirectory + g_sM2Server_Directory + g_sM2Server_EnvirDir + 'MapInfo.txt');
   IniGameConf.WriteBool('Setup','ViewHackMsg',g_boDBServer_Config_ViewHackMsg);
   IniGameConf.WriteBool('Setup','DynamicIPMode',g_boDynamicIPMode);
   IniGameConf.WriteString('Setup','GateAddr',g_sDBServer_Config_GateAddr);
@@ -1243,7 +1243,7 @@ begin
   IniGameConf.WriteInteger('LoginGate','ShowLogLevel',g_nLoginGate_ShowLogLevel);
   IniGameConf.WriteInteger('LoginGate','MaxConnOfIPaddr',g_nLoginGate_MaxConnOfIPaddr);
   IniGameConf.WriteInteger('LoginGate','BlockMethod',g_nLoginGate_BlockMethod);
-  IniGameConf.WriteInteger('LoginGate','KeepConnectTimeOut',g_nLoginGate_KeepConnectTimeOut);
+  IniGameConf.WriteInteger('LoginGate','KeepConnectTimeOut',IniGameConf.ReadInteger('LoginGate','KeepConnectTimeOut',g_nLoginGate_KeepConnectTimeOut));
   IniGameConf.Free;
 end;
 

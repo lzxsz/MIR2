@@ -72,7 +72,7 @@ var
   nDeCryptString:Integer= -1;
 implementation
 
-uses ObjBase, Envir;
+uses ObjBase, Envir, Castle;
 
 
 //{$R *.dfm}
@@ -499,6 +499,7 @@ var
   QuestNPC: TMerchant;
   sMapInfoFile: string;
   sNewName: string;
+  LoadedMap: TEnvirnoment;
   sOldItemName: string;
 begin
   Result := -1;
@@ -537,14 +538,15 @@ begin
       if (s30 <> '') and (s30[1] = '[') then
       begin
         sMapName := '';
+        sNewName := '';
 
         MapFlag.boSAFE := False;
         s30 := ArrestStringEx(s30, '[', ']', sMapName);
-        for ii := 0 to Length(sMapName) - 1 do
+        for ii := 1 to Length(sMapName) do
         begin
           if sMapName[ii] = '|' then
           begin
-            sNewName := Copy(sMapName, 0, ii - 1);
+            sNewName := Copy(sMapName, 1, ii - 1);
             sMapName := GetValidStr3(sMapName, sMapName, ['|', ' ', #9]);   //获取重复利用地图
             Break;
           end;
@@ -820,9 +822,9 @@ begin
             MapFlag.nL := Str_ToInt(Copy(s34, 2, Length(s34) - 1), 1);
           end;
         end;
-        if g_MapManager.AddMapInfo(sMapName, sMapDesc, nServerIndex, @MapFlag,
-          QuestNPC) = nil then
-          Result := -10;
+        LoadedMap := g_MapManager.AddMapInfo(sMapName, sMapDesc, nServerIndex, @MapFlag, QuestNPC);
+        if LoadedMap = nil then Result := -10
+        else if sNewName <> '' then LoadedMap.sMapName := sNewName;
         {
         if EnvirList.AddMapInfo(s40,
                                 s48,
@@ -1795,6 +1797,10 @@ var
   begin
     Result:=False;
     sText:=GetValidStrCap(sText,sCmd,[' ',#9]);
+    while CompareText(sCmd, 'NOT') = 0 do begin
+      QuestConditionInfo.boNegate := not QuestConditionInfo.boNegate;
+      sText:=GetValidStrCap(sText,sCmd,[' ',#9]);
+    end;
     sText:=GetValidStrCap(sText,sParam1,[' ',#9]);
     sText:=GetValidStrCap(sText,sParam2,[' ',#9]);
     sText:=GetValidStrCap(sText,sParam3,[' ',#9]);
@@ -1843,6 +1849,37 @@ var
     end;
     if sCmd = sRANDOM then begin //00489FB2
       nCMDCode:=nRANDOM;
+      Goto L001;
+    end;
+    if sCmd = 'CHECKCASTLESTATE' then begin
+      sParam1 := UpperCase(sParam1);
+      if sParam3 <> '' then Exit;
+      if sParam1 = 'DOOR' then begin
+        if sParam2 <> '' then Exit;
+      end else begin
+        if not IsStringNumber(sParam2) or (Str_ToInt(sParam2, -1) < 0) then Exit;
+        if sParam1 = 'WALL' then begin
+          if (Str_ToInt(sParam2, 0) < 1) or (Str_ToInt(sParam2, 0) > 3) then Exit;
+        end else if sParam1 = 'ARCHER' then begin
+          if Str_ToInt(sParam2, MAXCASTLEARCHER) >= MAXCASTLEARCHER then Exit;
+        end else if sParam1 = 'GUARD' then begin
+          if Str_ToInt(sParam2, MAXCALSTEGUARD) >= MAXCALSTEGUARD then Exit;
+        end else Exit;
+      end;
+      nCMDCode := nSC_CHECKCASTLESTATE;
+      Goto L001;
+    end;
+    if sCmd = 'CHECKKILLMOBNAME' then begin
+      if (sParam1 = '') or (sParam2 <> '1') or (sParam3 <> '') then Exit;
+      nCMDCode := nSC_CHECKKILLMOBNAME;
+      Goto L001;
+    end;
+    if (sCmd = 'CHECKITEMCOUNT') or (sCmd = 'CHECKSKILL') then begin
+      if (sParam1 = '') or (sParam4 <> '') or
+         ((sParam2 <> '?') and (sParam2 <> '<')) or
+         not IsStringNumber(sParam3) or (Str_ToInt(sParam3, -1) < 0) then Exit;
+      if sCmd = 'CHECKITEMCOUNT' then nCMDCode := nSC_CHECKITEMCOUNT
+      else nCMDCode := nSC_CHECKSKILL;
       Goto L001;
     end;
     if sCmd = sCHECKITEM then begin
@@ -2368,6 +2405,38 @@ var
       ArrestStringEx(sParam1,'[',']',sParam1);
       if not IsStringNumber(sParam1) then nCMDCode:=0;
       if not IsStringNumber(sParam2) then nCMDCode:=0;
+    end;
+    if sCmd = 'CHANGEHUMABILITY' then begin
+      if not IsStringNumber(sParam1) or (Str_ToInt(sParam1, 0) < 1) or (Str_ToInt(sParam1, 0) > 10) or
+         (sParam2 <> '=') or not IsStringNumber(sParam3) or
+         (Str_ToInt(sParam3, -1) < 0) or (Str_ToInt(sParam3, -1) > High(Word)) or
+         (sParam4 <> '') then Exit;
+      nCMDCode := nSC_CHANGEHUMABILITY;
+      Goto L001;
+    end;
+    if sCmd = sSC_DELAYGOTO then begin
+      if not IsStringNumber(sParam1) or (Str_ToInt(sParam1, 0) <= 0) or
+         (Str_ToInt(sParam1, 0) > MaxInt div 1000) or
+         (Copy(sParam2, 1, 1) <> '@') or (Length(sParam2) < 2) or
+         (sParam4 <> '') then Exit;
+      nCMDCode := nSC_DELAYGOTO;
+      Goto L001;
+    end;
+    if sCmd = sSC_CLEARDELAYGOTO then begin
+      if (sParam1 = '') or (sParam2 <> '') then Exit;
+      nCMDCode := nSC_CLEARDELAYGOTO;
+      Goto L001;
+    end;
+    if sCmd = 'REFSHOWNAME' then begin
+      if sParam1 <> '' then Exit;
+      nCMDCode := nSC_REFSHOWNAME;
+      Goto L001;
+    end;
+    if sCmd = 'TAKECOUNT' then begin
+      if (sParam1 = '') or (sParam3 <> '') or
+         not IsStringNumber(sParam2) or (Str_ToInt(sParam2, 0) <= 0) then Exit;
+      nCMDCode := nSC_TAKECOUNT;
+      Goto L001;
     end;
     if sCmd = sTAKE then begin
       nCMDCode:=nTAKE;
@@ -3180,6 +3249,7 @@ begin   //0048B684
         end;
           
         New(SayingProcedure);
+        SayingProcedure.boInvalid:=False;
         SayingRecord.ProcedureList.Add(SayingProcedure);
         SayingProcedure.ConditionList:=TList.Create;
         SayingProcedure.ActionList:=TList.Create;
@@ -3192,8 +3262,9 @@ begin   //0048B684
       if (Script <> nil) and (SayingRecord <> nil) then begin
         if (n6C >= 10) and (n6C < 20) and (s34[1] = '#')then begin
           if CompareText(s34,'#IF') = 0 then begin
-            if (SayingProcedure.ConditionList.Count > 0) or (SayingProcedure.sSayMsg <> '') then begin  //0048BE53
+            if SayingProcedure.boInvalid or (SayingProcedure.ConditionList.Count > 0) or (SayingProcedure.sSayMsg <> '') then begin  //0048BE53
               New(SayingProcedure);
+              SayingProcedure.boInvalid:=False;
               SayingRecord.ProcedureList.Add(SayingProcedure);
               SayingProcedure.ConditionList:=TList.Create;
               SayingProcedure.ActionList:=TList.Create;
@@ -3220,6 +3291,7 @@ begin   //0048B684
             SayingProcedure.ConditionList.Add(QuestConditionInfo);
           end else begin
             Dispose(QuestConditionInfo);
+            SayingProcedure.boInvalid:=True;
             MainOutMessage('脚本错误: ' + s34 + ' 第:' + IntToStr(i) + ' 行: ' + sScritpFileName);
           end;
         end; //0048C004
@@ -3231,6 +3303,7 @@ begin   //0048B684
             SayingProcedure.ActionList.Add(QuestActionInfo);
           end else begin
             Dispose(QuestActionInfo);
+            SayingProcedure.boInvalid:=True;
             MainOutMessage('脚本错误: ' + s34 + ' 第:' + IntToStr(i) + ' 行: ' + sScritpFileName);
           end;
         end; //0048C0B1
@@ -3242,6 +3315,7 @@ begin   //0048B684
             SayingProcedure.ElseActionList.Add(QuestActionInfo);
           end else begin
             Dispose(QuestActionInfo);
+            SayingProcedure.boInvalid:=True;
             MainOutMessage('脚本错误: ' + s34 + ' 第:' + IntToStr(i) + ' 行: ' + sScritpFileName);
           end;
         end;

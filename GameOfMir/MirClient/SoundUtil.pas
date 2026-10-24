@@ -248,6 +248,8 @@ begin
   end;
 end;
 function  PlayBGM (wavname: string): TDirectSoundBuffer;
+var
+   SoundOptions: TDXSoundOptions;
 begin
 
    Result:=nil;//Jacky
@@ -257,7 +259,14 @@ begin
          if FileExists (wavname) then begin
             try
                SilenceSound;
-               g_Sound.EffectFile(wavname, TRUE, FALSE);
+               SoundOptions := g_DXSound.Options;
+               try
+                  // Only the music buffer should keep playing without focus.
+                  g_DXSound.Options := (SoundOptions + [soGlobalFocus]) - [soStickyFocus];
+                  g_Sound.EffectFile(wavname, TRUE, FALSE);
+               finally
+                  g_DXSound.Options := SoundOptions;
+               end;
             except
             end;
          end;

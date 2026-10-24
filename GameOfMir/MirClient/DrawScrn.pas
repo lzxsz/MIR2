@@ -162,7 +162,7 @@ var
    i, len, aline: integer;
    dline, temp: string;
 const
-   BOXWIDTH = (SCREENWIDTH div 2 - 214) * 2{374}; //41 聊天框文字宽度
+   BOXWIDTH = 374; //41 聊天框文字宽度
 begin
    len := Length (str);
    temp := '';
@@ -302,8 +302,10 @@ begin
            BoldTextOut (MSurface,actor.m_nSayX - 15 ,actor.m_nSayY - 5, clWhite, clBlack,infoMsg );
            Canvas.Release;
          end;
-             if g_boShowRedHPLable then actor.m_boOpenHealth:=True; //显示血条
-               if (actor.m_boOpenHealth or actor.m_noInstanceOpenHealth) and not actor.m_boDeath then begin
+               // Keep local visibility separate from the server reveal state.
+               // Actors have MaxHP = 0 until real health data arrives.
+               if (g_boShowRedHPLable or actor.m_boOpenHealth or actor.m_noInstanceOpenHealth) and
+                  (actor.m_Abil.MaxHP > 0) and not actor.m_boDeath then begin
                   if actor.m_noInstanceOpenHealth then
                      if GetTickCount - actor.m_dwOpenHealthStart > actor.m_dwOpenHealthTime then
                         actor.m_noInstanceOpenHealth := True;
@@ -314,7 +316,8 @@ begin
                   if d <> nil then begin
                      rc := d.ClientRect;
                      if actor.m_Abil.MaxHP > 0 then
-                        rc.Right := Round((rc.Right-rc.Left) / actor.m_Abil.MaxHP * actor.m_Abil.HP);
+                        rc.Right := rc.Left + Round((rc.Right-rc.Left) / actor.m_Abil.MaxHP *
+                           _MAX(0, _MIN(actor.m_Abil.HP, actor.m_Abil.MaxHP)));
                      MSurface.Draw (actor.m_nSayX - d.Width div 2, actor.m_nSayY - 10, rc, d, TRUE);
                   end;
                end;
@@ -480,7 +483,7 @@ begin
          //显示人物血量
          //BoldTextOut (MSurface, 15, SCREENHEIGHT - 120, clWhite, clBlack, IntToStr(g_MySelf.m_Abil.HP) + '/' + IntToStr(g_MySelf.m_Abil.MaxHP));
          //人物MP值
-         //BoldTextOut (MSurface, 115, SCREENHEIGHT - 120, clWhite, clBlack, IntToStr(g_MySelf.m_Abil.MP) + '/' + IntToStr(g_MySelf.m_Abil.MaxMP));
+         //BoldTextOut (MSurface, HUDLEFT + 115, SCREENHEIGHT - 120, clWhite, clBlack, IntToStr(g_MySelf.m_Abil.MP) + '/' + IntToStr(g_MySelf.m_Abil.MaxMP));
          //人物经验值
          //BoldTextOut (MSurface, 655, SCREENHEIGHT - 55, clWhite, clBlack, IntToStr(g_MySelf.Abil.Exp) + '/' + IntToStr(g_MySelf.Abil.MaxExp));
          //人物背包重量
@@ -518,31 +521,31 @@ begin
 
          //old := Canvas.Font.Size;
          //Canvas.Font.Size := 8;
-         //BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clWhite, clBlack, ServerName);
+         //BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-42, clWhite, clBlack, ServerName);
 
          //显示白示提 (用于调试) ------------------
          if g_boShowWhiteHint then begin
              if g_MySelf.m_nGameGold > 10 then begin
-                BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clWhite, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
+                BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-42, clWhite, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
              end else begin
-                BoldTextOut (MSurface, 8, SCREENHEIGHT-42, clRed, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
+                BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-42, clRed, clBlack, g_sGameGoldName + ' ' + IntToStr(g_MySelf.m_nGameGold));
             end;
 
          if g_MySelf.m_nGamePoint > 10 then begin
-               BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clWhite, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
+               BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-58, clWhite, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
             end else begin
-             BoldTextOut (MSurface, 8, SCREENHEIGHT-58, clRed, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
+             BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-58, clRed, clBlack, g_sGamePointName + ' ' + IntToStr(g_MySelf.m_nGamePoint));
             end;
 
             //鼠标所指坐标
-            BoldTextOut (MSurface, 115, SCREENHEIGHT - 40, clWhite, clBlack, IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY));
+            BoldTextOut (MSurface, HUDLEFT + 115, SCREENHEIGHT - 40, clWhite, clBlack, IntToStr(g_nMouseCurrX) + ':' + IntToStr(g_nMouseCurrY));
             //显示时间
-            BoldTextOut (MSurface, 410, SCREENHEIGHT - 147, clWhite, clBlack, FormatDateTime('dddddd hh:mm:ss ampm', Now));
+            BoldTextOut (MSurface, HUDLEFT + 410, SCREENHEIGHT - 147, clWhite, clBlack, FormatDateTime('dddddd hh:mm:ss ampm', Now));
          end;
         //显示白示提结束 -----------------------
 
-        // BoldTextOut (MSurface, 8, SCREENHEIGHT- 74, clWhite, clBlack, format('AllocMemCount:%d',[AllocMemCount]));
-        // BoldTextOut (MSurface, 8, SCREENHEIGHT- 90, clWhite, clBlack, format('AllocMemSize:%d',[AllocMemSize div 1024]));
+        // BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT- 74, clWhite, clBlack, format('AllocMemCount:%d',[AllocMemCount]));
+        // BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT- 90, clWhite, clBlack, format('AllocMemSize:%d',[AllocMemSize div 1024]));
 
          //Canvas.Font.Size := old;
 
@@ -554,7 +557,7 @@ begin
            Canvas.Font.Size :=10;
 
            //在游戏界面左下角，显示角色所在地图和位置 (坐标)
-           BoldTextOut (MSurface, 8, SCREENHEIGHT-20, clWhite, clBlack, g_sMapTitle + ' ' + IntToStr(g_MySelf.m_nCurrX) + ':' + IntToStr(g_MySelf.m_nCurrY));
+           BoldTextOut (MSurface, HUDLEFT + 8, SCREENHEIGHT-20, clWhite, clBlack, g_sMapTitle + ' ' + IntToStr(g_MySelf.m_nCurrX) + ':' + IntToStr(g_MySelf.m_nCurrY));
 
            //在游戏界面左下角，显示时间 (系统时间)
            //BoldTextOut (MSurface, SCREENWIDTH - 125, SCREENHEIGHT - 23, clWhite, clBlack, FormatDateTime('tt', Now));  //hh:mm:ss ampm

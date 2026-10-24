@@ -1,0 +1,12 @@
+[@main]
+#IF
+#Say
+  {<$SELFNAME>=FCO=243}：\\\
+  当前营地：{<$STR(B92)>=FCO=31}　{X：<$STR(C92)>=FCO=31}　{Y:<$STR(C93)>=FCO=31} \ \
+  <{点击更改营地=FCO=161}/@更改坐标>\ \
+
+[@更改坐标]
+#ACT
+EXEACTION SETCAMP
+GOTO @main
+break

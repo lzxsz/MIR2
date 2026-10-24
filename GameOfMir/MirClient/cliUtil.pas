@@ -1130,7 +1130,7 @@ var
    sddsd: TDDSurfaceDesc;
    sptr, peff: PByte;
    //source: array[0..810] of byte;
-   source: array[0..SCREENWIDTH + 10] of byte;
+   source: array[0..MAXSCREENWIDTH + 10] of byte;
 begin
    if Width > SCREENWIDTH then exit;
 //   if Width > 800 then exit;

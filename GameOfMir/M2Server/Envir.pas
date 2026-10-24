@@ -45,6 +45,7 @@ type
     Header: TMapHeader;
 
     sMapName: string;  //0x4 地图ID（比如比奇地图为0）
+    sMapFileName: string; // Physical client/server map resource, independent of runtime ID.
     sMapDesc: string;  //返回地图名称，比如比奇、白日门
     MapCellArray: array of TMapCellinfo; //0x0C
     nMinMap: Integer;  //0x10
@@ -132,6 +133,7 @@ begin
   Result := nil;
   Envir := TEnvirnoment.Create;
   Envir.sMapName := sMapName;
+  Envir.sMapFileName := sMapName;
   Envir.sMapDesc := sMapDesc;
   Envir.nServerIndex := nServerNumber;
 

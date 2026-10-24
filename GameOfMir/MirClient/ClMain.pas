@@ -116,6 +116,7 @@ const
     procedure SpeedHackTimerTimer(Sender: TObject);
 
   private
+    ResolutionCombo: TComboBox;
     SocStr, BufferStr: string;
     WarningLevel: Integer;
     TimerCmd: TTimerCommand;
@@ -285,6 +286,7 @@ const
     function  TargetInSwordLongAttackRange (ndir: integer): Boolean;
     function  TargetInSwordWideAttackRange (ndir: integer): Boolean;
     function  TargetInSwordCrsAttackRange(ndir: integer): Boolean;
+    procedure ResolutionChange(Sender: TObject);
     procedure OnProgramException (Sender: TObject; E: Exception);
     procedure SendSocket (sendstr: string);
     function  ServerAcceptNextAction: Boolean;
@@ -950,6 +952,7 @@ var
 begin
   ini := nil;
   FtpConf := nil;
+  SetGameResolution('800x600');
 
   g_AutoPickupList :=TList.Create;
   g_ShowItemList   :=TGList.Create;
@@ -994,6 +997,7 @@ begin
        end;
 
        g_boFullScreen := ini.ReadBool ('Setup', 'FullScreen', g_boFullScreen);
+       SetGameResolution(ini.ReadString('Setup', 'Resolution', '800x600'));
        g_sCurFontName := ini.ReadString ('Setup', 'FontName', g_sCurFontName);
 
        g_sMainParam1:=Ini.ReadString('Setup', 'Param1', '');
@@ -1017,7 +1021,14 @@ begin
    Caption:=g_sLogoText;
    //全屏
    if g_boFullScreen then
-     DXDraw.Options:=DXDraw.Options + [doFullScreen];
+     DXDraw.Options:=DXDraw.Options + [doFullScreen]
+   else begin
+     DXDraw.Options := DXDraw.Options - [doFullScreen];
+     BorderStyle := bsSingle;
+     BorderIcons := [biSystemMenu, biMinimize];
+     ClientWidth := SCREENWIDTH;
+     ClientHeight := SCREENHEIGHT;
+   end;
 
    LoadWMImagesLib(nil);
    NpcImageList:=TList.Create;
@@ -1229,8 +1240,37 @@ begin
    //异常时调用的函数
    Application.OnException := OnProgramException;
    //当空闲时调用的函数
+   ResolutionCombo := TComboBox.Create(Self);
+   with ResolutionCombo do begin
+      Parent := Self;
+      Style := csDropDownList;
+      Font.Name := g_sCurFontName;
+      Font.Size := 9;
+      SetBounds(SCREENWIDTH - 144, 8, 132, 24);
+      Items.Add('800x600');
+      Items.Add('1024x768');
+      Items.Add('1280x720');
+      Items.Add('1920x1080');
+      ItemIndex := Items.IndexOf(IntToStr(SCREENWIDTH) + 'x' + IntToStr(SCREENHEIGHT));
+      OnChange := ResolutionChange;
+      Visible := False;
+   end;
    Application.OnIdle := AppOnIdle;
 
+end;
+
+procedure TfrmMain.ResolutionChange(Sender: TObject);
+var
+   Settings: TIniFile;
+begin
+   if ResolutionCombo.ItemIndex < 0 then exit;
+   Settings := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Lmir.ini');
+   try
+      Settings.WriteString('Setup', 'Resolution', ResolutionCombo.Text);
+      Settings.UpdateFile;
+   finally
+      Settings.Free;
+   end;
 end;
 
 procedure TfrmMain.OnProgramException (Sender: TObject; E: Exception);
@@ -1565,13 +1605,8 @@ begin
       if doFullScreen in DxDraw.Options then begin
          //Screen.Cursor := crNone;
       end else begin
-         Left := 0;
-         Top := 0;
-         Width := SCREENWIDTH;
-         Height := SCREENHEIGHT;
          g_boNoDarkness := TRUE;
          g_boUseDIBSurface := TRUE;
-         //frmMain.BorderStyle := bsSingle;
       end;
 
 
@@ -1612,6 +1647,7 @@ procedure TfrmMain.AppOnIdle (Sender: TObject; var Done: Boolean);
 //procedure TFrmMain.DXTimerTimer(Sender: TObject; LagCount: Integer);
 var
    i, j: integer;
+   WindowDC: HDC;
    p: TPoint;
    DF: DDBLTFX;
    d: TDirectDrawSurface;
@@ -1620,7 +1656,8 @@ begin
    Done := TRUE;
    if not DxDraw.CanDraw then exit;
 
-  // DxDraw.Surface.Fill(0);
+   if DScreen.CurrentScene <> PlayScene then
+      DxDraw.Surface.Fill(0);
   // BoldTextOut (DxDraw.Surface, 0, 0, clBlack, clBlack, 'test test ' + TimeToStr(Time));
   // DxDraw.Surface.Canvas.Release;
 
@@ -1630,6 +1667,15 @@ begin
    g_DWinMan.DirectPaint (DxDraw.Surface);
    DScreen.DrawScreenTop (DxDraw.Surface);
    DScreen.DrawHint (DxDraw.Surface);
+   ResolutionCombo.Visible := DScreen.CurrentScene = LoginScene;
+   if ResolutionCombo.Visible then begin
+      with DxDraw.Surface.Canvas do begin
+         Font.Color := clWhite;
+         SetBkMode(Handle, TRANSPARENT);
+         TextOut(SCREENWIDTH - 300, 12, '分辨率（重启生效）');
+         Release;
+      end;
+   end;
    
 {$IF USECURSOR = IMAGECURSOR}
    {Draw cursor}
@@ -1638,6 +1684,7 @@ begin
    CursorSurface := g_WMainImages.Images[0];
    if CursorSurface <> nil then begin
       GetCursorPos (p);
+      p := DxDraw.ScreenToClient(p);
       DxDraw.Surface.Draw (p.x, p.y, CursorSurface.ClientRect, CursorSurface, TRUE);
    end;
    //==========================
@@ -1649,6 +1696,7 @@ begin
       else d := g_WBagItemImages.Images[115]; //金币外形
       if d <> nil then begin
          GetCursorPos (p);
+         p := DxDraw.ScreenToClient(p);
          DxDraw.Surface.Draw (p.x-(d.ClientRect.Right div 2),
                               p.y-(d.ClientRect.Bottom div 2),
                               d.ClientRect,
@@ -1713,7 +1761,25 @@ begin
    end;
 }
 
-   DxDraw.Primary.Draw (0, 0, DxDraw.Surface.ClientRect, DxDraw.Surface, FALSE);
+   if doFullScreen in DxDraw.Options then
+      DxDraw.Primary.Draw (0, 0, DxDraw.Surface.ClientRect, DxDraw.Surface, FALSE)
+   else begin
+      // Composite native edits before presenting, including their background pixels.
+      WindowDC := GetDCEx(DxDraw.Handle, 0, DCX_CACHE);
+      if WindowDC <> 0 then begin
+         try
+            for i := 0 to ControlCount - 1 do
+               if ((Controls[i] is TCustomEdit) or (Controls[i] is TComboBox)) and Controls[i].Visible then
+                  TWinControl(Controls[i]).PaintTo(DxDraw.Surface.Canvas.Handle,
+                     Controls[i].Left - DxDraw.Left, Controls[i].Top - DxDraw.Top);
+            BitBlt(WindowDC, 0, 0, DxDraw.Surface.Width, DxDraw.Surface.Height,
+                   DxDraw.Surface.Canvas.Handle, 0, 0, SRCCOPY);
+         finally
+            DxDraw.Surface.Canvas.Release;
+            ReleaseDC(DxDraw.Handle, WindowDC);
+         end;
+      end;
+   end;
    if g_MySelf <> nil then begin
 
    end;
@@ -2923,6 +2989,7 @@ var
    pt: TPoint;
 begin
    GetCursorPos (pt);
+   pt := DxDraw.ScreenToClient(pt);
    if g_DWinMan.DblClick (pt.X, pt.Y) then exit;
 end;
 
@@ -2956,20 +3023,17 @@ var
    pt: TPoint;
 begin
    GetCursorPos (pt);
+   pt := DxDraw.ScreenToClient(pt);
    if g_DWinMan.Click (pt.X, pt.Y) then exit;
 end;
 //鼠标事件:当选择了魔法等攻击前，显示一个选择被攻击对象的鼠标
 procedure TfrmMain.MouseTimerTimer(Sender: TObject);
 var
   I: Integer;
-   pt: TPoint;
    keyvalue: TKeyBoardState;
    shift: TShiftState;
 
 begin
-   GetCursorPos (pt);
-   SetCursorPos (pt.X, pt.Y);
-
    if g_TargetCret <> nil then begin
       if ActionKey > 0 then begin
          ProcessKeyMessages;
@@ -7002,7 +7066,7 @@ begin
   g_boParalyCanWalk      :=ClientConf.boParalyCanWalk;
   g_boParalyCanHit       :=ClientConf.boParalyCanHit;
   g_boParalyCanSpell     :=ClientConf.boParalyCanSpell;
-  g_boShowRedHPLable     := ClientConf.boShowRedHPLable;  //服务端控制是否显示血条,缺省为False
+  g_boShowRedHPLable     := True; // Keep head health bars enabled after server config.
   g_boShowHPNumber       := ClientConf.boShowHPNumber;
   g_boShowJobLevel       :=ClientConf.boShowJobLevel;
   g_boDuraAlert          :=ClientConf.boDuraAlert;
